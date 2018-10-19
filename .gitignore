@@ -5,4 +5,4 @@
 /.vagrant/
 /.vscode/
 *.code-workspace
-CMakeLists.txt
+Makefile
