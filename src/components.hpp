@@ -1,9 +1,9 @@
 
-#ifndef CAPITAL_COMPONENTS_HPP_
-#define CAPITAL_COMPONENTS_HPP_
+#ifndef WALLET_COMPONENTS_HPP_
+#define WALLET_COMPONENTS_HPP_
 
-namespace Capital
+namespace Wallet
 {
-} // namespace Capital
+} // namespace Wallet
 
-#endif // CAPITAL_COMPONENTS_HPP_
+#endif // WALLET_COMPONENTS_HPP_

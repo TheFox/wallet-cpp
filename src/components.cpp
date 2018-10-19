@@ -4,6 +4,6 @@
 
 #include "components.hpp"
 
-namespace Capital
+namespace Wallet
 {
-} // namespace Capital
+} // namespace Wallet
