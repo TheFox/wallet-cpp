@@ -17,5 +17,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
 
 include_directories("${PROJECT_SOURCE_DIR}/src")
 
+configure_file("${PROJECT_SOURCE_DIR}/src/config.hpp.in" "${PROJECT_SOURCE_DIR}/src/config.hpp" NEWLINE_STYLE LF)
+
 add_executable(wallet src/app/wallet.cpp src/components.cpp)
 set_property(TARGET wallet PROPERTY CXX_STANDARD 17)
