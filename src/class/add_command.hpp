@@ -6,8 +6,10 @@
 
 namespace Wallet
 {
-  class AddCommand : public Command
+  class AddCommand final : public Command
   {
+  public:
+    int execute() override;
   };
 }
 

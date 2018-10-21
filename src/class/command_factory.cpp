@@ -1,5 +1,8 @@
 
+#include <any>
+#include <map>
 #include "command_factory.hpp"
+#include "command.hpp"
 #include "help_command.hpp"
 #include "add_command.hpp"
 
@@ -9,17 +12,14 @@ namespace Wallet
 
   int CommandFactory::execute()
   {
-    if (name == "help") {
-      HelpCommand command = HelpCommand{};
-      return command.execute();
-    }
+    std::map<std::string, Command*> creators{};
+    creators["help"] = new HelpCommand();
+    creators["add"] = new AddCommand();
 
-    if (name == "add") {
-      AddCommand command = AddCommand{};
-      return command.execute();
+    auto command_ptr = creators[this->name];
+    if (command_ptr == nullptr) {
+      command_ptr = creators["help"];
     }
-
-    HelpCommand command = HelpCommand{};
-    return command.execute();
+    return command_ptr->execute();
   }
 } // Wallet Namespace

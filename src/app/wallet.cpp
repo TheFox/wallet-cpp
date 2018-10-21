@@ -19,7 +19,7 @@ int main(int argc, const char** argv)
   puts("");
 
   // Args
-  std::string commandName = "help";
+  std::string commandName = "add";
 
   // Parse args
   //int c = 0;

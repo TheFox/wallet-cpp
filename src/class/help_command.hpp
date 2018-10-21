@@ -6,7 +6,7 @@
 
 namespace Wallet
 {
-  class HelpCommand : public Command
+  class HelpCommand final : public Command
   {
   public:
     int execute() override;

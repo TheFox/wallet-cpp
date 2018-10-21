@@ -7,7 +7,7 @@ namespace Wallet
   class Command
   {
   public:
-    virtual int execute();
+    virtual int execute() = 0;
   };
 } // Wallet Namespace
 

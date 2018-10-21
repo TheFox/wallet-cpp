@@ -6,7 +6,7 @@
 
 namespace Wallet
 {
-  class CommandFactory
+  class CommandFactory final
   {
   public:
     CommandFactory(const std::string&);

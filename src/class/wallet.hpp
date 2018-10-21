@@ -4,7 +4,7 @@
 
 namespace Wallet
 {
-  class Wallet
+  class Wallet final
   {
   };
 } // Wallet Namespace
