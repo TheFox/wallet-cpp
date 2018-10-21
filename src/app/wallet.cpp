@@ -19,13 +19,20 @@ int main(int argc, const char** argv)
   puts("");
 
   // Args
-  std::string commandName = "add";
+  std::string commandName = "help";
 
   // Parse args
   //int c = 0;
   //while ((c = getopt (argc, argv, "n:t:?")) != -1){
   //}
 
-  Wallet::CommandFactory factory(commandName);
-  return factory.execute();
+  Wallet::CommandFactory::setup();
+  // Wallet::CommandFactory factory(commandName);
+  // return factory.execute();
+
+  Wallet::CommandFactory factory;
+  auto fn = factory.getCommandFn(commandName);
+  auto command = fn();
+  auto status = command->execute();
+  return status;
 }
