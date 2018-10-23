@@ -2,6 +2,7 @@
 #include <any>
 #include <map>
 #include <functional>
+#include <memory>
 #include "command_factory.hpp"
 #include "command.hpp"
 #include "help_command.hpp"
@@ -9,42 +10,51 @@
 
 namespace Wallet
 {
-  void CommandFactory::setup()
+  void CommandFactory::setup() noexcept
   {
-    if (isSetup)
+    if (isSetup) {
       return;
+    }
     isSetup = true;
 
     printf("CommandFactory::setup()\n");
 
-    // @todo Using raw pointer is bad.
-    creators2.clear();
-    creators2["help"] = []()->Command*{ return new HelpCommand(); };
-    creators2["add"] = []()->Command*{ return new AddCommand(); };
+    creators.clear();
+    creators["help"] = []()->std::unique_ptr<Command> {
+      return std::make_unique<HelpCommand>();
+    };
+    creators["add"] = []()->std::unique_ptr<Command> {
+      return std::make_unique<AddCommand>();
+    };
   }
 
-  CommandFactory::CommandFactory() : name("") {}
-  CommandFactory::CommandFactory(const std::string& name) : name(name) {}
-
-  std::function<Command*()> CommandFactory::getCommandFn(const std::string& _name)
+  std::unique_ptr<Command> CommandFactory::getCommand(const std::string& _name) const noexcept
   {
-    return creators2[_name];
+    auto fn = creators[_name];
+    auto cmd = fn();
+    return cmd;
+
+    //if (_name == "help")
+    //  return std::make_unique<HelpCommand>();
+    //if (_name == "add")
+    //  return std::make_unique<AddCommand>();
+
+    // Default
+    //return std::make_unique<HelpCommand>();
   }
 
-  int CommandFactory::execute()
+  Command* CommandFactory::getCommandPtr(const std::string& _name)
   {
-    std::map<std::string, Command*> creators{};
-    creators["help"] = new HelpCommand();
-    creators["add"] = new AddCommand();
+    if (_name == "help")
+      return new HelpCommand();
+    if (_name == "add")
+      return new AddCommand();
 
-    auto command_ptr = creators[this->name];
-    if (command_ptr == nullptr) {
-      command_ptr = creators["help"];
-    }
-    return command_ptr->execute();
+    // Default
+    return new HelpCommand();
   }
 
   // Private
   bool CommandFactory::isSetup = false;
-  std::map<std::string, std::function<Command*()>> CommandFactory::creators2;
+  std::map<std::string, std::function<std::unique_ptr<Command>()>> CommandFactory::creators;
 } // Wallet Namespace

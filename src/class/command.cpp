@@ -5,6 +5,11 @@
 
 namespace Wallet
 {
+  Command::Command()
+  {
+    printf("Command::Command(%p)\n", this);
+  }
+
   int Command::execute()
   {
     return 0;
@@ -12,6 +17,6 @@ namespace Wallet
 
   Command::~Command()
   {
-    printf("Command::~Command()\n");
+    printf("Command::~Command(%p)\n", this);
   }
 } // Wallet Namespace

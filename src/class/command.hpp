@@ -8,7 +8,8 @@ namespace Wallet
   {
   public:
     virtual int execute() = 0;
-    ~Command();
+    Command();
+    virtual ~Command() = 0;
   };
 } // Wallet Namespace
 

@@ -13,16 +13,13 @@ namespace Wallet
   class CommandFactory final
   {
   public:
-    static void setup();
-    CommandFactory();
-    CommandFactory(const std::string&);
-    std::function<Command*()> getCommandFn(const std::string& name);
-    // void getCommandFn();
-    int execute();
+    static void setup() noexcept;
+    std::unique_ptr<Command> getCommand(const std::string&) const noexcept;
+    Command* getCommandPtr(const std::string&);
+
   private:
-    const std::string name;
     static bool isSetup;
-    static std::map<std::string, std::function<Command*()>> creators2;
+    static std::map<std::string, std::function<std::unique_ptr<Command>()>> creators;
   };
 }
 
