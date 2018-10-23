@@ -31,27 +31,7 @@ namespace Wallet
   std::unique_ptr<Command> CommandFactory::getCommand(const std::string& _name) const noexcept
   {
     auto fn = creators[_name];
-    auto cmd = fn();
-    return cmd;
-
-    //if (_name == "help")
-    //  return std::make_unique<HelpCommand>();
-    //if (_name == "add")
-    //  return std::make_unique<AddCommand>();
-
-    // Default
-    //return std::make_unique<HelpCommand>();
-  }
-
-  Command* CommandFactory::getCommandPtr(const std::string& _name)
-  {
-    if (_name == "help")
-      return new HelpCommand();
-    if (_name == "add")
-      return new AddCommand();
-
-    // Default
-    return new HelpCommand();
+    return fn();
   }
 
   // Private

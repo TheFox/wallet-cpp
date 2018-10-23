@@ -35,18 +35,10 @@ int main(int argc, const char** argv)
   auto command = factory.getCommand("help");
   auto status = command->execute();
   printf("status %d\n", status);
-  auto command2 = factory.getCommand("add");
-  status = command2->execute();
-  printf("status %d\n", status);
 
-  //auto command3 = factory.getCommandPtr("add");
-  //auto status = command3->execute();
-  //printf("status %d\n", status);
-  //auto command4 = factory.getCommandPtr("add");
-  //status = command4->execute();
-  //printf("status %d\n", status);
-  //delete command3;
-  //delete command4;
+  command = factory.getCommand("add");
+  status = command->execute();
+  printf("status %d\n", status);
 
   return status;
 }
