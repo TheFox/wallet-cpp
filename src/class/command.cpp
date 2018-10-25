@@ -15,7 +15,7 @@ namespace Wallet
     printf("Command::~Command(%p)\n", this);
   }
 
-  void Command::setOptions(const CommandOptions commandOptions) noexcept
+  void Command::setOptions(const CommandOptions _commandOptions) noexcept
   {
     this->commandOptions = commandOptions;
   }
