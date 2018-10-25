@@ -4,11 +4,29 @@
 #include <unistd.h>
 #include <iostream>
 
+#ifdef __has_include
+#  if __has_include(<filesystem>)
+#    include <filesystem>
+#  elif __has_include(<experimental/filesystem>)
+#    include <experimental/filesystem>
+#  elif __has_include(<boost/filesystem.hpp>)
+#    include <boost/filesystem.hpp>
+#  else
+#     error "Missing <filesystem>"
+#  endif
+#endif
+
 #include "../config.hpp"
 #include "../class/command_factory.hpp"
+#include "../class/command.hpp"
 
-int main(int argc, const char** argv)
+//namespace po = boost::program_options;
+
+int main(int argc, char* const argv[])
 {
+  using std::string;
+  using Wallet::CommandFactory, Wallet::CommandOptions;
+
   printf("%s %d.%d.%d%s\n%s\n",
     PROJECT_NAME, PROJECT_VERSION_MAJOR, PROJECT_VERSION_MINOR, PROJECT_VERSION_PATCH, PROJECT_VERSION_APPENDIX,
     PROJECT_COPYRIGHT);
@@ -19,26 +37,22 @@ int main(int argc, const char** argv)
   puts("");
 
   // Args
-  std::string commandName = "help";
+  string commandName = "help";
 
   // Parse args
-  //int c = 0;
-  //while ((c = getopt (argc, argv, "n:t:?")) != -1){
+  //int opt = 0;
+  //while ((opt = getopt(argc, argv, "w:?")) != -1) {
+  //  printf("opt: %c\n", opt);
   //}
 
-  Wallet::CommandFactory::setup();
-  // Wallet::CommandFactory factory(commandName);
-  // return factory.execute();
+  const CommandOptions cmdOpts = {argv[0]};
+  printf("argv0 %p\n", &argv[0]);
+  printf("opts  %p\n", &cmdOpts.appPath);
 
-  Wallet::CommandFactory factory;
+  CommandFactory::setup();
+  CommandFactory factory;
 
-  auto command = factory.getCommand("help");
-  auto status = command->execute();
-  printf("status %d\n", status);
-
-  command = factory.getCommand("add");
-  status = command->execute();
-  printf("status %d\n", status);
-
-  return status;
+  auto command = factory.getCommand(commandName);
+  command->setOptions(cmdOpts);
+  return command->execute();
 }

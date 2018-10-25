@@ -5,18 +5,23 @@
 
 namespace Wallet
 {
-  Command::Command()
+  Command::Command() : commandOptions({})
   {
     printf("Command::Command(%p)\n", this);
-  }
-
-  int Command::execute()
-  {
-    return 0;
   }
 
   Command::~Command()
   {
     printf("Command::~Command(%p)\n", this);
+  }
+
+  void Command::setOptions(const CommandOptions commandOptions) noexcept
+  {
+    this->commandOptions = commandOptions;
+  }
+
+  int Command::execute()
+  {
+    return 0;
   }
 } // Wallet Namespace

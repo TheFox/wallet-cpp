@@ -2,14 +2,25 @@
 #ifndef WALLET_COMMAND_HPP_
 #define WALLET_COMMAND_HPP_
 
+#include <string>
+
 namespace Wallet
 {
+  struct CommandOptions
+  {
+    std::string appPath;
+  };
+
   class Command
   {
   public:
-    virtual int execute() = 0;
     Command();
     virtual ~Command() = 0;
+    virtual int execute() = 0;
+    void setOptions(CommandOptions commandOptions) noexcept;
+
+  protected:
+    CommandOptions commandOptions;
   };
 } // Wallet Namespace
 
