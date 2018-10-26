@@ -3,24 +3,23 @@
 #include <string>
 #include <unistd.h>
 #include <iostream>
-#include <optional>
 
 #ifdef __has_include
-#  if __has_include(<filesystem>)
-#    include <filesystem>
-#  elif __has_include(<experimental/filesystem>)
-#    include <experimental/filesystem>
-#  elif __has_include(<boost/filesystem.hpp>)
-#    include <boost/filesystem.hpp>
-#  else
-#     error "Missing <filesystem>"
-#  endif
+//#  if __has_include(<filesystem>)
+//#    include <filesystem>
+//#  elif __has_include(<experimental/filesystem>)
+//#    include <experimental/filesystem>
+//#  elif __has_include(<boost/filesystem.hpp>)
+//#    include <boost/filesystem.hpp>
+//#  else
+//#     error "Missing <filesystem>"
+//#  endif
 #  if __has_include(<boost/program_options.hpp>)
 #    include <boost/program_options.hpp>
 #  else
 #     error "Missing <program_options>"
 #  endif
-#endif
+#endif // __has_include
 
 #include <termcolor/termcolor.hpp>
 
@@ -30,11 +29,11 @@
 
 namespace bpo = boost::program_options;
 
-void to_cout(const std::vector<std::string>& v)
-{
-  std::copy(begin(v), end(v),
-    std::ostream_iterator<std::string>{std::cout, "\n"});
-}
+//void to_cout(const std::vector<std::string>& v)
+//{
+//  std::copy(begin(v), end(v),
+//    std::ostream_iterator<std::string>{std::cout, "\n"});
+//}
 
 int main(int argc, char* const argv[])
 {
@@ -110,12 +109,14 @@ int main(int argc, char* const argv[])
     return 3;
   }
 
-  std::optional<std::string> walletPath;
-  if (vm.count("wallet")) {
-    walletPath = vm["wallet"].as<std::string>();
-  }
+  CommandOptions cmdOpts = {};
 
-  const CommandOptions cmdOpts = {walletPath};
+  if (vm.count("wallet")) {
+    cmdOpts.walletPath = vm["wallet"].as<std::string>();
+  }
+  if (vm.count("interactive")) {
+    cmdOpts.isInteractively = true;
+  }
 
   CommandFactory::setup();
   CommandFactory factory;
