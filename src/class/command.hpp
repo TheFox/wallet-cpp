@@ -3,12 +3,13 @@
 #define WALLET_COMMAND_HPP_
 
 #include <string>
+#include <optional>
 
 namespace Wallet
 {
   struct CommandOptions
   {
-    std::string appPath;
+    std::optional<std::string> walletPath{std::nullopt};
   };
 
   class Command
@@ -17,7 +18,7 @@ namespace Wallet
     Command();
     virtual ~Command() = 0;
     virtual int execute() = 0;
-    void setOptions(CommandOptions commandOptions) noexcept;
+    void setOptions(CommandOptions) noexcept;
 
   protected:
     CommandOptions commandOptions;

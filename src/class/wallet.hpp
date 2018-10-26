@@ -4,8 +4,11 @@
 
 namespace Wallet
 {
+  class Entry;
+
   class Wallet final
   {
+    void add(Entry) noexcept;
   };
 } // Wallet Namespace
 

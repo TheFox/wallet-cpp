@@ -19,17 +19,20 @@ namespace Wallet
     printf("CommandFactory::setup()\n");
 
     creators.clear();
-    creators["help"] = []()->std::unique_ptr<Command> {
-      return std::make_unique<HelpCommand>();
-    };
+    //creators["help"] = []()->std::unique_ptr<Command> {
+    //  return std::make_unique<HelpCommand>();
+    //};
     creators["add"] = []()->std::unique_ptr<Command> {
       return std::make_unique<AddCommand>();
     };
   }
 
-  std::unique_ptr<Command> CommandFactory::getCommand(const std::string& _name) const noexcept
+  std::unique_ptr<Command> CommandFactory::getCommand(const std::string& _name) const
   {
     auto fn = creators[_name];
+    if (fn == nullptr) {
+      throw (std::string{"Command "} + _name + " not found.");
+    }
     return fn();
   }
 

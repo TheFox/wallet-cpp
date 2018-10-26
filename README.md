@@ -2,20 +2,29 @@
 
 ## Dependencies
 
+- cmake
 - Boost
-- fmt
 
 ### Install dependencies on macOS
 
 ```
-brew install fmt boost yaml-cpp
+brew install boost
 ```
 
 ## Build
 
+This will only build the binary.
+
 ```bash
-mkdir -p build
-cd build
-cmake ..
-make
+./bin/build.sh
+```
+
+Then the binary is available in `build_release`.
+
+## Install
+
+After building the project, run:
+
+```bash
+./bin/install.sh
 ```

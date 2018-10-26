@@ -17,7 +17,7 @@ namespace Wallet
 
   void Command::setOptions(const CommandOptions _commandOptions) noexcept
   {
-    this->commandOptions = commandOptions;
+    this->commandOptions = _commandOptions;
   }
 
   int Command::execute()
