@@ -3,6 +3,8 @@
 #include <cstdio>
 #endif
 
+#include <fstream>
+
 #include "wallet.hpp"
 #include "entry.hpp"
 
@@ -51,6 +53,38 @@ namespace Wallet
 
   void Wallet::setup() noexcept
   {
+    using std::ofstream;
+    using fs::exists;
+    using fs::remove;
+    using fs::path;
+    using fs::create_directories;
+
     this->dataPath = this->path / "data";
+    this->tmpPath = this->path / "tmp";
+
+    // Make data/ directory.
+    if (!exists(this->dataPath)) {
+      create_directories(this->dataPath);
+    }
+
+    // Make tmp/ directory.
+    if (!exists(this->tmpPath)) {
+      create_directories(this->tmpPath);
+    }
+
+    // Create .gitignore file.
+    path gitignoreFile = this->path / ".gitignore";
+    if (!exists(gitignoreFile)) {
+      ofstream gitignoreFh;
+      gitignoreFh.open(gitignoreFile.string(), ofstream::out);
+      gitignoreFh << "/tmp/" << '\n';
+      gitignoreFh.close();
+    }
+
+    // Remove old tmp/.gitignore file.
+    path oldGitignoreFile = this->tmpPath / ".gitignore";
+    if (exists(oldGitignoreFile)) {
+      remove(oldGitignoreFile);
+    }
   }
 }

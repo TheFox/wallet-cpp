@@ -45,6 +45,7 @@ namespace Wallet
     // Variables
     const fs::path path;
     fs::path dataPath;
+    fs::path tmpPath;
 
     // Functions
     void setup() noexcept;
