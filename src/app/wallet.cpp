@@ -5,15 +5,6 @@
 #include <iostream>
 
 #ifdef __has_include
-//#  if __has_include(<filesystem>)
-//#    include <filesystem>
-//#  elif __has_include(<experimental/filesystem>)
-//#    include <experimental/filesystem>
-//#  elif __has_include(<boost/filesystem.hpp>)
-//#    include <boost/filesystem.hpp>
-//#  else
-//#     error "Missing <filesystem>"
-//#  endif
 #  if __has_include(<boost/program_options.hpp>)
 #    include <boost/program_options.hpp>
 #  else
@@ -48,6 +39,7 @@ int main(int argc, char* const argv[])
 
 #ifdef DEBUG
   puts("--- DEBUG ---");
+  printf("__clang_version__ %s\n", __clang_version__);
   puts("");
 #endif
 

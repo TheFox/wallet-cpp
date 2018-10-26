@@ -9,5 +9,5 @@ mkdir -p build_${BUILD_TYPE}
 cd build_${BUILD_TYPE}
 
 set -x
-cmake -DCMAKE_BUILD_TYPE=${BUILD_TYPE} ..
+cmake -DCMAKE_BUILD_TYPE=${BUILD_TYPE} --target wallet ..
 make

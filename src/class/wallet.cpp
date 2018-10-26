@@ -13,6 +13,7 @@ namespace Wallet
 #ifdef DEBUG
     printf("Wallet::Wallet(def '%s')\n", this->path.c_str());
 #endif
+    this->setup();
   }
 
   Wallet::Wallet(const std::string path) : path(path)
@@ -20,6 +21,7 @@ namespace Wallet
 #ifdef DEBUG
     printf("Wallet::Wallet(str '%s')\n", this->path.c_str());
 #endif
+    this->setup();
   }
 
   Wallet::Wallet(const std::optional<std::string> path) : path(path.has_value() ? *path : WALLET_DEFAULT_PATH)
@@ -27,6 +29,7 @@ namespace Wallet
 #ifdef DEBUG
     printf("Wallet::Wallet(opt '%s')\n", this->path.c_str());
 #endif
+    this->setup();
   }
 
   bool Wallet::add(const Entry entry) noexcept
@@ -44,5 +47,10 @@ namespace Wallet
 #endif
 
     return false;
+  }
+
+  void Wallet::setup() noexcept
+  {
+    this->dataPath = this->path / "data";
   }
 }

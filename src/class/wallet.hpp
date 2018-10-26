@@ -14,6 +14,16 @@
 #  else
 #     error "Missing <optional>"
 #  endif
+#  if __has_include(<filesystem>)
+#    include <filesystem>
+#  elif __has_include(<experimental/filesystem>)
+#    include <experimental/filesystem>
+#  elif __has_include(<boost/filesystem.hpp>)
+#    include <boost/filesystem.hpp>
+namespace fs = boost::filesystem;
+#  else
+#     error "Missing <filesystem>"
+#  endif
 #endif // __has_include
 
 #define WALLET_DEFAULT_PATH ".wallet"
@@ -32,7 +42,12 @@ namespace Wallet
     bool add(Entry, bool) noexcept;
 
   private:
-    const std::string path;
+    // Variables
+    const fs::path path;
+    fs::path dataPath;
+
+    // Functions
+    void setup() noexcept;
   };
 } // Wallet Namespace
 
