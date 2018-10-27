@@ -1,6 +1,6 @@
 
-#ifndef WALLET_WALLET_HPP_
-#define WALLET_WALLET_HPP_
+#ifndef WALLETCPP_MUTABLE_WALLET_HPP_
+#define WALLETCPP_MUTABLE_WALLET_HPP_
 
 #include <string>
 
@@ -32,24 +32,26 @@ namespace Wallet
 {
   class Entry;
 
-  class Wallet final
+  class MutableWallet
   {
   public:
-    Wallet();
-    explicit Wallet(std::string);
-    explicit Wallet(std::optional<std::string>);
-    bool add(Entry) noexcept;
-    bool add(Entry, bool) noexcept;
+    MutableWallet();
+    explicit MutableWallet(std::string);
+    explicit MutableWallet(std::optional<std::string>);
+    virtual bool add(Entry);
+    virtual bool add(Entry, bool);
 
-  private:
+  protected:
     // Variables
     const fs::path path;
     fs::path dataPath;
     fs::path tmpPath;
 
     // Functions
-    void setup() noexcept;
+    virtual void setup() noexcept;
+    void setupVariables() noexcept;
+    void setupDirectories() noexcept;
   };
 } // Wallet Namespace
 
-#endif // WALLET_WALLET_HPP_
+#endif // WALLETCPP_MUTABLE_WALLET_HPP_

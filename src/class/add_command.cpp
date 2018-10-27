@@ -5,7 +5,7 @@
 #include <iostream>
 
 #include "add_command.hpp"
-#include "wallet.hpp"
+#include "mutable_wallet.hpp"
 #include "entry.hpp"
 
 namespace Wallet
@@ -23,10 +23,10 @@ namespace Wallet
     if (this->commandOptions.isInteractively) {
     }
 
-    Wallet wallet{this->commandOptions.walletPath};
+    MutableWallet wallet{this->commandOptions.walletPath};
     const bool added = wallet.add(entry, false);
     cout << "Added: " << (added ? "YES" : "NO") << endl;
 
     return Command::execute();
   }
-}
+} // Wallet Namespace

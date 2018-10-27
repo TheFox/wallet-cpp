@@ -1,6 +1,6 @@
 
-#ifndef WALLET_COMMAND_FACTORY_HPP_
-#define WALLET_COMMAND_FACTORY_HPP_
+#ifndef WALLETCPP_COMMAND_FACTORY_HPP_
+#define WALLETCPP_COMMAND_FACTORY_HPP_
 
 #include <string>
 #include <map>
@@ -22,4 +22,4 @@ namespace Wallet
   };
 }
 
-#endif // WALLET_COMMAND_FACTORY_HPP_
+#endif // WALLETCPP_COMMAND_FACTORY_HPP_

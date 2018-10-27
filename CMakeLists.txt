@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.12.0)
-project(Wallet)
+project(WalletCpp)
 
 set(PROJECT_VERSION_MAJOR 0)
 set(PROJECT_VERSION_MINOR 1)
@@ -16,7 +16,8 @@ configure_file("${PROJECT_SOURCE_DIR}/src/config.hpp.in" "${PROJECT_SOURCE_DIR}/
 
 add_executable(wallet
     src/app/wallet.cpp
-    src/class/wallet.cpp src/class/wallet.hpp
+    src/class/mutable_wallet.cpp src/class/mutable_wallet.hpp
+    src/class/immutable_wallet.cpp src/class/immutable_wallet.cpp
     src/class/command_factory.cpp src/class/command_factory.hpp
     src/class/command.cpp src/class/command.hpp
     src/class/help_command.cpp src/class/help_command.hpp

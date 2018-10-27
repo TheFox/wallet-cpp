@@ -1,6 +1,6 @@
 
-#ifndef WALLET_ENTRY_HPP_
-#define WALLET_ENTRY_HPP_
+#ifndef WALLETCPP_ENTRY_HPP_
+#define WALLETCPP_ENTRY_HPP_
 
 #include <string>
 
@@ -18,6 +18,6 @@ namespace Wallet
   private:
     std::string id;
   };
-}
+} // Wallet Namespace
 
-#endif // WALLET_ENTRY_HPP_
+#endif // WALLETCPP_ENTRY_HPP_

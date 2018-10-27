@@ -1,6 +1,6 @@
 
-#ifndef WALLET_ADD_COMMAND_HPP_
-#define WALLET_ADD_COMMAND_HPP_
+#ifndef WALLETCPP_ADD_COMMAND_HPP_
+#define WALLETCPP_ADD_COMMAND_HPP_
 
 #include "command.hpp"
 
@@ -11,6 +11,6 @@ namespace Wallet
   public:
     int execute() override;
   };
-}
+} // Wallet Namespace
 
-#endif // WALLET_ADD_COMMAND_HPP_
+#endif // WALLETCPP_ADD_COMMAND_HPP_

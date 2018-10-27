@@ -12,4 +12,4 @@ namespace Wallet
   {
     return this->id;
   };
-}
+} // Wallet Namespace

@@ -5,6 +5,7 @@
 /.idea/
 /.vagrant/
 /.vscode/
+/.wallet/
 *.code-workspace
 Makefile
 /tmp/

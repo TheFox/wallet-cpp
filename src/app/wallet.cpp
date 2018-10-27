@@ -86,7 +86,7 @@ int main(int argc, char* const argv[])
   }
 
   if (vm.count("help") || commandName.empty()) {
-    cout << PROJECT_NAME
+    cout << PROJECT_NAME << ' '
          << PROJECT_VERSION_MAJOR << '.' << PROJECT_VERSION_MINOR << '.' << PROJECT_VERSION_PATCH
          << PROJECT_VERSION_APPENDIX << endl;
     cout << PROJECT_COPYRIGHT << endl << endl;

@@ -1,6 +1,6 @@
 
-#ifndef WALLET_COMMAND_HPP_
-#define WALLET_COMMAND_HPP_
+#ifndef WALLETCPP_COMMAND_HPP_
+#define WALLETCPP_COMMAND_HPP_
 
 #include <string>
 
@@ -39,4 +39,4 @@ namespace Wallet
   };
 } // Wallet Namespace
 
-#endif // WALLET_COMMAND_HPP_
+#endif // WALLETCPP_COMMAND_HPP_

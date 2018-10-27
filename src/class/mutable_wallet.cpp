@@ -5,62 +5,72 @@
 
 #include <fstream>
 
-#include "wallet.hpp"
+#include "mutable_wallet.hpp"
 #include "entry.hpp"
 
 namespace Wallet
 {
-  Wallet::Wallet() : path(WALLET_DEFAULT_PATH)
+  MutableWallet::MutableWallet() : path(WALLET_DEFAULT_PATH)
   {
 #ifdef DEBUG
-    printf("Wallet::Wallet(def '%s')\n", this->path.c_str());
+    printf("MutableWallet::MutableWallet(def '%s')\n", this->path.c_str());
 #endif
     this->setup();
   }
 
-  Wallet::Wallet(const std::string path) : path(path)
+  MutableWallet::MutableWallet(const std::string path) : path(path)
   {
 #ifdef DEBUG
-    printf("Wallet::Wallet(str '%s')\n", this->path.c_str());
+    printf("MutableWallet::MutableWallet(str '%s')\n", this->path.c_str());
 #endif
     this->setup();
   }
 
-  Wallet::Wallet(const std::optional<std::string> path) : path(path.has_value() ? *path : WALLET_DEFAULT_PATH)
+  MutableWallet::MutableWallet(const std::optional<std::string> path) : path(
+    path.has_value() ? *path : WALLET_DEFAULT_PATH)
   {
 #ifdef DEBUG
-    printf("Wallet::Wallet(opt '%s')\n", this->path.c_str());
+    printf("MutableWallet::MutableWallet(opt '%s')\n", this->path.c_str());
 #endif
     this->setup();
   }
 
-  bool Wallet::add(const Entry entry) noexcept
+  bool MutableWallet::add(const Entry entry)
   {
 #ifdef DEBUG
-    printf("Wallet::add(%p)\n", &entry);
+    printf("MutableWallet::add(%p)\n", &entry);
 #endif
     return this->add(entry, false);
   }
 
-  bool Wallet::add(const Entry entry, const bool isUnique) noexcept
+  bool MutableWallet::add(const Entry entry, const bool isUnique)
   {
 #ifdef DEBUG
-    printf("Wallet::add(%p, u=%c)\n", &entry, isUnique ? 'Y' : 'N');
+    printf("MutableWallet::add(%p, u=%c)\n", &entry, isUnique ? 'Y' : 'N');
 #endif
 
     return false;
   }
 
-  void Wallet::setup() noexcept
+  void MutableWallet::setup() noexcept
+  {
+    this->setupVariables();
+    this->setupDirectories();
+  }
+
+  void MutableWallet::setupVariables() noexcept
+  {
+    this->dataPath = this->path / "data";
+    this->tmpPath = this->path / "tmp";
+  }
+
+  void MutableWallet::setupDirectories() noexcept
   {
     using std::ofstream;
     using fs::exists;
     using fs::remove;
     using fs::path;
     using fs::create_directories;
-
-    this->dataPath = this->path / "data";
-    this->tmpPath = this->path / "tmp";
 
     // Make data/ directory.
     if (!exists(this->dataPath)) {
@@ -87,4 +97,4 @@ namespace Wallet
       remove(oldGitignoreFile);
     }
   }
-}
+} // Wallet Namespace
