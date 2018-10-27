@@ -1,4 +1,8 @@
 
+#ifdef DEBUG
+#include <cstdio>
+#endif
+
 #include <map>
 #include <functional>
 #include <memory>
@@ -18,7 +22,9 @@ namespace Wallet
     }
     isSetup = true;
 
+#ifdef DEBUG
     printf("CommandFactory::setup()\n");
+#endif
 
     creators.clear();
     //creators["help"] = []()->std::unique_ptr<Command> {
