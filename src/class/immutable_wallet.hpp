@@ -6,6 +6,9 @@
 
 namespace Wallet
 {
+  /**
+   * Immutable Wallet will not touch the data directory.
+   */
   class ImmutableWallet : public MutableWallet
   {
   public:
