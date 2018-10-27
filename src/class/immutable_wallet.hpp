@@ -8,14 +8,13 @@ namespace Wallet
 {
   class ImmutableWallet : public MutableWallet
   {
-  //public:
-  //  explicit ImmutableWallet(std::optional<std::string>);
-  //  bool add(Entry) override;
-  //  bool add(Entry, bool) override;
-  //
-  //protected:
-  //  // Functions
-  //  void setup() noexcept override;
+  public:
+    // Constructor
+    explicit ImmutableWallet(std::string);
+
+    // Functions
+    void setup() noexcept override;
+    bool add(Entry, bool) override;
   };
 } // Wallet Namespace
 

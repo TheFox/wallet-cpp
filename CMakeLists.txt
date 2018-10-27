@@ -23,6 +23,7 @@ add_executable(wallet
     src/class/help_command.cpp src/class/help_command.hpp
     src/class/add_command.cpp src/class/add_command.hpp
     src/class/init_command.cpp src/class/init_command.hpp
+    src/class/html_command.cpp src/class/html_command.hpp
     src/class/entry.cpp src/class/entry.hpp)
 target_include_directories(wallet PRIVATE ${PROJECT_SOURCE_DIR}/src)
 set_property(TARGET wallet PROPERTY CXX_STANDARD 17)

@@ -30,7 +30,6 @@ namespace Wallet
     // Functions
     virtual void setup() noexcept;
     void setup(bool) noexcept;
-    virtual bool add(Entry);
     virtual bool add(Entry, bool);
 
   protected:

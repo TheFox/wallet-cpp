@@ -15,14 +15,6 @@ namespace Wallet
   {
   }
 
-  bool MutableWallet::add(const Entry entry)
-  {
-#ifdef DEBUG
-    printf("MutableWallet::add(%p)\n", &entry);
-#endif
-    return this->add(entry, false);
-  }
-
   bool MutableWallet::add(const Entry entry, const bool isUnique)
   {
 #ifdef DEBUG
