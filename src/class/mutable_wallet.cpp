@@ -6,6 +6,14 @@
 #include <fstream>
 #include <iostream>
 
+#ifdef __has_include
+#  if __has_include(<yaml-cpp/yaml.h>)
+#    include <yaml-cpp/yaml.h>
+#  else
+#     error "Missing <yaml-cpp/yaml.h>"
+#  endif
+#endif // __has_include
+
 #include "mutable_wallet.hpp"
 #include "entry.hpp"
 
@@ -13,15 +21,7 @@ namespace Wallet
 {
   MutableWallet::MutableWallet(const std::string path) : path(path)
   {
-  }
-
-  bool MutableWallet::add(const Entry entry, const bool isUnique)
-  {
-#ifdef DEBUG
-    printf("MutableWallet::add(%p, u=%c)\n", &entry, isUnique ? 'Y' : 'N');
-#endif
-
-    return false;
+    printf("MutableWallet::MutableWallet\n");
   }
 
   void MutableWallet::setup() noexcept
@@ -35,10 +35,28 @@ namespace Wallet
     this->setupDirectories(explicitInit);
   }
 
+  bool MutableWallet::add(const Entry entry, const bool isUnique)
+  {
+#ifdef DEBUG
+    printf("MutableWallet::add(%p, u=%c)\n", &entry, isUnique ? 'Y' : 'N');
+#endif
+
+    const bool entryExists = this->entryExist(entry);
+    if (isUnique&&entryExists)
+      return false;
+
+    return false;
+  }
+
+  // Private
   void MutableWallet::setupVariables() noexcept
   {
     this->dataPath = this->path / "data";
+    this->indexPath = this->dataPath / "index.yml";
     this->tmpPath = this->path / "tmp";
+
+    this->isIndexLoaded = false;
+    this->isIndexModified = false;
   }
 
   void MutableWallet::setupDirectories(const bool explicitInit) noexcept
@@ -74,7 +92,7 @@ namespace Wallet
     }
 
     // Create .gitignore file.
-    path gitignoreFile = this->path / ".gitignore";
+    const path gitignoreFile = this->path / ".gitignore";
     if (!exists(gitignoreFile)) {
       ofstream gitignoreFh;
       gitignoreFh.open(gitignoreFile.string(), ofstream::out);
@@ -83,9 +101,39 @@ namespace Wallet
     }
 
     // Remove old tmp/.gitignore file.
-    path oldGitignoreFile = this->tmpPath / ".gitignore";
+    const path oldGitignoreFile = this->tmpPath / ".gitignore";
     if (exists(oldGitignoreFile)) {
       remove(oldGitignoreFile);
     }
+  }
+
+  void MutableWallet::loadIndex() noexcept
+  {
+    using std::ifstream;
+
+    if (this->isIndexLoaded) {
+      return;
+    }
+    this->isIndexLoaded = true;
+
+    // Open file.
+    YAML::Node index = YAML::LoadFile(this->indexPath.string());
+  }
+
+  void MutableWallet::saveIndex() noexcept
+  {
+    if (!this->isIndexModified)
+      return;
+    this->isIndexModified = false;
+
+    // TODO
+  }
+
+  bool MutableWallet::entryExist(const Entry& entry) noexcept
+  {
+    this->loadIndex();
+
+    // TODO
+    return false;
   }
 } // Wallet Namespace

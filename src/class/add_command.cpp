@@ -16,13 +16,17 @@ namespace Wallet
     using std::endl;
 
     Entry entry;
+    entry.setId("id1");
 
     if (this->commandOptions.isInteractively) {
     }
 
+    bool isUnique = false;
+
     MutableWallet wallet{this->commandOptions.walletPath};
     wallet.setup();
-    const bool added = wallet.add(entry, false);
+    cout << "Try to add entry: " << entry.getId() << endl;
+    const bool added = wallet.add(entry, isUnique);
     cout << "Added: " << (added ? "YES" : "NO") << endl;
 
     return Command::execute();

@@ -36,11 +36,22 @@ namespace Wallet
     // Variables
     const fs::path path;
     fs::path dataPath;
+    fs::path indexPath;
     fs::path tmpPath;
 
     // Functions
     void setupVariables() noexcept;
     void setupDirectories(bool) noexcept;
+
+  private:
+    // Variables
+    bool isIndexLoaded;
+    bool isIndexModified;
+
+    // Functions
+    void loadIndex() noexcept;
+    void saveIndex() noexcept;
+    bool entryExist(const Entry&) noexcept;
   };
 } // Wallet Namespace
 
