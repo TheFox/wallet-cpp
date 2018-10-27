@@ -5,15 +5,6 @@
 #include <string>
 
 #ifdef __has_include
-#  if __has_include(<optional>)
-#    include <optional>
-#  elif __has_include(<experimental/optional>)
-#    include <experimental/optional>
-#  elif __has_include(<boost/optional.hpp>)
-#    include <boost/optional.hpp>
-#  else
-#     error "Missing <optional>"
-#  endif
 #  if __has_include(<filesystem>)
 #    include <filesystem>
 #  elif __has_include(<experimental/filesystem>)
@@ -26,8 +17,6 @@ namespace fs = boost::filesystem;
 #  endif
 #endif // __has_include
 
-#define WALLET_DEFAULT_PATH ".wallet"
-
 namespace Wallet
 {
   class Entry;
@@ -35,9 +24,12 @@ namespace Wallet
   class MutableWallet
   {
   public:
-    MutableWallet();
+    // Constructor
     explicit MutableWallet(std::string);
-    explicit MutableWallet(std::optional<std::string>);
+
+    // Functions
+    virtual void setup() noexcept;
+    void setup(bool) noexcept;
     virtual bool add(Entry);
     virtual bool add(Entry, bool);
 
@@ -48,9 +40,8 @@ namespace Wallet
     fs::path tmpPath;
 
     // Functions
-    virtual void setup() noexcept;
     void setupVariables() noexcept;
-    void setupDirectories() noexcept;
+    void setupDirectories(bool) noexcept;
   };
 } // Wallet Namespace
 

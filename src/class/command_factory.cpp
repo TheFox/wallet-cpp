@@ -6,6 +6,7 @@
 #include "command.hpp"
 #include "help_command.hpp"
 #include "add_command.hpp"
+#include "init_command.hpp"
 
 namespace Wallet
 {
@@ -24,6 +25,9 @@ namespace Wallet
     //};
     creators["add"] = []()->std::unique_ptr<Command> {
       return std::make_unique<AddCommand>();
+    };
+    creators["init"] = []()->std::unique_ptr<Command> {
+      return std::make_unique<InitCommand>();
     };
   }
 

@@ -93,6 +93,7 @@ int main(int argc, char* const argv[])
 
     cout << "Usage: " << argv[0] << " <command> [options]" << endl << endl;
     cout << "Commands:" << endl;
+    cout << "  init   Initialize a new wallet" << endl;
     cout << "  add    Add a new entry" << endl;
     cout << endl;
     cout << genericOpts << endl;

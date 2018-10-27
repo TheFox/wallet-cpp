@@ -4,35 +4,15 @@
 #endif
 
 #include <fstream>
+#include <iostream>
 
 #include "mutable_wallet.hpp"
 #include "entry.hpp"
 
 namespace Wallet
 {
-  MutableWallet::MutableWallet() : path(WALLET_DEFAULT_PATH)
-  {
-#ifdef DEBUG
-    printf("MutableWallet::MutableWallet(def '%s')\n", this->path.c_str());
-#endif
-    this->setup();
-  }
-
   MutableWallet::MutableWallet(const std::string path) : path(path)
   {
-#ifdef DEBUG
-    printf("MutableWallet::MutableWallet(str '%s')\n", this->path.c_str());
-#endif
-    this->setup();
-  }
-
-  MutableWallet::MutableWallet(const std::optional<std::string> path) : path(
-    path.has_value() ? *path : WALLET_DEFAULT_PATH)
-  {
-#ifdef DEBUG
-    printf("MutableWallet::MutableWallet(opt '%s')\n", this->path.c_str());
-#endif
-    this->setup();
   }
 
   bool MutableWallet::add(const Entry entry)
@@ -54,8 +34,13 @@ namespace Wallet
 
   void MutableWallet::setup() noexcept
   {
+    this->setup(false);
+  }
+
+  void MutableWallet::setup(const bool explicitInit) noexcept
+  {
     this->setupVariables();
-    this->setupDirectories();
+    this->setupDirectories(explicitInit);
   }
 
   void MutableWallet::setupVariables() noexcept
@@ -64,13 +49,27 @@ namespace Wallet
     this->tmpPath = this->path / "tmp";
   }
 
-  void MutableWallet::setupDirectories() noexcept
+  void MutableWallet::setupDirectories(const bool explicitInit) noexcept
   {
+    using std::cout;
+    using std::endl;
     using std::ofstream;
     using fs::exists;
     using fs::remove;
     using fs::path;
     using fs::create_directories;
+
+    // Make main directory.
+    if (exists(this->path)) {
+      if (explicitInit) {
+        cout << "Wallet already exists at " << this->path << '.' << endl;
+      }
+    } else {
+      if (explicitInit) {
+        cout << "Create wallet at " << this->path << '.' << endl;
+      }
+      create_directories(this->path);
+    }
 
     // Make data/ directory.
     if (!exists(this->dataPath)) {
