@@ -5,14 +5,7 @@
 
 #include <fstream>
 #include <iostream>
-
-#ifdef __has_include
-#  if __has_include(<yaml-cpp/yaml.h>)
-#    include <yaml-cpp/yaml.h>
-#  else
-#     error "Missing <yaml-cpp/yaml.h>"
-#  endif
-#endif // __has_include
+#include <algorithm>
 
 #include "mutable_wallet.hpp"
 #include "entry.hpp"
@@ -21,40 +14,62 @@ namespace Wallet
 {
   MutableWallet::MutableWallet(const std::string path) : path(path)
   {
+#ifdef DEBUG
     printf("MutableWallet::MutableWallet\n");
+#endif
   }
 
-  void MutableWallet::setup() noexcept
+  MutableWallet::~MutableWallet()
+  {
+#ifdef DEBUG
+    printf("MutableWallet::~MutableWallet\n");
+#endif
+    this->saveIndex();
+    this->removeLock();
+  }
+
+  void MutableWallet::setup()
   {
     this->setup(false);
   }
 
-  void MutableWallet::setup(const bool explicitInit) noexcept
+  void MutableWallet::setup(const bool explicitInit)
   {
     this->setupVariables();
+    this->createLock();
     this->setupDirectories(explicitInit);
   }
 
   bool MutableWallet::add(const Entry entry, const bool isUnique)
   {
+    using std::string;
+
 #ifdef DEBUG
     printf("MutableWallet::add(%p, u=%c)\n", &entry, isUnique ? 'Y' : 'N');
 #endif
 
     const bool entryExists = this->entryExist(entry);
-    if (isUnique&&entryExists)
+    if (isUnique && entryExists) {
       return false;
+    }
 
-    return false;
+    this->isIndexModified = true;
+    this->index["index"].push_back(entry.getId());
+
+    const string monthFile = entry.getFileName();
+    // TODO add entry to file
+
+    return true;
   }
 
-  // Private
   void MutableWallet::setupVariables() noexcept
   {
     this->dataPath = this->path / "data";
     this->indexPath = this->dataPath / "index.yml";
     this->tmpPath = this->path / "tmp";
+    this->lockPath = this->tmpPath / "lock";
 
+    this->isLocked = false;
     this->isIndexLoaded = false;
     this->isIndexModified = false;
   }
@@ -107,33 +122,142 @@ namespace Wallet
     }
   }
 
+  void MutableWallet::createLock()
+  {
+#ifdef DEBUG
+    printf("MutableWallet::createLock\n");
+#endif
+
+    using fs::exists;
+    using std::ofstream;
+
+    // Already locked.
+    if (this->isLocked) {
+      return;
+    }
+
+    if (exists(this->lockPath)) {
+      throw std::string{"Wallet is locked."};
+    }
+
+    // Create lock file.
+    ofstream lockFh(this->lockPath.string());
+    lockFh << "locked";
+    lockFh.close();
+
+    this->isLocked = true;
+  }
+
+  void MutableWallet::removeLock()
+  {
+#ifdef DEBUG
+    printf("MutableWallet::removeLock\n");
+#endif
+
+    using fs::exists;
+    using fs::remove;
+
+    if (!this->isLocked) {
+      return;
+    }
+
+    // Remove lock file.
+    const auto _lockPath = this->lockPath.string();
+    if (exists(_lockPath)) {
+      remove(_lockPath);
+    }
+
+    this->isLocked = false;
+  }
+
   void MutableWallet::loadIndex() noexcept
   {
+#ifdef DEBUG
+    printf("MutableWallet::loadIndex\n");
+#endif
+
     using std::ifstream;
+    using fs::exists;
 
     if (this->isIndexLoaded) {
       return;
     }
     this->isIndexLoaded = true;
 
-    // Open file.
-    YAML::Node index = YAML::LoadFile(this->indexPath.string());
+    if (exists(this->indexPath)) {
+      // Load YAML file.
+      this->index = YAML::LoadFile(this->indexPath.string());
+    } else {
+      // Create new index.
+      this->isIndexModified = true;
+    }
+
+    auto idx = this->index["index"];
+    if (!idx || !idx.IsDefined()) {
+      this->isIndexModified = true;
+
+      // Create new 'index' sequence.
+      YAML::Node _idx(YAML::NodeType::Sequence);
+      _idx.push_back("hello_world");
+      this->index["index"] = _idx;
+    }
+
+#ifdef DEBUG
+    printf(" -> index type %d\n", this->index["index"].Type());
+#endif
   }
 
+  /**
+   * Save the index to file.
+   */
   void MutableWallet::saveIndex() noexcept
   {
-    if (!this->isIndexModified)
+#ifdef DEBUG
+    printf("MutableWallet::saveIndex\n");
+#endif
+
+    using std::ofstream;
+
+    if (!this->isIndexModified) {
       return;
+    }
     this->isIndexModified = false;
 
-    // TODO
+    ofstream fout(this->indexPath.string());
+    fout << this->index;
   }
 
+  /**
+   * Check entry exists.
+   *
+   * @param entry
+   * @return
+   */
   bool MutableWallet::entryExist(const Entry& entry) noexcept
   {
+    using std::find_if;
+    using std::begin;
+    using std::end;
+    using std::string;
+
     this->loadIndex();
 
-    // TODO
-    return false;
+#ifdef DEBUG
+    printf(" -> index type %d\n", this->index["index"].Type());
+#endif
+
+    const string id = entry.getId();
+    const auto _b = this->index["index"].begin();
+    const auto _e = this->index["index"].end();
+
+    auto it = find_if(_b, _e, [&](const auto& item) {
+      return item.template as<string>() == id;
+    });
+
+#ifdef DEBUG
+    printf(" -> index type %d %d %c\n", this->index["index"].Type(), it == _b, it != _e ? 'Y' : 'N');
+#endif
+
+    return it != _e;
   }
 } // Wallet Namespace

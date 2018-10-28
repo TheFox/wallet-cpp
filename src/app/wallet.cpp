@@ -8,7 +8,7 @@
 #  if __has_include(<boost/program_options.hpp>)
 #    include <boost/program_options.hpp>
 #  else
-#     error "Missing <program_options>"
+#    error "Missing <program_options>"
 #  endif
 #endif // __has_include
 

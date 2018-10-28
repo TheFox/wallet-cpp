@@ -20,7 +20,7 @@ namespace Wallet
     throw std::string{"Read-only Wallet cannot modify data."};
   }
 
-  void ImmutableWallet::setup() noexcept
+  void ImmutableWallet::setup()
   {
 #ifdef DEBUG
     printf("ImmutableWallet::setup()\n");

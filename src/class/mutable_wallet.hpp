@@ -13,7 +13,12 @@
 #    include <boost/filesystem.hpp>
 namespace fs = boost::filesystem;
 #  else
-#     error "Missing <filesystem>"
+#    error "Missing <filesystem>"
+#  endif
+#  if __has_include(<yaml-cpp/yaml.h>)
+#    include <yaml-cpp/yaml.h>
+#  else
+#    error "Missing <yaml-cpp/yaml.h>"
 #  endif
 #endif // __has_include
 
@@ -26,10 +31,12 @@ namespace Wallet
   public:
     // Constructor
     explicit MutableWallet(std::string);
+    // Destructor
+    ~MutableWallet();
 
     // Functions
-    virtual void setup() noexcept;
-    void setup(bool) noexcept;
+    virtual void setup();
+    void setup(bool);
     virtual bool add(Entry, bool);
 
   protected:
@@ -38,6 +45,7 @@ namespace Wallet
     fs::path dataPath;
     fs::path indexPath;
     fs::path tmpPath;
+    fs::path lockPath;
 
     // Functions
     void setupVariables() noexcept;
@@ -45,10 +53,14 @@ namespace Wallet
 
   private:
     // Variables
+    bool isLocked;
     bool isIndexLoaded;
     bool isIndexModified;
+    YAML::Node index;
 
     // Functions
+    void createLock();
+    void removeLock();
     void loadIndex() noexcept;
     void saveIndex() noexcept;
     bool entryExist(const Entry&) noexcept;

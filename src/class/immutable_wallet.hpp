@@ -16,7 +16,7 @@ namespace Wallet
     explicit ImmutableWallet(std::string);
 
     // Functions
-    void setup() noexcept override;
+    void setup() override;
     bool add(Entry, bool) override;
   };
 } // Wallet Namespace
