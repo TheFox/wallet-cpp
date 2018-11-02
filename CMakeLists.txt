@@ -20,6 +20,7 @@ configure_file("${PROJECT_SOURCE_DIR}/src/config.hpp.in" "${PROJECT_SOURCE_DIR}/
 
 add_executable(wallet
     src/app/wallet.cpp
+    src/components.cpp src/components.hpp
     src/class/mutable_wallet.cpp src/class/mutable_wallet.hpp
     src/class/immutable_wallet.cpp src/class/immutable_wallet.cpp
     src/class/command_factory.cpp src/class/command_factory.hpp
@@ -76,7 +77,7 @@ find_package(yaml-cpp REQUIRED)
 set(Boost_USE_STATIC_LIBS ON)
 set(Boost_USE_STATIC_RUNTIME ON)
 set(Boost_USE_MULTITHREADED OFF)
-find_package(Boost 1.67.0 COMPONENTS filesystem program_options)
+find_package(Boost 1.67.0 COMPONENTS filesystem program_options date_time)
 if (Boost_FOUND)
     message(STATUS "Found Boost")
     message(STATUS "Boost INCL ${Boost_INCLUDE_DIRS}")
