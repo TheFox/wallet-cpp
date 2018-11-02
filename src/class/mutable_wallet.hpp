@@ -41,11 +41,11 @@ namespace Wallet
 
   protected:
     // Variables
-    const fs::path path;
-    fs::path dataPath;
-    fs::path indexPath;
-    fs::path tmpPath;
-    fs::path lockPath;
+    const fs::path path{};
+    fs::path dataPath{};
+    fs::path indexPath{};
+    fs::path tmpPath{};
+    fs::path lockPath{};
 
     // Functions
     void setupVariables() noexcept;
@@ -53,10 +53,10 @@ namespace Wallet
 
   private:
     // Variables
-    bool isLocked;
-    bool isIndexLoaded;
-    bool isIndexModified;
-    YAML::Node index;
+    bool isLocked{};
+    bool isIndexLoaded{};
+    bool isIndexModified{};
+    YAML::Node index{};
 
     // Functions
     void createLock();

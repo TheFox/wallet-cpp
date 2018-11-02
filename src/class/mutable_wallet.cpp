@@ -5,10 +5,10 @@
 
 #include <fstream>
 #include <iostream>
-#include <algorithm>
 
 #include "mutable_wallet.hpp"
 #include "entry.hpp"
+#include "../components.hpp"
 
 namespace Wallet
 {
@@ -36,13 +36,21 @@ namespace Wallet
   void MutableWallet::setup(const bool explicitInit)
   {
     this->setupVariables();
-    this->createLock();
+    //this->createLock(); // TODO
     this->setupDirectories(explicitInit);
   }
 
   bool MutableWallet::add(const Entry entry, const bool isUnique)
   {
+    using std::cout;
+    using std::endl;
     using std::string;
+    using std::ofstream;
+    using fs::path;
+    using fs::exists;
+    using YAML::Node;
+    using YAML::NodeType;
+    using YAML::LoadFile;
 
 #ifdef DEBUG
     printf("MutableWallet::add(%p, u=%c)\n", &entry, isUnique ? 'Y' : 'N');
@@ -56,8 +64,51 @@ namespace Wallet
     this->isIndexModified = true;
     this->index["index"].push_back(entry.getId());
 
-    const string monthFile = entry.getFileName();
-    // TODO add entry to file
+    // Month File
+    const auto monthFile = entry.getFileName();
+    const auto monthFilePath = this->dataPath / monthFile;
+    auto& monthFilePathStr = monthFilePath.string();
+
+    const auto now = Components::getNowStr();
+
+    Node month;
+    if (exists(monthFilePathStr)) {
+#ifdef DEBUG
+      printf(" -> load month file: %s\n", monthFilePathStr.c_str());
+#endif
+
+      month = LoadFile(monthFilePathStr);
+      month["meta"]["updated_at"] = now;
+    } else {
+#ifdef DEBUG
+      printf(" -> create month file: %s\n", monthFilePathStr.c_str());
+#endif
+
+      Node meta(NodeType::Map);
+      meta["version"] = 1;
+      meta["created_at"] = now;
+      meta["updated_at"] = now;
+      month["meta"] = meta;
+
+      Node days(NodeType::Map);
+      month["days"] = days;
+    }
+
+    // Create day sequence.
+    const string dayStr = entry.getDate();
+    if (!month["days"][dayStr]) {
+#ifdef DEBUG
+      printf(" -> create new day: %s\n", entry.getDate().c_str());
+#endif
+      Node day(NodeType::Sequence);
+      month["days"][dayStr] = day;
+    }
+
+    // TODO: add entry
+
+    // Save Month file.
+    ofstream fout(monthFilePathStr);
+    fout << month;
 
     return true;
   }
@@ -106,7 +157,7 @@ namespace Wallet
       create_directories(this->tmpPath);
     }
 
-    // Create .gitignore file.
+    // Create main .gitignore file.
     const path gitignoreFile = this->path / ".gitignore";
     if (!exists(gitignoreFile)) {
       ofstream gitignoreFh;
@@ -114,6 +165,15 @@ namespace Wallet
       gitignoreFh << "/tmp/" << '\n';
       gitignoreFh.close();
     }
+
+    // Create data/.gitignore file.
+    //const path dataGitignoreFile = this->dataPath / ".gitignore";
+    //if (!exists(gitignoreFile)) {
+    //  ofstream gitignoreFh;
+    //  gitignoreFh.open(dataGitignoreFile.string(), ofstream::out);
+    //  gitignoreFh << "*.lock" << '\n';
+    //  gitignoreFh.close();
+    //}
 
     // Remove old tmp/.gitignore file.
     const path oldGitignoreFile = this->tmpPath / ".gitignore";
@@ -202,9 +262,9 @@ namespace Wallet
       this->index["index"] = _idx;
     }
 
-#ifdef DEBUG
-    printf(" -> index type %d\n", this->index["index"].Type());
-#endif
+    //#ifdef DEBUG
+    //    printf(" -> index type %d\n", this->index["index"].Type());
+    //#endif
   }
 
   /**
@@ -235,6 +295,10 @@ namespace Wallet
    */
   bool MutableWallet::entryExist(const Entry& entry) noexcept
   {
+#ifdef DEBUG
+    printf("MutableWallet::entryExist\n");
+#endif
+
     using std::find_if;
     using std::begin;
     using std::end;
@@ -242,9 +306,9 @@ namespace Wallet
 
     this->loadIndex();
 
-#ifdef DEBUG
-    printf(" -> index type %d\n", this->index["index"].Type());
-#endif
+    //#ifdef DEBUG
+    //    printf(" -> index type %d\n", this->index["index"].Type());
+    //#endif
 
     const string id = entry.getId();
     const auto _b = this->index["index"].begin();
@@ -254,9 +318,9 @@ namespace Wallet
       return item.template as<string>() == id;
     });
 
-#ifdef DEBUG
-    printf(" -> index type %d %d %c\n", this->index["index"].Type(), it == _b, it != _e ? 'Y' : 'N');
-#endif
+    //#ifdef DEBUG
+    //    printf(" -> index type %d %d %c\n", this->index["index"].Type(), it == _b, it != _e ? 'Y' : 'N');
+    //#endif
 
     return it != _e;
   }

@@ -24,9 +24,10 @@ namespace Wallet
 
     // Functions
     std::string getFileName() const noexcept;
+
   private:
-    std::string id;
-    std::string date;
+    std::string id{};
+    std::string date{};
   };
 } // Wallet Namespace
 

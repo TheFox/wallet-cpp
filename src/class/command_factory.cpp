@@ -18,6 +18,7 @@ namespace Wallet
   void CommandFactory::setup() noexcept
   {
     if (isSetup) {
+      // Run setup only one.
       return;
     }
     isSetup = true;
@@ -26,7 +27,9 @@ namespace Wallet
     printf("CommandFactory::setup()\n");
 #endif
 
+    // Clear creators.
     creators.clear();
+
     //creators["help"] = []()->std::unique_ptr<Command> {
     //  return std::make_unique<HelpCommand>();
     //};

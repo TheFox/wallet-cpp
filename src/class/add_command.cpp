@@ -16,12 +16,29 @@ namespace Wallet
     using std::endl;
 
     Entry entry;
-    entry.setId("id1");
 
-    if (this->commandOptions.isInteractively) {
+    // ID
+    if (!this->commandOptions.id.empty()) {
+      entry.setId(this->commandOptions.id);
     }
 
-    bool isUnique = false;
+    // Date
+    if (!this->commandOptions.date.empty()) {
+      entry.setDate(this->commandOptions.date);
+    }
+
+    if (this->commandOptions.isInteractively) {
+      // TODO
+    }
+
+    const bool isUnique = !this->commandOptions.isForced && !this->commandOptions.id.empty();
+
+    // Inform User
+    cout << "Wallet: " << this->commandOptions.walletPath << endl;
+    cout << "ID: " << entry.getId() << endl;
+    cout << "Date: " << entry.getDate() << endl;
+    cout << "File name: " << entry.getFileName() << endl;
+    cout << "Is Unique: " << (isUnique ? "YES" : "NO") << endl;
 
     MutableWallet wallet{this->commandOptions.walletPath};
     wallet.setup();

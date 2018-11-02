@@ -62,10 +62,21 @@ int main(int argc, char* const argv[])
   // Common options
   options_description commonOpts("Common options");
   commonOpts.add_options()
-              ("interactive,i", "Use some commands interactively.");
+              ("date,d", value<string>()->value_name("string"), "Set a Date. (Format: YYYY-MM-DD)");
+
+  // Add Command options
+  options_description addCmdOpts("Add Command options");
+  addCmdOpts.add_options()
+              ("id", value<string>()->value_name("string"), "Set a unique ID.")
+              ("interactive,i", "Use some commands interactively.")
+              ("force,f", "Force add command. Even if ID is set and already exist.");
 
   options_description opts;
-  opts.add(commandOpts).add(genericOpts).add(commonOpts);
+  opts
+    .add(commandOpts)
+    .add(genericOpts)
+    .add(commonOpts)
+    .add(addCmdOpts);
 
   auto parsedOptions = bpo::command_line_parser(argc, argv)
     .options(opts)
@@ -85,6 +96,7 @@ int main(int argc, char* const argv[])
     }
   }
 
+  // Help
   if (vm.count("help") || commandName.empty()) {
     cout << PROJECT_NAME << ' '
          << PROJECT_VERSION_MAJOR << '.' << PROJECT_VERSION_MINOR << '.' << PROJECT_VERSION_PATCH
@@ -96,21 +108,34 @@ int main(int argc, char* const argv[])
     cout << "  init   Initialize a new wallet" << endl;
     cout << "  add    Add a new entry" << endl;
     cout << endl;
+
     cout << genericOpts << endl;
     cout << commonOpts << endl;
+    cout << addCmdOpts << endl;
 
     return 3;
   }
 
+  // Command Options
   CommandOptions cmdOpts = {};
 
   if (vm.count("wallet")) {
     cmdOpts.walletPath = vm["wallet"].as<std::string>();
   }
+  if (vm.count("id")) {
+    cmdOpts.id = vm["id"].as<std::string>();
+  }
+  if (vm.count("date")) {
+    cmdOpts.date = vm["date"].as<std::string>();
+  }
   if (vm.count("interactive")) {
     cmdOpts.isInteractively = true;
   }
+  if (vm.count("force")) {
+    cmdOpts.isForced = true;
+  }
 
+  // Command Factory
   CommandFactory::setup();
   CommandFactory factory;
 

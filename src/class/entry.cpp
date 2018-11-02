@@ -11,17 +11,17 @@ namespace Wallet
   Entry::Entry()
   {
 #ifdef DEBUG
-    printf("Entry::Entry\n");
+    printf("Entry::Entry(%p)\n", this);
 #endif
 
-    // TODO
+    // TODO: set initial rand UUID
     this->id = "uuid";
   }
 
   Entry::~Entry()
   {
 #ifdef DEBUG
-    printf("Entry::~Entry\n");
+    printf("Entry::~Entry(%p)\n", this);
 #endif
   }
 
@@ -37,6 +37,7 @@ namespace Wallet
 
   void Entry::setDate(std::string _date) noexcept
   {
+    // TODO: parse date string for date object
     this->date = std::move(_date);
   }
 
@@ -49,10 +50,13 @@ namespace Wallet
   {
     std::ostringstream out;
     out << "month_";
-    if (this->date.empty())
+    if (this->date.empty()) {
       out << "undefined";
-    else
-      out << this->date.substr(4+1+2);
+    } else {
+      out << this->date.substr(0, 4); // year
+      out << '_';
+      out << this->date.substr(5, 2); // month
+    }
     out << ".yml";
     return out.str();
   }

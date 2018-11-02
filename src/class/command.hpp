@@ -9,9 +9,12 @@ namespace Wallet
   struct CommandOptions
   {
     std::string walletPath = ".wallet";
+    std::string id{};
+    std::string date{};
 
     // Status
-    bool isInteractively;
+    bool isInteractively{};
+    bool isForced{};
   };
 
   class Command
@@ -23,7 +26,7 @@ namespace Wallet
     void setOptions(CommandOptions) noexcept;
 
   protected:
-    CommandOptions commandOptions;
+    CommandOptions commandOptions{};
   };
 } // Wallet Namespace
 
