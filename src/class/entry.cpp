@@ -5,6 +5,7 @@
 #endif
 
 #include <sstream>
+#include <string_view>
 
 #ifdef __has_include
 #  if __has_include(<yaml-cpp/yaml.h>)
@@ -29,14 +30,18 @@ namespace Wallet
   Entry::Entry()
   {
 #ifdef DEBUG
-    printf("Entry::Entry(%p)\n", this);
+    printf(" -> Entry::Entry(%p)\n", this);
 #endif
+    using gregorian::date;
+    using gregorian::day_clock;
+
+    this->date = day_clock::local_day();
   }
 
   Entry::~Entry()
   {
 #ifdef DEBUG
-    printf("Entry::~Entry(%p)\n", this);
+    printf(" -> Entry::~Entry(%p)\n", this);
 #endif
   }
 
@@ -60,15 +65,77 @@ namespace Wallet
     return this->title;
   }
 
-  void Entry::setDate(std::string _date) noexcept
+  void Entry::setDate(const std::string _dateStr)
   {
-    // TODO: parse date string for date object
-    this->date = std::move(_date);
+    using gregorian::date;
+    using gregorian::days;
+    using gregorian::day_clock;
+    using gregorian::from_simple_string;
+    using gregorian::from_undelimited_string;
+    using gregorian::from_us_string;
+    using gregorian::from_uk_string;
+    using gregorian::to_iso_extended_string;
+    using std::string_view_literals::operator ""sv;
+
+    // Yesterday
+    constexpr std::string_view yesterdayStr = "yesterday"sv;
+    bool isYesterday = false;
+    if (_dateStr.length() <= yesterdayStr.length()) {
+      isYesterday = yesterdayStr.substr(0, _dateStr.length()) == _dateStr;
+    }
+
+    // Tomorrow
+    constexpr std::string_view tomorrowStr = "tomorrow"sv;
+    bool isTomorrow = false;
+    if (!isYesterday && _dateStr.length() <= tomorrowStr.length()) {
+      isTomorrow = tomorrowStr.substr(0, _dateStr.length()) == _dateStr;
+    }
+
+    if (isYesterday) {
+      // Today
+      date today = day_clock::local_day();
+
+      this->date = today - days(1);
+    } else if (isTomorrow) {
+      // Today
+      date today = day_clock::local_day();
+
+      this->date = today + days(1);
+    } else {
+      // Parse date string.
+      try {
+        this->date = from_simple_string(_dateStr);
+      }
+      catch (std::exception& e) {
+        try {
+          this->date = from_undelimited_string(_dateStr);
+        }
+        catch (std::exception& e) {
+          try {
+            this->date = from_us_string(_dateStr);
+          }
+          catch (std::exception& e) {
+            try {
+              this->date = from_uk_string(_dateStr);
+            }
+            catch (std::exception& e) {
+              throw std::string_view{e.what()};
+            }
+          }
+        }
+      }
+    }
+
+#ifdef DEBUG
+    std::cout << " -> date: " << to_iso_extended_string(this->date) << std::endl;
+#endif
   }
 
-  std::string Entry::getDate() const noexcept
+  std::string Entry::getDateStr() const noexcept
   {
-    return this->date;
+    using gregorian::to_iso_extended_string;
+    return to_iso_extended_string(this->date);
+    //return std::string{};
   }
 
   void Entry::generateRandomId() noexcept
@@ -93,12 +160,12 @@ namespace Wallet
   {
     std::ostringstream out;
     out << "month_";
-    if (this->date.empty()) {
+    if (this->date.is_not_a_date()) {
       out << "undefined";
     } else {
-      out << this->date.substr(0, 4); // year
+      out << this->getDateStr().substr(0, 4); // year
       out << '_';
-      out << this->date.substr(5, 2); // month
+      out << this->getDateStr().substr(5, 2); // month
     }
     out << ".yml";
     return out.str();
@@ -113,7 +180,7 @@ namespace Wallet
     YAML::Node node(YAML::NodeType::Map);
     node["id"] = this->id;
     node["title"] = this->title;
-    node["date"] = this->date;
+    node["date"] = this->getDateStr();
     return node;
   }
 } // Wallet Namespace

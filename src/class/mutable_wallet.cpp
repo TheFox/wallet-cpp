@@ -15,14 +15,14 @@ namespace Wallet
   MutableWallet::MutableWallet(const std::string path) : path(path)
   {
 #ifdef DEBUG
-    printf("MutableWallet::MutableWallet\n");
+    printf(" -> MutableWallet::MutableWallet\n");
 #endif
   }
 
   MutableWallet::~MutableWallet()
   {
 #ifdef DEBUG
-    printf("MutableWallet::~MutableWallet\n");
+    printf(" -> MutableWallet::~MutableWallet\n");
 #endif
 
     this->saveIndex();
@@ -37,7 +37,9 @@ namespace Wallet
   void MutableWallet::setup(const bool explicitInit)
   {
     this->setupVariables();
-    //this->createLock(); // TODO
+#ifdef NDEBUG
+    this->createLock();
+#endif
     this->setupDirectories(explicitInit);
   }
 
@@ -54,7 +56,7 @@ namespace Wallet
     using YAML::LoadFile;
 
 #ifdef DEBUG
-    printf("MutableWallet::add(%p, u=%c)\n", &entry, isUnique ? 'Y' : 'N');
+    printf(" -> MutableWallet::add(%p, u=%c)\n", &entry, isUnique ? 'Y' : 'N');
 #endif
 
     const bool entryExists = this->entryExist(entry);
@@ -70,6 +72,7 @@ namespace Wallet
     const auto monthFilePath = this->dataPath / monthFile;
     auto& monthFilePathStr = monthFilePath.string();
 
+    // For 'updated_at' field.
     const auto now = Components::getNowStr();
 
     Node month;
@@ -78,32 +81,39 @@ namespace Wallet
       printf(" -> load month file: %s\n", monthFilePathStr.c_str());
 #endif
 
+      // Load YAML file.
       month = LoadFile(monthFilePathStr);
+
+      // Update file version.
       const auto version = month["meta"]["version"].as<int>();
       if (version == 1) {
-        month["meta"]["version"] = 2;
+        month["meta"]["version"] = WALLET_MONTH_FILE_VERSION;
       }
+
+      // Updated At
       month["meta"]["updated_at"] = now;
     } else {
 #ifdef DEBUG
       printf(" -> create month file: %s\n", monthFilePathStr.c_str());
 #endif
 
+      // Create new meta data.
       Node meta(NodeType::Map);
-      meta["version"] = 2;
+      meta["version"] = WALLET_MONTH_FILE_VERSION;
       meta["created_at"] = now;
       meta["updated_at"] = now;
       month["meta"] = meta;
 
+      // Create new days map.
       Node days(NodeType::Map);
       month["days"] = days;
     }
 
     // Create day sequence.
-    const string dayStr = entry.getDate();
+    const string dayStr = entry.getDateStr();
     if (!month["days"][dayStr]) {
 #ifdef DEBUG
-      printf(" -> create new day: %s\n", entry.getDate().c_str());
+      printf(" -> create new day: %s\n", entry.getDateStr().c_str());
 #endif
       Node day(NodeType::Sequence);
       month["days"][dayStr] = day;
@@ -184,7 +194,7 @@ namespace Wallet
   void MutableWallet::createLock()
   {
 #ifdef DEBUG
-    printf("MutableWallet::createLock\n");
+    printf(" -> MutableWallet::createLock\n");
 #endif
 
     using fs::exists;
@@ -210,7 +220,7 @@ namespace Wallet
   void MutableWallet::removeLock()
   {
 #ifdef DEBUG
-    printf("MutableWallet::removeLock\n");
+    printf(" -> MutableWallet::removeLock\n");
 #endif
 
     using fs::exists;
@@ -232,7 +242,7 @@ namespace Wallet
   void MutableWallet::loadIndex() noexcept
   {
 #ifdef DEBUG
-    printf("MutableWallet::loadIndex\n");
+    printf(" -> MutableWallet::loadIndex\n");
 #endif
 
     using std::ifstream;
@@ -268,7 +278,7 @@ namespace Wallet
   void MutableWallet::saveIndex() noexcept
   {
 #ifdef DEBUG
-    printf("MutableWallet::saveIndex\n");
+    printf(" -> MutableWallet::saveIndex\n");
 #endif
 
     using std::ofstream;
@@ -285,14 +295,11 @@ namespace Wallet
 
   /**
    * Check entry exists.
-   *
-   * @param entry
-   * @return
    */
   bool MutableWallet::entryExist(const Entry& entry) noexcept
   {
 #ifdef DEBUG
-    printf("MutableWallet::entryExist\n");
+    printf(" -> MutableWallet::entryExist\n");
 #endif
 
     using std::find_if;

@@ -22,6 +22,8 @@ namespace fs = boost::filesystem;
 #  endif
 #endif // __has_include
 
+#define WALLET_MONTH_FILE_VERSION 2
+
 namespace Wallet
 {
   class Entry;

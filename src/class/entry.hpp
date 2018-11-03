@@ -4,6 +4,15 @@
 
 #include <string>
 
+#ifdef __has_include
+#  if __has_include(<boost/date_time/gregorian/gregorian.hpp>)
+#    include <boost/date_time/gregorian/gregorian.hpp>
+namespace gregorian = boost::gregorian;
+#  else
+#    error "Missing <boost/date_time/gregorian/gregorian.hpp>"
+#  endif
+#endif // __has_include
+
 namespace Wallet
 {
   class Entry final
@@ -15,17 +24,17 @@ namespace Wallet
     // Destructor
     ~Entry();
 
-    // ID
+    // Parameter: ID
     void setId(std::string) noexcept;
     std::string getId() const noexcept;
 
-    // Title
+    // Parameter: Title
     void setTitle(std::string) noexcept;
     std::string getTitle() const noexcept;
 
-    // Date
-    void setDate(std::string) noexcept;
-    std::string getDate() const noexcept;
+    // Parameter: Date
+    void setDate(std::string);
+    std::string getDateStr() const noexcept;
 
     // Functions
     void generateRandomId() noexcept;
@@ -39,7 +48,7 @@ namespace Wallet
     // Variables
     std::string id{};
     std::string title{};
-    std::string date{};
+    gregorian::date date{};
 
     // Functions
   };

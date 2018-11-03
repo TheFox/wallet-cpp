@@ -2,13 +2,18 @@
 
 ## Dependencies
 
-- cmake
-- Boost
+- [CMake](https://cmake.org/)
+- [Boost](https://www.boost.org/)
+- [yaml-cpp](https://github.com/jbeder/yaml-cpp)
+
+### Optional
+
+- [termcolor](https://github.com/ikalnytskyi/termcolor)
 
 ### Install dependencies on macOS
 
 ```
-brew install boost
+brew install boost yaml-cpp
 ```
 
 ## Build

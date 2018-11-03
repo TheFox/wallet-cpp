@@ -12,8 +12,6 @@
 #  endif
 #  if __has_include(<termcolor/termcolor.hpp>)
 #    include <termcolor/termcolor.hpp>
-#  else
-#    error "Missing <termcolor>"
 #  endif
 #endif // __has_include
 
@@ -22,12 +20,6 @@
 #include "../class/command.hpp"
 
 namespace bpo = boost::program_options;
-
-//void to_cout(const std::vector<std::string>& v)
-//{
-//  std::copy(begin(v), end(v),
-//    std::ostream_iterator<std::string>{std::cout, "\n"});
-//}
 
 int main(int argc, char* const argv[])
 {
@@ -72,7 +64,7 @@ int main(int argc, char* const argv[])
   addCmdOpts.add_options()
               ("id", value<string>()->value_name("string"), "Set a unique ID.")
               ("interactive,i", "Use some commands interactively.")
-              ("force,f", "Force add command. Even if ID is set and already exist.");
+              ("force,f", "Force add command. Even if ID is set and already exists.");
 
   options_description opts;
   opts
@@ -151,7 +143,19 @@ int main(int argc, char* const argv[])
     return command->execute();
   }
   catch (const std::string& e) {
+#ifdef TERMCOLOR_HPP_
     cerr << termcolor::on_red << termcolor::white << "ERROR: " << e << termcolor::reset << endl;
+#else
+    cerr << "ERROR: " << e << endl;
+#endif
+    return 1;
+  }
+  catch (const std::string_view& e) {
+#ifdef TERMCOLOR_HPP_
+    cerr << termcolor::on_red << termcolor::white << "ERROR: " << e << termcolor::reset << endl;
+#else
+    cerr << "ERROR: " << e << endl;
+#endif
     return 1;
   }
 }
