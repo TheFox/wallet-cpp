@@ -23,6 +23,7 @@ add_executable(wallet
     src/components.cpp src/components.hpp
     src/class/mutable_wallet.cpp src/class/mutable_wallet.hpp
     src/class/immutable_wallet.cpp src/class/immutable_wallet.cpp
+    src/class/command_options.cpp src/class/command_options.hpp
     src/class/command_factory.cpp src/class/command_factory.hpp
     src/class/command.cpp src/class/command.hpp
     src/class/help_command.cpp src/class/help_command.hpp

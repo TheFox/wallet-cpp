@@ -32,7 +32,8 @@ namespace Wallet
   {
   public:
     // Constructor
-    explicit MutableWallet(std::string);
+    explicit MutableWallet(std::string) noexcept;
+
     // Destructor
     ~MutableWallet();
 

@@ -3,9 +3,6 @@
 #include <cstdio>
 #endif
 
-#include <map>
-#include <functional>
-#include <memory>
 #include "command_factory.hpp"
 #include "command.hpp"
 #include "help_command.hpp"
@@ -24,7 +21,7 @@ namespace Wallet
     isSetup = true;
 
 #ifdef DEBUG
-    printf("CommandFactory::setup()\n");
+    printf(" -> CommandFactory::setup()\n");
 #endif
 
     // Clear creators.
@@ -48,12 +45,12 @@ namespace Wallet
   {
     auto fn = creators[_name];
     if (fn == nullptr) {
-      throw (std::string{"Command "} + _name + " not found.");
+      throw (std::string{"Command not found: "} + _name);
     }
     return fn();
   }
 
   // Private
   bool CommandFactory::isSetup = false;
-  std::map<std::string, std::function<std::unique_ptr<Command>()>> CommandFactory::creators;
+  std::unordered_map<std::string, std::function<std::unique_ptr<Command>()>> CommandFactory::creators;
 } // Wallet Namespace

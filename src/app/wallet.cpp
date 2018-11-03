@@ -1,8 +1,9 @@
 
 #include <cstdio>
 #include <string>
-#include <unistd.h>
 #include <iostream>
+#include <cmath>
+#include <unistd.h>
 
 #ifdef __has_include
 #  if __has_include(<boost/program_options.hpp>)
@@ -16,6 +17,7 @@
 #endif // __has_include
 
 #include "../config.hpp"
+#include "../class/command_options.hpp"
 #include "../class/command_factory.hpp"
 #include "../class/command.hpp"
 
@@ -24,6 +26,7 @@ namespace bpo = boost::program_options;
 int main(int argc, char* const argv[])
 {
   using std::string;
+  using std::float_t;
   using std::cout;
   using std::cerr;
   using std::endl;
@@ -54,15 +57,20 @@ int main(int argc, char* const argv[])
                ("wallet,w", value<string>()->value_name("path"), "Path to the wallet directory.");
 
   // Common options
-  options_description commonOpts("Common options");
-  commonOpts.add_options()
-              ("title,t", value<string>()->value_name("string"), "Set a Title.")
-              ("date,d", value<string>()->value_name("string"), "Set a Date. (Format: YYYY-MM-DD)");
+  //options_description commonOpts("Common options");
+  //commonOpts.add_options()
+  //            ;
 
   // Add Command options
   options_description addCmdOpts("Add Command options");
   addCmdOpts.add_options()
               ("id", value<string>()->value_name("string"), "Set a unique ID.")
+              ("title,t", value<string>()->value_name("string"), "Set a Title.")
+              ("date,d", value<string>()->value_name("string"), "Set a Date. (Format: YYYY-MM-DD)")
+              ("revenue,r", value<float_t>()->value_name("number"), "Set a  Revenue.")
+              ("expense,e", value<float_t>()->value_name("number"), "Set an Expense.")
+              ("category,c", value<string>()->value_name("string"), "Set a Category.")
+              ("comment,o", value<string>()->value_name("string"), "Set a Comment.")
               ("interactive,i", "Use some commands interactively.")
               ("force,f", "Force add command. Even if ID is set and already exists.");
 
@@ -70,7 +78,7 @@ int main(int argc, char* const argv[])
   opts
     .add(commandOpts)
     .add(genericOpts)
-    .add(commonOpts)
+    //.add(commonOpts)
     .add(addCmdOpts);
 
   auto parsedOptions = bpo::command_line_parser(argc, argv)
@@ -105,7 +113,7 @@ int main(int argc, char* const argv[])
     cout << endl;
 
     cout << genericOpts << endl;
-    cout << commonOpts << endl;
+    //cout << commonOpts << endl;
     cout << addCmdOpts << endl;
 
     return 3;
@@ -125,6 +133,18 @@ int main(int argc, char* const argv[])
   }
   if (vm.count("date")) {
     cmdOpts.date = vm["date"].as<std::string>();
+  }
+  if (vm.count("revenue")) {
+    cmdOpts.revenue = vm["revenue"].as<std::float_t>();
+  }
+  if (vm.count("expense")) {
+    cmdOpts.expense = vm["expense"].as<std::float_t>();
+  }
+  if (vm.count("category")) {
+    cmdOpts.category = vm["category"].as<std::string>();
+  }
+  if (vm.count("comment")) {
+    cmdOpts.comment = vm["comment"].as<std::string>();
   }
   if (vm.count("interactive")) {
     cmdOpts.isInteractively = true;

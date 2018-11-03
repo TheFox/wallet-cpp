@@ -12,7 +12,7 @@
 
 namespace Wallet
 {
-  MutableWallet::MutableWallet(const std::string path) : path(path)
+  MutableWallet::MutableWallet(const std::string path) noexcept : path(path)
   {
 #ifdef DEBUG
     printf(" -> MutableWallet::MutableWallet\n");

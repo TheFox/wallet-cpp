@@ -1,7 +1,7 @@
 
 #include <locale>
-
-//#include <boost/locale/date_time.hpp>
+#include <sstream>
+#include <iomanip>
 
 #ifdef __has_include
 #  if __has_include(<boost/date_time/local_time/local_time.hpp>)
@@ -18,24 +18,40 @@
 
 #include "components.hpp"
 
-namespace Wallet
+namespace Wallet::Components
 {
-  std::string Components::getNowStr()
+  std::string getNowStr()
   {
     auto tfacet = std::make_unique<boost::posix_time::time_facet>(DATETIME_FORMAT);
     const std::locale loc(std::cout.getloc(), tfacet.release());
 
     const auto now = boost::posix_time::second_clock::universal_time();
 
-    std::stringstream nowStream;
-    nowStream.imbue(loc);
-    nowStream << now;
+    std::stringstream ss;
+    ss.imbue(loc);
+    ss << now;
 
 #ifdef DEBUG
-    const auto s1 = nowStream.str();
+    const auto s1 = ss.str();
     return s1;
 #else
-    return nowStream.str();
+    return ss.str();
+#endif
+  }
+
+  std::string ftos(const std::float_t _f, const int _p)
+  {
+    using std::fixed;
+    using std::setprecision;
+
+    std::stringstream ss;
+    ss << fixed << setprecision(_p) << _f;
+
+#ifdef DEBUG
+    const auto s1 = ss.str();
+    return s1;
+#else
+    return ss.str();
 #endif
   }
 }

@@ -7,17 +7,17 @@
 
 namespace Wallet
 {
-  Command::Command() : commandOptions({})
+  Command::Command() noexcept : commandOptions({})
   {
 #ifdef DEBUG
-    printf("Command::Command(%p)\n", this);
+    printf(" -> Command::Command(%p)\n", this);
 #endif
   }
 
   Command::~Command()
   {
 #ifdef DEBUG
-    printf("Command::~Command(%p)\n", this);
+    printf(" -> Command::~Command(%p)\n", this);
 #endif
   }
 

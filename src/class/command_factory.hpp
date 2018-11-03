@@ -2,8 +2,9 @@
 #ifndef WALLETCPP_COMMAND_FACTORY_HPP_
 #define WALLETCPP_COMMAND_FACTORY_HPP_
 
+#include <memory>
 #include <string>
-#include <map>
+#include <unordered_map>
 #include <functional>
 
 #include "command.hpp"
@@ -18,7 +19,7 @@ namespace Wallet
 
   private:
     static bool isSetup;
-    static std::map<std::string, std::function<std::unique_ptr<Command>()>> creators;
+    static std::unordered_map<std::string, std::function<std::unique_ptr<Command>()>> creators;
   };
 }
 

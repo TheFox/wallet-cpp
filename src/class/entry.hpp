@@ -3,6 +3,7 @@
 #define WALLETCPP_ENTRY_HPP_
 
 #include <string>
+#include <cmath>
 
 #ifdef __has_include
 #  if __has_include(<boost/date_time/gregorian/gregorian.hpp>)
@@ -13,16 +14,21 @@ namespace gregorian = boost::gregorian;
 #  endif
 #endif // __has_include
 
+#include "command_options.hpp"
+
 namespace Wallet
 {
   class Entry final
   {
   public:
     // Constructor
-    Entry();
+    Entry() noexcept;
+
+    // Copy Contructor
+    Entry(const CommandOptions&) noexcept;
 
     // Destructor
-    ~Entry();
+    ~Entry() noexcept;
 
     // Parameter: ID
     void setId(std::string) noexcept;
@@ -35,6 +41,25 @@ namespace Wallet
     // Parameter: Date
     void setDate(std::string);
     std::string getDateStr() const noexcept;
+
+    // Parameter: Revenue
+    void setRevenue(std::float_t);
+    std::float_t getRevenue() const noexcept;
+
+    // Parameter: Expense
+    void setExpense(std::float_t);
+    std::float_t getExpense() const noexcept;
+
+    // Parameter: Balance
+    std::float_t getBalance() const noexcept;
+
+    // Parameter: Category
+    void setCategory(std::string) noexcept;
+    std::string getCategory() const noexcept;
+
+    // Parameter: Comment
+    void setComment(std::string) noexcept;
+    std::string getComment() const noexcept;
 
     // Functions
     void generateRandomId() noexcept;
@@ -49,6 +74,11 @@ namespace Wallet
     std::string id{};
     std::string title{};
     gregorian::date date{};
+    std::float_t revenue{};
+    std::float_t expense{};
+    std::float_t balance{};
+    std::string category{};
+    std::string comment{};
 
     // Functions
   };

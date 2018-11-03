@@ -24,10 +24,11 @@ namespace uuid = boost::uuids;
 #endif // __has_include
 
 #include "entry.hpp"
+#include "../components.hpp"
 
 namespace Wallet
 {
-  Entry::Entry()
+  Entry::Entry() noexcept
   {
 #ifdef DEBUG
     printf(" -> Entry::Entry(%p)\n", this);
@@ -38,7 +39,53 @@ namespace Wallet
     this->date = day_clock::local_day();
   }
 
-  Entry::~Entry()
+  Entry::Entry(const CommandOptions& commandOptions) noexcept
+  {
+#ifdef DEBUG
+    printf(" -> Entry::Entry(%p, CommandOptions %p)\n", this, &commandOptions);
+#endif
+
+    // ID
+    if (commandOptions.id.empty()) {
+      this->generateRandomId();
+    } else {
+      this->setId(commandOptions.id);
+    }
+
+    // Title
+    if (!commandOptions.title.empty()) {
+      this->setTitle(commandOptions.title);
+    }
+
+    // Date
+    if (!commandOptions.date.empty()) {
+      this->setDate(commandOptions.date);
+    }
+
+    // Revenue
+    this->setRevenue(commandOptions.revenue);
+
+    // Expense
+    this->setExpense(commandOptions.expense);
+
+    // Balance
+    this->balance = this->revenue - std::abs(this->expense);
+#ifdef DEBUG
+    std::cout << " -> set balance " << this->balance << std::endl;
+#endif
+
+    // Category
+    if (!commandOptions.category.empty()) {
+      this->setCategory(commandOptions.category);
+    }
+
+    // Comment
+    if (!commandOptions.comment.empty()) {
+      this->setComment(commandOptions.comment);
+    }
+  }
+
+  Entry::~Entry() noexcept
   {
 #ifdef DEBUG
     printf(" -> Entry::~Entry(%p)\n", this);
@@ -135,7 +182,79 @@ namespace Wallet
   {
     using gregorian::to_iso_extended_string;
     return to_iso_extended_string(this->date);
-    //return std::string{};
+  }
+
+  void Entry::setRevenue(std::float_t _revenue)
+  {
+    this->revenue = _revenue;
+
+#ifdef DEBUG
+    std::cout << " -> setRevenue " << this->revenue << std::endl;
+#endif
+  }
+
+  std::float_t Entry::getRevenue() const noexcept
+  {
+#ifdef DEBUG
+    std::cout << " -> getRevenue " << this->revenue << std::endl;
+#endif
+
+    return this->revenue;
+  }
+
+  void Entry::setExpense(std::float_t _expense)
+  {
+    this->expense = -std::abs(_expense);
+
+#ifdef DEBUG
+    std::cout << " -> setExpense " << this->expense << std::endl;
+#endif
+  }
+
+  std::float_t Entry::getExpense() const noexcept
+  {
+#ifdef DEBUG
+    std::cout << " -> getExpense" << std::endl;
+#endif
+
+    return this->expense;
+  }
+
+  std::float_t Entry::getBalance() const noexcept
+  {
+#ifdef DEBUG
+    std::cout << " -> getBalance " << this->balance << std::endl;
+#endif
+
+    return this->balance;
+  }
+
+  void Entry::setCategory(std::string _category) noexcept
+  {
+    this->category = std::move(_category);
+
+#ifdef DEBUG
+    std::cout << " -> setCategory " << this->category << std::endl;
+#endif
+  }
+
+  std::string Entry::getCategory() const noexcept
+  {
+    return this->category;
+  }
+
+  void Entry::setComment(std::string _comment) noexcept
+  {
+    this->comment = std::move(_comment);
+
+#ifdef DEBUG
+    std::cout << " -> setComment " << this->comment << std::endl;
+#endif
+  }
+
+  std::string Entry::getComment() const noexcept
+  {
+    return this->comment;
   }
 
   void Entry::generateRandomId() noexcept
@@ -177,10 +296,22 @@ namespace Wallet
   template<>
   YAML::Node Entry::as() const noexcept
   {
+    //using std::to_string;
+    using Components::ftos;
+
+    // Create node.
     YAML::Node node(YAML::NodeType::Map);
+
+    // Set parameters.
     node["id"] = this->id;
     node["title"] = this->title;
     node["date"] = this->getDateStr();
+    node["revenue"] = ftos(this->revenue);
+    node["expense"] = ftos(this->expense);
+    node["balance"] = ftos(this->balance);
+    node["category"] = this->category;
+    node["comment"] = this->comment;
+
     return node;
   }
 } // Wallet Namespace

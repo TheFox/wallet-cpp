@@ -2,26 +2,14 @@
 #ifndef WALLETCPP_COMMAND_HPP_
 #define WALLETCPP_COMMAND_HPP_
 
-#include <string>
+#include "command_options.hpp"
 
 namespace Wallet
 {
-  struct CommandOptions
-  {
-    std::string walletPath = ".wallet";
-    std::string id{};
-    std::string title{};
-    std::string date{};
-
-    // Status
-    bool isInteractively{};
-    bool isForced{};
-  };
-
   class Command
   {
   public:
-    Command();
+    Command() noexcept;
     virtual ~Command() = 0;
     virtual int execute() = 0;
     void setOptions(CommandOptions) noexcept;

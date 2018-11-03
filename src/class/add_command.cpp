@@ -15,24 +15,10 @@ namespace Wallet
     using std::cout;
     using std::endl;
 
-    Entry entry;
-
-    // ID
-    if (this->commandOptions.id.empty()) {
-      entry.generateRandomId();
-    } else {
-      entry.setId(this->commandOptions.id);
-    }
-
-    // Title
-    if (!this->commandOptions.title.empty()) {
-      entry.setTitle(this->commandOptions.title);
-    }
-
-    // Date
-    if (!this->commandOptions.date.empty()) {
-      entry.setDate(this->commandOptions.date);
-    }
+#ifdef DEBUG
+    printf(" -> commandOptions %p\n", &this->commandOptions);
+#endif
+    Entry entry = this->commandOptions;
 
     if (this->commandOptions.isInteractively) {
       // TODO
