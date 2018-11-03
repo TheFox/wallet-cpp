@@ -22,6 +22,11 @@ namespace Wallet
       entry.setId(this->commandOptions.id);
     }
 
+    // Title
+    if (!this->commandOptions.id.empty()) {
+      entry.setTitle(this->commandOptions.id);
+    }
+
     // Date
     if (!this->commandOptions.date.empty()) {
       entry.setDate(this->commandOptions.date);
@@ -36,6 +41,7 @@ namespace Wallet
     // Inform User
     cout << "Wallet: " << this->commandOptions.walletPath << endl;
     cout << "ID: " << entry.getId() << endl;
+    cout << "Title: " << entry.getTitle() << endl;
     cout << "Date: " << entry.getDate() << endl;
     cout << "File name: " << entry.getFileName() << endl;
     cout << "Is Unique: " << (isUnique ? "YES" : "NO") << endl;

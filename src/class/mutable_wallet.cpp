@@ -24,6 +24,7 @@ namespace Wallet
 #ifdef DEBUG
     printf("MutableWallet::~MutableWallet\n");
 #endif
+
     this->saveIndex();
     this->removeLock();
   }
@@ -78,6 +79,10 @@ namespace Wallet
 #endif
 
       month = LoadFile(monthFilePathStr);
+      const auto version = month["meta"]["version"].as<int>();
+      if (version == 1) {
+        month["meta"]["version"] = 2;
+      }
       month["meta"]["updated_at"] = now;
     } else {
 #ifdef DEBUG
@@ -85,7 +90,7 @@ namespace Wallet
 #endif
 
       Node meta(NodeType::Map);
-      meta["version"] = 1;
+      meta["version"] = 2;
       meta["created_at"] = now;
       meta["updated_at"] = now;
       month["meta"] = meta;
@@ -104,11 +109,14 @@ namespace Wallet
       month["days"][dayStr] = day;
     }
 
-    // TODO: add entry
+    // Convert Entry to Node.
+    const auto node = entry.as<Node>();
+    month["days"][dayStr].push_back(node);
 
     // Save Month file.
     ofstream fout(monthFilePathStr);
     fout << month;
+    fout.close();
 
     return true;
   }
@@ -165,15 +173,6 @@ namespace Wallet
       gitignoreFh << "/tmp/" << '\n';
       gitignoreFh.close();
     }
-
-    // Create data/.gitignore file.
-    //const path dataGitignoreFile = this->dataPath / ".gitignore";
-    //if (!exists(gitignoreFile)) {
-    //  ofstream gitignoreFh;
-    //  gitignoreFh.open(dataGitignoreFile.string(), ofstream::out);
-    //  gitignoreFh << "*.lock" << '\n';
-    //  gitignoreFh.close();
-    //}
 
     // Remove old tmp/.gitignore file.
     const path oldGitignoreFile = this->tmpPath / ".gitignore";
@@ -261,10 +260,6 @@ namespace Wallet
       _idx.push_back("hello_world");
       this->index["index"] = _idx;
     }
-
-    //#ifdef DEBUG
-    //    printf(" -> index type %d\n", this->index["index"].Type());
-    //#endif
   }
 
   /**
@@ -285,6 +280,7 @@ namespace Wallet
 
     ofstream fout(this->indexPath.string());
     fout << this->index;
+    fout.close();
   }
 
   /**
@@ -306,10 +302,6 @@ namespace Wallet
 
     this->loadIndex();
 
-    //#ifdef DEBUG
-    //    printf(" -> index type %d\n", this->index["index"].Type());
-    //#endif
-
     const string id = entry.getId();
     const auto _b = this->index["index"].begin();
     const auto _e = this->index["index"].end();
@@ -317,10 +309,6 @@ namespace Wallet
     auto it = find_if(_b, _e, [&](const auto& item) {
       return item.template as<string>() == id;
     });
-
-    //#ifdef DEBUG
-    //    printf(" -> index type %d %d %c\n", this->index["index"].Type(), it == _b, it != _e ? 'Y' : 'N');
-    //#endif
 
     return it != _e;
   }

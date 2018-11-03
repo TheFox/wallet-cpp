@@ -18,6 +18,10 @@ namespace Wallet
     void setId(std::string) noexcept;
     std::string getId() const noexcept;
 
+    // Title
+    void setTitle(std::string) noexcept;
+    std::string getTitle() const noexcept;
+
     // Date
     void setDate(std::string) noexcept;
     std::string getDate() const noexcept;
@@ -25,8 +29,13 @@ namespace Wallet
     // Functions
     std::string getFileName() const noexcept;
 
+    // Conversion
+    template<typename T>
+    T as() const noexcept;
+
   private:
     std::string id{};
+    std::string title{};
     std::string date{};
   };
 } // Wallet Namespace

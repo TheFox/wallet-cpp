@@ -4,7 +4,8 @@
 
 #include <string>
 
-#define DATETIME_FORMAT "%Y-%m-%dT%T"
+#define DATETIME_FORMAT "%Y-%m-%dT%T%Q"
+//#define DATE_FORMAT "%Y-%m-%d"
 
 namespace Wallet
 {

@@ -62,6 +62,7 @@ int main(int argc, char* const argv[])
   // Common options
   options_description commonOpts("Common options");
   commonOpts.add_options()
+              ("title,t", value<string>()->value_name("string"), "Set a Title.")
               ("date,d", value<string>()->value_name("string"), "Set a Date. (Format: YYYY-MM-DD)");
 
   // Add Command options
@@ -124,6 +125,9 @@ int main(int argc, char* const argv[])
   }
   if (vm.count("id")) {
     cmdOpts.id = vm["id"].as<std::string>();
+  }
+  if (vm.count("title")) {
+    cmdOpts.title = vm["title"].as<std::string>();
   }
   if (vm.count("date")) {
     cmdOpts.date = vm["date"].as<std::string>();

@@ -4,6 +4,15 @@
 #endif
 
 #include <sstream>
+
+#ifdef __has_include
+#  if __has_include(<yaml-cpp/yaml.h>)
+#    include <yaml-cpp/yaml.h>
+#  else
+#    error "Missing <yaml-cpp/yaml.h>"
+#  endif
+#endif // __has_include
+
 #include "entry.hpp"
 
 namespace Wallet
@@ -33,7 +42,17 @@ namespace Wallet
   std::string Entry::getId() const noexcept
   {
     return this->id;
-  };
+  }
+
+  void Entry::setTitle(std::string _title) noexcept
+  {
+    this->title = std::move(_title);
+  }
+
+  std::string Entry::getTitle() const noexcept
+  {
+    return this->title;
+  }
 
   void Entry::setDate(std::string _date) noexcept
   {
@@ -44,7 +63,7 @@ namespace Wallet
   std::string Entry::getDate() const noexcept
   {
     return this->date;
-  };
+  }
 
   std::string Entry::getFileName() const noexcept
   {
@@ -59,5 +78,17 @@ namespace Wallet
     }
     out << ".yml";
     return out.str();
+  }
+
+  /**
+   * Convert to YAML::Node.
+   */
+  template<> YAML::Node Entry::as() const noexcept
+  {
+    YAML::Node node(YAML::NodeType::Map);
+    node["id"] = this->id;
+    node["title"] = this->title;
+    node["date"] = this->date;
+    return node;
   }
 } // Wallet Namespace

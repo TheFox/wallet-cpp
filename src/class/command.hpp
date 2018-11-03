@@ -10,6 +10,7 @@ namespace Wallet
   {
     std::string walletPath = ".wallet";
     std::string id{};
+    std::string title{};
     std::string date{};
 
     // Status
