@@ -18,7 +18,9 @@ namespace Wallet
     Entry entry;
 
     // ID
-    if (!this->commandOptions.id.empty()) {
+    if (this->commandOptions.id.empty()) {
+      entry.generateRandomId();
+    } else {
       entry.setId(this->commandOptions.id);
     }
 

@@ -11,6 +11,7 @@ namespace Wallet
   public:
     // Constructor
     Entry();
+
     // Destructor
     ~Entry();
 
@@ -27,6 +28,7 @@ namespace Wallet
     std::string getDate() const noexcept;
 
     // Functions
+    void generateRandomId() noexcept;
     std::string getFileName() const noexcept;
 
     // Conversion
@@ -34,9 +36,12 @@ namespace Wallet
     T as() const noexcept;
 
   private:
+    // Variables
     std::string id{};
     std::string title{};
     std::string date{};
+
+    // Functions
   };
 } // Wallet Namespace
 

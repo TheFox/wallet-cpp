@@ -51,18 +51,6 @@ target_include_directories(wallet PRIVATE ${SOURCE_DIR}/include)
 add_library(termcolor INTERFACE IMPORTED)
 add_dependencies(termcolor termcolor_project)
 
-# fmt
-#ExternalProject_Add(fmt_project
-#    GIT_REPOSITORY https://github.com/fmtlib/fmt.git
-#    GIT_TAG origin/master
-#    CONFIGURE_COMMAND ""
-#    BUILD_COMMAND ""
-#    INSTALL_COMMAND "")
-#ExternalProject_Get_Property(fmt_project SOURCE_DIR)
-#target_include_directories(wallet PRIVATE ${SOURCE_DIR}/include)
-#add_library(fmt INTERFACE IMPORTED)
-#add_dependencies(fmt fmt_project)
-
 # yaml-cpp
 ExternalProject_Add(yamlcpp_project
     GIT_REPOSITORY https://github.com/jbeder/yaml-cpp.git

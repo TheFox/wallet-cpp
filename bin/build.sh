@@ -10,4 +10,4 @@ cd build_${BUILD_TYPE}
 
 set -x
 cmake -DCMAKE_BUILD_TYPE=${BUILD_TYPE} --target wallet ..
-make
+make -j 4

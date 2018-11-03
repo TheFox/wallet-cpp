@@ -1,6 +1,7 @@
 
 #ifdef DEBUG
 #include <cstdio>
+#include <iostream>
 #endif
 
 #include <sstream>
@@ -10,6 +11,14 @@
 #    include <yaml-cpp/yaml.h>
 #  else
 #    error "Missing <yaml-cpp/yaml.h>"
+#  endif
+#  if __has_include(<boost/uuid/uuid.hpp>)
+#    include <boost/uuid/uuid.hpp>
+#    include <boost/uuid/random_generator.hpp>
+#    include <boost/uuid/uuid_io.hpp>
+namespace uuid = boost::uuids;
+#  else
+#    error "Missing <boost/uuid/uuid.hpp>"
 #  endif
 #endif // __has_include
 
@@ -22,9 +31,6 @@ namespace Wallet
 #ifdef DEBUG
     printf("Entry::Entry(%p)\n", this);
 #endif
-
-    // TODO: set initial rand UUID
-    this->id = "uuid";
   }
 
   Entry::~Entry()
@@ -65,6 +71,24 @@ namespace Wallet
     return this->date;
   }
 
+  void Entry::generateRandomId() noexcept
+  {
+    using uuid::random_generator;
+    using uuid::uuid;
+    using std::stringstream;
+
+    // Random UUID
+    random_generator gen;
+    uuid _id = gen();
+
+    // Convert UUID to String.
+    stringstream uuidStream;
+    uuidStream << _id;
+
+    // Set ID from String Stream.
+    this->id = uuidStream.str();
+  }
+
   std::string Entry::getFileName() const noexcept
   {
     std::ostringstream out;
@@ -83,7 +107,8 @@ namespace Wallet
   /**
    * Convert to YAML::Node.
    */
-  template<> YAML::Node Entry::as() const noexcept
+  template<>
+  YAML::Node Entry::as() const noexcept
   {
     YAML::Node node(YAML::NodeType::Map);
     node["id"] = this->id;

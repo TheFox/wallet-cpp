@@ -10,9 +10,12 @@
 #  else
 #    error "Missing <program_options>"
 #  endif
+#  if __has_include(<termcolor/termcolor.hpp>)
+#    include <termcolor/termcolor.hpp>
+#  else
+#    error "Missing <termcolor>"
+#  endif
 #endif // __has_include
-
-#include <termcolor/termcolor.hpp>
 
 #include "../config.hpp"
 #include "../class/command_factory.hpp"
@@ -39,7 +42,6 @@ int main(int argc, char* const argv[])
 
 #ifdef DEBUG
   puts("--- DEBUG ---");
-  printf("__clang_version__ %s\n", __clang_version__);
   puts("");
 #endif
 

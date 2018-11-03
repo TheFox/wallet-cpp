@@ -1,9 +1,20 @@
 
 #include <locale>
 
-#include <boost/date_time/local_time/local_time.hpp>
-#include <boost/date_time/time_facet.hpp>
 //#include <boost/locale/date_time.hpp>
+
+#ifdef __has_include
+#  if __has_include(<boost/date_time/local_time/local_time.hpp>)
+#    include <boost/date_time/local_time/local_time.hpp>
+#  else
+#    error "Missing <boost/date_time/local_time/local_time.hpp>"
+#  endif
+#  if __has_include(<boost/date_time/time_facet.hpp>)
+#    include <boost/date_time/time_facet.hpp>
+#  else
+#    error "Missing <boost/date_time/time_facet.hpp>"
+#  endif
+#endif // __has_include
 
 #include "components.hpp"
 
