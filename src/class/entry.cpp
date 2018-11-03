@@ -39,7 +39,7 @@ namespace Wallet
     this->date = day_clock::local_day();
   }
 
-  Entry::Entry(const CommandOptions& commandOptions) noexcept
+  Entry::Entry(const CommandOptions& commandOptions) noexcept : Entry()
   {
 #ifdef DEBUG
     printf(" -> Entry::Entry(%p, CommandOptions %p)\n", this, &commandOptions);
@@ -61,6 +61,9 @@ namespace Wallet
     if (!commandOptions.date.empty()) {
       this->setDate(commandOptions.date);
     }
+#ifdef DEBUG
+    std::cout << " -> set date " << this->date << std::endl;
+#endif
 
     // Revenue
     this->setRevenue(commandOptions.revenue);
@@ -114,6 +117,9 @@ namespace Wallet
 
   void Entry::setDate(const std::string _dateStr)
   {
+#ifdef DEBUG
+    printf(" -> Entry::setDate(%s)\n", _dateStr.c_str());
+#endif
     using gregorian::date;
     using gregorian::days;
     using gregorian::day_clock;
