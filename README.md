@@ -1,4 +1,4 @@
-# Wallet
+# WalletCpp
 
 ## Dependencies
 

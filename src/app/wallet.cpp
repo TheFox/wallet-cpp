@@ -8,6 +8,7 @@
 #ifdef __has_include
 #  if __has_include(<boost/program_options.hpp>)
 #    include <boost/program_options.hpp>
+namespace bpo = boost::program_options;
 #  else
 #    error "Missing <program_options>"
 #  endif
@@ -20,8 +21,6 @@
 #include "../class/command_options.hpp"
 #include "../class/command_factory.hpp"
 #include "../class/command.hpp"
-
-namespace bpo = boost::program_options;
 
 int main(int argc, char* const argv[])
 {
