@@ -18,6 +18,10 @@ namespace Wallet
 #ifdef DEBUG
     printf(" -> commandOptions %p\n", &this->commandOptions);
 #endif
+    if (this->commandOptions.title.empty()) {
+      throw std::string{"Title is required for Add command."};
+    }
+
     Entry entry = this->commandOptions;
 
     if (this->commandOptions.isInteractively) {
@@ -31,6 +35,11 @@ namespace Wallet
     cout << "ID: " << entry.getId() << endl;
     cout << "Title: " << entry.getTitle() << endl;
     cout << "Date: " << entry.getDateStr() << endl;
+    cout << "Revenue: " << entry.getRevenue() << endl;
+    cout << "Expense: " << entry.getExpense() << endl;
+    cout << "Balance: " << entry.getBalance() << endl;
+    cout << "Category: " << entry.getCategory() << endl;
+    cout << "Comment: " << entry.getComment() << endl;
     cout << "File name: " << entry.getFileName() << endl;
     cout << "Is Unique: " << (isUnique ? "YES" : "NO") << endl;
 

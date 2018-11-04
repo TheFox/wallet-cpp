@@ -79,8 +79,6 @@ namespace Wallet
     std::float_t balance{};
     std::string category{};
     std::string comment{};
-
-    // Functions
   };
 } // Wallet Namespace
 

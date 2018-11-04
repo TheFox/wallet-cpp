@@ -120,6 +120,7 @@ namespace Wallet
 #ifdef DEBUG
     printf(" -> Entry::setDate(%s)\n", _dateStr.c_str());
 #endif
+
     using gregorian::date;
     using gregorian::days;
     using gregorian::day_clock;
@@ -193,55 +194,31 @@ namespace Wallet
   void Entry::setRevenue(std::float_t _revenue)
   {
     this->revenue = _revenue;
-
-#ifdef DEBUG
-    std::cout << " -> setRevenue " << this->revenue << std::endl;
-#endif
   }
 
   std::float_t Entry::getRevenue() const noexcept
   {
-#ifdef DEBUG
-    std::cout << " -> getRevenue " << this->revenue << std::endl;
-#endif
-
     return this->revenue;
   }
 
   void Entry::setExpense(std::float_t _expense)
   {
     this->expense = -std::abs(_expense);
-
-#ifdef DEBUG
-    std::cout << " -> setExpense " << this->expense << std::endl;
-#endif
   }
 
   std::float_t Entry::getExpense() const noexcept
   {
-#ifdef DEBUG
-    std::cout << " -> getExpense" << std::endl;
-#endif
-
     return this->expense;
   }
 
   std::float_t Entry::getBalance() const noexcept
   {
-#ifdef DEBUG
-    std::cout << " -> getBalance " << this->balance << std::endl;
-#endif
-
     return this->balance;
   }
 
   void Entry::setCategory(std::string _category) noexcept
   {
     this->category = std::move(_category);
-
-#ifdef DEBUG
-    std::cout << " -> setCategory " << this->category << std::endl;
-#endif
   }
 
   std::string Entry::getCategory() const noexcept
@@ -252,10 +229,6 @@ namespace Wallet
   void Entry::setComment(std::string _comment) noexcept
   {
     this->comment = std::move(_comment);
-
-#ifdef DEBUG
-    std::cout << " -> setComment " << this->comment << std::endl;
-#endif
   }
 
   std::string Entry::getComment() const noexcept

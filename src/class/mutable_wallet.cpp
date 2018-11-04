@@ -59,7 +59,7 @@ namespace Wallet
     printf(" -> MutableWallet::add(%p, u=%c)\n", &entry, isUnique ? 'Y' : 'N');
 #endif
 
-    const bool entryExists = this->entryExist(entry);
+    const bool entryExists = this->entryExists(entry);
     if (isUnique && entryExists) {
       return false;
     }
@@ -296,10 +296,10 @@ namespace Wallet
   /**
    * Check entry exists.
    */
-  bool MutableWallet::entryExist(const Entry& entry) noexcept
+  bool MutableWallet::entryExists(const Entry& entry) noexcept
   {
 #ifdef DEBUG
-    printf(" -> MutableWallet::entryExist\n");
+    printf(" -> MutableWallet::entryExists\n");
 #endif
 
     using std::find_if;

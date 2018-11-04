@@ -9,7 +9,10 @@ namespace Wallet
 {
   struct CommandOptions
   {
+    // Wallet
     std::string walletPath = ".wallet";
+
+    // Entry
     std::string id{};
     std::string title{};
     std::string date{};

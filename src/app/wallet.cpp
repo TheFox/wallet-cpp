@@ -66,13 +66,15 @@ int main(int argc, char* const argv[])
   addCmdOpts.add_options()
               ("id", value<string>()->value_name("string"), "Set a unique ID.")
               ("title,t", value<string>()->value_name("string"), "Set a Title.")
+              ("message,m", value<string>()->value_name("string"), "Alias for --title.")
               ("date,d", value<string>()->value_name("string"), "Set a Date. (Format: YYYY-MM-DD)")
               ("revenue,r", value<float_t>()->value_name("number"), "Set a  Revenue.")
               ("expense,e", value<float_t>()->value_name("number"), "Set an Expense.")
               ("category,c", value<string>()->value_name("string"), "Set a Category.")
               ("comment,o", value<string>()->value_name("string"), "Set a Comment.")
               ("interactive,i", "Use some commands interactively.")
-              ("force,f", "Force add command. Even if ID is set and already exists.");
+              ("force,f", "Force add command. Even if ID is set and already exists.")
+              ("no-force", "Do not force add command.");
 
   options_description opts;
   opts
@@ -131,6 +133,9 @@ int main(int argc, char* const argv[])
   if (vm.count("title")) {
     cmdOpts.title = vm["title"].as<std::string>();
   }
+  if (vm.count("message")) {
+    cmdOpts.title = vm["message"].as<std::string>();
+  }
   if (vm.count("date")) {
     cmdOpts.date = vm["date"].as<std::string>();
   }
@@ -151,6 +156,9 @@ int main(int argc, char* const argv[])
   }
   if (vm.count("force")) {
     cmdOpts.isForced = true;
+  }
+  if (vm.count("no-force")) {
+    cmdOpts.isForced = false;
   }
 
   // Command Factory

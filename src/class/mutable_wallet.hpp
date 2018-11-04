@@ -66,7 +66,7 @@ namespace Wallet
     void removeLock();
     void loadIndex() noexcept;
     void saveIndex() noexcept;
-    bool entryExist(const Entry&) noexcept;
+    bool entryExists(const Entry&) noexcept;
   };
 } // Wallet Namespace
 
