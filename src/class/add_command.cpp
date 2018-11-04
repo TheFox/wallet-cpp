@@ -2,46 +2,114 @@
 #ifdef DEBUG
 #include <cstdio>
 #endif
+
 #include <iostream>
 
 #include "add_command.hpp"
 #include "mutable_wallet.hpp"
 #include "entry.hpp"
+#include "components.hpp"
 
 namespace Wallet
 {
   int AddCommand::execute()
   {
     using std::cout;
+    using std::cin;
     using std::endl;
+    //using Components::stof;
 
 #ifdef DEBUG
     printf(" -> commandOptions %p\n", &this->commandOptions);
 #endif
-    if (this->commandOptions.title.empty()) {
-      throw std::string{"Title is required for Add command."};
-    }
 
     Entry entry = this->commandOptions;
 
     if (this->commandOptions.isInteractively) {
-      // TODO
+      std::string _tmpStr{};
+      std::float_t _tmpFloat{};
+
+      cout << "Title: [" << entry.getTitle() << "] ";
+      getline(cin, _tmpStr);
+      cout << "Title: '" << _tmpStr << "'" << endl;
+      if (!_tmpStr.empty()) {
+        entry.setTitle(_tmpStr);
+      }
+
+      cout << "Date: [" << entry.getDateStr() << "] ";
+      getline(cin, _tmpStr);
+      if (!_tmpStr.empty()) {
+        entry.setDate(_tmpStr);
+      }
+
+      cout << "Revenue: [" << entry.getRevenue() << "] ";
+      getline(cin, _tmpStr);
+      if (!_tmpStr.empty()) {
+        _tmpFloat = std::stof(_tmpStr);
+        entry.setRevenue(_tmpFloat);
+      }
+
+      cout << "Expense: [" << entry.getExpense() << "] ";
+      getline(cin, _tmpStr);
+      if (!_tmpStr.empty()) {
+        _tmpFloat = std::stof(_tmpStr);
+        entry.setExpense(_tmpFloat);
+      }
+
+      cout << "Category: [" << entry.getCategory() << "] ";
+      getline(cin, _tmpStr);
+      if (!_tmpStr.empty()) {
+        entry.setCategory(_tmpStr);
+      }
+
+      cout << "Comment: [" << entry.getComment() << "] ";
+      getline(cin, _tmpStr);
+      if (!_tmpStr.empty()) {
+        entry.setComment(_tmpStr);
+      }
+    }
+
+    if (entry.getTitle().empty()) {
+      throw std::string{"Title is required for Add command."};
     }
 
     const bool isUnique = !this->commandOptions.isForced && !this->commandOptions.id.empty();
 
     // Inform User
+    cout << "---------------" << endl;
     cout << "Wallet: " << this->commandOptions.walletPath << endl;
+    cout << "File name: " << entry.getFileName() << endl;
+    cout << "Is Unique: " << (isUnique ? "YES" : "NO") << endl;
     cout << "ID: " << entry.getId() << endl;
-    cout << "Title: " << entry.getTitle() << endl;
-    cout << "Date: " << entry.getDateStr() << endl;
+    cout << "---------------" << endl;
+    cout << "Title: '" << entry.getTitle() << "'" << endl;
+    cout << "Date: '" << entry.getDateStr() << "'" << endl;
     cout << "Revenue: " << entry.getRevenue() << endl;
     cout << "Expense: " << entry.getExpense() << endl;
     cout << "Balance: " << entry.getBalance() << endl;
-    cout << "Category: " << entry.getCategory() << endl;
-    cout << "Comment: " << entry.getComment() << endl;
-    cout << "File name: " << entry.getFileName() << endl;
-    cout << "Is Unique: " << (isUnique ? "YES" : "NO") << endl;
+    cout << "Category: '" << entry.getCategory() << "'" << endl;
+    cout << "Comment: '" << entry.getComment() << "'" << endl;
+    cout << "---------------" << endl;
+
+    if (this->commandOptions.isInteractively) {
+      cout << "OK? [Y/n] ";
+
+      // Set terminal to raw mode.
+      system("stty raw");
+
+      // Read char.
+      int input = getchar();
+
+      // Reset terminal to normal "cooked" mode
+      system("stty cooked");
+
+      cout << endl;
+      if (input != 'Y' && input != 'y') {
+        cout << "Aborted. Nothing done." << endl;
+        return 0;
+      }
+      cout << "OK" << endl;
+    }
 
     MutableWallet wallet{this->commandOptions.walletPath};
     wallet.setup();

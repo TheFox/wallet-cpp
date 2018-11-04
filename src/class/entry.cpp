@@ -173,7 +173,7 @@ namespace Wallet
               this->date = from_uk_string(_dateStr);
             }
             catch (std::exception& e) {
-              throw std::string_view{e.what()};
+              throw std::string{e.what()};
             }
           }
         }

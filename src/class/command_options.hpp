@@ -18,7 +18,7 @@ namespace Wallet
     std::string date{};
     std::float_t revenue{};
     std::float_t expense{};
-    std::string category{};
+    std::string category{"default"};
     std::string comment{};
 
     // Status

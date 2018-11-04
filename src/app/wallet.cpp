@@ -178,12 +178,4 @@ int main(int argc, char* const argv[])
 #endif
     return 1;
   }
-  catch (const std::string_view& e) {
-#ifdef TERMCOLOR_HPP_
-    cerr << termcolor::on_red << termcolor::white << "ERROR: " << e << termcolor::reset << endl;
-#else
-    cerr << "ERROR: " << e << endl;
-#endif
-    return 1;
-  }
 }
