@@ -16,7 +16,7 @@
 brew install boost yaml-cpp
 ```
 
-## Build
+## Build from Source
 
 This will only build the binary.
 
@@ -24,12 +24,15 @@ This will only build the binary.
 ./bin/build.sh
 ```
 
-Then the binary is available in `build_release`.
-
-## Install
+Then the binary is available in `build_release/bin`.
 
 After building the project, run:
 
 ```bash
 ./bin/install.sh
 ```
+
+## Tested under
+
+- macOS 10.13 High Sierra
+- macOS 10.14 Mojave
