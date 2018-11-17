@@ -16,7 +16,11 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-configure_file("${PROJECT_SOURCE_DIR}/src/config.hpp.in" "${PROJECT_SOURCE_DIR}/src/config.hpp" NEWLINE_STYLE LF)
+configure_file(
+    "${PROJECT_SOURCE_DIR}/src/config.hpp.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/src/config.hpp"
+    NEWLINE_STYLE LF)
+include_directories("${CMAKE_CURRENT_BINARY_DIR}/src")
 
 add_executable(wallet
     src/app/wallet.cpp

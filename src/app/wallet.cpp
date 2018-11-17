@@ -17,7 +17,7 @@ namespace bpo = boost::program_options;
 #  endif
 #endif // __has_include
 
-#include "../config.hpp"
+#include "config.hpp"
 #include "../class/command_options.hpp"
 #include "../class/command_factory.hpp"
 #include "../class/command.hpp"
