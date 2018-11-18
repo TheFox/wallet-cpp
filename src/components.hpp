@@ -11,7 +11,8 @@
 namespace Wallet::Components
 {
   std::string getNowStr();
-  std::string ftos(std::float_t, int = 2);
+  std::string ftos(const std::float_t&, int = 2);
+  std::float_t stof(std::string);
 }
 
 #endif // WALLETCPP_COMPONENTS_HPP_

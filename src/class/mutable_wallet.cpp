@@ -19,7 +19,7 @@ namespace Wallet
 #endif
   }
 
-  MutableWallet::~MutableWallet()
+  MutableWallet::~MutableWallet() noexcept(noexcept(this->saveIndex()) && noexcept(this->removeLock()))
   {
 #ifdef DEBUG
     printf(" -> MutableWallet::~MutableWallet\n");
@@ -102,6 +102,8 @@ namespace Wallet
       meta["version"] = WALLET_MONTH_FILE_VERSION;
       meta["created_at"] = now;
       meta["updated_at"] = now;
+
+      // Add Meta to month file.
       month["meta"] = meta;
 
       // Create new days map.
@@ -217,7 +219,7 @@ namespace Wallet
     this->isLocked = true;
   }
 
-  void MutableWallet::removeLock()
+  void MutableWallet::removeLock() noexcept
   {
 #ifdef DEBUG
     printf(" -> MutableWallet::removeLock\n");
@@ -283,6 +285,7 @@ namespace Wallet
 
     using std::ofstream;
 
+    // Skip function when nothing has been changed.
     if (!this->isIndexModified) {
       return;
     }

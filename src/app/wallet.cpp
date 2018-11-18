@@ -2,7 +2,6 @@
 #include <cstdio>
 #include <string>
 #include <iostream>
-#include <cmath>
 #include <unistd.h>
 
 #ifdef __has_include
@@ -21,11 +20,11 @@ namespace bpo = boost::program_options;
 #include "../class/command_options.hpp"
 #include "../class/command_factory.hpp"
 #include "../class/command.hpp"
+#include "../components.hpp"
 
 int main(int argc, char* const argv[])
 {
   using std::string;
-  using std::float_t;
   using std::cout;
   using std::cerr;
   using std::endl;
@@ -67,8 +66,8 @@ int main(int argc, char* const argv[])
               ("title,t", value<string>()->value_name("string"), "Set a Title.")
               ("message,m", value<string>()->value_name("string"), "Alias for --title.")
               ("date,d", value<string>()->value_name("string"), "Set a Date. (Format: YYYY-MM-DD)")
-              ("revenue,r", value<float_t>()->value_name("number"), "Set a  Revenue.")
-              ("expense,e", value<float_t>()->value_name("number"), "Set an Expense.")
+              ("revenue,r", value<string>()->value_name("number"), "Set a  Revenue.")
+              ("expense,e", value<string>()->value_name("number"), "Set an Expense.")
               ("category,c", value<string>()->value_name("string"), "Set a Category.")
               ("comment,o", value<string>()->value_name("string"), "Set a Comment.")
               ("interactive,i", "Use some commands interactively.")
@@ -124,31 +123,35 @@ int main(int argc, char* const argv[])
   CommandOptions cmdOpts = {};
 
   if (vm.count("wallet")) {
-    cmdOpts.walletPath = vm["wallet"].as<std::string>();
+    cmdOpts.walletPath = vm["wallet"].as<string>();
   }
   if (vm.count("id")) {
-    cmdOpts.id = vm["id"].as<std::string>();
+    cmdOpts.id = vm["id"].as<string>();
   }
   if (vm.count("title")) {
-    cmdOpts.title = vm["title"].as<std::string>();
+    cmdOpts.title = vm["title"].as<string>();
   }
   if (vm.count("message")) {
-    cmdOpts.title = vm["message"].as<std::string>();
+    cmdOpts.title = vm["message"].as<string>();
   }
   if (vm.count("date")) {
-    cmdOpts.date = vm["date"].as<std::string>();
+    cmdOpts.date = vm["date"].as<string>();
   }
   if (vm.count("revenue")) {
-    cmdOpts.revenue = vm["revenue"].as<std::float_t>();
+    const string _tmpStr = vm["revenue"].as<string>();
+
+    cmdOpts.revenue = Wallet::Components::stof(_tmpStr);
   }
   if (vm.count("expense")) {
-    cmdOpts.expense = vm["expense"].as<std::float_t>();
+    const string _tmpStr = vm["expense"].as<string>();
+
+    cmdOpts.expense = Wallet::Components::stof(_tmpStr);
   }
   if (vm.count("category")) {
-    cmdOpts.category = vm["category"].as<std::string>();
+    cmdOpts.category = vm["category"].as<string>();
   }
   if (vm.count("comment")) {
-    cmdOpts.comment = vm["comment"].as<std::string>();
+    cmdOpts.comment = vm["comment"].as<string>();
   }
   if (vm.count("interactive")) {
     cmdOpts.isInteractively = true;
@@ -169,7 +172,7 @@ int main(int argc, char* const argv[])
     command->setOptions(cmdOpts);
     return command->execute();
   }
-  catch (const std::string& e) {
+  catch (const string& e) {
 #ifdef TERMCOLOR_HPP_
     cerr << termcolor::on_red << termcolor::white << "ERROR: " << e << termcolor::reset << endl;
 #else

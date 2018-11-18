@@ -1,6 +1,7 @@
 
 #include <locale>
 #include <sstream>
+#include <string>
 #include <iomanip>
 
 #ifdef __has_include
@@ -39,7 +40,7 @@ namespace Wallet::Components
 #endif
   }
 
-  std::string ftos(const std::float_t _f, const int _p)
+  std::string ftos(const std::float_t& _f, const int _p)
   {
     using std::fixed;
     using std::setprecision;
@@ -53,5 +54,11 @@ namespace Wallet::Components
 #else
     return ss.str();
 #endif
+  }
+
+  std::float_t stof(std::string _s)
+  {
+    std::replace(_s.begin(), _s.end(), ',', '.');
+    return std::stof(_s);
   }
 }

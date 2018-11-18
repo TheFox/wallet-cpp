@@ -4,7 +4,7 @@ project(WalletCpp)
 set(PROJECT_VERSION_MAJOR 0)
 set(PROJECT_VERSION_MINOR 1)
 set(PROJECT_VERSION_PATCH 0)
-set(PROJECT_VERSION_APPENDIX "-dev.2")
+set(PROJECT_VERSION_APPENDIX "-dev.3")
 set(PROJECT_COPYRIGHT "Copyright (C) 2018 Christian Mayer <https://fox21.at>")
 
 set(CMAKE_CXX_FLAGS "-Wall -Wshadow")
@@ -36,7 +36,7 @@ add_executable(wallet
     src/class/html_command.cpp src/class/html_command.hpp
     src/class/entry.cpp src/class/entry.hpp)
 target_include_directories(wallet PRIVATE ${PROJECT_SOURCE_DIR}/src)
-target_compile_features(wallet PRIVATE cxx_noexcept)
+target_compile_features(wallet PRIVATE cxx_noexcept cxx_constexpr)
 get_target_property(wallet_std wallet CXX_STANDARD)
 
 # Install

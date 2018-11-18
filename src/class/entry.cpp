@@ -72,7 +72,7 @@ namespace Wallet
     this->setExpense(commandOptions.expense);
 
     // Balance
-    this->balance = this->revenue - std::abs(this->expense);
+    this->calcBalance();
 #ifdef DEBUG
     std::cout << " -> set balance " << this->balance << std::endl;
 #endif
@@ -138,6 +138,13 @@ namespace Wallet
       isYesterday = yesterdayStr.substr(0, _dateStr.length()) == _dateStr;
     }
 
+    // Now
+    constexpr std::string_view nowStr = "now"sv;
+    bool isNow = false;
+    if (_dateStr.length() <= nowStr.length()) {
+      isNow = nowStr.substr(0, _dateStr.length()) == _dateStr;
+    }
+
     // Tomorrow
     constexpr std::string_view tomorrowStr = "tomorrow"sv;
     bool isTomorrow = false;
@@ -147,12 +154,17 @@ namespace Wallet
 
     if (isYesterday) {
       // Today
-      date today = day_clock::local_day();
+      const date today = day_clock::local_day();
 
       this->date = today - days(1);
+    } else if (isNow) {
+      // Today
+      const date today = day_clock::local_day();
+
+      this->date = today;
     } else if (isTomorrow) {
       // Today
-      date today = day_clock::local_day();
+      const date today = day_clock::local_day();
 
       this->date = today + days(1);
     } else {
@@ -191,7 +203,7 @@ namespace Wallet
     return to_iso_extended_string(this->date);
   }
 
-  void Entry::setRevenue(std::float_t _revenue)
+  void Entry::setRevenue(const std::float_t _revenue) noexcept
   {
     this->revenue = _revenue;
   }
@@ -201,7 +213,7 @@ namespace Wallet
     return this->revenue;
   }
 
-  void Entry::setExpense(std::float_t _expense)
+  void Entry::setExpense(const std::float_t _expense) noexcept
   {
     this->expense = -std::abs(_expense);
   }
@@ -209,6 +221,12 @@ namespace Wallet
   std::float_t Entry::getExpense() const noexcept
   {
     return this->expense;
+  }
+
+  void Entry::calcBalance() noexcept
+  {
+    //this->balance = this->revenue - this->balance;
+    this->balance = this->revenue - std::abs(this->expense);
   }
 
   std::float_t Entry::getBalance() const noexcept
@@ -275,9 +293,6 @@ namespace Wallet
   template<>
   YAML::Node Entry::as() const noexcept
   {
-    //using std::to_string;
-    using Components::ftos;
-
     // Create node.
     YAML::Node node(YAML::NodeType::Map);
 
@@ -285,9 +300,9 @@ namespace Wallet
     node["id"] = this->id;
     node["title"] = this->title;
     node["date"] = this->getDateStr();
-    node["revenue"] = ftos(this->revenue);
-    node["expense"] = ftos(this->expense);
-    node["balance"] = ftos(this->balance);
+    node["revenue"] = Components::ftos(this->revenue);
+    node["expense"] = Components::ftos(this->expense);
+    node["balance"] = Components::ftos(this->balance);
     node["category"] = this->category;
     node["comment"] = this->comment;
 

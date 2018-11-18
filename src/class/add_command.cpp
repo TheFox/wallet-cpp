@@ -17,7 +17,7 @@ namespace Wallet
     using std::cout;
     using std::cin;
     using std::endl;
-    //using Components::stof;
+    using Components::stof;
 
 #ifdef DEBUG
     printf(" -> commandOptions %p\n", &this->commandOptions);
@@ -27,7 +27,6 @@ namespace Wallet
 
     if (this->commandOptions.isInteractively) {
       std::string _tmpStr{};
-      std::float_t _tmpFloat{};
 
       cout << "Title: [" << entry.getTitle() << "] ";
       getline(cin, _tmpStr);
@@ -45,16 +44,17 @@ namespace Wallet
       cout << "Revenue: [" << entry.getRevenue() << "] ";
       getline(cin, _tmpStr);
       if (!_tmpStr.empty()) {
-        _tmpFloat = std::stof(_tmpStr);
-        entry.setRevenue(_tmpFloat);
+        entry.setRevenue(Components::stof(_tmpStr));
       }
 
       cout << "Expense: [" << entry.getExpense() << "] ";
       getline(cin, _tmpStr);
       if (!_tmpStr.empty()) {
-        _tmpFloat = std::stof(_tmpStr);
-        entry.setExpense(_tmpFloat);
+        entry.setExpense(Components::stof(_tmpStr));
       }
+
+      // Balance
+      entry.calcBalance();
 
       cout << "Category: [" << entry.getCategory() << "] ";
       getline(cin, _tmpStr);
@@ -102,6 +102,8 @@ namespace Wallet
 
       // Reset terminal to normal "cooked" mode
       system("stty cooked");
+
+      //printf("input: %d %d\n", input, '\r');
 
       cout << endl;
       if (input != 'Y' && input != 'y') {
