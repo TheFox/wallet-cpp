@@ -7,6 +7,7 @@ set(PROJECT_COPYRIGHT "Copyright (C) 2018 Christian Mayer <https://fox21.at>")
 set(CMAKE_CXX_FLAGS "-Wall -Wshadow")
 set(CMAKE_CXX_FLAGS_DEBUG "-g -O0 -DDEBUG -Wno-unused-variable -fsanitize=address")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG -Wunused-variable")
+set(CMAKE_CXX_FLAGS_TEST "${CMAKE_CXX_FLAGS_DEBUG}")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
 
 # Set minimum C++ to 2017 standards.
@@ -18,6 +19,28 @@ configure_file(
     "${CMAKE_CURRENT_BINARY_DIR}/src/config.hpp"
     NEWLINE_STYLE LF)
 include_directories("${CMAKE_CURRENT_BINARY_DIR}/src")
+
+include(ExternalProject)
+
+# Term Color
+find_package(termcolor QUIET)
+
+# yaml-cpp
+find_package(yaml-cpp REQUIRED)
+
+# Catch2
+find_package(catch2 QUIET)
+
+# Boost
+set(Boost_USE_STATIC_LIBS ON)
+set(Boost_USE_STATIC_RUNTIME ON)
+set(Boost_USE_MULTITHREADED OFF)
+find_package(Boost 1.67.0 COMPONENTS filesystem program_options date_time)
+if (Boost_FOUND)
+    message(STATUS "Found Boost")
+    message(STATUS "Boost INCL ${Boost_INCLUDE_DIRS}")
+    message(STATUS "Boost LIBS ${Boost_LIBRARIES}")
+endif ()
 
 # Wallet Target
 add_executable(wallet
@@ -41,41 +64,19 @@ target_compile_features(wallet PRIVATE
     cxx_deleted_functions
     cxx_override)
 get_target_property(wallet_std wallet CXX_STANDARD)
+target_include_directories(wallet PRIVATE ${Boost_INCLUDE_DIRS})
+target_link_libraries(wallet ${Boost_LIBRARIES} ${YAML_CPP_LIBRARIES})
 
 # Test Target
-add_executable(test
-    src/app/test.cpp)
-target_include_directories(test PRIVATE ${PROJECT_SOURCE_DIR}/src)
+if(CMAKE_BUILD_TYPE)
+    add_executable(test
+        src/app/test.cpp)
+    target_include_directories(test PRIVATE ${PROJECT_SOURCE_DIR}/src)
+    target_link_libraries(test Catch2::Catch2)
+endif()
 
-# Install
+# Wallet Install
 install(TARGETS wallet RUNTIME DESTINATION /usr/local/bin)
-
-include(ExternalProject)
-
-# Term Color
-find_package(termcolor QUIET)
-
-# yaml-cpp
-find_package(yaml-cpp REQUIRED)
-
-# Catch2
-find_package(catch2 QUIET)
-target_link_libraries(test Catch2::Catch2)
-
-# Boost
-set(Boost_USE_STATIC_LIBS ON)
-set(Boost_USE_STATIC_RUNTIME ON)
-set(Boost_USE_MULTITHREADED OFF)
-find_package(Boost 1.67.0 COMPONENTS filesystem program_options date_time)
-if (Boost_FOUND)
-    message(STATUS "Found Boost")
-    message(STATUS "Boost INCL ${Boost_INCLUDE_DIRS}")
-    message(STATUS "Boost LIBS ${Boost_LIBRARIES}")
-
-    target_include_directories(wallet PRIVATE ${Boost_INCLUDE_DIRS})
-endif ()
-
-target_link_libraries(wallet ${Boost_LIBRARIES} ${YAML_CPP_LIBRARIES})
 
 message(STATUS "CMAKE_CXX_COMPILER ${CMAKE_CXX_COMPILER}")
 message(STATUS "CXX_STANDARD ${wallet_std}")
