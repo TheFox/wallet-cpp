@@ -1,7 +1,7 @@
 /build/
 /build_debug/
 /build_release/
-/cmake-build-debug/
+/build_test/
 /.idea/
 /.vagrant/
 /.vscode/

@@ -9,6 +9,7 @@
 ### Optional
 
 - [termcolor](https://github.com/ikalnytskyi/termcolor)
+- [Catch2](https://github.com/catchorg/Catch2)
 
 ### Install dependencies on macOS
 

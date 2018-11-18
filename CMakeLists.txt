@@ -1,10 +1,7 @@
-cmake_minimum_required(VERSION 3.12.0)
-project(WalletCpp)
+cmake_minimum_required(VERSION 3.7.0)
 
-set(PROJECT_VERSION_MAJOR 0)
-set(PROJECT_VERSION_MINOR 1)
-set(PROJECT_VERSION_PATCH 0)
-set(PROJECT_VERSION_APPENDIX "-dev.3")
+project(WalletCpp VERSION 0.2.0 LANGUAGES CXX)
+set(PROJECT_VERSION_APPENDIX "-dev.4")
 set(PROJECT_COPYRIGHT "Copyright (C) 2018 Christian Mayer <https://fox21.at>")
 
 set(CMAKE_CXX_FLAGS "-Wall -Wshadow")
@@ -22,6 +19,7 @@ configure_file(
     NEWLINE_STYLE LF)
 include_directories("${CMAKE_CURRENT_BINARY_DIR}/src")
 
+# Wallet Target
 add_executable(wallet
     src/app/wallet.cpp
     src/components.cpp src/components.hpp
@@ -36,8 +34,18 @@ add_executable(wallet
     src/class/html_command.cpp src/class/html_command.hpp
     src/class/entry.cpp src/class/entry.hpp)
 target_include_directories(wallet PRIVATE ${PROJECT_SOURCE_DIR}/src)
-target_compile_features(wallet PRIVATE cxx_noexcept cxx_constexpr)
+target_compile_features(wallet PRIVATE
+    cxx_noexcept
+    cxx_constexpr
+    cxx_final
+    cxx_deleted_functions
+    cxx_override)
 get_target_property(wallet_std wallet CXX_STANDARD)
+
+# Test Target
+add_executable(test
+    src/app/test.cpp)
+target_include_directories(test PRIVATE ${PROJECT_SOURCE_DIR}/src)
 
 # Install
 install(TARGETS wallet RUNTIME DESTINATION /usr/local/bin)
@@ -50,6 +58,10 @@ find_package(termcolor QUIET)
 # yaml-cpp
 find_package(yaml-cpp REQUIRED)
 
+# Catch2
+find_package(catch2 QUIET)
+target_link_libraries(test Catch2::Catch2)
+
 # Boost
 set(Boost_USE_STATIC_LIBS ON)
 set(Boost_USE_STATIC_RUNTIME ON)
@@ -59,6 +71,7 @@ if (Boost_FOUND)
     message(STATUS "Found Boost")
     message(STATUS "Boost INCL ${Boost_INCLUDE_DIRS}")
     message(STATUS "Boost LIBS ${Boost_LIBRARIES}")
+
     target_include_directories(wallet PRIVATE ${Boost_INCLUDE_DIRS})
 endif ()
 
@@ -70,3 +83,5 @@ message(STATUS "CMAKE_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX}")
 message(STATUS "CMAKE_CURRENT_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}")
 message(STATUS "YAML_CPP_INCLUDE_DIR ${YAML_CPP_INCLUDE_DIR}")
 message(STATUS "YAML_CPP_LIBRARIES ${YAML_CPP_LIBRARIES}")
+message(STATUS "Catch2_HEADER_DIR ${Catch2_HEADER_DIR}")
+message(STATUS "Boost_INCLUDE_DIRS ${Boost_INCLUDE_DIRS}")

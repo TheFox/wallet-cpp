@@ -101,9 +101,8 @@ int main(int argc, char* const argv[])
 
   // Help
   if (vm.count("help") || commandName.empty()) {
-    cout << PROJECT_NAME << ' '
-         << PROJECT_VERSION_MAJOR << '.' << PROJECT_VERSION_MINOR << '.' << PROJECT_VERSION_PATCH
-         << PROJECT_VERSION_APPENDIX << endl;
+    cout << PROJECT_NAME << ' ' << PROJECT_VERSION << endl;
+    cout << "Build: " << __DATE__ << ' ' << __TIME__ << endl;
     cout << PROJECT_COPYRIGHT << endl << endl;
 
     cout << "Usage: " << argv[0] << " <command> [options]" << endl << endl;
