@@ -11,7 +11,7 @@ namespace Wallet
   ImmutableWallet::ImmutableWallet(const std::string path) : MutableWallet(path)
   {
 #ifdef DEBUG
-    printf("ImmutableWallet::ImmutableWallet(opt '%s')\n", this->path.c_str());
+    printf(" -> ImmutableWallet::ImmutableWallet(opt '%s')\n", this->path.c_str());
 #endif
   }
 
@@ -23,7 +23,7 @@ namespace Wallet
   void ImmutableWallet::setup()
   {
 #ifdef DEBUG
-    printf("ImmutableWallet::setup()\n");
+    printf(" -> ImmutableWallet::setup()\n");
 #endif
     this->setupVariables();
   }

@@ -74,12 +74,19 @@ int main(int argc, char* const argv[])
               ("force,f", "Force add command. Even if ID is set and already exists.")
               ("no-force", "Do not force add command.");
 
+  // List Command options
+  options_description listCmdOpts("List Command options");
+  listCmdOpts.add_options()
+              ("date,d", value<string>()->value_name("string"), "Filter by Date. (Format: [[[YYYY]-MM]-DD])")
+              ("category,c", value<string>()->value_name("string"), "Filter by Category.");
+
   options_description opts;
   opts
     .add(commandOpts)
     .add(genericOpts)
     //.add(commonOpts)
-    .add(addCmdOpts);
+    .add(addCmdOpts)
+    .add(listCmdOpts);
 
   auto parsedOptions = bpo::command_line_parser(argc, argv)
     .options(opts)
@@ -109,11 +116,13 @@ int main(int argc, char* const argv[])
     cout << "Commands:" << endl;
     cout << "  init   Initialize a new wallet" << endl;
     cout << "  add    Add a new entry" << endl;
+    cout << "  list   List entries" << endl;
     cout << endl;
 
     cout << genericOpts << endl;
     //cout << commonOpts << endl;
     cout << addCmdOpts << endl;
+    cout << listCmdOpts << endl;
 
     return 3;
   }

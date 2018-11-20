@@ -55,6 +55,7 @@ add_executable(wallet
     src/class/add_command.cpp src/class/add_command.hpp
     src/class/init_command.cpp src/class/init_command.hpp
     src/class/html_command.cpp src/class/html_command.hpp
+    src/class/list_command.cpp src/class/list_command.hpp
     src/class/entry.cpp src/class/entry.hpp)
 target_include_directories(wallet PRIVATE ${PROJECT_SOURCE_DIR}/src)
 target_compile_features(wallet PRIVATE

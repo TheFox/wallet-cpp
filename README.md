@@ -9,7 +9,7 @@
 ### Optional
 
 - [termcolor](https://github.com/ikalnytskyi/termcolor)
-- [Catch2](https://github.com/catchorg/Catch2)
+- [Catch2](https://github.com/catchorg/Catch2) (Unit tests)
 
 ### Install dependencies on macOS
 

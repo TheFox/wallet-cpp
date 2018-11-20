@@ -8,6 +8,7 @@
 #include "help_command.hpp"
 #include "add_command.hpp"
 #include "init_command.hpp"
+#include "list_command.hpp"
 #include "html_command.hpp"
 
 namespace Wallet
@@ -35,6 +36,9 @@ namespace Wallet
     };
     creators["init"] = []()->std::unique_ptr<Command> {
       return std::make_unique<InitCommand>();
+    };
+    creators["list"] = []()->std::unique_ptr<Command> {
+      return std::make_unique<ListCommand>();
     };
     creators["html"] = []()->std::unique_ptr<Command> {
       return std::make_unique<HtmlCommand>();
