@@ -33,8 +33,8 @@ namespace Wallet
 #ifdef DEBUG
     printf(" -> Entry::Entry(%p)\n", this);
 #endif
-    using gregorian::date;
-    using gregorian::day_clock;
+    using calendar::date;
+    using calendar::day_clock;
 
     this->date = day_clock::local_day();
   }
@@ -121,14 +121,9 @@ namespace Wallet
     printf(" -> Entry::setDate(%s)\n", _dateStr.c_str());
 #endif
 
-    using gregorian::date;
-    using gregorian::days;
-    using gregorian::day_clock;
-    using gregorian::from_simple_string;
-    using gregorian::from_undelimited_string;
-    using gregorian::from_us_string;
-    using gregorian::from_uk_string;
-    using gregorian::to_iso_extended_string;
+    using calendar::date;
+    using calendar::days;
+    using calendar::day_clock;
     using std::string_view_literals::operator ""sv;
 
     // Yesterday
@@ -170,19 +165,19 @@ namespace Wallet
     } else {
       // Parse date string.
       try {
-        this->date = from_simple_string(_dateStr);
+        this->date = calendar::from_simple_string(_dateStr);
       }
       catch (std::exception& e) {
         try {
-          this->date = from_undelimited_string(_dateStr);
+          this->date = calendar::from_undelimited_string(_dateStr);
         }
         catch (std::exception& e) {
           try {
-            this->date = from_us_string(_dateStr);
+            this->date = calendar::from_us_string(_dateStr);
           }
           catch (std::exception& e) {
             try {
-              this->date = from_uk_string(_dateStr);
+              this->date = calendar::from_uk_string(_dateStr);
             }
             catch (std::exception& e) {
               throw std::string{e.what()};
@@ -193,14 +188,13 @@ namespace Wallet
     }
 
 #ifdef DEBUG
-    std::cout << " -> date: " << to_iso_extended_string(this->date) << std::endl;
+    std::cout << " -> date: " << calendar::to_iso_extended_string(this->date) << std::endl;
 #endif
   }
 
   std::string Entry::getDateStr() const noexcept
   {
-    using gregorian::to_iso_extended_string;
-    return to_iso_extended_string(this->date);
+    return calendar::to_iso_extended_string(this->date);
   }
 
   void Entry::setRevenue(const std::float_t _revenue) noexcept
@@ -225,8 +219,7 @@ namespace Wallet
 
   void Entry::calcBalance() noexcept
   {
-    //this->balance = this->revenue - this->balance;
-    this->balance = this->revenue - std::abs(this->expense);
+    this->balance = this->revenue + this->expense;
   }
 
   std::float_t Entry::getBalance() const noexcept

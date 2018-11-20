@@ -7,7 +7,7 @@ set(PROJECT_COPYRIGHT "Copyright (C) 2018 Christian Mayer <https://fox21.at>")
 set(CMAKE_CXX_FLAGS "-Wall -Wshadow")
 set(CMAKE_CXX_FLAGS_DEBUG "-g -O0 -DDEBUG -Wno-unused-variable -fsanitize=address")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG -Wunused-variable")
-set(CMAKE_CXX_FLAGS_TEST "${CMAKE_CXX_FLAGS_DEBUG}")
+set(CMAKE_CXX_FLAGS_TEST "-g -O0 -DDEBUG -Wno-unused-variable")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
 
 # Set minimum C++ to 2017 standards.
@@ -69,21 +69,38 @@ target_include_directories(wallet PRIVATE ${Boost_INCLUDE_DIRS})
 target_link_libraries(wallet ${Boost_LIBRARIES} ${YAML_CPP_LIBRARIES})
 
 # Test Target
-if(CMAKE_BUILD_TYPE)
+string(TOLOWER "${CMAKE_BUILD_TYPE}" CMAKE_BUILD_TYPE_LOWER)
+if(CMAKE_BUILD_TYPE_LOWER STREQUAL "test")
     add_executable(test
-        src/app/test.cpp)
+        src/app/test.cpp
+        src/test/entry_test.hpp
+        src/components.cpp src/components.hpp
+        src/class/entry.cpp src/class/entry.hpp)
     target_include_directories(test PRIVATE ${PROJECT_SOURCE_DIR}/src)
     target_link_libraries(test Catch2::Catch2)
+    target_compile_features(test PRIVATE
+        cxx_noexcept
+        cxx_constexpr
+        cxx_final
+        cxx_deleted_functions
+        cxx_override)
+    get_target_property(test_std test CXX_STANDARD)
+    target_include_directories(test PRIVATE ${Boost_INCLUDE_DIRS})
+    target_link_libraries(test ${Boost_LIBRARIES} ${YAML_CPP_LIBRARIES})
 endif()
 
 # Wallet Install
 install(TARGETS wallet RUNTIME DESTINATION /usr/local/bin)
 
+message(STATUS "CXX_STANDARD wallet ${wallet_std}")
+message(STATUS "CXX_STANDARD test ${test_std}")
 message(STATUS "CMAKE_CXX_COMPILER ${CMAKE_CXX_COMPILER}")
-message(STATUS "CXX_STANDARD ${wallet_std}")
-message(STATUS "CMAKE_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX}")
 message(STATUS "CMAKE_CURRENT_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}")
+message(STATUS "CMAKE_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX}")
+
 message(STATUS "YAML_CPP_INCLUDE_DIR ${YAML_CPP_INCLUDE_DIR}")
 message(STATUS "YAML_CPP_LIBRARIES ${YAML_CPP_LIBRARIES}")
+
 message(STATUS "Catch2_HEADER_DIR ${Catch2_HEADER_DIR}")
+
 message(STATUS "Boost_INCLUDE_DIRS ${Boost_INCLUDE_DIRS}")

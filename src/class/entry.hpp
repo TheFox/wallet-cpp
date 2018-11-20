@@ -8,7 +8,7 @@
 #ifdef __has_include
 #  if __has_include(<boost/date_time/gregorian/gregorian.hpp>)
 #    include <boost/date_time/gregorian/gregorian.hpp>
-namespace gregorian = boost::gregorian;
+namespace calendar = boost::gregorian;
 #  else
 #    error "Missing <boost/date_time/gregorian/gregorian.hpp>"
 #  endif
@@ -74,7 +74,7 @@ namespace Wallet
     // Variables
     std::string id{};
     std::string title{};
-    gregorian::date date{};
+    calendar::date date{};
     std::float_t revenue{};
     std::float_t expense{};
     std::float_t balance{};
