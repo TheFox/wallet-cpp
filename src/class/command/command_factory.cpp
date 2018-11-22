@@ -45,7 +45,7 @@ namespace Wallet
     };
   }
 
-  std::unique_ptr<Command> CommandFactory::getCommand(const std::string& _name) const
+  std::unique_ptr<Command> CommandFactory::makeCommand(const std::string& _name) const
   {
     auto fn = creators[_name];
     if (fn == nullptr) {

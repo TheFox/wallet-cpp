@@ -48,14 +48,14 @@ add_executable(wallet
     src/components.cpp src/components.hpp
     src/class/mutable_wallet.cpp src/class/mutable_wallet.hpp
     src/class/immutable_wallet.cpp src/class/immutable_wallet.cpp
-    src/class/command_options.cpp src/class/command_options.hpp
-    src/class/command_factory.cpp src/class/command_factory.hpp
-    src/class/command.cpp src/class/command.hpp
-    src/class/help_command.cpp src/class/help_command.hpp
-    src/class/add_command.cpp src/class/add_command.hpp
-    src/class/init_command.cpp src/class/init_command.hpp
-    src/class/html_command.cpp src/class/html_command.hpp
-    src/class/list_command.cpp src/class/list_command.hpp
+    src/class/command/command_options.cpp src/class/command/command_options.hpp
+    src/class/command/command_factory.cpp src/class/command/command_factory.hpp
+    src/class/command/command.cpp src/class/command/command.hpp
+    src/class/command/help_command.cpp src/class/command/help_command.hpp
+    src/class/command/add_command.cpp src/class/command/add_command.hpp
+    src/class/command/init_command.cpp src/class/command/init_command.hpp
+    src/class/command/html_command.cpp src/class/command/html_command.hpp
+    src/class/command/list_command.cpp src/class/command/list_command.hpp
     src/class/entry.cpp src/class/entry.hpp)
 target_include_directories(wallet PRIVATE ${PROJECT_SOURCE_DIR}/src)
 target_compile_features(wallet PRIVATE

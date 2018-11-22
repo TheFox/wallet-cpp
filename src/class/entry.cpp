@@ -39,37 +39,35 @@ namespace Wallet
     this->date = day_clock::local_day();
   }
 
-  Entry::Entry(const CommandOptions& commandOptions) noexcept : Entry()
+  Entry::Entry(const CommandOptions& options) noexcept : Entry()
   {
 #ifdef DEBUG
-    printf(" -> Entry::Entry(%p, CommandOptions %p)\n", this, &commandOptions);
+    printf(" -> Entry::Entry(%p, CommandOptions %p)\n", this, &options);
 #endif
 
     // ID
-    if (commandOptions.id.empty()) {
+    if (options.id.empty()) {
       this->generateRandomId();
     } else {
-      this->setId(commandOptions.id);
+      this->id = options.id;
     }
 
     // Title
-    if (!commandOptions.title.empty()) {
-      this->setTitle(commandOptions.title);
-    }
+    this->title = options.title;
 
     // Date
-    if (!commandOptions.date.empty()) {
-      this->setDate(commandOptions.date);
+    if (!options.date.empty()) {
+      this->setDate(options.date);
     }
 #ifdef DEBUG
     std::cout << " -> set date " << this->date << std::endl;
 #endif
 
     // Revenue
-    this->setRevenue(commandOptions.revenue);
+    this->revenue = options.revenue;
 
     // Expense
-    this->setExpense(commandOptions.expense);
+    this->expense = options.expense;
 
     // Balance
     this->calcBalance();
@@ -78,14 +76,10 @@ namespace Wallet
 #endif
 
     // Category
-    if (!commandOptions.category.empty()) {
-      this->setCategory(commandOptions.category);
-    }
+    this->category = options.category;
 
     // Comment
-    if (!commandOptions.comment.empty()) {
-      this->setComment(commandOptions.comment);
-    }
+    this->comment = options.comment;
   }
 
   Entry::~Entry() noexcept
@@ -93,26 +87,6 @@ namespace Wallet
 #ifdef DEBUG
     printf(" -> Entry::~Entry(%p)\n", this);
 #endif
-  }
-
-  void Entry::setId(std::string _id) noexcept
-  {
-    this->id = std::move(_id);
-  }
-
-  std::string Entry::getId() const noexcept
-  {
-    return this->id;
-  }
-
-  void Entry::setTitle(std::string _title) noexcept
-  {
-    this->title = std::move(_title);
-  }
-
-  std::string Entry::getTitle() const noexcept
-  {
-    return this->title;
   }
 
   void Entry::setDate(const std::string _dateStr)
@@ -197,26 +171,6 @@ namespace Wallet
     return calendar::to_iso_extended_string(this->date);
   }
 
-  void Entry::setRevenue(const std::float_t _revenue) noexcept
-  {
-    this->revenue = _revenue;
-  }
-
-  std::float_t Entry::getRevenue() const noexcept
-  {
-    return this->revenue;
-  }
-
-  void Entry::setExpense(const std::float_t _expense) noexcept
-  {
-    this->expense = -std::abs(_expense);
-  }
-
-  std::float_t Entry::getExpense() const noexcept
-  {
-    return this->expense;
-  }
-
   void Entry::calcBalance() noexcept
   {
     this->balance = this->revenue + this->expense;
@@ -225,26 +179,6 @@ namespace Wallet
   std::float_t Entry::getBalance() const noexcept
   {
     return this->balance;
-  }
-
-  void Entry::setCategory(std::string _category) noexcept
-  {
-    this->category = std::move(_category);
-  }
-
-  std::string Entry::getCategory() const noexcept
-  {
-    return this->category;
-  }
-
-  void Entry::setComment(std::string _comment) noexcept
-  {
-    this->comment = std::move(_comment);
-  }
-
-  std::string Entry::getComment() const noexcept
-  {
-    return this->comment;
   }
 
   void Entry::generateRandomId() noexcept

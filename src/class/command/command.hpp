@@ -12,10 +12,7 @@ namespace Wallet
     Command() noexcept;
     virtual ~Command() = 0;
     virtual int execute() = 0;
-    void setOptions(CommandOptions) noexcept;
-
-  protected:
-    CommandOptions commandOptions{};
+    CommandOptions options{};
   };
 } // Wallet Namespace
 

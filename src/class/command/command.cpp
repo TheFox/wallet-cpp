@@ -7,7 +7,7 @@
 
 namespace Wallet
 {
-  Command::Command() noexcept : commandOptions({})
+  Command::Command() noexcept : options({})
   {
 #ifdef DEBUG
     printf(" -> Command::Command(%p)\n", this);
@@ -19,11 +19,6 @@ namespace Wallet
 #ifdef DEBUG
     printf(" -> Command::~Command(%p)\n", this);
 #endif
-  }
-
-  void Command::setOptions(const CommandOptions _commandOptions) noexcept
-  {
-    this->commandOptions = _commandOptions;
   }
 
   int Command::execute()

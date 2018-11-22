@@ -15,7 +15,7 @@ namespace Wallet
   {
   public:
     static void setup() noexcept;
-    std::unique_ptr<Command> getCommand(const std::string&) const;
+    std::unique_ptr<Command> makeCommand(const std::string&) const;
 
   private:
     static bool isSetup;

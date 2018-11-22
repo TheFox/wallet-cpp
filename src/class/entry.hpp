@@ -14,7 +14,7 @@ namespace calendar = boost::gregorian;
 #  endif
 #endif // __has_include
 
-#include "command_options.hpp"
+#include "command/command_options.hpp"
 
 namespace Wallet
 {
@@ -31,36 +31,30 @@ namespace Wallet
     ~Entry() noexcept;
 
     // Parameter: ID
-    void setId(std::string) noexcept;
-    std::string getId() const noexcept;
+    std::string id{};
 
     // Parameter: Title
-    void setTitle(std::string) noexcept;
-    std::string getTitle() const noexcept;
+    std::string title{};
 
     // Parameter: Date
     void setDate(std::string);
     std::string getDateStr() const noexcept;
 
     // Parameter: Revenue
-    void setRevenue(std::float_t) noexcept;
-    std::float_t getRevenue() const noexcept;
+    std::float_t revenue{};
 
     // Parameter: Expense
-    void setExpense(std::float_t) noexcept;
-    std::float_t getExpense() const noexcept;
+    std::float_t expense{};
 
     // Parameter: Balance
     void calcBalance() noexcept;
     std::float_t getBalance() const noexcept;
 
     // Parameter: Category
-    void setCategory(std::string) noexcept;
-    std::string getCategory() const noexcept;
+    std::string category{};
 
     // Parameter: Comment
-    void setComment(std::string) noexcept;
-    std::string getComment() const noexcept;
+    std::string comment{};
 
     // Functions
     void generateRandomId() noexcept;
@@ -72,14 +66,8 @@ namespace Wallet
 
   private:
     // Variables
-    std::string id{};
-    std::string title{};
     calendar::date date{};
-    std::float_t revenue{};
-    std::float_t expense{};
     std::float_t balance{};
-    std::string category{};
-    std::string comment{};
   };
 } // Wallet Namespace
 

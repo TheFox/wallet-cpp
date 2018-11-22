@@ -17,9 +17,9 @@ namespace bpo = boost::program_options;
 #endif // __has_include
 
 #include "config.hpp"
-#include "../class/command_options.hpp"
-#include "../class/command_factory.hpp"
-#include "../class/command.hpp"
+#include "../class/command/command_options.hpp"
+#include "../class/command/command_factory.hpp"
+#include "../class/command/command.hpp"
 #include "../components.hpp"
 
 int main(int argc, char* const argv[])
@@ -176,8 +176,8 @@ int main(int argc, char* const argv[])
   CommandFactory factory;
 
   try {
-    auto command = factory.getCommand(commandName);
-    command->setOptions(cmdOpts);
+    auto command = factory.makeCommand(commandName);
+    command->options = cmdOpts;
     return command->execute();
   }
   catch (const string& e) {

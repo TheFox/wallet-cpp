@@ -45,15 +45,8 @@ namespace Wallet
 
   bool MutableWallet::add(const Entry entry, const bool isUnique)
   {
-    using std::cout;
-    using std::endl;
-    using std::string;
-    using std::ofstream;
-    using fs::path;
-    using fs::exists;
     using YAML::Node;
     using YAML::NodeType;
-    using YAML::LoadFile;
 
 #ifdef DEBUG
     printf(" -> MutableWallet::add(%p, u=%c)\n", &entry, isUnique ? 'Y' : 'N');
@@ -65,7 +58,7 @@ namespace Wallet
     }
 
     this->isIndexModified = true;
-    this->index["index"].push_back(entry.getId());
+    this->index["index"].push_back(entry.id);
 
     // Month File
     const auto monthFile = entry.getFileName();
@@ -76,13 +69,13 @@ namespace Wallet
     const auto now = Components::getNowStr();
 
     Node month;
-    if (exists(monthFilePathStr)) {
+    if (fs::exists(monthFilePathStr)) {
 #ifdef DEBUG
       printf(" -> load month file: %s\n", monthFilePathStr.c_str());
 #endif
 
       // Load YAML file.
-      month = LoadFile(monthFilePathStr);
+      month = YAML::LoadFile(monthFilePathStr);
 
       // Update file version.
       const auto version = month["meta"]["version"].as<int>();
@@ -112,7 +105,7 @@ namespace Wallet
     }
 
     // Create day sequence.
-    const string dayStr = entry.getDateStr();
+    const std::string dayStr = entry.getDateStr();
     if (!month["days"][dayStr]) {
 #ifdef DEBUG
       printf(" -> create new day: %s\n", entry.getDateStr().c_str());
@@ -126,7 +119,7 @@ namespace Wallet
     month["days"][dayStr].push_back(node);
 
     // Save Month file.
-    ofstream fout(monthFilePathStr);
+    std::ofstream fout(monthFilePathStr);
     fout << month;
     fout.close();
 
@@ -151,7 +144,6 @@ namespace Wallet
     using std::endl;
     using std::ofstream;
     using fs::exists;
-    using fs::remove;
     using fs::path;
     using fs::create_directories;
 
@@ -189,7 +181,7 @@ namespace Wallet
     // Remove old tmp/.gitignore file.
     const path oldGitignoreFile = this->tmpPath / ".gitignore";
     if (exists(oldGitignoreFile)) {
-      remove(oldGitignoreFile);
+      fs::remove(oldGitignoreFile);
     }
   }
 
@@ -199,20 +191,17 @@ namespace Wallet
     printf(" -> MutableWallet::createLock\n");
 #endif
 
-    using fs::exists;
-    using std::ofstream;
-
     // Already locked.
     if (this->isLocked) {
       return;
     }
 
-    if (exists(this->lockPath)) {
+    if (fs::exists(this->lockPath)) {
       throw std::string{"Wallet is locked."};
     }
 
     // Create lock file.
-    ofstream lockFh(this->lockPath.string());
+    std::ofstream lockFh(this->lockPath.string());
     lockFh << "locked";
     lockFh.close();
 
@@ -225,17 +214,14 @@ namespace Wallet
     printf(" -> MutableWallet::removeLock\n");
 #endif
 
-    using fs::exists;
-    using fs::remove;
-
     if (!this->isLocked) {
       return;
     }
 
     // Remove lock file.
     const auto _lockPath = this->lockPath.string();
-    if (exists(_lockPath)) {
-      remove(_lockPath);
+    if (fs::exists(_lockPath)) {
+      fs::remove(_lockPath);
     }
 
     this->isLocked = false;
@@ -247,15 +233,12 @@ namespace Wallet
     printf(" -> MutableWallet::loadIndex\n");
 #endif
 
-    using std::ifstream;
-    using fs::exists;
-
     if (this->isIndexLoaded) {
       return;
     }
     this->isIndexLoaded = true;
 
-    if (exists(this->indexPath)) {
+    if (fs::exists(this->indexPath)) {
       // Load YAML file.
       this->index = YAML::LoadFile(this->indexPath.string());
     } else {
@@ -283,15 +266,13 @@ namespace Wallet
     printf(" -> MutableWallet::saveIndex\n");
 #endif
 
-    using std::ofstream;
-
     // Skip function when nothing has been changed.
     if (!this->isIndexModified) {
       return;
     }
     this->isIndexModified = false;
 
-    ofstream fout(this->indexPath.string());
+    std::ofstream fout(this->indexPath.string());
     fout << this->index;
     fout.close();
   }
@@ -305,19 +286,13 @@ namespace Wallet
     printf(" -> MutableWallet::entryExists\n");
 #endif
 
-    using std::find_if;
-    using std::begin;
-    using std::end;
-    using std::string;
-
     this->loadIndex();
 
-    const string id = entry.getId();
     const auto _b = this->index["index"].begin();
     const auto _e = this->index["index"].end();
 
-    auto it = find_if(_b, _e, [&](const auto& item) {
-      return item.template as<string>() == id;
+    auto it = std::find_if(_b, _e, [&](const auto& item) {
+      return item.template as<std::string>() == entry.id;
     });
 
     return it != _e;

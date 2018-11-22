@@ -34,8 +34,8 @@ TEST_CASE("Test Entry", "[entry]"){
   }
 
   SECTION("Expense"){
-    entry.setExpense(1.234);
-    REQUIRE(entry.getExpense() == -1.234f);
+    entry.expense = 1.234;
+    REQUIRE(entry.expense == -1.234f);
     REQUIRE(entry.getBalance() == 0.0f);
 
     entry.calcBalance();
@@ -43,8 +43,8 @@ TEST_CASE("Test Entry", "[entry]"){
   }
 
   SECTION("Revenue"){
-    entry.setRevenue(2.345);
-    REQUIRE(entry.getRevenue() == 2.345f);
+    entry.revenue = 2.345;
+    REQUIRE(entry.revenue == 2.345f);
     REQUIRE(entry.getBalance() == 0.0f);
 
     entry.calcBalance();
@@ -54,8 +54,8 @@ TEST_CASE("Test Entry", "[entry]"){
   SECTION("Balance1"){
     REQUIRE(entry.getBalance() == 0.0);
 
-    entry.setRevenue(2.5);
-    entry.setExpense(1.23);
+    entry.revenue = 2.5;
+    entry.expense = 1.23;
     entry.calcBalance();
     REQUIRE(entry.getBalance() == 1.27f);
   }
@@ -63,8 +63,8 @@ TEST_CASE("Test Entry", "[entry]"){
   SECTION("Balance2"){
     REQUIRE(entry.getBalance() == 0.0);
 
-    entry.setRevenue(2.5);
-    entry.setExpense(3);
+    entry.revenue = 2.5;
+    entry.expense = 3;
     entry.calcBalance();
     REQUIRE(entry.getBalance() == -0.5f);
   }
