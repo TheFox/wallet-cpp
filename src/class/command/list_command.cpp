@@ -8,6 +8,7 @@ namespace Wallet
   {
     ImmutableWallet wallet{this->options.walletPath};
     wallet.setup();
+    wallet.getEntries();
 
     return Command::execute();
   }

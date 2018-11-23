@@ -128,6 +128,14 @@ namespace Wallet
 
   void MutableWallet::getEntries() const noexcept
   {
+#ifdef DEBUG
+    printf(" -> MutableWallet::getEntries()\n");
+#endif
+
+    //fs::directory_iterator dir()
+    for (auto& p : fs::directory_iterator(this->dataPath)) {
+      std::cout << "   -> file: " << p << std::endl;
+    }
   }
 
   void MutableWallet::setupVariables() noexcept
