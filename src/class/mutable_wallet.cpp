@@ -126,6 +126,10 @@ namespace Wallet
     return true;
   }
 
+  void MutableWallet::getEntries() const noexcept
+  {
+  }
+
   void MutableWallet::setupVariables() noexcept
   {
     this->dataPath = this->path / "data";

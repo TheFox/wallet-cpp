@@ -41,6 +41,10 @@ namespace Wallet
     virtual void setup();
     void setup(bool);
     virtual bool add(Entry, bool);
+    void getEntries() const noexcept;
+    void getEntries(u_int) const noexcept; // Year
+    void getEntries(u_int, u_int) const noexcept; // Year, Month
+    void getEntries(u_int, u_int, u_int) const noexcept; // Year, Month, Day
 
   protected:
     // Variables
