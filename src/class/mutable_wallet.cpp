@@ -126,15 +126,29 @@ namespace Wallet
     return true;
   }
 
-  void MutableWallet::getEntries() const noexcept
+  void MutableWallet::getEntries() const
   {
 #ifdef DEBUG
     printf(" -> MutableWallet::getEntries()\n");
 #endif
 
     //fs::directory_iterator dir()
-    for (auto& p : fs::directory_iterator(this->dataPath)) {
-      std::cout << "   -> file: " << p << std::endl;
+    if (!fs::exists(this->dataPath))
+      throw std::string{"Wallet does not exists."};
+
+    for (auto& directoryItem : fs::directory_iterator(this->dataPath)) {
+      auto filePath = directoryItem.path();
+      auto fileStr = filePath.string();
+
+      if (filePath.filename().string().substr(0, 6) != "month_"
+        || fileStr.substr(fileStr.size() - 4) != ".yml")
+        continue;
+
+      std::cout << "   -> file: " << directoryItem.path()
+        << " '" << filePath.filename().string().substr(0, 6) << "'"
+        << std::endl;
+
+      auto yaml = YAML::LoadFile(fileStr);
     }
   }
 
