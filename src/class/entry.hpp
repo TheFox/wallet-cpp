@@ -41,13 +41,14 @@ namespace Wallet
     std::string getDateStr() const noexcept;
 
     // Parameter: Revenue
-    std::float_t revenue{};
+    void setRevenue(std::float_t);
+    std::float_t getRevenue();
 
     // Parameter: Expense
-    std::float_t expense{};
+    void setExpense(std::float_t);
+    std::float_t getExpense();
 
     // Parameter: Balance
-    void calcBalance() noexcept;
     std::float_t getBalance() const noexcept;
 
     // Parameter: Category
@@ -67,7 +68,13 @@ namespace Wallet
   private:
     // Variables
     calendar::date date{};
+    std::float_t revenue{};
+    std::float_t expense{};
     std::float_t balance{};
+    bool balanceNeedsUpdate = false;
+
+    // Functions
+    void calcBalance() noexcept;
   };
 } // Wallet Namespace
 

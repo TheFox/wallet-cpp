@@ -171,9 +171,24 @@ namespace Wallet
     return calendar::to_iso_extended_string(this->date);
   }
 
-  void Entry::calcBalance() noexcept
+  void Entry::setRevenue(std::float_t _revenue)
   {
-    this->balance = this->revenue + this->expense;
+    this->revenue = _revenue;
+    this->calcBalance();
+  }
+
+  std::float_t Entry::getRevenue(){
+    return this->revenue;
+  }
+
+  void Entry::setExpense(std::float_t _expense)
+  {
+    this->expense = -std::abs(_expense);
+    this->calcBalance();
+  }
+
+  std::float_t Entry::getExpense(){
+    return this->expense;
   }
 
   std::float_t Entry::getBalance() const noexcept
@@ -234,5 +249,10 @@ namespace Wallet
     node["comment"] = this->comment;
 
     return node;
+  }
+
+  void Entry::calcBalance() noexcept
+  {
+    this->balance = this->revenue + this->expense;
   }
 } // Wallet Namespace
