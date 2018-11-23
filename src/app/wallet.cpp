@@ -55,9 +55,10 @@ int main(int argc, char* const argv[])
                ("wallet,w", value<string>()->value_name("path"), "Path to the wallet directory.");
 
   // Common options
-  //options_description commonOpts("Common options");
-  //commonOpts.add_options()
-  //            ;
+  options_description commonOpts("Common options");
+  commonOpts.add_options()
+              ("date,d", value<string>()->value_name("string"), "Set or filter by Date. (Format: YYYY-MM-DD)")
+              ("category,c", value<string>()->value_name("string"), "Set or filter by Category.");
 
   // Add Command options
   options_description addCmdOpts("Add Command options");
@@ -65,28 +66,27 @@ int main(int argc, char* const argv[])
               ("id", value<string>()->value_name("string"), "Set a unique ID.")
               ("title,t", value<string>()->value_name("string"), "Set a Title.")
               ("message,m", value<string>()->value_name("string"), "Alias for --title.")
-              ("date,d", value<string>()->value_name("string"), "Set a Date. (Format: YYYY-MM-DD)")
               ("revenue,r", value<string>()->value_name("number"), "Set a  Revenue.")
               ("expense,e", value<string>()->value_name("number"), "Set an Expense.")
-              ("category,c", value<string>()->value_name("string"), "Set a Category.")
+
               ("comment,o", value<string>()->value_name("string"), "Set a Comment.")
               ("interactive,i", "Use some commands interactively.")
               ("force,f", "Force add command. Even if ID is set and already exists.")
               ("no-force", "Do not force add command.");
 
   // List Command options
-  options_description listCmdOpts("List Command options");
-  listCmdOpts.add_options()
-              ("date,d", value<string>()->value_name("string"), "Filter by Date. (Format: [[[YYYY]-MM]-DD])")
-              ("category,c", value<string>()->value_name("string"), "Filter by Category.");
+  //options_description listCmdOpts("List Command options");
+  //listCmdOpts.add_options()
+  //            ("category,c", value<string>()->value_name("string"), "Filter by Category.");
 
   options_description opts;
   opts
     .add(commandOpts)
     .add(genericOpts)
-    //.add(commonOpts)
+    .add(commonOpts)
     .add(addCmdOpts)
-    .add(listCmdOpts);
+    //.add(listCmdOpts)
+    ;
 
   auto parsedOptions = bpo::command_line_parser(argc, argv)
     .options(opts)
@@ -120,9 +120,9 @@ int main(int argc, char* const argv[])
     cout << endl;
 
     cout << genericOpts << endl;
-    //cout << commonOpts << endl;
+    cout << commonOpts << endl;
     cout << addCmdOpts << endl;
-    cout << listCmdOpts << endl;
+    //cout << listCmdOpts << endl;
 
     return 3;
   }

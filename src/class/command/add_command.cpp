@@ -102,7 +102,7 @@ namespace Wallet
       //printf("input: %d %d\n", input, '\r');
 
       cout << endl;
-      if (input != 'Y' && input != 'y') {
+      if (input != 'Y' && input != 'y' && input != 13) {
         cout << "Aborted. Nothing done." << endl;
         return 0;
       }
