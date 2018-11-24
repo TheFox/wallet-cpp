@@ -22,7 +22,7 @@ namespace Wallet
 
   void listEntries(const MutableWallet::EntryMap& entries){
 #ifdef DEBUG
-    printf(" -> listEntries()\n");
+    printf(" -> listEntries() c=%lu\n", entries.size());
 #endif
   }
 } // Wallet Namespace

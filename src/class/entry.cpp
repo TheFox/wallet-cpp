@@ -88,14 +88,20 @@ namespace Wallet
     printf("   -> Entry::Entry(YAML::Node %p)\n", this);
 #endif
 
-    this->id = node["id"].as<decltype(this->id)>();
-    this->title = node["title"].as<decltype(this->title)>();
-    this->date = calendar::from_string(node["date"].as<std::string>());
+    if (node["id"].IsDefined()) {
+      this->id = node["id"].as<decltype(this->id)>();
+    }
+    if (node["title"].IsDefined()) {
+      this->title = node["title"].as<decltype(this->title)>();
+    }
+    if (node["date"].IsDefined()) {
+      this->date = calendar::from_string(node["date"].as<std::string>());
+    }
 
     std::cout << "   -> node: '"
-      << node["id"] << "' "
-      << this->date << ""
-      << std::endl;
+              << node["id"] << "' "
+              << this->date << ""
+              << std::endl;
   }
 
   Entry::~Entry() noexcept
