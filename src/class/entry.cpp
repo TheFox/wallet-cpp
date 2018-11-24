@@ -82,6 +82,22 @@ namespace Wallet
     this->comment = options.comment;
   }
 
+  Entry::Entry(const YAML::Node& node) noexcept
+  {
+#ifdef DEBUG
+    printf("   -> Entry::Entry(YAML::Node %p)\n", this);
+#endif
+
+    this->id = node["id"].as<decltype(this->id)>();
+    this->title = node["title"].as<decltype(this->title)>();
+    this->date = calendar::from_string(node["date"].as<std::string>());
+
+    std::cout << "   -> node: '"
+      << node["id"] << "' "
+      << this->date << ""
+      << std::endl;
+  }
+
   Entry::~Entry() noexcept
   {
 #ifdef DEBUG
@@ -177,7 +193,8 @@ namespace Wallet
     this->calcBalance();
   }
 
-  std::float_t Entry::getRevenue(){
+  std::float_t Entry::getRevenue()
+  {
     return this->revenue;
   }
 
@@ -187,7 +204,8 @@ namespace Wallet
     this->calcBalance();
   }
 
-  std::float_t Entry::getExpense(){
+  std::float_t Entry::getExpense()
+  {
     return this->expense;
   }
 

@@ -3,6 +3,7 @@
 #define WALLETCPP_MUTABLE_WALLET_HPP_
 
 #include <string>
+#include <vector>
 
 #ifdef __has_include
 #  if __has_include(<filesystem>)
@@ -22,15 +23,18 @@ namespace fs = boost::filesystem;
 #  endif
 #endif // __has_include
 
+#include "entry.hpp"
+
 #define WALLET_MONTH_FILE_VERSION 2
 
 namespace Wallet
 {
-  class Entry;
-
   class MutableWallet
   {
   public:
+    // Types
+    using EntryMap = std::map<std::string, std::vector<Entry>>;
+
     // Constructor
     explicit MutableWallet(std::string) noexcept;
 
@@ -41,10 +45,10 @@ namespace Wallet
     virtual void setup();
     void setup(bool);
     virtual bool add(Entry, bool);
-    void getEntries() const;
-    void getEntries(u_int) const; // Year
-    void getEntries(u_int, u_int) const; // Year, Month
-    void getEntries(u_int, u_int, u_int) const; // Year, Month, Day
+    EntryMap getEntries() const;
+    //void getEntries(u_int) const; // Year
+    //void getEntries(u_int, u_int) const; // Year, Month
+    //void getEntries(u_int, u_int, u_int) const; // Year, Month, Day
 
   protected:
     // Variables

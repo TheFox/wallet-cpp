@@ -126,30 +126,50 @@ namespace Wallet
     return true;
   }
 
-  void MutableWallet::getEntries() const
+  MutableWallet::EntryMap MutableWallet::getEntries() const
   {
 #ifdef DEBUG
     printf(" -> MutableWallet::getEntries()\n");
 #endif
 
-    //fs::directory_iterator dir()
-    if (!fs::exists(this->dataPath))
+    EntryMap map{};
+
+    if (!fs::exists(this->dataPath)) {
       throw std::string{"Wallet does not exists."};
+    }
 
     for (auto& directoryItem : fs::directory_iterator(this->dataPath)) {
-      auto filePath = directoryItem.path();
-      auto fileStr = filePath.string();
+      const auto& filePath = directoryItem.path();
+      const auto& fileStr = filePath.string();
 
       if (filePath.filename().string().substr(0, 6) != "month_"
-        || fileStr.substr(fileStr.size() - 4) != ".yml")
+        || fileStr.substr(fileStr.size() - 4) != ".yml") {
         continue;
+      }
 
+#ifdef DEBUG
       std::cout << "   -> file: " << directoryItem.path()
-        << " '" << filePath.filename().string().substr(0, 6) << "'"
-        << std::endl;
+                //<< " '" << filePath.filename().string().substr(0, 6) << "'"
+                << std::endl;
+#endif
 
       auto yaml = YAML::LoadFile(fileStr);
+      for (const auto& day : yaml["days"]) {
+        auto node = day.second;
+        std::cout << "     -> day: '" << day.first << "'" << std::endl;
+
+        auto& dayMap = map[day.first.as<std::string>()];
+
+        for (const auto& entryNode : node){
+          std::cout << "     -> entry: '" << entryNode["id"] << "'" << std::endl;
+
+          // emplace_back() is Nice!!
+          dayMap.emplace_back(entryNode);
+        }
+      }
     }
+
+    return map;
   }
 
   void MutableWallet::setupVariables() noexcept
