@@ -9,6 +9,7 @@
 #include "mutable_wallet.hpp"
 #include "entry.hpp"
 #include "../components.hpp"
+#include "entry_container.hpp"
 
 namespace Wallet
 {
@@ -126,13 +127,13 @@ namespace Wallet
     return true;
   }
 
-  MutableWallet::EntryMap MutableWallet::getEntries() const
+  EntryContainer MutableWallet::getEntries() const
   {
 #ifdef DEBUG
     printf(" -> MutableWallet::getEntries()\n");
 #endif
 
-    EntryMap map{};
+    EntryContainer container{};
 
     if (!fs::exists(this->dataPath)) {
       throw std::string{"Wallet does not exists."};
@@ -158,18 +159,23 @@ namespace Wallet
         auto node = day.second;
         std::cout << "     -> day: '" << day.first << "'" << std::endl;
 
-        auto& dayMap = map[day.first.as<std::string>()];
+        // Container
+        container.dayCount++;
+        auto& dayMap = container.entries[day.first.as<std::string>()];
 
-        for (const auto& entryNode : node){
+        for (const auto& entryNode : node) {
           std::cout << "     -> entry: '" << entryNode["id"] << "'" << std::endl;
 
           // emplace_back() is Nice!!
           dayMap.emplace_back(entryNode);
+
+          // Container
+          container.entryCount++;
         }
       }
     }
 
-    return map;
+    return container;
   }
 
   void MutableWallet::setupVariables() noexcept

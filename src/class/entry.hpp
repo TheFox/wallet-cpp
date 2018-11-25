@@ -47,12 +47,12 @@ namespace Wallet
     std::string getDateStr() const noexcept;
 
     // Parameter: Revenue
-    void setRevenue(std::float_t);
-    std::float_t getRevenue();
+    void setRevenue(std::float_t) noexcept;
+    std::float_t getRevenue() const noexcept;
 
     // Parameter: Expense
-    void setExpense(std::float_t);
-    std::float_t getExpense();
+    void setExpense(std::float_t) noexcept;
+    std::float_t getExpense() const noexcept;
 
     // Parameter: Balance
     std::float_t getBalance() const noexcept;
@@ -77,7 +77,6 @@ namespace Wallet
     std::float_t revenue{};
     std::float_t expense{};
     std::float_t balance{};
-    bool balanceNeedsUpdate = false;
 
     // Functions
     void calcBalance() noexcept;

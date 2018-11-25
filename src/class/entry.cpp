@@ -97,11 +97,28 @@ namespace Wallet
     if (node["date"].IsDefined()) {
       this->date = calendar::from_string(node["date"].as<std::string>());
     }
+    if (node["revenue"].IsDefined()) {
+      this->revenue = node["revenue"].as<decltype(this->revenue)>();
+    }
+    if (node["expense"].IsDefined()) {
+      this->expense = node["expense"].as<decltype(this->expense)>();
+    }
+    if (node["balance"].IsDefined()) {
+      this->balance = node["balance"].as<decltype(this->balance)>();
+    }
+    if (node["category"].IsDefined()) {
+      this->category = node["category"].as<decltype(this->category)>();
+    }
+    if (node["comment"].IsDefined()) {
+      this->comment = node["comment"].as<decltype(this->comment)>();
+    }
 
+#ifdef DEBUG
     std::cout << "   -> node: '"
               << node["id"] << "' "
               << this->date << ""
               << std::endl;
+#endif
   }
 
   Entry::~Entry() noexcept
@@ -193,24 +210,24 @@ namespace Wallet
     return calendar::to_iso_extended_string(this->date);
   }
 
-  void Entry::setRevenue(std::float_t _revenue)
+  void Entry::setRevenue(std::float_t _revenue) noexcept
   {
     this->revenue = _revenue;
     this->calcBalance();
   }
 
-  std::float_t Entry::getRevenue()
+  std::float_t Entry::getRevenue() const noexcept
   {
     return this->revenue;
   }
 
-  void Entry::setExpense(std::float_t _expense)
+  void Entry::setExpense(std::float_t _expense) noexcept
   {
     this->expense = -std::abs(_expense);
     this->calcBalance();
   }
 
-  std::float_t Entry::getExpense()
+  std::float_t Entry::getExpense() const noexcept
   {
     return this->expense;
   }

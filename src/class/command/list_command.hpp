@@ -3,7 +3,7 @@
 #define WALLETCPP_LIST_COMMAND_HPP_
 
 #include "command.hpp"
-#include "../mutable_wallet.hpp"
+#include "../entry_container.hpp"
 
 namespace Wallet
 {
@@ -13,7 +13,7 @@ namespace Wallet
     int execute() override;
   };
 
-  void listEntries(const MutableWallet::EntryMap&);
+  void listEntries(const EntryContainer&);
 } // Wallet Namespace
 
 #endif // WALLETCPP_LIST_COMMAND_HPP_
