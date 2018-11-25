@@ -3,7 +3,6 @@
 ## Dependencies
 
 - [CMake](https://cmake.org/)
-- [Ninja build system](https://ninja-build.org/)
 - [Boost](https://www.boost.org/)
 - [yaml-cpp](https://github.com/jbeder/yaml-cpp)
 
