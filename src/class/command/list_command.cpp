@@ -3,8 +3,11 @@
 #include <cstdio>
 #endif
 
+#include <sstream>
+
 #include "list_command.hpp"
 #include "../immutable_wallet.hpp"
+#include "../../components.hpp"
 
 namespace Wallet
 {
@@ -13,7 +16,24 @@ namespace Wallet
     ImmutableWallet wallet{this->options.walletPath};
     wallet.setup();
 
-    const auto entries = wallet.getEntries();
+    EntryContainer entries{};
+
+    auto date = Components::parseDate(this->options.date);
+    if (0 == date.year && 0 == date.month && 0 == date.day) {
+      entries = wallet.getEntries();
+    }
+    else if (0 != date.year && 0 == date.month && 0 == date.day) {
+      // YYYY
+      entries = wallet.getEntries(date.year);
+    }
+    else if (0 != date.year && 0 != date.month && 0 == date.day) {
+      // YYYY-MM
+      entries = wallet.getEntries(date.year, date.month);
+    }
+    else {
+      // YYYY-MM-DD (and MM-DD and DD)
+      entries = wallet.getEntries(date.year, date.month, date.day);
+    }
 
     listEntries(entries);
 
@@ -40,24 +60,23 @@ namespace Wallet
     // Header
     cout
       << string(countLenSize, '#')
-      << " Date          Revenue    Expense    Balance"
+      << " Date          Revenue    Expense    Balance   Title"
       << endl;
 
     // Entries
     u_int count{0};
     for (const auto& dayPair : container.entries) {
-      //cout << "day" << endl;
-
       for (const auto& entry : dayPair.second) {
         ++count;
 
-        // Entry
+        // Print Entry
         cout
           << setw(countLenInt) << left << count
           << ' ' << entry.getDateStr()
-          << ' ' << setw(10) << right << entry.getRevenue()
-          << ' ' << setw(10) << right << entry.getExpense()
-          << ' ' << setw(10) << right << entry.getBalance()
+          << ' ' << setw(10) << right << entry.getRevenueStr()
+          << ' ' << setw(10) << right << entry.getExpenseStr()
+          << ' ' << setw(10) << right << entry.getBalanceStr()
+          << "   " << entry.title
           << endl;
       }
     }

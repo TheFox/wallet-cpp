@@ -6,6 +6,7 @@
 
 #include <sstream>
 #include <string_view>
+#include <iomanip> // setprecision
 
 #ifdef __has_include
 #  if __has_include(<yaml-cpp/yaml.h>)
@@ -84,10 +85,6 @@ namespace Wallet
 
   Entry::Entry(const YAML::Node& node) noexcept
   {
-#ifdef DEBUG
-    printf("   -> Entry::Entry(YAML::Node %p)\n", this);
-#endif
-
     if (node["id"].IsDefined()) {
       this->id = node["id"].as<decltype(this->id)>();
     }
@@ -112,20 +109,6 @@ namespace Wallet
     if (node["comment"].IsDefined()) {
       this->comment = node["comment"].as<decltype(this->comment)>();
     }
-
-#ifdef DEBUG
-    std::cout << "   -> node: '"
-              << node["id"] << "' "
-              << this->date << ""
-              << std::endl;
-#endif
-  }
-
-  Entry::~Entry() noexcept
-  {
-#ifdef DEBUG
-    printf(" -> Entry::~Entry(%p)\n", this);
-#endif
   }
 
   void Entry::setDate(const std::string _dateStr)
@@ -221,6 +204,15 @@ namespace Wallet
     return this->revenue;
   }
 
+  std::string Entry::getRevenueStr() const noexcept
+  {
+    std::stringstream ss;
+    if (this->revenue > 0.0) {
+      ss << std::fixed << std::setprecision(2) << this->revenue;
+    }
+    return ss.str();
+  }
+
   void Entry::setExpense(std::float_t _expense) noexcept
   {
     this->expense = -std::abs(_expense);
@@ -232,9 +224,27 @@ namespace Wallet
     return this->expense;
   }
 
+  std::string Entry::getExpenseStr() const noexcept
+  {
+    std::stringstream ss;
+    if (this->expense < 0.0) {
+      ss << std::fixed << std::setprecision(2) << this->expense;
+    }
+    return ss.str();
+  }
+
   std::float_t Entry::getBalance() const noexcept
   {
     return this->balance;
+  }
+
+  std::string Entry::getBalanceStr() const noexcept
+  {
+    std::stringstream ss;
+    if (this->balance != 0.0) {
+      ss << std::fixed << std::setprecision(2) << this->balance;
+    }
+    return ss.str();
   }
 
   void Entry::generateRandomId() noexcept

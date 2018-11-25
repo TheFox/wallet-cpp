@@ -2,7 +2,7 @@
 #include <locale>
 #include <sstream>
 #include <string>
-#include <iomanip>
+#include <iomanip> // setprecision
 
 #ifdef __has_include
 #  if __has_include(<boost/date_time/local_time/local_time.hpp>)
@@ -21,7 +21,7 @@
 
 namespace Wallet::Components
 {
-  std::string getNowStr()
+  std::string getNowStr() noexcept
   {
     auto tfacet = std::make_unique<boost::posix_time::time_facet>(DATETIME_FORMAT);
     const std::locale loc(std::cout.getloc(), tfacet.release());
@@ -40,7 +40,7 @@ namespace Wallet::Components
 #endif
   }
 
-  std::string ftos(const std::float_t& _f, const int _p)
+  std::string ftos(const std::float_t& _f, const int _p) noexcept
   {
     using std::fixed;
     using std::setprecision;
@@ -56,9 +56,65 @@ namespace Wallet::Components
 #endif
   }
 
-  std::float_t stof(std::string _s)
+  std::float_t stof(std::string _s) noexcept
   {
     std::replace(_s.begin(), _s.end(), ',', '.');
     return std::stof(_s);
+  }
+
+  /**
+   * @link https://www.fluentcpp.com/2017/04/21/how-to-split-a-string-in-c/
+   */
+  Date parseDate(const std::string& _s) noexcept
+  {
+    using Tokenz = std::vector<std::uint16_t>;
+
+    // String Items
+    Tokenz tokens;
+    std::string token;
+    std::istringstream tokenStream(_s);
+    while (std::getline(tokenStream, token, '-')) {
+      tokens.push_back(static_cast<Tokenz::value_type>(std::stoi(token)));
+    }
+
+    Date ymd{0, 0, 0};
+    switch (tokens.size()) {
+      case 1:
+        if (tokens.at(0) < 2001) {
+          // Now
+          const auto now = boost::posix_time::second_clock::universal_time();
+
+          ymd.year = now.date().year();
+          ymd.month = now.date().month();
+          ymd.day = tokens.at(0);
+          break;
+        }
+        ymd.year = tokens.at(0);
+        break;
+
+      case 2:
+        if (tokens.at(0) >= 2001) {
+          ymd.year = tokens.at(0);
+          ymd.month = tokens.at(1);
+        } else {
+          // Now
+          const auto now = boost::posix_time::second_clock::universal_time();
+
+          ymd.year = now.date().year();
+          ymd.month = tokens.at(0);
+          ymd.day = tokens.at(1);
+        }
+        break;
+
+      case 3:
+        ymd.year = tokens.at(0);
+        ymd.month = tokens.at(1);
+        ymd.day = tokens.at(2);
+        break;
+
+      default:
+        break;
+    }
+    return ymd;
   }
 }

@@ -44,9 +44,9 @@ namespace Wallet
     void setup(bool);
     virtual bool add(Entry, bool);
     EntryContainer getEntries() const;
-    //void getEntries(u_int) const; // Year
-    //void getEntries(u_int, u_int) const; // Year, Month
-    //void getEntries(u_int, u_int, u_int) const; // Year, Month, Day
+    EntryContainer getEntries(std::uint16_t) const; // Year
+    EntryContainer getEntries(std::uint16_t, std::uint16_t) const; // Year, Month
+    EntryContainer getEntries(std::uint16_t, std::uint16_t, std::uint16_t) const; // Year, Month, Day
 
   protected:
     // Variables

@@ -33,9 +33,6 @@ namespace Wallet
     Entry(const CommandOptions&) noexcept;
     Entry(const YAML::Node&) noexcept;
 
-    // Destructor
-    ~Entry() noexcept;
-
     // Parameter: ID
     std::string id{};
 
@@ -49,13 +46,16 @@ namespace Wallet
     // Parameter: Revenue
     void setRevenue(std::float_t) noexcept;
     std::float_t getRevenue() const noexcept;
+    std::string getRevenueStr() const noexcept;
 
     // Parameter: Expense
     void setExpense(std::float_t) noexcept;
     std::float_t getExpense() const noexcept;
+    std::string getExpenseStr() const noexcept;
 
     // Parameter: Balance
     std::float_t getBalance() const noexcept;
+    std::string getBalanceStr() const noexcept;
 
     // Parameter: Category
     std::string category{};

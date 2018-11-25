@@ -142,30 +142,206 @@ namespace Wallet
     for (auto& directoryItem : fs::directory_iterator(this->dataPath)) {
       const auto& filePath = directoryItem.path();
       const auto& fileStr = filePath.string();
+      const auto fileNameStr = filePath.filename().string();
 
-      if (filePath.filename().string().substr(0, 6) != "month_"
+      if (fileNameStr.length() < 17
+        || fileNameStr.substr(0, 6) != "month_"
         || fileStr.substr(fileStr.size() - 4) != ".yml") {
         continue;
       }
 
-#ifdef DEBUG
-      std::cout << "   -> file: " << directoryItem.path()
-                //<< " '" << filePath.filename().string().substr(0, 6) << "'"
-                << std::endl;
-#endif
-
       auto yaml = YAML::LoadFile(fileStr);
       for (const auto& day : yaml["days"]) {
         auto node = day.second;
-        std::cout << "     -> day: '" << day.first << "'" << std::endl;
 
         // Container
         container.dayCount++;
         auto& dayMap = container.entries[day.first.as<std::string>()];
 
         for (const auto& entryNode : node) {
-          std::cout << "     -> entry: '" << entryNode["id"] << "'" << std::endl;
+          // emplace_back() is Nice!!
+          dayMap.emplace_back(entryNode);
 
+          // Container
+          container.entryCount++;
+        }
+      }
+    }
+
+    return container;
+  }
+
+  EntryContainer MutableWallet::getEntries(const std::uint16_t year) const
+  {
+#ifdef DEBUG
+    printf(" -> MutableWallet::getEntries(%d)\n", year);
+#endif
+
+    EntryContainer container{};
+
+    if (!fs::exists(this->dataPath)) {
+      throw std::string{"Wallet does not exists."};
+    }
+
+    for (auto& directoryItem : fs::directory_iterator(this->dataPath)) {
+      const auto& filePath = directoryItem.path();
+      const auto& fileStr = filePath.string();
+      const auto fileNameStr = filePath.filename().string();
+
+      if (fileNameStr.length() < 17
+        || fileNameStr.substr(0, 6) != "month_"
+        || fileStr.substr(fileStr.size() - 4) != ".yml") {
+        continue;
+      }
+
+#ifdef DEBUG
+      std::cout << "str " << '>' << fileNameStr << "< " << fileNameStr.length() << std::endl;
+      std::cout << "0-6 " << '>' << fileNameStr.substr(0, 6) << '<' << std::endl;
+      std::cout << "6-10 " << '>' << fileNameStr.substr(6, 4) << '<' << std::endl;
+      std::cout << "11-13 " << '>' << fileNameStr.substr(11, 2) << '<' << std::endl;
+      std::cout << std::endl;
+#endif
+
+      // Filter Year/Month.
+      const auto filePathYearInt = static_cast<decltype(year)>(std::stoi(fileNameStr.substr(6, 4)));
+      if (filePathYearInt != year) {
+        continue;
+      }
+
+      auto yaml = YAML::LoadFile(fileStr);
+      for (const auto& day : yaml["days"]) {
+        auto node = day.second;
+
+        // Container
+        container.dayCount++;
+        auto& dayMap = container.entries[day.first.as<std::string>()];
+
+        for (const auto& entryNode : node) {
+          // emplace_back() is Nice!!
+          dayMap.emplace_back(entryNode);
+
+          // Container
+          container.entryCount++;
+        }
+      }
+    }
+
+    return container;
+  }
+
+  EntryContainer MutableWallet::getEntries(const std::uint16_t year, const std::uint16_t month) const
+  {
+#ifdef DEBUG
+    printf(" -> MutableWallet::getEntries(%d, %d)\n", year, month);
+#endif
+
+    EntryContainer container{};
+
+    if (!fs::exists(this->dataPath)) {
+      throw std::string{"Wallet does not exists."};
+    }
+
+    for (auto& directoryItem : fs::directory_iterator(this->dataPath)) {
+      const auto& filePath = directoryItem.path();
+      const auto& fileStr = filePath.string();
+      const auto fileNameStr = filePath.filename().string();
+
+      if (fileNameStr.length() < 17
+        || fileNameStr.substr(0, 6) != "month_"
+        || fileStr.substr(fileStr.size() - 4) != ".yml") {
+        continue;
+      }
+
+#ifdef DEBUG
+      std::cout << "str " << '>' << fileNameStr << "< " << fileNameStr.length() << std::endl;
+      std::cout << "0-6 " << '>' << fileNameStr.substr(0, 6) << '<' << std::endl;
+      std::cout << "6-10 " << '>' << fileNameStr.substr(6, 4) << '<' << std::endl;
+      std::cout << "11-13 " << '>' << fileNameStr.substr(11, 2) << '<' << std::endl;
+      std::cout << std::endl;
+#endif
+
+      // Filter Year/Month.
+      const auto filePathYearInt = static_cast<decltype(year)>(std::stoi(fileNameStr.substr(6, 4)));
+      const auto filePathMonthInt = static_cast<decltype(month)>(std::stoi(fileNameStr.substr(11, 2)));
+      if (filePathYearInt != year || filePathMonthInt != month) {
+        continue;
+      }
+
+      auto yaml = YAML::LoadFile(fileStr);
+      for (const auto& day : yaml["days"]) {
+        auto node = day.second;
+
+        // Container
+        container.dayCount++;
+        auto& dayMap = container.entries[day.first.as<std::string>()];
+
+        for (const auto& entryNode : node) {
+          // emplace_back() is Nice!!
+          dayMap.emplace_back(entryNode);
+
+          // Container
+          container.entryCount++;
+        }
+      }
+    }
+
+    return container;
+  }
+
+  EntryContainer MutableWallet::getEntries(const std::uint16_t year, const std::uint16_t month,
+                                           const std::uint16_t day) const
+  {
+#ifdef DEBUG
+    printf(" -> MutableWallet::getEntries(%d, %d, %d)\n", year, month, day);
+#endif
+
+    EntryContainer container{};
+
+    if (!fs::exists(this->dataPath)) {
+      throw std::string{"Wallet does not exists."};
+    }
+
+    for (auto& directoryItem : fs::directory_iterator(this->dataPath)) {
+      const auto& filePath = directoryItem.path();
+      const auto& fileStr = filePath.string();
+      const auto fileNameStr = filePath.filename().string();
+
+      if (fileNameStr.length() < 17
+        || fileNameStr.substr(0, 6) != "month_"
+        || fileStr.substr(fileStr.size() - 4) != ".yml") {
+        continue;
+      }
+
+#ifdef DEBUG
+      std::cout << "str " << '>' << fileNameStr << "< " << fileNameStr.length() << std::endl;
+      std::cout << "0-6 " << '>' << fileNameStr.substr(0, 6) << '<' << std::endl;
+      std::cout << "6-10 " << '>' << fileNameStr.substr(6, 4) << '<' << std::endl;
+      std::cout << "11-13 " << '>' << fileNameStr.substr(11, 2) << '<' << std::endl;
+      std::cout << std::endl;
+#endif
+
+      // Filter Year/Month.
+      const auto filePathYearInt = static_cast<decltype(year)>(std::stoi(fileNameStr.substr(6, 4)));
+      const auto filePathMonthInt = static_cast<decltype(month)>(std::stoi(fileNameStr.substr(11, 2)));
+      if (filePathYearInt != year || filePathMonthInt != month) {
+        continue;
+      }
+
+      auto yaml = YAML::LoadFile(fileStr);
+      for (const auto& dayNode : yaml["days"]) {
+        const auto node = dayNode.second;
+        const auto dayStr = dayNode.first.as<std::string>();
+        const auto parsedDay = Components::parseDate(dayStr);
+
+        if (parsedDay.day != day) {
+          continue;
+        }
+
+        // Container
+        container.dayCount++;
+        auto& dayMap = container.entries[dayStr];
+
+        for (const auto& entryNode : node) {
           // emplace_back() is Nice!!
           dayMap.emplace_back(entryNode);
 
