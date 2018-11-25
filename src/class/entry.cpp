@@ -117,27 +117,28 @@ namespace Wallet
     printf(" -> Entry::setDate(%s)\n", _dateStr.c_str());
 #endif
 
+    using std::string_view;
     using calendar::date;
     using calendar::days;
     using calendar::day_clock;
     using std::string_view_literals::operator ""sv;
 
     // Yesterday
-    constexpr std::string_view yesterdayStr = "yesterday"sv;
+    constexpr string_view yesterdayStr = "yesterday"sv;
     bool isYesterday = false;
     if (_dateStr.length() <= yesterdayStr.length()) {
       isYesterday = yesterdayStr.substr(0, _dateStr.length()) == _dateStr;
     }
 
     // Now
-    constexpr std::string_view nowStr = "now"sv;
+    constexpr string_view nowStr = "now"sv;
     bool isNow = false;
     if (_dateStr.length() <= nowStr.length()) {
       isNow = nowStr.substr(0, _dateStr.length()) == _dateStr;
     }
 
     // Tomorrow
-    constexpr std::string_view tomorrowStr = "tomorrow"sv;
+    constexpr string_view tomorrowStr = "tomorrow"sv;
     bool isTomorrow = false;
     if (!isYesterday && _dateStr.length() <= tomorrowStr.length()) {
       isTomorrow = tomorrowStr.substr(0, _dateStr.length()) == _dateStr;
@@ -193,13 +194,13 @@ namespace Wallet
     return calendar::to_iso_extended_string(this->date);
   }
 
-  void Entry::setRevenue(std::float_t _revenue) noexcept
+  void Entry::setRevenue(Entry::Number _revenue) noexcept
   {
     this->revenue = _revenue;
     this->calcBalance();
   }
 
-  std::float_t Entry::getRevenue() const noexcept
+  Entry::Number Entry::getRevenue() const noexcept
   {
     return this->revenue;
   }
@@ -213,13 +214,13 @@ namespace Wallet
     return ss.str();
   }
 
-  void Entry::setExpense(std::float_t _expense) noexcept
+  void Entry::setExpense(Entry::Number _expense) noexcept
   {
     this->expense = -std::abs(_expense);
     this->calcBalance();
   }
 
-  std::float_t Entry::getExpense() const noexcept
+  Entry::Number Entry::getExpense() const noexcept
   {
     return this->expense;
   }
@@ -233,7 +234,7 @@ namespace Wallet
     return ss.str();
   }
 
-  std::float_t Entry::getBalance() const noexcept
+  Entry::Number Entry::getBalance() const noexcept
   {
     return this->balance;
   }

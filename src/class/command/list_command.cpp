@@ -4,9 +4,11 @@
 #endif
 
 #include <sstream>
+#include <iomanip> // setprecision
 
 #include "list_command.hpp"
 #include "../immutable_wallet.hpp"
+#include "../entry.hpp"
 #include "../../components.hpp"
 
 namespace Wallet
@@ -16,25 +18,8 @@ namespace Wallet
     ImmutableWallet wallet{this->options.walletPath};
     wallet.setup();
 
-    EntryContainer entries{};
-
-    auto date = Components::parseDate(this->options.date);
-    if (0 == date.year && 0 == date.month && 0 == date.day) {
-      entries = wallet.getEntries();
-    }
-    else if (0 != date.year && 0 == date.month && 0 == date.day) {
-      // YYYY
-      entries = wallet.getEntries(date.year);
-    }
-    else if (0 != date.year && 0 != date.month && 0 == date.day) {
-      // YYYY-MM
-      entries = wallet.getEntries(date.year, date.month);
-    }
-    else {
-      // YYYY-MM-DD (and MM-DD and DD)
-      entries = wallet.getEntries(date.year, date.month, date.day);
-    }
-
+    const auto date = Components::parseDate(this->options.date);
+    const EntryContainer entries = wallet.getEntries(date);
     listEntries(entries);
 
     return Command::execute();
@@ -52,6 +37,11 @@ namespace Wallet
 #ifdef DEBUG
     printf(" -> listEntries() c=%lu\n", container.entryCount);
 #endif
+
+    if (container.entryCount == 0) {
+      cout << "No entries found." << endl;
+      return;
+    }
 
     auto _countLen = std::log10(container.entryCount) + 1;
     auto countLenSize = static_cast<const std::size_t>(_countLen);
@@ -80,5 +70,16 @@ namespace Wallet
           << endl;
       }
     }
+
+    // Total
+    cout
+      << endl
+      << string(countLenSize, ' ')
+      << "           "
+      << ' ' << setw(10) << right << std::fixed << std::setprecision(2) << container.revenue
+      << ' ' << setw(10) << right << std::fixed << std::setprecision(2) << container.expense
+      << ' ' << setw(10) << right << std::fixed << std::setprecision(2) << container.balance
+      << "   Total"
+      << endl;
   }
 } // Wallet Namespace

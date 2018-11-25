@@ -15,9 +15,13 @@ namespace Wallet
     using EntryMap = std::map<std::string, std::vector<Entry>>;
 
     // Properties
-    std::size_t dayCount;
-    std::size_t entryCount;
-    EntryMap entries;
+    std::size_t dayCount{};
+    std::size_t entryCount{};
+    EntryMap entries{};
+
+    Entry::Number revenue{};
+    Entry::Number expense{};
+    Entry::Number balance{};
   };
 } // Wallet Namespace
 

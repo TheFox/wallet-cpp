@@ -26,6 +26,9 @@ namespace Wallet
   class Entry final
   {
   public:
+    // Types
+    using Number = std::float_t;
+
     // Constructor
     Entry() noexcept;
 
@@ -44,17 +47,17 @@ namespace Wallet
     std::string getDateStr() const noexcept;
 
     // Parameter: Revenue
-    void setRevenue(std::float_t) noexcept;
-    std::float_t getRevenue() const noexcept;
+    void setRevenue(Number) noexcept;
+    Number getRevenue() const noexcept;
     std::string getRevenueStr() const noexcept;
 
     // Parameter: Expense
-    void setExpense(std::float_t) noexcept;
-    std::float_t getExpense() const noexcept;
+    void setExpense(Number) noexcept;
+    Number getExpense() const noexcept;
     std::string getExpenseStr() const noexcept;
 
     // Parameter: Balance
-    std::float_t getBalance() const noexcept;
+    Number getBalance() const noexcept;
     std::string getBalanceStr() const noexcept;
 
     // Parameter: Category
@@ -74,9 +77,9 @@ namespace Wallet
   private:
     // Variables
     calendar::date date{};
-    std::float_t revenue{};
-    std::float_t expense{};
-    std::float_t balance{};
+    Number revenue{};
+    Number expense{};
+    Number balance{};
 
     // Functions
     void calcBalance() noexcept;

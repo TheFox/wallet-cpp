@@ -25,6 +25,7 @@ namespace fs = boost::filesystem;
 
 #include "entry.hpp"
 #include "entry_container.hpp"
+#include "../components.hpp"
 
 #define WALLET_MONTH_FILE_VERSION 2
 
@@ -43,10 +44,7 @@ namespace Wallet
     virtual void setup();
     void setup(bool);
     virtual bool add(Entry, bool);
-    EntryContainer getEntries() const;
-    EntryContainer getEntries(std::uint16_t) const; // Year
-    EntryContainer getEntries(std::uint16_t, std::uint16_t) const; // Year, Month
-    EntryContainer getEntries(std::uint16_t, std::uint16_t, std::uint16_t) const; // Year, Month, Day
+    EntryContainer getEntries(Components::Date) const;
 
   protected:
     // Variables
