@@ -4,6 +4,7 @@
 
 #include <string>
 #include <cmath>
+#include <optional>
 
 namespace Wallet
 {
@@ -20,6 +21,9 @@ namespace Wallet
     std::float_t expense{};
     std::string category{"default"};
     std::string comment{};
+
+    // HTML Command
+    std::optional<std::string> path{};
 
     // Status
     bool isInteractively{};

@@ -74,10 +74,10 @@ int main(int argc, char* const argv[])
               ("force,f", "Force add command. Even if ID is set and already exists.")
               ("no-force", "Do not force add command.");
 
-  // List Command options
-  //options_description listCmdOpts("List Command options");
-  //listCmdOpts.add_options()
-  //            ("category,c", value<string>()->value_name("string"), "Filter by Category.");
+  // HTML Command options
+  options_description htmlCmdOpts("HTML Command options");
+  htmlCmdOpts.add_options()
+               ("path,p", value<string>()->value_name("string"), "Output path. Default: <wallet>/html");
 
   options_description opts;
   opts
@@ -85,8 +85,7 @@ int main(int argc, char* const argv[])
     .add(genericOpts)
     .add(commonOpts)
     .add(addCmdOpts)
-    //.add(listCmdOpts)
-    ;
+    .add(htmlCmdOpts);
 
   auto parsedOptions = bpo::command_line_parser(argc, argv)
     .options(opts)
@@ -117,12 +116,13 @@ int main(int argc, char* const argv[])
     cout << "  init   Initialize a new wallet" << endl;
     cout << "  add    Add a new entry" << endl;
     cout << "  list   List entries" << endl;
+    cout << "  html   Generate HTML output" << endl;
     cout << endl;
 
     cout << genericOpts << endl;
     cout << commonOpts << endl;
     cout << addCmdOpts << endl;
-    //cout << listCmdOpts << endl;
+    cout << htmlCmdOpts << endl;
 
     return 3;
   }
@@ -169,6 +169,9 @@ int main(int argc, char* const argv[])
   }
   if (vm.count("no-force")) {
     cmdOpts.isForced = false;
+  }
+  if (vm.count("path")) {
+    cmdOpts.path = vm["path"].as<decltype(cmdOpts.path)>();
   }
 
   // Command Factory

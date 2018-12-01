@@ -9,6 +9,8 @@ namespace Wallet
     ImmutableWallet wallet{this->options.walletPath};
     wallet.setup();
 
+    wallet.htmlOutput(this->options.path);
+
     return Command::execute();
   }
 } // Wallet Namespace

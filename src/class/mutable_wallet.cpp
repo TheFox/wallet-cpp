@@ -196,7 +196,7 @@ namespace Wallet
 
         for (const auto& entryNode : node) {
           // emplace_back() is Nice!!
-          auto entry = dayMap.emplace_back(entryNode);
+          const auto entry = dayMap.emplace_back(entryNode);
 
           // Container
           container.entryCount++;
@@ -208,6 +208,13 @@ namespace Wallet
     }
 
     return container;
+  }
+
+  void MutableWallet::htmlOutput(const std::optional<std::string>& _path) const noexcept
+  {
+#ifdef DEBUG
+    printf(" -> MutableWallet::htmlOutput('%s')\n", _path.has_value() ? _path.value().c_str() : "");
+#endif
   }
 
   void MutableWallet::setupVariables() noexcept
@@ -259,6 +266,7 @@ namespace Wallet
       ofstream gitignoreFh;
       gitignoreFh.open(gitignoreFile.string(), ofstream::out);
       gitignoreFh << "/tmp/" << '\n';
+      gitignoreFh << "/html/" << '\n';
       gitignoreFh.close();
     }
 
