@@ -46,6 +46,10 @@ namespace Wallet
     virtual bool add(Entry, bool);
     EntryContainer getEntries(Components::Date) const;
     void htmlOutput(const std::optional<std::string>&) const noexcept;
+  private:
+    void htmlOutputMonth(const EntryContainer::MonthMap&) const noexcept;
+    void htmlOutputDay(const EntryContainer::DayMap&) const noexcept;
+    void htmlOutputEntries(const EntryContainer::EntryVec&) const noexcept;
 
   protected:
     // Variables

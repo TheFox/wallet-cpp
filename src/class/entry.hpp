@@ -36,6 +36,9 @@ namespace Wallet
     Entry(const CommandOptions&) noexcept;
     Entry(const YAML::Node&) noexcept;
 
+    // Destructor
+    ~Entry() noexcept;
+
     // Parameter: ID
     std::string id{};
 

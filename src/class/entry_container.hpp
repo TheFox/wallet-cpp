@@ -4,6 +4,7 @@
 
 #include <string>
 #include <map>
+#include <cstdint>
 
 #include "entry.hpp"
 
@@ -12,12 +13,17 @@ namespace Wallet
   struct EntryContainer
   {
     // Types
-    using EntryMap = std::map<std::string, std::vector<Entry>>;
+    using EntryVec = std::vector<Entry>;
+    using EntryMap = std::map<std::string, EntryVec>;
+    using DayMap = std::map<std::uint8_t, EntryVec>;
+    using MonthMap = std::map<std::uint8_t, DayMap>;
+    using YearMap = std::map<std::uint16_t, MonthMap>;
 
     // Properties
     std::size_t dayCount{};
     std::size_t entryCount{};
-    EntryMap entries{};
+    [[deprecated]] EntryMap entries{};
+    YearMap years{};
 
     Entry::Number revenue{};
     Entry::Number expense{};

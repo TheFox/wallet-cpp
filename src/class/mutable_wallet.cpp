@@ -5,6 +5,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <cstdint>
 
 #include "mutable_wallet.hpp"
 #include "entry.hpp"
@@ -154,14 +155,6 @@ namespace Wallet
         continue;
       }
 
-#ifdef DEBUG
-      std::cout << "str " << '>' << fileNameStr << "< " << fileNameStr.length() << std::endl;
-      std::cout << "0-6 " << '>' << fileNameStr.substr(0, 6) << '<' << std::endl;
-      std::cout << "6-10 " << '>' << fileNameStr.substr(6, 4) << '<' << std::endl;
-      std::cout << "11-13 " << '>' << fileNameStr.substr(11, 2) << '<' << std::endl;
-      std::cout << std::endl;
-#endif
-
       // Filter Year.
       if (hasYear) {
         const auto filePathYearInt = static_cast<decltype(date.year)>(std::stoi(fileNameStr.substr(6, 4)));
@@ -180,8 +173,11 @@ namespace Wallet
 
       auto yaml = YAML::LoadFile(fileStr);
       for (const auto& dayNode : yaml["days"]) {
-        const auto node = dayNode.second;
         const auto dayStr = dayNode.first.as<std::string>();
+        const auto year = static_cast<std::uint16_t>(std::stoi(dayStr.substr(0, 4)));
+        const auto month = static_cast<std::uint8_t>(std::stoi(dayStr.substr(5, 2)));
+        const auto day = static_cast<std::uint8_t>(std::stoi(dayStr.substr(8)));
+        const auto node = dayNode.second;
 
         if (hasDay) {
           const auto parsedDay = Components::parseDate(dayStr);
@@ -192,10 +188,14 @@ namespace Wallet
 
         // Container
         container.dayCount++;
-        auto& dayMap = container.entries[dayStr];
+        //auto& dayMap = container.entries[dayStr];
+        auto& yearMap = container.years[year];
+        auto& monthMap = yearMap[month];
+        auto& dayMap = monthMap[day];
 
         for (const auto& entryNode : node) {
           // emplace_back() is Nice!!
+          container.entries[dayStr].emplace_back(entryNode);
           const auto entry = dayMap.emplace_back(entryNode);
 
           // Container
@@ -215,6 +215,56 @@ namespace Wallet
 #ifdef DEBUG
     printf(" -> MutableWallet::htmlOutput('%s')\n", _path.has_value() ? _path.value().c_str() : "");
 #endif
+
+    auto container = this->getEntries({0, 0, 0});
+
+    for (const auto& yearPair : container.years) {
+#ifdef DEBUG
+      std::cout << "year pair" << std::endl;
+#endif
+      this->htmlOutputMonth(yearPair.second);
+    }
+  }
+
+  void MutableWallet::htmlOutputMonth(const EntryContainer::MonthMap& monthMap) const noexcept
+  {
+#ifdef DEBUG
+    printf(" -> MutableWallet::htmlOutputMonth()\n");
+#endif
+
+    for (const auto& monthPair : monthMap) {
+#ifdef DEBUG
+      std::cout << "month pair" << std::endl;
+#endif
+      this->htmlOutputDay(monthPair.second);
+    }
+  }
+
+  void MutableWallet::htmlOutputDay(const EntryContainer::DayMap& dayMap) const noexcept
+  {
+#ifdef DEBUG
+    printf(" -> MutableWallet::htmlOutputDay()\n");
+#endif
+
+    for (const auto& dayPair : dayMap) {
+#ifdef DEBUG
+      std::cout << "day pair" << std::endl;
+#endif
+
+      this->htmlOutputEntries(dayPair.second);
+    }
+  }
+
+  void MutableWallet::htmlOutputEntries(const EntryContainer::EntryVec& entries) const noexcept{
+#ifdef DEBUG
+    printf(" -> MutableWallet::htmlOutputEntry()\n");
+#endif
+
+    for (const auto& entry:entries) {
+#ifdef DEBUG
+      std::cout << "entry " << entry.id << std::endl;
+#endif
+    }
   }
 
   void MutableWallet::setupVariables() noexcept
@@ -270,7 +320,7 @@ namespace Wallet
       iVersionFh.close();
     }
 
-    if (this->version>oldVersion) {
+    if (this->version > oldVersion) {
       ofstream oVersionFh;
       oVersionFh.open(versionFile.string(), ofstream::out);
       oVersionFh << this->version;

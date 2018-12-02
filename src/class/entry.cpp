@@ -85,6 +85,10 @@ namespace Wallet
 
   Entry::Entry(const YAML::Node& node) noexcept
   {
+#ifdef DEBUG
+    printf(" -> Entry::Entry(%p, YAML::Node)\n", this);
+#endif
+
     if (node["id"].IsDefined()) {
       this->id = node["id"].as<decltype(this->id)>();
     }
@@ -109,6 +113,12 @@ namespace Wallet
     if (node["comment"].IsDefined()) {
       this->comment = node["comment"].as<decltype(this->comment)>();
     }
+  }
+
+  Entry::~Entry() noexcept{
+#ifdef DEBUG
+    printf(" -> Entry::~Entry(%p)\n", this);
+#endif
   }
 
   void Entry::setDate(const std::string _dateStr)
