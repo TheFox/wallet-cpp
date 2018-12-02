@@ -79,8 +79,8 @@ namespace Wallet
       month = YAML::LoadFile(monthFilePathStr);
 
       // Update file version.
-      const auto version = month["meta"]["version"].as<int>();
-      if (version == 1) {
+      const auto _version = month["meta"]["version"].as<int>();
+      if (_version == 1) {
         month["meta"]["version"] = WALLET_MONTH_FILE_VERSION;
       }
 
@@ -234,6 +234,7 @@ namespace Wallet
     using std::cout;
     using std::endl;
     using std::ofstream;
+    using std::ifstream;
     using fs::exists;
     using fs::path;
     using fs::create_directories;
@@ -258,6 +259,22 @@ namespace Wallet
     // Make tmp/ directory.
     if (!exists(this->tmpPath)) {
       create_directories(this->tmpPath);
+    }
+
+    const path versionFile = this->path / "version";
+    ifstream iVersionFh;
+    decltype(this->version) oldVersion{0};
+    if (exists(versionFile)) {
+      iVersionFh.open(versionFile.string(), ofstream::in);
+      iVersionFh >> oldVersion;
+      iVersionFh.close();
+    }
+
+    if (this->version>oldVersion) {
+      ofstream oVersionFh;
+      oVersionFh.open(versionFile.string(), ofstream::out);
+      oVersionFh << this->version;
+      oVersionFh.close();
     }
 
     // Create main .gitignore file.

@@ -61,6 +61,7 @@ namespace Wallet
 
   private:
     // Variables
+    u_int8_t version{1};
     bool isLocked{};
     bool isIndexLoaded{};
     bool isIndexModified{};
