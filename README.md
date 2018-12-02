@@ -19,6 +19,8 @@ brew install boost yaml-cpp
 
 ## Build from Source
 
+You need a modern C++ compiler that supports C++17 and CMake 3.7 or later.
+
 This will only build the binary.
 
 ```bash
