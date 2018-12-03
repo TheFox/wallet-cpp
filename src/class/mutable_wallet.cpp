@@ -236,14 +236,18 @@ namespace Wallet
     // Output: index.html
     std::ofstream indexFh;
     indexFh.open((this->htmlPath/"index.html").string(),std::ofstream::out);
+    indexFh << "<html><body>";
 
     for (const auto& yearPair : container.years) {
 #ifdef DEBUG
       std::cout << "year pair: " << yearPair.first << std::endl;
 #endif
       this->htmlOutputMonth(yearPair.second);
+
+      indexFh << "<p>" << yearPair.first << "</p>";
     }
 
+    indexFh << "</body></html>";
     indexFh.close();
   }
 
