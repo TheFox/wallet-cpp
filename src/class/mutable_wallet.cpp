@@ -212,18 +212,39 @@ namespace Wallet
 
   void MutableWallet::htmlOutput(const std::optional<std::string>& _path) const noexcept
   {
+    using fs::create_directories;
+    using fs::exists;
+
 #ifdef DEBUG
     printf(" -> MutableWallet::htmlOutput('%s')\n", _path.has_value() ? _path.value().c_str() : "");
 #endif
 
     auto container = this->getEntries({0, 0, 0});
 
+    if (_path.has_value()) {
+      this->htmlPath = _path.value();
+    } else {
+      this->htmlPath = this->path / "html";
+    }
+
+    // Directory
+    if (!exists(this->htmlPath)) {
+      create_directories(this->htmlPath);
+      create_directories(this->htmlPath/"year");
+    }
+
+    // Output: index.html
+    std::ofstream indexFh;
+    indexFh.open((this->htmlPath/"index.html").string(),std::ofstream::out);
+
     for (const auto& yearPair : container.years) {
 #ifdef DEBUG
-      std::cout << "year pair" << std::endl;
+      std::cout << "year pair: " << yearPair.first << std::endl;
 #endif
       this->htmlOutputMonth(yearPair.second);
     }
+
+    indexFh.close();
   }
 
   void MutableWallet::htmlOutputMonth(const EntryContainer::MonthMap& monthMap) const noexcept
@@ -255,7 +276,8 @@ namespace Wallet
     }
   }
 
-  void MutableWallet::htmlOutputEntries(const EntryContainer::EntryVec& entries) const noexcept{
+  void MutableWallet::htmlOutputEntries(const EntryContainer::EntryVec& entries) const noexcept
+  {
 #ifdef DEBUG
     printf(" -> MutableWallet::htmlOutputEntry()\n");
 #endif

@@ -55,6 +55,7 @@ namespace Wallet
     // Variables
     const fs::path path{};
     fs::path dataPath{};
+    mutable fs::path htmlPath{};
     fs::path indexPath{};
     fs::path tmpPath{};
     fs::path lockPath{};

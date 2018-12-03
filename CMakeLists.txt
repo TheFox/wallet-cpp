@@ -20,8 +20,6 @@ configure_file(
     NEWLINE_STYLE LF)
 include_directories("${CMAKE_CURRENT_BINARY_DIR}/src")
 
-include(ExternalProject)
-
 # Term Color
 find_package(termcolor QUIET)
 
@@ -97,6 +95,7 @@ message(STATUS "CXX_STANDARD wallet ${wallet_std}")
 message(STATUS "CXX_STANDARD test ${test_std}")
 message(STATUS "CMAKE_CXX_COMPILER ${CMAKE_CXX_COMPILER}")
 message(STATUS "CMAKE_CXX_COMPILER_LAUNCHER ${CMAKE_CXX_COMPILER_LAUNCHER}")
+message(STATUS "PROJECT_SOURCE_DIR ${PROJECT_SOURCE_DIR}")
 message(STATUS "CMAKE_CURRENT_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}")
 message(STATUS "CMAKE_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX}")
 

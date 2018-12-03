@@ -171,7 +171,7 @@ int main(int argc, char* const argv[])
     cmdOpts.isForced = false;
   }
   if (vm.count("path")) {
-    cmdOpts.path = vm["path"].as<decltype(cmdOpts.path)>();
+    cmdOpts.path = vm["path"].as<string>();
   }
 
   // Command Factory
