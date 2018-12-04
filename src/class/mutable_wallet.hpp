@@ -16,6 +16,15 @@ namespace fs = boost::filesystem;
 #  else
 #    error "Missing <filesystem>"
 #  endif
+#  if __has_include(<optional>)
+#    include <optional>
+#  elif __has_include(<experimental/optional>)
+#    include <experimental/optional>
+#  elif __has_include(<boost/optional.hpp>)
+#    include <boost/optional.hpp>
+#  else
+#    error "Missing <optional>"
+#  endif
 #  if __has_include(<yaml-cpp/yaml.h>)
 #    include <yaml-cpp/yaml.h>
 #  else
@@ -45,7 +54,8 @@ namespace Wallet
     void setup(bool);
     virtual bool add(Entry, bool);
     EntryContainer getEntries(Components::Date) const;
-    void htmlOutput(const std::optional<std::string>&) const noexcept;
+    // void htmlOutput(const std::optional<std::string>&) const noexcept;
+    void htmlOutput(const std::string&) const noexcept;
   private:
     void htmlOutputMonth(const EntryContainer::MonthMap&) const noexcept;
     void htmlOutputDay(const EntryContainer::DayMap&) const noexcept;

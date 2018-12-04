@@ -210,19 +210,23 @@ namespace Wallet
     return container;
   }
 
-  void MutableWallet::htmlOutput(const std::optional<std::string>& _path) const noexcept
+  // void MutableWallet::htmlOutput(const std::optional<std::string>& _path) const noexcept
+  void MutableWallet::htmlOutput(const std::string& _path) const noexcept
   {
     using fs::create_directories;
     using fs::exists;
 
 #ifdef DEBUG
-    printf(" -> MutableWallet::htmlOutput('%s')\n", _path.has_value() ? _path.value().c_str() : "");
+    printf(" -> MutableWallet::htmlOutput()\n");
+    // printf(" -> MutableWallet::htmlOutput('%s')\n", _path.has_value() ? _path.value().c_str() : "");
 #endif
 
     auto container = this->getEntries({0, 0, 0});
 
-    if (_path.has_value()) {
-      this->htmlPath = _path.value();
+    // if (_path.has_value()) {
+    //   this->htmlPath = _path.value();
+    if (_path.size() > 0) {
+      this->htmlPath = _path;
     } else {
       this->htmlPath = this->path / "html";
     }

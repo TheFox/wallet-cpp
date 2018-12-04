@@ -33,6 +33,18 @@ int main(int argc, char* const argv[])
   using Wallet::CommandFactory;
   using Wallet::CommandOptions;
 
+#ifdef __has_include
+#  if __has_include(<optional>)
+puts("__has_include(<optional>)");
+#  elif __has_include(<experimental/optional>)
+puts("include <experimental/optional>")
+#  elif __has_include(<boost/optional.hpp>)
+puts("include <boost/optional.hpp>")
+#  else
+puts("Missing <optional>")
+#  endif
+#endif
+
 #ifdef DEBUG
   puts("--- DEBUG ---");
   puts("");
