@@ -5,6 +5,7 @@
 
 #include <sstream>
 #include <iomanip> // setprecision
+#include <cstddef>
 
 #include "list_command.hpp"
 #include "../immutable_wallet.hpp"
@@ -19,13 +20,12 @@ namespace Wallet
     wallet.setup();
 
     const auto date = Components::parseDate(this->options.date);
-    const EntryContainer entries = wallet.getEntries(date);
-    listEntries(entries);
+    listEntries(wallet.getEntries(date));
 
     return Command::execute();
   }
 
-  void listEntries(const EntryContainer& container)
+  void listEntries(const Container::EntryContainer& container)
   {
     using std::string;
     using std::cout;
@@ -54,9 +54,11 @@ namespace Wallet
       << endl;
 
     // Entries
-    u_int count{0};
-    for (const auto& dayPair : container.entries) {
-      for (const auto& entry : dayPair.second) {
+    std::size_t count{0};
+    for (const auto& yearPair : container.years) {
+      for (const auto& monthPair : yearPair.second.months)
+      for (const auto& dayPair : monthPair.second.days)
+      for (const auto& entry : dayPair.second.entries) {
         ++count;
 
         // Print Entry

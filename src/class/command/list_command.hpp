@@ -13,7 +13,7 @@ namespace Wallet
     int execute() override;
   };
 
-  void listEntries(const EntryContainer&);
+  void listEntries(const Container::EntryContainer&);
 } // Wallet Namespace
 
 #endif // WALLETCPP_LIST_COMMAND_HPP_

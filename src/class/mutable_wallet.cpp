@@ -188,21 +188,48 @@ namespace Wallet
 
         // Container
         container.dayCount++;
-        //auto& dayMap = container.entries[dayStr];
-        //auto& yearMap = container.years[year];
-        //auto& monthMap = yearMap[month];
-        //auto& dayMap = monthMap[day];
+
+        // Year
+        auto& yearMap = container.years[year];
+        yearMap.dayCount++;
+        if(yearMap.year == 0)
+          yearMap.year = year;
+
+        // Month
+        auto& monthMap = yearMap.months[month];
+        monthMap.dayCount++;
+        if(monthMap.month == 0)
+          monthMap.month = month;
+
+        auto& dayMap = monthMap.days[day];
+        dayMap.dayCount++;
+        if(dayMap.day == 0)
+          dayMap.day = day;
 
         for (const auto& entryNode : node) {
           // emplace_back() is Nice!!
-          //container.entries[dayStr].emplace_back(entryNode);
-          //const auto entry = dayMap.emplace_back(entryNode);
+          const auto entry = dayMap.entries.emplace_back(entryNode);
 
           // Container
           container.entryCount++;
-          //container.revenue += entry.getRevenue();
-          //container.expense += entry.getExpense();
-          //container.balance += entry.getBalance();
+          container.revenue += entry.getRevenue();
+          container.expense += entry.getExpense();
+          container.balance += entry.getBalance();
+
+          yearMap.entryCount++;
+          yearMap.revenue += entry.getRevenue();
+          yearMap.expense += entry.getExpense();
+          yearMap.balance += entry.getBalance();
+
+          monthMap.entryCount++;
+          monthMap.revenue += entry.getRevenue();
+          monthMap.expense += entry.getExpense();
+          monthMap.balance += entry.getBalance();
+
+          dayMap.entryCount++;
+          dayMap.revenue += entry.getRevenue();
+          dayMap.expense += entry.getExpense();
+          dayMap.balance += entry.getBalance();
         }
       }
     }
@@ -237,54 +264,49 @@ namespace Wallet
       create_directories(this->htmlPath / "year");
     }
 
-
     for (const auto& yearPair : container.years) {
 #ifdef DEBUG
       std::cout << "year pair: " << yearPair.first << std::endl;
 #endif
-      this->htmlOutputMonth(yearPair.second);
-
+      this->htmlOutputYear(yearPair.second);
     }
-
-    indexFh.close();
   }
 
-  void MutableWallet::htmlOutputMonth(const EntryContainer::MonthMap& monthMap) const noexcept
+  void MutableWallet::htmlOutputYear(const Container::YearEntryContainer& yearContainer) const noexcept
+  {
+#ifdef DEBUG
+    printf(" -> MutableWallet::htmlOutputYear()\n");
+#endif
+
+    for (const auto& monthPair : yearContainer.months) {
+#ifdef DEBUG
+      std::cout << "month pair" << std::endl;
+#endif
+      this->htmlOutputMonth(monthPair.second);
+    }
+  }
+
+  void MutableWallet::htmlOutputMonth(const Container::MonthEntryContainer& monthContainer) const noexcept
   {
 #ifdef DEBUG
     printf(" -> MutableWallet::htmlOutputMonth()\n");
 #endif
 
-    for (const auto& monthPair : monthMap) {
+    for (const auto& dayPair : monthContainer.days) {
 #ifdef DEBUG
-      std::cout << "month pair" << std::endl;
+      std::cout << "day pair" << std::endl;
 #endif
-      this->htmlOutputDay(monthPair.second);
+      this->htmlOutputDay(dayPair.second);
     }
   }
 
-  void MutableWallet::htmlOutputDay(const EntryContainer::DayMap& dayMap) const noexcept
+  void MutableWallet::htmlOutputDay(const Container::DayEntryContainer& dayContainer) const noexcept
   {
 #ifdef DEBUG
     printf(" -> MutableWallet::htmlOutputDay()\n");
 #endif
 
-    for (const auto& dayPair : dayMap) {
-#ifdef DEBUG
-      std::cout << "day pair" << std::endl;
-#endif
-
-      this->htmlOutputEntries(dayPair.second);
-    }
-  }
-
-  void MutableWallet::htmlOutputEntries(const EntryContainer::EntryVec& entries) const noexcept
-  {
-#ifdef DEBUG
-    printf(" -> MutableWallet::htmlOutputEntry()\n");
-#endif
-
-    for (const auto& entry:entries) {
+    for (const auto& entry : dayContainer.entries) {
 #ifdef DEBUG
       std::cout << "entry " << entry.id << std::endl;
 #endif
