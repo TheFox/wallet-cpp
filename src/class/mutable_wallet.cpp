@@ -128,13 +128,13 @@ namespace Wallet
     return true;
   }
 
-  EntryContainer MutableWallet::getEntries(const Components::Date date) const
+  Container::EntryContainer MutableWallet::getEntries(const Components::Date date) const
   {
 #ifdef DEBUG
     printf(" -> MutableWallet::getEntries(%d, %d, %d)\n", date.year, date.month, date.day);
 #endif
 
-    EntryContainer container{};
+    Container::EntryContainer container{};
 
     if (!fs::exists(this->dataPath)) {
       throw std::string{"Wallet does not exists."};
@@ -189,20 +189,20 @@ namespace Wallet
         // Container
         container.dayCount++;
         //auto& dayMap = container.entries[dayStr];
-        auto& yearMap = container.years[year];
-        auto& monthMap = yearMap[month];
-        auto& dayMap = monthMap[day];
+        //auto& yearMap = container.years[year];
+        //auto& monthMap = yearMap[month];
+        //auto& dayMap = monthMap[day];
 
         for (const auto& entryNode : node) {
           // emplace_back() is Nice!!
-          container.entries[dayStr].emplace_back(entryNode);
-          const auto entry = dayMap.emplace_back(entryNode);
+          //container.entries[dayStr].emplace_back(entryNode);
+          //const auto entry = dayMap.emplace_back(entryNode);
 
           // Container
           container.entryCount++;
-          container.revenue += entry.getRevenue();
-          container.expense += entry.getExpense();
-          container.balance += entry.getBalance();
+          //container.revenue += entry.getRevenue();
+          //container.expense += entry.getExpense();
+          //container.balance += entry.getBalance();
         }
       }
     }
@@ -234,13 +234,9 @@ namespace Wallet
     // Directory
     if (!exists(this->htmlPath)) {
       create_directories(this->htmlPath);
-      create_directories(this->htmlPath/"year");
+      create_directories(this->htmlPath / "year");
     }
 
-    // Output: index.html
-    std::ofstream indexFh;
-    indexFh.open((this->htmlPath/"index.html").string(),std::ofstream::out);
-    indexFh << "<html><body>";
 
     for (const auto& yearPair : container.years) {
 #ifdef DEBUG
@@ -248,10 +244,8 @@ namespace Wallet
 #endif
       this->htmlOutputMonth(yearPair.second);
 
-      indexFh << "<p>" << yearPair.first << "</p>";
     }
 
-    indexFh << "</body></html>";
     indexFh.close();
   }
 

@@ -8,27 +8,51 @@
 
 #include "entry.hpp"
 
-namespace Wallet
+namespace Wallet::Container
 {
-  struct EntryContainer
-  {
-    // Types
-    using EntryVec = std::vector<Entry>;
-    using EntryMap = std::map<std::string, EntryVec>;
-    using DayMap = std::map<std::uint8_t, EntryVec>;
-    using MonthMap = std::map<std::uint8_t, DayMap>;
-    using YearMap = std::map<std::uint16_t, MonthMap>;
+  // Types
+  using EntryVec = std::vector<Entry>;
 
+  using ContainerDay = std::uint8_t;
+  using ContainerMonth = std::uint8_t;
+  using ContainerYear = std::uint16_t;
+
+  struct BaseEntryContainer
+  {
     // Properties
     std::size_t dayCount{};
     std::size_t entryCount{};
-    [[deprecated]] EntryMap entries{};
-    YearMap years{};
 
     Entry::Number revenue{};
     Entry::Number expense{};
     Entry::Number balance{};
   };
-} // Wallet Namespace
+
+  struct DayEntryContainer : BaseEntryContainer
+  {
+    ContainerDay day{};
+    EntryVec entries{};
+  };
+
+  using DayMap = std::map<ContainerDay, DayEntryContainer>;
+  struct MonthEntryContainer : BaseEntryContainer
+  {
+    ContainerMonth month{};
+    DayMap days{};
+  };
+
+  using MonthMap = std::map<ContainerMonth, MonthEntryContainer>;
+  struct YearEntryContainer : BaseEntryContainer
+  {
+    ContainerYear year{};
+    MonthMap months{};
+  };
+
+  using YearMap = std::map<ContainerYear, YearEntryContainer>;
+  struct EntryContainer : BaseEntryContainer
+  {
+    YearMap years{};
+  };
+} // Wallet::Container Namespace
 
 #endif // WALLETCPP_ENTRY_CONTAINER_HPP_

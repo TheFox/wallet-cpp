@@ -1,6 +1,6 @@
 
 #include "entry_container.hpp"
 
-namespace Wallet
+namespace Wallet::Container
 {
-} // Wallet Namespace
+} // Wallet::Container Namespace
