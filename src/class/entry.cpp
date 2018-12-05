@@ -31,9 +31,9 @@ namespace Wallet
 {
   Entry::Entry() noexcept
   {
-#ifdef DEBUG
-    printf(" -> Entry::Entry(%p)\n", this);
-#endif
+// #ifdef DEBUG
+//     printf(" -> Entry::Entry(%p)\n", this);
+// #endif
     using calendar::date;
     using calendar::day_clock;
 
@@ -42,9 +42,9 @@ namespace Wallet
 
   Entry::Entry(const CommandOptions& options) noexcept : Entry()
   {
-#ifdef DEBUG
-    printf(" -> Entry::Entry(%p, CommandOptions %p)\n", this, &options);
-#endif
+// #ifdef DEBUG
+//     printf(" -> Entry::Entry(%p, CommandOptions %p)\n", this, &options);
+// #endif
 
     // ID
     if (options.id.empty()) {
@@ -85,9 +85,9 @@ namespace Wallet
 
   Entry::Entry(const YAML::Node& node) noexcept
   {
-#ifdef DEBUG
-    printf(" -> Entry::Entry(%p, YAML::Node)\n", this);
-#endif
+// #ifdef DEBUG
+//     printf(" -> Entry::Entry(%p, YAML::Node)\n", this);
+// #endif
 
     if (node["id"].IsDefined()) {
       this->id = node["id"].as<decltype(this->id)>();
@@ -115,11 +115,11 @@ namespace Wallet
     }
   }
 
-  Entry::~Entry() noexcept{
-#ifdef DEBUG
-    printf(" -> Entry::~Entry(%p)\n", this);
-#endif
-  }
+//   Entry::~Entry() noexcept{
+// #ifdef DEBUG
+//     printf(" -> Entry::~Entry(%p)\n", this);
+// #endif
+//   }
 
   void Entry::setDate(const std::string _dateStr)
   {
