@@ -248,7 +248,7 @@ namespace Wallet
     // printf(" -> MutableWallet::htmlOutput('%s')\n", _path.has_value() ? _path.value().c_str() : "");
 #endif
 
-    auto container = this->getEntries({0, 0, 0});
+    const auto& container = this->getEntries({0, 0, 0});
 
     // if (_path.has_value()) {
     //   this->htmlPath = _path.value();
