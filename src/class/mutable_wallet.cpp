@@ -144,11 +144,13 @@ namespace Wallet
     const bool hasMonth = date.month != 0;
     const bool hasDay = date.day != 0;
 
+    // Iterate files.
     for (auto& directoryItem : fs::directory_iterator(this->dataPath)) {
       const auto& filePath = directoryItem.path();
       const auto& fileStr = filePath.string();
       const auto fileNameStr = filePath.filename().string();
 
+      // Check correct file.
       if (fileNameStr.length() < 17
         || fileNameStr.substr(0, 6) != "month_"
         || fileStr.substr(fileStr.size() - 4) != ".yml") {
@@ -171,7 +173,10 @@ namespace Wallet
         }
       }
 
+      // Read month file.
       auto yaml = YAML::LoadFile(fileStr);
+
+      // Iterate days.
       for (const auto& dayNode : yaml["days"]) {
         const auto dayStr = dayNode.first.as<std::string>();
         const auto year = static_cast<std::uint16_t>(std::stoi(dayStr.substr(0, 4)));
@@ -201,11 +206,13 @@ namespace Wallet
         if(monthMap.month == 0)
           monthMap.month = month;
 
+        // Day
         auto& dayMap = monthMap.days[day];
         dayMap.dayCount++;
         if(dayMap.day == 0)
           dayMap.day = day;
 
+        // Iterate Day entries.
         for (const auto& entryNode : node) {
           // emplace_back() is Nice!!
           const auto entry = dayMap.entries.emplace_back(entryNode);
@@ -216,23 +223,26 @@ namespace Wallet
           container.expense += entry.getExpense();
           container.balance += entry.getBalance();
 
+          // Year
           yearMap.entryCount++;
           yearMap.revenue += entry.getRevenue();
           yearMap.expense += entry.getExpense();
           yearMap.balance += entry.getBalance();
 
+          // Month
           monthMap.entryCount++;
           monthMap.revenue += entry.getRevenue();
           monthMap.expense += entry.getExpense();
           monthMap.balance += entry.getBalance();
 
+          // Day
           dayMap.entryCount++;
           dayMap.revenue += entry.getRevenue();
           dayMap.expense += entry.getExpense();
           dayMap.balance += entry.getBalance();
-        }
-      }
-    }
+        } // Day Entries
+      } // Days
+    } // Files
 
     return container;
   }
