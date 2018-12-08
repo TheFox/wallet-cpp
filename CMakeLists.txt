@@ -19,6 +19,7 @@ configure_file(
     "${CMAKE_CURRENT_BINARY_DIR}/src/config.hpp"
     NEWLINE_STYLE LF)
 include_directories("${CMAKE_CURRENT_BINARY_DIR}/src")
+include_directories("${PROJECT_SOURCE_DIR}/lib/ctml")
 
 # Term Color
 find_package(termcolor QUIET)
@@ -55,7 +56,8 @@ add_executable(wallet
     src/class/command/html_command.cpp src/class/command/html_command.hpp
     src/class/command/list_command.cpp src/class/command/list_command.hpp
     src/class/entry.cpp src/class/entry.hpp
-    src/class/entry_container.cpp src/class/entry_container.hpp)
+    src/class/entry_container.cpp src/class/entry_container.hpp
+    lib/ctml/CTML/CTML.h)
 target_include_directories(wallet PRIVATE ${PROJECT_SOURCE_DIR}/src)
 target_compile_features(wallet PRIVATE
     cxx_noexcept

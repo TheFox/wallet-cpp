@@ -7,6 +7,14 @@
 #include <iostream>
 #include <cstdint>
 
+#ifdef __has_include
+#  if __has_include(<CTML/CTML.h>)
+#    include <CTML/CTML.h>
+#  else
+#    error "Missing <CTML/CTML.h>"
+#  endif
+#endif // __has_include
+
 #include "mutable_wallet.hpp"
 #include "entry.hpp"
 #include "../components.hpp"
@@ -274,12 +282,24 @@ namespace Wallet
       create_directories(this->htmlPath / "year");
     }
 
+    // Index Doc
+    CTML::Document indexDoc;
+
     for (const auto& yearPair : container.years) {
 #ifdef DEBUG
       std::cout << "year pair: " << yearPair.first << std::endl;
 #endif
       this->htmlOutputYear(yearPair.second);
+
+      //indexDoc
+      //indexFh << "<p>" << yearPair.first << "</p>";
     }
+
+    // Output: index.html
+    std::ofstream indexFh;
+    indexFh.open((this->htmlPath / "index.html").string(), std::ofstream::out);
+    indexFh << indexDoc.ToString(CTML::Readability::MULTILINE); // TODO
+    indexFh.close();
   }
 
   void MutableWallet::htmlOutputYear(const Container::YearEntryContainer& yearContainer) const noexcept

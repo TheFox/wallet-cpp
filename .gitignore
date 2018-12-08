@@ -9,3 +9,4 @@
 *.code-workspace
 Makefile
 /tmp/
+/lib/
