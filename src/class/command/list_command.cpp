@@ -5,6 +5,7 @@
 
 #include <sstream>
 #include <iomanip> // setprecision
+#include <ios> // fixed
 #include <cstddef>
 
 #include "list_command.hpp"

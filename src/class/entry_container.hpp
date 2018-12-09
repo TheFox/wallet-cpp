@@ -2,11 +2,11 @@
 #ifndef WALLETCPP_ENTRY_CONTAINER_HPP_
 #define WALLETCPP_ENTRY_CONTAINER_HPP_
 
-#include <string>
 #include <map>
 #include <cstdint>
 
 #include "entry.hpp"
+#include "account_able.hpp"
 
 namespace Wallet::Container
 {
@@ -17,39 +17,35 @@ namespace Wallet::Container
   using ContainerMonth = std::uint8_t;
   using ContainerYear = std::uint16_t;
 
-  struct BaseEntryContainer
+  struct BaseEntryContainer : public AccountAble
   {
     // Properties
     std::size_t dayCount{};
     std::size_t entryCount{};
-
-    Entry::Number revenue{};
-    Entry::Number expense{};
-    Entry::Number balance{};
   };
 
-  struct DayEntryContainer : BaseEntryContainer
+  struct DayEntryContainer final : public BaseEntryContainer
   {
     ContainerDay day{};
     EntryVec entries{};
   };
 
   using DayMap = std::map<ContainerDay, DayEntryContainer>;
-  struct MonthEntryContainer : BaseEntryContainer
+  struct MonthEntryContainer final : public BaseEntryContainer
   {
     ContainerMonth month{};
     DayMap days{};
   };
 
   using MonthMap = std::map<ContainerMonth, MonthEntryContainer>;
-  struct YearEntryContainer : BaseEntryContainer
+  struct YearEntryContainer final : public BaseEntryContainer
   {
     ContainerYear year{};
     MonthMap months{};
   };
 
   using YearMap = std::map<ContainerYear, YearEntryContainer>;
-  struct EntryContainer : BaseEntryContainer
+  struct EntryContainer final : public BaseEntryContainer
   {
     YearMap years{};
   };

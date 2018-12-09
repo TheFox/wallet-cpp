@@ -9,6 +9,7 @@ mkdir -p build_${BUILD_TYPE}
 cd build_${BUILD_TYPE}
 
 set -x
+set -e
 cmake -DCMAKE_BUILD_TYPE=${BUILD_TYPE} ..
 make -j 4 test
 

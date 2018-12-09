@@ -4,9 +4,7 @@
 #include <iostream>
 #endif
 
-#include <sstream>
 #include <string_view>
-#include <iomanip> // setprecision
 
 #ifdef __has_include
 #  if __has_include(<yaml-cpp/yaml.h>)
@@ -204,60 +202,6 @@ namespace Wallet
     return calendar::to_iso_extended_string(this->date);
   }
 
-  void Entry::setRevenue(Entry::Number _revenue) noexcept
-  {
-    this->revenue = _revenue;
-    this->calcBalance();
-  }
-
-  Entry::Number Entry::getRevenue() const noexcept
-  {
-    return this->revenue;
-  }
-
-  std::string Entry::getRevenueStr() const noexcept
-  {
-    std::stringstream ss;
-    if (this->revenue > 0.0) {
-      ss << std::fixed << std::setprecision(2) << this->revenue;
-    }
-    return ss.str();
-  }
-
-  void Entry::setExpense(Entry::Number _expense) noexcept
-  {
-    this->expense = -std::abs(_expense);
-    this->calcBalance();
-  }
-
-  Entry::Number Entry::getExpense() const noexcept
-  {
-    return this->expense;
-  }
-
-  std::string Entry::getExpenseStr() const noexcept
-  {
-    std::stringstream ss;
-    if (this->expense < 0.0) {
-      ss << std::fixed << std::setprecision(2) << this->expense;
-    }
-    return ss.str();
-  }
-
-  Entry::Number Entry::getBalance() const noexcept
-  {
-    return this->balance;
-  }
-
-  std::string Entry::getBalanceStr() const noexcept
-  {
-    std::stringstream ss;
-    if (this->balance != 0.0) {
-      ss << std::fixed << std::setprecision(2) << this->balance;
-    }
-    return ss.str();
-  }
-
   void Entry::generateRandomId() noexcept
   {
     using uuid::random_generator;
@@ -311,10 +255,5 @@ namespace Wallet
     node["comment"] = this->comment;
 
     return node;
-  }
-
-  void Entry::calcBalance() noexcept
-  {
-    this->balance = this->revenue + this->expense;
   }
 } // Wallet Namespace

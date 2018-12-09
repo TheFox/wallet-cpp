@@ -40,13 +40,13 @@ namespace Wallet
         entry.setDate(_tmpStr);
       }
 
-      cout << "Revenue: [" << entry.getRevenue() << "] ";
+      cout << "Revenue: [" << entry.revenue << "] ";
       getline(cin, _tmpStr);
       if (!_tmpStr.empty()) {
         entry.setRevenue(Components::stof(_tmpStr));
       }
 
-      cout << "Expense: [" << entry.getExpense() << "] ";
+      cout << "Expense: [" << entry.expense << "] ";
       getline(cin, _tmpStr);
       if (!_tmpStr.empty()) {
         entry.setExpense(Components::stof(_tmpStr));
@@ -80,9 +80,9 @@ namespace Wallet
     cout << "---------------" << endl;
     cout << "Title: '" << entry.title << "'" << endl;
     cout << "Date: '" << entry.getDateStr() << "'" << endl;
-    cout << "Revenue: " << entry.getRevenue() << endl;
-    cout << "Expense: " << entry.getExpense() << endl;
-    cout << "Balance: " << entry.getBalance() << endl;
+    cout << "Revenue: " << entry.revenue << endl;
+    cout << "Expense: " << entry.expense << endl;
+    cout << "Balance: " << entry.balance << endl;
     cout << "Category: '" << entry.category << "'" << endl;
     cout << "Comment: '" << entry.comment << "'" << endl;
     cout << "---------------" << endl;

@@ -3,7 +3,6 @@
 #define WALLETCPP_ENTRY_HPP_
 
 #include <string>
-#include <cmath>
 
 #ifdef __has_include
 #  if __has_include(<boost/date_time/gregorian/gregorian.hpp>)
@@ -19,16 +18,14 @@ namespace calendar = boost::gregorian;
 #  endif
 #endif // __has_include
 
+#include "account_able.hpp"
 #include "command/command_options.hpp"
 
 namespace Wallet
 {
-  class Entry final
+  class Entry final : public AccountAble
   {
   public:
-    // Types
-    using Number = std::float_t;
-
     // Constructor
     Entry() noexcept;
 
@@ -49,20 +46,6 @@ namespace Wallet
     void setDate(std::string);
     std::string getDateStr() const noexcept;
 
-    // Parameter: Revenue
-    void setRevenue(Number) noexcept;
-    Number getRevenue() const noexcept;
-    std::string getRevenueStr() const noexcept;
-
-    // Parameter: Expense
-    void setExpense(Number) noexcept;
-    Number getExpense() const noexcept;
-    std::string getExpenseStr() const noexcept;
-
-    // Parameter: Balance
-    Number getBalance() const noexcept;
-    std::string getBalanceStr() const noexcept;
-
     // Parameter: Category
     std::string category{};
 
@@ -80,12 +63,6 @@ namespace Wallet
   private:
     // Variables
     calendar::date date{};
-    Number revenue{};
-    Number expense{};
-    Number balance{};
-
-    // Functions
-    void calcBalance() noexcept;
   };
 } // Wallet Namespace
 

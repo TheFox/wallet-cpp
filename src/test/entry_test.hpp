@@ -35,30 +35,30 @@ TEST_CASE("Test Entry", "[entry]"){
 
   SECTION("Expense"){
     entry.setExpense(1.234);
-    REQUIRE(entry.getExpense() == -1.234f);
-    REQUIRE(entry.getBalance() == -1.234f);
+    REQUIRE(entry.expense == -1.234f);
+    REQUIRE(entry.balance == -1.234f);
   }
 
   SECTION("Revenue"){
     entry.setRevenue(2.345);
-    REQUIRE(entry.getRevenue() == 2.345f);
-    REQUIRE(entry.getBalance() == 2.345f);
+    REQUIRE(entry.revenue == 2.345f);
+    REQUIRE(entry.balance == 2.345f);
   }
 
   SECTION("Balance1"){
-    REQUIRE(entry.getBalance() == 0.0);
+    REQUIRE(entry.balance == 0.0);
 
     entry.setRevenue(2.5);
     entry.setExpense(1.23);
-    REQUIRE(entry.getBalance() == 1.27f);
+    REQUIRE(entry.balance == 1.27f);
   }
 
   SECTION("Balance2"){
-    REQUIRE(entry.getBalance() == 0.0);
+    REQUIRE(entry.balance == 0.0);
 
     entry.setRevenue(2.5);
     entry.setExpense(3);
-    REQUIRE(entry.getBalance() == -0.5f);
+    REQUIRE(entry.balance == -0.5f);
   }
 }
 

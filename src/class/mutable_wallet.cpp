@@ -6,6 +6,8 @@
 #include <fstream>
 #include <iostream>
 #include <cstdint>
+#include <iomanip> // setprecision
+#include <ios> // fixed
 
 #include "config.hpp"
 #include "mutable_wallet.hpp"
@@ -223,27 +225,27 @@ namespace Wallet
 
           // Container
           container.entryCount++;
-          container.revenue += entry.getRevenue();
-          container.expense += entry.getExpense();
-          container.balance += entry.getBalance();
+          container.revenue += entry.revenue;
+          container.expense += entry.expense;
+          container.balance += entry.balance;
 
           // Year
           yearMap.entryCount++;
-          yearMap.revenue += entry.getRevenue();
-          yearMap.expense += entry.getExpense();
-          yearMap.balance += entry.getBalance();
+          yearMap.revenue += entry.revenue;
+          yearMap.expense += entry.expense;
+          yearMap.balance += entry.balance;
 
           // Month
           monthMap.entryCount++;
-          monthMap.revenue += entry.getRevenue();
-          monthMap.expense += entry.getExpense();
-          monthMap.balance += entry.getBalance();
+          monthMap.revenue += entry.revenue;
+          monthMap.expense += entry.expense;
+          monthMap.balance += entry.balance;
 
           // Day
           dayMap.entryCount++;
-          dayMap.revenue += entry.getRevenue();
-          dayMap.expense += entry.getExpense();
-          dayMap.balance += entry.getBalance();
+          dayMap.revenue += entry.revenue;
+          dayMap.expense += entry.expense;
+          dayMap.balance += entry.balance;
         } // Day Entries
       } // Days
     } // Files
@@ -283,18 +285,42 @@ namespace Wallet
 
     CTML::Node tableBody("tbody");
 
+    // Balance Sum
+    AccountAble::Number balanceSum{0.0};
+
     for (const auto& yearPair : container.years) {
 #ifdef DEBUG
       std::cout << "year pair: " << yearPair.first << std::endl;
 #endif
       this->htmlOutputYear(yearPair.second);
 
+      // Balance
+      balanceSum += yearPair.second.balance;
+
+      std::stringstream balanceSumSs;
+      balanceSumSs << std::fixed << std::setprecision(2) << balanceSum;
+
       CTML::Node tableRow{"tr"};
-      tableRow.AppendChild(CTML::Node("td.left").AppendChild(CTML::Node("a").SetAttribute("href", "year/" + std::to_string(yearPair.first)).SetContent(std::to_string(yearPair.first))));
+      tableRow.AppendChild(CTML::Node("td.left").AppendChild(
+        CTML::Node("a")
+          .SetAttribute("href", "year/" + std::to_string(yearPair.first))
+          .SetContent(std::to_string(yearPair.first))));
+      tableRow.AppendChild(CTML::Node("td.right", yearPair.second.getRevenueStr()));
+      tableRow.AppendChild(CTML::Node("td.right red", yearPair.second.getExpenseStr()));
+      tableRow.AppendChild(CTML::Node("td.right", yearPair.second.getBalanceStr()));
+      tableRow.AppendChild(CTML::Node("td.right", balanceSumSs.str()));
       tableBody.AppendChild(tableRow);
     }
 
-    // Index Table Head
+    CTML::Node tableRow{"tr"};
+    tableRow.AppendChild(CTML::Node("td.left", "TOTAL"));
+    tableRow.AppendChild(CTML::Node("td.right", container.getRevenueStr()));
+    tableRow.AppendChild(CTML::Node("td.right red", container.getExpenseStr()));
+    tableRow.AppendChild(CTML::Node("td.right", container.getBalanceStr()));
+    tableRow.AppendChild(CTML::Node("td.right", " "));
+    tableBody.AppendChild(tableRow);
+
+    // Index Table Head Row
     CTML::Node indexTableHeadTr{"tr"};
     indexTableHeadTr.AppendChild(CTML::Node("th.left", "Year"));
     indexTableHeadTr.AppendChild(CTML::Node("th.right", "Revenue"));
@@ -302,19 +328,22 @@ namespace Wallet
     indexTableHeadTr.AppendChild(CTML::Node("th.right", "Balance"));
     indexTableHeadTr.AppendChild(CTML::Node("th.right", "Balance &#8721;"));
 
+    // Index Table Head
     CTML::Node indexTableHead{"thead"};
     indexTableHead.AppendChild(indexTableHeadTr);
 
     // Index Table
     CTML::Node indexTable{"table.list"};
+    indexTable.SetAttribute("border", "1"); // TODO
     indexTable.AppendChild(indexTableHead);
     indexTable.AppendChild(tableBody);
 
     // Index Doc
     CTML::Document indexDoc;
     indexDoc.AddNodeToHead(
-      CTML::Node("meta").SetAttribute("content", "text/html; charset=utf-8").SetAttribute("http-equiv",
-        "Content-Type").UseClosingTag(false));
+      CTML::Node("meta")
+        .SetAttribute("content", "text/html; charset=utf-8")
+        .SetAttribute("http-equiv", "Content-Type").UseClosingTag(false));
     indexDoc.AddNodeToHead(CTML::Node("title", string{PROJECT_NAME}));
     indexDoc.AddNodeToBody(CTML::Node("h1").AppendChild(
       CTML::Node("a").SetContent(string{PROJECT_NAME}).SetAttribute("href", "./index.html")));

@@ -3,6 +3,7 @@
 #include <sstream>
 #include <string>
 #include <iomanip> // setprecision
+#include <ios> // fixed
 
 #ifdef __has_include
 #  if __has_include(<boost/date_time/local_time/local_time.hpp>)
@@ -42,11 +43,8 @@ namespace Wallet::Components
 
   std::string ftos(const std::float_t& _f, const int _p) noexcept
   {
-    using std::fixed;
-    using std::setprecision;
-
     std::stringstream ss;
-    ss << fixed << setprecision(_p) << _f;
+    ss << std::fixed << std::setprecision(_p) << _f;
 
 #ifdef DEBUG
     const auto s1 = ss.str();
@@ -117,4 +115,4 @@ namespace Wallet::Components
     }
     return ymd;
   }
-}
+} // Wallet::Components Namespace

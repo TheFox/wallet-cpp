@@ -58,6 +58,7 @@ add_executable(wallet
     src/class/command/list_command.cpp src/class/command/list_command.hpp
     src/class/entry.cpp src/class/entry.hpp
     src/class/entry_container.cpp src/class/entry_container.hpp
+    src/class/account_able.cpp src/class/account_able.hpp
     lib/ctml/CTML/CTML.h)
 target_include_directories(wallet PRIVATE ${PROJECT_SOURCE_DIR}/src)
 target_compile_features(wallet PRIVATE
@@ -77,7 +78,8 @@ if(CMAKE_BUILD_TYPE_LOWER STREQUAL "test")
         src/app/test.cpp
         src/test/entry_test.hpp
         src/components.cpp src/components.hpp
-        src/class/entry.cpp src/class/entry.hpp)
+        src/class/entry.cpp src/class/entry.hpp
+        src/class/account_able.cpp src/class/account_able.hpp)
     target_include_directories(test PRIVATE ${PROJECT_SOURCE_DIR}/src)
     target_link_libraries(test Catch2::Catch2)
     target_compile_features(test PRIVATE
