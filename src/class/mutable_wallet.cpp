@@ -402,11 +402,12 @@ namespace Wallet
   {
     CTML::Node link{"a"};
     link.SetAttribute("href", std::string{PROJECT_HOMEPAGE_URL});
-    link.SetContent(std::string{PROJECT_NAME} + " " + PROJECT_VERSION);
+    link.SetContent(std::string{PROJECT_NAME});
 
     const auto now = Components::getNowStr(HUMAN_DATETIME_FORMAT);
     CTML::Node sig{"p", std::string{"Generated @ " + now + " by "}};
     sig.AppendChild(link);
+    sig.AppendText(" " PROJECT_VERSION);
     return sig;
   }
 
