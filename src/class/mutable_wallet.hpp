@@ -30,6 +30,11 @@ namespace fs = boost::filesystem;
 #  else
 #    error "Missing <yaml-cpp/yaml.h>"
 #  endif
+#  if __has_include(<CTML/CTML.h>)
+#    include <CTML/CTML.h>
+#  else
+#    error "Missing <CTML/CTML.h>"
+#  endif
 #endif // __has_include
 
 #include "entry.hpp"
@@ -60,6 +65,7 @@ namespace Wallet
     void htmlOutputYear(const Container::YearEntryContainer&) const noexcept;
     void htmlOutputMonth(const Container::MonthEntryContainer&) const noexcept;
     void htmlOutputDay(const Container::DayEntryContainer&) const noexcept;
+    CTML::Node getHtmlSignatur() const noexcept;
 
   protected:
     // Variables

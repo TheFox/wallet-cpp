@@ -7,18 +7,11 @@
 #include <iostream>
 #include <cstdint>
 
-#ifdef __has_include
-#  if __has_include(<CTML/CTML.h>)
-#    include <CTML/CTML.h>
-#  else
-#    error "Missing <CTML/CTML.h>"
-#  endif
-#endif // __has_include
-
+#include "config.hpp"
 #include "mutable_wallet.hpp"
 #include "entry.hpp"
-#include "../components.hpp"
 #include "entry_container.hpp"
+#include "../components.hpp"
 
 namespace Wallet
 {
@@ -205,20 +198,23 @@ namespace Wallet
         // Year
         auto& yearMap = container.years[year];
         yearMap.dayCount++;
-        if(yearMap.year == 0)
+        if (yearMap.year == 0) {
           yearMap.year = year;
+        }
 
         // Month
         auto& monthMap = yearMap.months[month];
         monthMap.dayCount++;
-        if(monthMap.month == 0)
+        if (monthMap.month == 0) {
           monthMap.month = month;
+        }
 
         // Day
         auto& dayMap = monthMap.days[day];
         dayMap.dayCount++;
-        if(dayMap.day == 0)
+        if (dayMap.day == 0) {
           dayMap.day = day;
+        }
 
         // Iterate Day entries.
         for (const auto& entryNode : node) {
@@ -260,6 +256,7 @@ namespace Wallet
   {
     using fs::create_directories;
     using fs::exists;
+    using std::string;
 
 #ifdef DEBUG
     printf(" -> MutableWallet::htmlOutput()\n");
@@ -282,8 +279,9 @@ namespace Wallet
       create_directories(this->htmlPath / "year");
     }
 
-    // Index Doc
-    CTML::Document indexDoc;
+    // TODO: copy css file to html dir
+
+    CTML::Node tableBody("tbody");
 
     for (const auto& yearPair : container.years) {
 #ifdef DEBUG
@@ -291,9 +289,37 @@ namespace Wallet
 #endif
       this->htmlOutputYear(yearPair.second);
 
-      //indexDoc
-      //indexFh << "<p>" << yearPair.first << "</p>";
+      CTML::Node tableRow{"tr"};
+      tableRow.AppendChild(CTML::Node("td.left").AppendChild(CTML::Node("a").SetAttribute("href", "year/" + std::to_string(yearPair.first)).SetContent(std::to_string(yearPair.first))));
+      tableBody.AppendChild(tableRow);
     }
+
+    // Index Table Head
+    CTML::Node indexTableHeadTr{"tr"};
+    indexTableHeadTr.AppendChild(CTML::Node("th.left", "Year"));
+    indexTableHeadTr.AppendChild(CTML::Node("th.right", "Revenue"));
+    indexTableHeadTr.AppendChild(CTML::Node("th.right", "Expense"));
+    indexTableHeadTr.AppendChild(CTML::Node("th.right", "Balance"));
+    indexTableHeadTr.AppendChild(CTML::Node("th.right", "Balance &#8721;"));
+
+    CTML::Node indexTableHead{"thead"};
+    indexTableHead.AppendChild(indexTableHeadTr);
+
+    // Index Table
+    CTML::Node indexTable{"table.list"};
+    indexTable.AppendChild(indexTableHead);
+    indexTable.AppendChild(tableBody);
+
+    // Index Doc
+    CTML::Document indexDoc;
+    indexDoc.AddNodeToHead(
+      CTML::Node("meta").SetAttribute("content", "text/html; charset=utf-8").SetAttribute("http-equiv",
+        "Content-Type").UseClosingTag(false));
+    indexDoc.AddNodeToHead(CTML::Node("title", string{PROJECT_NAME}));
+    indexDoc.AddNodeToBody(CTML::Node("h1").AppendChild(
+      CTML::Node("a").SetContent(string{PROJECT_NAME}).SetAttribute("href", "./index.html")));
+    indexDoc.AddNodeToBody(this->getHtmlSignatur());
+    indexDoc.AddNodeToBody(indexTable);
 
     // Output: index.html
     std::ofstream indexFh;
@@ -341,6 +367,18 @@ namespace Wallet
       std::cout << "entry " << entry.id << std::endl;
 #endif
     }
+  }
+
+  CTML::Node MutableWallet::getHtmlSignatur() const noexcept
+  {
+    CTML::Node link{"a"};
+    link.SetAttribute("href", std::string{PROJECT_HOMEPAGE_URL});
+    link.SetContent(std::string{PROJECT_NAME} + " " + PROJECT_VERSION);
+
+    const auto now = Components::getNowStr(HUMAN_DATETIME_FORMAT);
+    CTML::Node sig{"p", std::string{"Generated @ " + now + " by "}};
+    sig.AppendChild(link);
+    return sig;
   }
 
   void MutableWallet::setupVariables() noexcept

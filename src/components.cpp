@@ -21,9 +21,9 @@
 
 namespace Wallet::Components
 {
-  std::string getNowStr() noexcept
+  std::string getNowStr(const std::string format) noexcept
   {
-    auto tfacet = std::make_unique<boost::posix_time::time_facet>(DATETIME_FORMAT);
+    auto tfacet = std::make_unique<boost::posix_time::time_facet>(format.c_str());
     const std::locale loc(std::cout.getloc(), tfacet.release());
 
     const auto now = boost::posix_time::second_clock::universal_time();
