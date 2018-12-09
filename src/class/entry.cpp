@@ -1,9 +1,4 @@
 
-#ifdef DEBUG
-#include <cstdio>
-#include <iostream>
-#endif
-
 #include <string_view>
 
 #ifdef __has_include
@@ -22,6 +17,7 @@ namespace uuid = boost::uuids;
 #  endif
 #endif // __has_include
 
+#include "../debug.hpp"
 #include "entry.hpp"
 #include "../components.hpp"
 
@@ -29,9 +25,8 @@ namespace Wallet
 {
   Entry::Entry() noexcept
   {
-// #ifdef DEBUG
-//     printf(" -> Entry::Entry(%p)\n", this);
-// #endif
+//     DLog(" -> Entry::Entry(%p)\n", this);
+
     using calendar::date;
     using calendar::day_clock;
 
@@ -40,9 +35,7 @@ namespace Wallet
 
   Entry::Entry(const CommandOptions& options) noexcept : Entry()
   {
-// #ifdef DEBUG
-//     printf(" -> Entry::Entry(%p, CommandOptions %p)\n", this, &options);
-// #endif
+//     DLog(" -> Entry::Entry(%p, CommandOptions %p)\n", this, &options);
 
     // ID
     if (options.id.empty()) {
@@ -58,9 +51,8 @@ namespace Wallet
     if (!options.date.empty()) {
       this->setDate(options.date);
     }
-#ifdef DEBUG
-    std::cout << " -> set date " << this->date << std::endl;
-#endif
+    // DLog(" -> set date: %s\n", this->date.to_iso_extended_string().c_str());
+    calendar::to_iso_extended_string(this->date);
 
     // Revenue
     this->revenue = options.revenue;
@@ -70,9 +62,7 @@ namespace Wallet
 
     // Balance
     this->calcBalance();
-#ifdef DEBUG
-    std::cout << " -> set balance " << this->balance << std::endl;
-#endif
+    DLog(" -> set balance %.2f\n", this->balance);
 
     // Category
     this->category = options.category;
@@ -83,9 +73,7 @@ namespace Wallet
 
   Entry::Entry(const YAML::Node& node) noexcept
   {
-// #ifdef DEBUG
-//     printf(" -> Entry::Entry(%p, YAML::Node)\n", this);
-// #endif
+//     DLog(" -> Entry::Entry(%p, YAML::Node)\n", this);
 
     if (node["id"].IsDefined()) {
       this->id = node["id"].as<decltype(this->id)>();
@@ -113,17 +101,9 @@ namespace Wallet
     }
   }
 
-//   Entry::~Entry() noexcept{
-// #ifdef DEBUG
-//     printf(" -> Entry::~Entry(%p)\n", this);
-// #endif
-//   }
-
   void Entry::setDate(const std::string _dateStr)
   {
-#ifdef DEBUG
-    printf(" -> Entry::setDate(%s)\n", _dateStr.c_str());
-#endif
+    DLog(" -> Entry::setDate(%s)\n", _dateStr.c_str());
 
     using std::string_view;
     using calendar::date;
@@ -192,9 +172,7 @@ namespace Wallet
       }
     }
 
-#ifdef DEBUG
-    std::cout << " -> date: " << calendar::to_iso_extended_string(this->date) << std::endl;
-#endif
+    DLog(" -> date: %s\n", calendar::to_iso_extended_string(this->date).c_str());
   }
 
   std::string Entry::getDateStr() const noexcept

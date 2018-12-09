@@ -1,24 +1,17 @@
 
-#ifdef DEBUG
-#include <cstdio>
-#endif
-
+#include "../../debug.hpp"
 #include "command.hpp"
 
 namespace Wallet
 {
   Command::Command() noexcept : options({})
   {
-#ifdef DEBUG
-    printf(" -> Command::Command(%p)\n", this);
-#endif
+    DLog(" -> Command::Command(%p)\n", this);
   }
 
   Command::~Command()
   {
-#ifdef DEBUG
-    printf(" -> Command::~Command(%p)\n", this);
-#endif
+    DLog(" -> Command::~Command(%p)\n", this);
   }
 
   int Command::execute()

@@ -3,6 +3,7 @@
 #include <cstdio>
 #endif
 
+#include "../debug.hpp"
 #include "immutable_wallet.hpp"
 #include "entry.hpp"
 
@@ -10,9 +11,7 @@ namespace Wallet
 {
   ImmutableWallet::ImmutableWallet(const std::string path) : MutableWallet(path)
   {
-#ifdef DEBUG
-    printf(" -> ImmutableWallet::ImmutableWallet(opt '%s')\n", this->path.c_str());
-#endif
+    DLog(" -> ImmutableWallet::ImmutableWallet(opt '%s')\n", this->path.c_str());
   }
 
   bool ImmutableWallet::add(const Entry entry, const bool isUnique)
@@ -22,9 +21,8 @@ namespace Wallet
 
   void ImmutableWallet::setup()
   {
-#ifdef DEBUG
-    printf(" -> ImmutableWallet::setup()\n");
-#endif
+    DLog(" -> ImmutableWallet::setup()\n");
+
     this->setupVariables();
   }
 } // Wallet Namespace

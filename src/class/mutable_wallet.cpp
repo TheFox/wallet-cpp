@@ -1,14 +1,11 @@
 
-#ifdef DEBUG
-#include <cstdio>
-#endif
-
 #include <fstream>
 #include <iostream>
 #include <cstdint>
 #include <iomanip> // setprecision
 #include <ios> // fixed
 
+#include "debug.hpp"
 #include "config.hpp"
 #include "mutable_wallet.hpp"
 #include "entry.hpp"
@@ -19,16 +16,12 @@ namespace Wallet
 {
   MutableWallet::MutableWallet(const std::string path) noexcept : path(path)
   {
-#ifdef DEBUG
-    printf(" -> MutableWallet::MutableWallet\n");
-#endif
+    DLog(" -> MutableWallet::MutableWallet\n");
   }
 
   MutableWallet::~MutableWallet() noexcept(noexcept(this->saveIndex()) && noexcept(this->removeLock()))
   {
-#ifdef DEBUG
-    printf(" -> MutableWallet::~MutableWallet\n");
-#endif
+    DLog(" -> MutableWallet::~MutableWallet\n");
 
     this->saveIndex();
     this->removeLock();
@@ -53,9 +46,7 @@ namespace Wallet
     using YAML::Node;
     using YAML::NodeType;
 
-#ifdef DEBUG
-    printf(" -> MutableWallet::add(%p, u=%c)\n", &entry, isUnique ? 'Y' : 'N');
-#endif
+    DLog(" -> MutableWallet::add(%p, u=%c)\n", &entry, isUnique ? 'Y' : 'N');
 
     const bool entryExists = this->entryExists(entry);
     if (isUnique && entryExists) {
@@ -75,9 +66,7 @@ namespace Wallet
 
     Node month;
     if (fs::exists(monthFilePathStr)) {
-#ifdef DEBUG
-      printf(" -> load month file: %s\n", monthFilePathStr.c_str());
-#endif
+      DLog(" -> load month file: %s\n", monthFilePathStr.c_str());
 
       // Load YAML file.
       month = YAML::LoadFile(monthFilePathStr);
@@ -91,9 +80,7 @@ namespace Wallet
       // Updated At
       month["meta"]["updated_at"] = now;
     } else {
-#ifdef DEBUG
-      printf(" -> create month file: %s\n", monthFilePathStr.c_str());
-#endif
+      DLog(" -> create month file: %s\n", monthFilePathStr.c_str());
 
       // Create new meta data.
       Node meta(NodeType::Map);
@@ -112,9 +99,8 @@ namespace Wallet
     // Create day sequence.
     const std::string dayStr = entry.getDateStr();
     if (!month["days"][dayStr]) {
-#ifdef DEBUG
-      printf(" -> create new day: %s\n", entry.getDateStr().c_str());
-#endif
+      DLog(" -> create new day: %s\n", entry.getDateStr().c_str());
+
       Node day(NodeType::Sequence);
       month["days"][dayStr] = day;
     }
@@ -133,9 +119,7 @@ namespace Wallet
 
   Container::EntryContainer MutableWallet::getEntries(const Components::Date date) const
   {
-#ifdef DEBUG
-    printf(" -> MutableWallet::getEntries(%d, %d, %d)\n", date.year, date.month, date.day);
-#endif
+    DLog(" -> MutableWallet::getEntries(%d, %d, %d)\n", date.year, date.month, date.day);
 
     Container::EntryContainer container{};
 
@@ -260,10 +244,7 @@ namespace Wallet
     using fs::exists;
     using std::string;
 
-#ifdef DEBUG
-    printf(" -> MutableWallet::htmlOutput()\n");
-    // printf(" -> MutableWallet::htmlOutput('%s')\n", _path.has_value() ? _path.value().c_str() : "");
-#endif
+    DLog(" -> MutableWallet::htmlOutput()\n");
 
     const auto& container = this->getEntries({0, 0, 0});
 
@@ -289,9 +270,8 @@ namespace Wallet
     AccountAble::Number balanceSum{0.0};
 
     for (const auto& yearPair : container.years) {
-#ifdef DEBUG
-      std::cout << "year pair: " << yearPair.first << std::endl;
-#endif
+      DLog("year: %d\n", yearPair.first);
+
       this->htmlOutputYear(yearPair.second);
 
       // Balance
@@ -359,42 +339,32 @@ namespace Wallet
 
   void MutableWallet::htmlOutputYear(const Container::YearEntryContainer& yearContainer) const noexcept
   {
-#ifdef DEBUG
-    printf(" -> MutableWallet::htmlOutputYear()\n");
-#endif
+    DLog(" -> MutableWallet::htmlOutputYear()\n");
 
     for (const auto& monthPair : yearContainer.months) {
-#ifdef DEBUG
-      std::cout << "month pair" << std::endl;
-#endif
+      DLog("month pair\n");
+
       this->htmlOutputMonth(monthPair.second);
     }
   }
 
   void MutableWallet::htmlOutputMonth(const Container::MonthEntryContainer& monthContainer) const noexcept
   {
-#ifdef DEBUG
-    printf(" -> MutableWallet::htmlOutputMonth()\n");
-#endif
+    DLog(" -> MutableWallet::htmlOutputMonth()\n");
 
     for (const auto& dayPair : monthContainer.days) {
-#ifdef DEBUG
-      std::cout << "day pair" << std::endl;
-#endif
+      DLog("day pair\n");
+
       this->htmlOutputDay(dayPair.second);
     }
   }
 
   void MutableWallet::htmlOutputDay(const Container::DayEntryContainer& dayContainer) const noexcept
   {
-#ifdef DEBUG
-    printf(" -> MutableWallet::htmlOutputDay()\n");
-#endif
+    DLog(" -> MutableWallet::htmlOutputDay()\n");
 
     for (const auto& entry : dayContainer.entries) {
-#ifdef DEBUG
-      std::cout << "entry " << entry.id << std::endl;
-#endif
+      DLog("entry %s\n", entry.id.c_str());
     }
   }
 
@@ -490,9 +460,7 @@ namespace Wallet
 
   void MutableWallet::createLock()
   {
-#ifdef DEBUG
-    printf(" -> MutableWallet::createLock\n");
-#endif
+    DLog(" -> MutableWallet::createLock\n");
 
     // Already locked.
     if (this->isLocked) {
@@ -513,9 +481,7 @@ namespace Wallet
 
   void MutableWallet::removeLock() noexcept
   {
-#ifdef DEBUG
-    printf(" -> MutableWallet::removeLock\n");
-#endif
+    DLog(" -> MutableWallet::removeLock\n");
 
     if (!this->isLocked) {
       return;
@@ -532,9 +498,7 @@ namespace Wallet
 
   void MutableWallet::loadIndex() noexcept
   {
-#ifdef DEBUG
-    printf(" -> MutableWallet::loadIndex\n");
-#endif
+    DLog(" -> MutableWallet::loadIndex\n");
 
     if (this->isIndexLoaded) {
       return;
@@ -565,9 +529,7 @@ namespace Wallet
    */
   void MutableWallet::saveIndex() noexcept
   {
-#ifdef DEBUG
-    printf(" -> MutableWallet::saveIndex\n");
-#endif
+    DLog(" -> MutableWallet::saveIndex\n");
 
     // Skip function when nothing has been changed.
     if (!this->isIndexModified) {
@@ -585,9 +547,7 @@ namespace Wallet
    */
   bool MutableWallet::entryExists(const Entry& entry) noexcept
   {
-#ifdef DEBUG
-    printf(" -> MutableWallet::entryExists\n");
-#endif
+    DLog(" -> MutableWallet::entryExists\n");
 
     this->loadIndex();
 

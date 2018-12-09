@@ -45,6 +45,7 @@ endif ()
 # Wallet Target
 add_executable(wallet
     src/app/wallet.cpp
+    src/debug.hpp
     src/components.cpp src/components.hpp
     src/class/mutable_wallet.cpp src/class/mutable_wallet.hpp
     src/class/immutable_wallet.cpp src/class/immutable_wallet.cpp

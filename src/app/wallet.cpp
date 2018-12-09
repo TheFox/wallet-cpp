@@ -21,6 +21,7 @@ namespace bpo = boost::program_options;
 #include "../class/command/command_factory.hpp"
 #include "../class/command/command.hpp"
 #include "../components.hpp"
+#include "../debug.hpp"
 
 int main(int argc, char* const argv[])
 {
@@ -33,10 +34,7 @@ int main(int argc, char* const argv[])
   using Wallet::CommandFactory;
   using Wallet::CommandOptions;
 
-#ifdef DEBUG
-  puts("--- DEBUG ---");
-  puts("");
-#endif
+  DLog("--- DEBUG ---\n\n");
 
   // Commands
   bpo::positional_options_description commandPos;

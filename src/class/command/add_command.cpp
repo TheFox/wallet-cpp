@@ -5,10 +5,11 @@
 
 #include <iostream>
 
-#include "add_command.hpp"
+#include "../../debug.hpp"
+#include "../../components.hpp"
 #include "../mutable_wallet.hpp"
 #include "../entry.hpp"
-#include "../../components.hpp"
+#include "add_command.hpp"
 
 namespace Wallet
 {
@@ -18,9 +19,7 @@ namespace Wallet
     using std::cin;
     using std::endl;
 
-#ifdef DEBUG
-    printf(" -> options %p\n", &this->options);
-#endif
+    DLog(" -> options %p\n", &this->options);
 
     Entry entry = this->options;
 

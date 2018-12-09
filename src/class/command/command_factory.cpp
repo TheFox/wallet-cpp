@@ -1,8 +1,5 @@
 
-#ifdef DEBUG
-#include <cstdio>
-#endif
-
+#include "../../debug.hpp"
 #include "command_factory.hpp"
 #include "command.hpp"
 #include "help_command.hpp"
@@ -21,16 +18,11 @@ namespace Wallet
     }
     isSetup = true;
 
-#ifdef DEBUG
-    printf(" -> CommandFactory::setup()\n");
-#endif
+    DLog(" -> CommandFactory::setup()\n");
 
     // Clear creators.
     creators.clear();
 
-    //creators["help"] = []()->std::unique_ptr<Command> {
-    //  return std::make_unique<HelpCommand>();
-    //};
     creators["add"] = []()->std::unique_ptr<Command> {
       return std::make_unique<AddCommand>();
     };
