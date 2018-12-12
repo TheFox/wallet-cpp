@@ -34,7 +34,7 @@ int main(int argc, char* const argv[])
   using Wallet::CommandFactory;
   using Wallet::CommandOptions;
 
-  DLog("--- DEBUG ---\n\n");
+  DLog("--- DEBUG ---\n");
 
   // Commands
   bpo::positional_options_description commandPos;

@@ -270,7 +270,7 @@ namespace Wallet
     AccountAble::Number balanceSum{0.0};
 
     for (const auto& yearPair : container.years) {
-      DLog("year: %d\n", yearPair.first);
+      DLog(" -> year: %d\n", yearPair.first);
 
       this->htmlOutputYear(yearPair.second);
 
@@ -339,10 +339,10 @@ namespace Wallet
 
   void MutableWallet::htmlOutputYear(const Container::YearEntryContainer& yearContainer) const noexcept
   {
-    DLog(" -> MutableWallet::htmlOutputYear()\n");
+    //DLog(" -> MutableWallet::htmlOutputYear()\n");
 
     for (const auto& monthPair : yearContainer.months) {
-      DLog("month pair\n");
+      DLog("   -> month pair\n");
 
       this->htmlOutputMonth(monthPair.second);
     }
@@ -350,10 +350,10 @@ namespace Wallet
 
   void MutableWallet::htmlOutputMonth(const Container::MonthEntryContainer& monthContainer) const noexcept
   {
-    DLog(" -> MutableWallet::htmlOutputMonth()\n");
+    // DLog(" -> MutableWallet::htmlOutputMonth()\n");
 
     for (const auto& dayPair : monthContainer.days) {
-      DLog("day pair\n");
+      DLog("     -> day pair\n");
 
       this->htmlOutputDay(dayPair.second);
     }
@@ -361,10 +361,10 @@ namespace Wallet
 
   void MutableWallet::htmlOutputDay(const Container::DayEntryContainer& dayContainer) const noexcept
   {
-    DLog(" -> MutableWallet::htmlOutputDay()\n");
+    // DLog(" -> MutableWallet::htmlOutputDay()\n");
 
     for (const auto& entry : dayContainer.entries) {
-      DLog("entry %s\n", entry.id.c_str());
+      DLog("       -> entry %s\n", entry.id.c_str());
     }
   }
 
