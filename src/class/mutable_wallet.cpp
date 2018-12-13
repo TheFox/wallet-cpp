@@ -274,7 +274,7 @@ namespace Wallet
 
       this->htmlOutputYear(yearPair.second);
 
-      // Balance
+      // Balance Sum
       balanceSum += yearPair.second.balance;
 
       std::stringstream balanceSumSs;
