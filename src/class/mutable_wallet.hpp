@@ -30,10 +30,10 @@ namespace fs = boost::filesystem;
 #  else
 #    error "Missing <yaml-cpp/yaml.h>"
 #  endif
-#  if __has_include(<CTML/CTML.h>)
-#    include <CTML/CTML.h>
+#  if __has_include(<ctml.hpp>)
+#    include <ctml.hpp>
 #  else
-#    error "Missing <CTML/CTML.h>"
+#    error "Missing <ctml.hpp>"
 #  endif
 #endif // __has_include
 
@@ -63,8 +63,10 @@ namespace Wallet
     void htmlOutput(const std::string&) const noexcept;
   private:
     void htmlOutputYear(const Container::YearEntryContainer&, const fs::path&) const noexcept;
-    void htmlOutputMonth(const Container::MonthEntryContainer&) const noexcept;
+    void htmlOutputMonth(const Container::MonthEntryContainer&, const fs::path&) const noexcept;
     void htmlOutputDay(const Container::DayEntryContainer&) const noexcept;
+    CTML::Document getHtmlDoc() const noexcept;
+    constexpr void setHtmlHead(CTML::Document&) const noexcept;
     CTML::Node getHtmlSignatur() const noexcept;
 
   protected:

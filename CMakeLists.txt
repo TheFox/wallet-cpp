@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.7.0)
 
 project(WalletCpp VERSION 0.4.0 LANGUAGES CXX)
-set(PROJECT_VERSION_APPENDIX "-dev.4")
+set(PROJECT_VERSION_APPENDIX "-dev.5")
 set(PROJECT_COPYRIGHT "Copyright (C) 2018 Christian Mayer <https://fox21.at>")
 set(PROJECT_HOMEPAGE_URL "https://github.com/TheFox/wallet-cpp")
 
@@ -20,7 +20,7 @@ configure_file(
     "${CMAKE_CURRENT_BINARY_DIR}/src/config.hpp"
     NEWLINE_STYLE LF)
 include_directories("${CMAKE_CURRENT_BINARY_DIR}/src")
-include_directories("${PROJECT_SOURCE_DIR}/lib/ctml")
+include_directories("${PROJECT_SOURCE_DIR}/lib/ctml/include")
 
 # Term Color
 find_package(termcolor QUIET)
@@ -59,8 +59,7 @@ add_executable(wallet
     src/class/command/list_command.cpp src/class/command/list_command.hpp
     src/class/entry.cpp src/class/entry.hpp
     src/class/entry_container.cpp src/class/entry_container.hpp
-    src/class/account_able.cpp src/class/account_able.hpp
-    lib/ctml/CTML/CTML.h)
+    src/class/account_able.cpp src/class/account_able.hpp)
 target_include_directories(wallet PRIVATE ${PROJECT_SOURCE_DIR}/src)
 target_compile_features(wallet PRIVATE
     cxx_noexcept
@@ -71,6 +70,10 @@ target_compile_features(wallet PRIVATE
 get_target_property(wallet_std wallet CXX_STANDARD)
 target_include_directories(wallet PRIVATE ${Boost_INCLUDE_DIRS})
 target_link_libraries(wallet ${Boost_LIBRARIES} ${YAML_CPP_LIBRARIES})
+
+if(${USE_GNUPLOT})
+    add_definitions(-DUSE_GNUPLOT)
+endif()
 
 # Test Target
 string(TOLOWER "${CMAKE_BUILD_TYPE}" CMAKE_BUILD_TYPE_LOWER)
