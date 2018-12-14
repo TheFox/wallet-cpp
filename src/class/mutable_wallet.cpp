@@ -257,9 +257,10 @@ namespace Wallet
     }
 
     // Directory
+    const decltype(this->htmlPath) yearDirBasePath = this->htmlPath / "year";
     if (!exists(this->htmlPath)) {
       create_directories(this->htmlPath);
-      create_directories(this->htmlPath / "year");
+      create_directories(yearDirBasePath);
     }
 
     // TODO: copy css file to html dir
@@ -272,7 +273,12 @@ namespace Wallet
     for (const auto& yearPair : container.years) {
       DLog(" -> year: %d\n", yearPair.first);
 
-      this->htmlOutputYear(yearPair.second);
+      // Create Directory
+      const decltype(yearDirBasePath) yearDirPath = yearDirBasePath / std::to_string(yearPair.first);
+      if(!exists(yearDirPath))
+        create_directories(yearDirPath);
+
+      this->htmlOutputYear(yearPair.second, yearDirPath);
 
       // Balance Sum
       balanceSum += yearPair.second.balance;
@@ -337,15 +343,26 @@ namespace Wallet
     indexFh.close();
   }
 
-  void MutableWallet::htmlOutputYear(const Container::YearEntryContainer& yearContainer) const noexcept
+  void MutableWallet::htmlOutputYear(const Container::YearEntryContainer& yearContainer,
+    const fs::path& yearDirPath) const noexcept
   {
-    //DLog(" -> MutableWallet::htmlOutputYear()\n");
+    DLog(" -> MutableWallet::htmlOutputYear(%s)\n", yearDirPath.string().c_str());
+
+    // Index Doc
+    CTML::Document indexDoc;
 
     for (const auto& monthPair : yearContainer.months) {
       DLog("   -> month pair\n");
 
       this->htmlOutputMonth(monthPair.second);
     }
+
+    // Output: index.html
+    DLog(" -> write year index file\n");
+    std::ofstream indexFh;
+    indexFh.open((yearDirPath / "index.html").string(), std::ofstream::out);
+    indexFh << indexDoc.ToString(CTML::Readability::MULTILINE); // TODO
+    indexFh.close();
   }
 
   void MutableWallet::htmlOutputMonth(const Container::MonthEntryContainer& monthContainer) const noexcept

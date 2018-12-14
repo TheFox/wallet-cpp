@@ -62,7 +62,7 @@ namespace Wallet
     // void htmlOutput(const std::optional<std::string>&) const noexcept;
     void htmlOutput(const std::string&) const noexcept;
   private:
-    void htmlOutputYear(const Container::YearEntryContainer&) const noexcept;
+    void htmlOutputYear(const Container::YearEntryContainer&, const fs::path&) const noexcept;
     void htmlOutputMonth(const Container::MonthEntryContainer&) const noexcept;
     void htmlOutputDay(const Container::DayEntryContainer&) const noexcept;
     CTML::Node getHtmlSignatur() const noexcept;
