@@ -444,14 +444,14 @@ namespace Wallet
         .SetAttribute("http-equiv", "Content-Type").UseClosingTag(false));
     document.AppendNodeToHead(CTML::Node("title", std::string{PROJECT_NAME}));
     document.AppendNodeToBody(CTML::Node("h1").AppendChild(
-      CTML::Node("a").SetContent(std::string{PROJECT_NAME}).SetAttribute("href", "./index.html")));
+      CTML::Node("a", std::string{PROJECT_NAME}).SetAttribute("href", "./index.html")));
   }
 
   CTML::Node MutableWallet::getHtmlSignatur() const noexcept
   {
     CTML::Node link{"a"};
     link.SetAttribute("href", std::string{PROJECT_HOMEPAGE_URL});
-    link.SetContent(std::string{PROJECT_NAME});
+    link.AppendText(std::string{PROJECT_NAME});
 
     const auto now = Components::getNowStr(HUMAN_DATETIME_FORMAT);
     CTML::Node sig{"p", std::string{"Generated @ " + now + " by "}};
