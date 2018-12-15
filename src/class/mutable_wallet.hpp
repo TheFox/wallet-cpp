@@ -30,11 +30,6 @@ namespace fs = boost::filesystem;
 #  else
 #    error "Missing <yaml-cpp/yaml.h>"
 #  endif
-//#  if __has_include(<ctml.hpp>)
-//#    include <ctml.hpp>
-//#  else
-//#    error "Missing <ctml.hpp>"
-//#  endif
 #endif // __has_include
 
 #include "entry.hpp"
@@ -59,18 +54,12 @@ namespace Wallet
     void setup(bool);
     virtual bool add(Entry, bool);
     Container::EntryContainer getEntries(Components::Date) const;
-    // void htmlOutput(const std::optional<std::string>&) const noexcept;
     void htmlOutput(const std::string&) const noexcept;
-  private:
-    //void htmlOutputYear(const Container::YearEntryContainer&, const fs::path&) const noexcept;
-    //void htmlOutputMonth(const Container::MonthEntryContainer&, const fs::path&) const noexcept;
-    //void htmlOutputDay(const Container::DayEntryContainer&) const noexcept;
 
   protected:
     // Variables
     const fs::path path{};
     fs::path dataPath{};
-    //[[deprecated]] mutable fs::path htmlPath{};
     fs::path indexPath{};
     fs::path tmpPath{};
     fs::path lockPath{};

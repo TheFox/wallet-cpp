@@ -11,10 +11,11 @@ namespace Wallet::Html
   {
   public:
     YearHtml(fs::path, Wallet::Container::YearEntryContainer);
-    void generate();
+    void generate() const noexcept;
 
   private:
-    const Wallet::Container::EntryContainer xcontainer{};
+    const fs::path basePath{};
+    const Wallet::Container::YearEntryContainer container{};
   };
 } // Wallet::Html Namespace
 

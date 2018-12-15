@@ -21,9 +21,9 @@ namespace Wallet::Html
     CTML::Node tableRow{"tr"};
     tableRow.AppendChild(yearTd);
     tableRow.AppendChild(revenueTd);
-    tableRow.AppendChild(CTML::Node("td.right red", row.expense));
-    tableRow.AppendChild(CTML::Node("td.right", row.balance));
-    tableRow.AppendChild(CTML::Node("td.right", row.balanceSum));
+    tableRow.AppendChild(CTML::Node{"td.right red", row.expense});
+    tableRow.AppendChild(CTML::Node{"td.right", row.balance});
+    tableRow.AppendChild(CTML::Node{"td.right", row.balanceSum});
 
     // Add to Table.
     this->tableBody.AppendChild(tableRow);
@@ -34,20 +34,20 @@ namespace Wallet::Html
     DLog(" -> IndexHtml::generate()\n");
 
     CTML::Node tableRow{"tr"};
-    tableRow.AppendChild(CTML::Node("td.left", "TOTAL"));
-    tableRow.AppendChild(CTML::Node("td.right", row.revenue));
-    tableRow.AppendChild(CTML::Node("td.right red", row.expense));
-    tableRow.AppendChild(CTML::Node("td.right", row.balance));
-    tableRow.AppendChild(CTML::Node("td.right", " "));
+    tableRow.AppendChild(CTML::Node{"td.left", "TOTAL"});
+    tableRow.AppendChild(CTML::Node{"td.right", row.revenue});
+    tableRow.AppendChild(CTML::Node{"td.right red", row.expense});
+    tableRow.AppendChild(CTML::Node{"td.right", row.balance});
+    tableRow.AppendChild(CTML::Node{"td.right", " "});
     tableBody.AppendChild(tableRow);
 
     // Index Table Head Row
     CTML::Node indexTableHeadTr{"tr"};
-    indexTableHeadTr.AppendChild(CTML::Node("th.left", "Year"));
-    indexTableHeadTr.AppendChild(CTML::Node("th.right", "Revenue"));
-    indexTableHeadTr.AppendChild(CTML::Node("th.right", "Expense"));
-    indexTableHeadTr.AppendChild(CTML::Node("th.right", "Balance"));
-    indexTableHeadTr.AppendChild(CTML::Node("th.right", "Balance &#8721;"));
+    indexTableHeadTr.AppendChild(CTML::Node{"th.left", "Year"});
+    indexTableHeadTr.AppendChild(CTML::Node{"th.right", "Revenue"});
+    indexTableHeadTr.AppendChild(CTML::Node{"th.right", "Expense"});
+    indexTableHeadTr.AppendChild(CTML::Node{"th.right", "Balance"});
+    indexTableHeadTr.AppendChild(CTML::Node{"th.right", "Balance &#8721;"});
 
     // Index Table Head
     CTML::Node indexTableHead{"thead"};

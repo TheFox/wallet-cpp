@@ -40,10 +40,8 @@ namespace Wallet::Html
         fs::create_directories(yearDirPath);
       }
 
-      //this->htmlOutputYear(yearPair.second, yearDirPath);
-      const Wallet::Container::YearEntryContainer s = yearPair.second;
-      YearHtml yearHtml{yearDirPath / "index.html", s};
-      //yearHtml.generate();
+      YearHtml yearHtml{yearDirPath, yearPair.second};
+      yearHtml.generate();
 
       // Balance Sum
       balanceSum += yearPair.second.balance;
