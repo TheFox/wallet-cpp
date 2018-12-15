@@ -1,16 +1,17 @@
 
-#include <fstream>
+#include <fstream> // ofstream
 #include <iostream>
 #include <cstdint>
-#include <iomanip> // setprecision, setfill, setw
-#include <ios> // fixed
+//#include <iomanip> // setprecision, setfill, setw
+//#include <ios> // fixed
 
 #include "debug.hpp"
-#include "config.hpp"
+//#include "config.hpp"
 #include "mutable_wallet.hpp"
 #include "entry.hpp"
 #include "entry_container.hpp"
 #include "../components.hpp"
+#include "html/html_generator.hpp"
 
 namespace Wallet
 {
@@ -64,7 +65,7 @@ namespace Wallet
     // For 'updated_at' field.
     const auto now = Components::getNowStr();
 
-    Node month;
+    Node month{};
     if (fs::exists(monthFilePathStr)) {
       DLog(" -> load month file: %s\n", monthFilePathStr.c_str());
 
@@ -110,7 +111,7 @@ namespace Wallet
     month["days"][dayStr].push_back(node);
 
     // Save Month file.
-    std::ofstream fout(monthFilePathStr);
+    std::ofstream fout{monthFilePathStr};
     fout << month;
     fout.close();
 
@@ -237,7 +238,6 @@ namespace Wallet
     return container;
   }
 
-  // void MutableWallet::htmlOutput(const std::optional<std::string>& _path) const noexcept
   void MutableWallet::htmlOutput(const std::string& _path) const noexcept
   {
     using fs::create_directories;
@@ -247,99 +247,20 @@ namespace Wallet
     DLog(" -> MutableWallet::htmlOutput()\n");
 
     const auto& container = this->getEntries({0, 0, 0});
+    DLog(" -> MutableWallet::htmlOutput() -> container %p\n", &container);
 
-    // if (_path.has_value()) {
-    //   this->htmlPath = _path.value();
+    fs::path htmlPath;
     if (_path.size() > 0) {
-      this->htmlPath = _path;
+      htmlPath = _path;
     } else {
-      this->htmlPath = this->path / "html";
+      htmlPath = this->path / "html";
     }
 
-    // Directory
-    const decltype(this->htmlPath) yearDirBasePath = this->htmlPath / "year";
-    if (!exists(this->htmlPath)) {
-      create_directories(this->htmlPath);
-      create_directories(yearDirBasePath);
-    }
-
-    // TODO: copy css file to html dir
-
-    CTML::Node tableBody("tbody");
-
-    // Balance Sum
-    AccountAble::Number balanceSum{0.0};
-
-    for (const auto& yearPair : container.years) {
-      DLog(" -> year: %d\n", yearPair.first);
-
-      const auto yearStr = std::to_string(yearPair.first);
-
-      // Create Directory
-      const auto yearDirPath = yearDirBasePath / yearStr;
-      if (!exists(yearDirPath)) {
-        create_directories(yearDirPath);
-      }
-
-      this->htmlOutputYear(yearPair.second, yearDirPath);
-
-      // Balance Sum
-      balanceSum += yearPair.second.balance;
-
-      std::stringstream balanceSumSs;
-      balanceSumSs << std::fixed << std::setprecision(2) << balanceSum;
-
-      CTML::Node tableRow{"tr"};
-      //tableRow.AppendChild(CTML::Node("td", "my_content1"));
-      //tableRow.AppendChild(CTML::Node("td").SetContent("my_content2"));
-      tableRow.AppendChild(CTML::Node("td.left").AppendChild(
-        CTML::Node("a", yearStr)
-          .SetAttribute("href", "year/" + yearStr + "/")));
-      tableRow.AppendChild(CTML::Node("td.right", yearPair.second.getRevenueStr()));
-      tableRow.AppendChild(CTML::Node("td.right red", yearPair.second.getExpenseStr()));
-      tableRow.AppendChild(CTML::Node("td.right", yearPair.second.getBalanceStr()));
-      tableRow.AppendChild(CTML::Node("td.right", balanceSumSs.str()));
-      tableBody.AppendChild(tableRow);
-    }
-
-    CTML::Node tableRow{"tr"};
-    tableRow.AppendChild(CTML::Node("td.left", "TOTAL"));
-    tableRow.AppendChild(CTML::Node("td.right", container.getRevenueStr()));
-    tableRow.AppendChild(CTML::Node("td.right red", container.getExpenseStr()));
-    tableRow.AppendChild(CTML::Node("td.right", container.getBalanceStr()));
-    tableRow.AppendChild(CTML::Node("td.right", " "));
-    tableBody.AppendChild(tableRow);
-
-    // Index Table Head Row
-    CTML::Node indexTableHeadTr{"tr"};
-    indexTableHeadTr.AppendChild(CTML::Node("th.left", "Year"));
-    indexTableHeadTr.AppendChild(CTML::Node("th.right", "Revenue"));
-    indexTableHeadTr.AppendChild(CTML::Node("th.right", "Expense"));
-    indexTableHeadTr.AppendChild(CTML::Node("th.right", "Balance"));
-    indexTableHeadTr.AppendChild(CTML::Node("th.right", "Balance &#8721;"));
-
-    // Index Table Head
-    CTML::Node indexTableHead{"thead"};
-    indexTableHead.AppendChild(indexTableHeadTr);
-
-    // Index Table
-    CTML::Node indexTable{"table.list"};
-    indexTable.SetAttribute("border", "1"); // TODO
-    indexTable.AppendChild(indexTableHead);
-    indexTable.AppendChild(tableBody);
-
-    // Index Doc
-    auto indexDoc = this->getHtmlDoc();
-    indexDoc.AppendNodeToBody(indexTable);
-
-    // Output: index.html
-    std::ofstream indexFh;
-    indexFh.open((this->htmlPath / "index.html").string(), std::ofstream::out);
-    indexFh << indexDoc.ToString(CTML::StringFormatting::MULTIPLE_LINES); // TODO
-    indexFh.close();
+    const Wallet::Html::HtmlGenerator htmlGenerator{htmlPath, container};
+    htmlGenerator.generate();
   }
 
-  void MutableWallet::htmlOutputYear(const Container::YearEntryContainer& yearContainer,
+  /*void MutableWallet::htmlOutputYear(const Container::YearEntryContainer& yearContainer,
                                      const fs::path& yearDirPath) const noexcept
   {
     DLog(" -> MutableWallet::htmlOutputYear(%s)\n", yearDirPath.string().c_str());
@@ -392,13 +313,14 @@ namespace Wallet
 
     // Output: index.html
     DLog(" -> write year index file\n");
-    std::ofstream indexFh;
+    std::ofstream indexFh{};
     indexFh.open((yearDirPath / "index.html").string(), std::ofstream::out);
     indexFh << indexDoc.ToString(CTML::StringFormatting::MULTIPLE_LINES); // TODO
     indexFh.close();
   }
 
-  void MutableWallet::htmlOutputMonth(const Container::MonthEntryContainer& monthContainer, const fs::path& filePath) const noexcept
+  void MutableWallet::htmlOutputMonth(const Container::MonthEntryContainer& monthContainer,
+                                      const fs::path& filePath) const noexcept
   {
     DLog("     -> MutableWallet::htmlOutputMonth(%s)\n", filePath.c_str());
 
@@ -408,12 +330,13 @@ namespace Wallet
     //}
 
     // Month Doc
-    auto monthDoc = this->getHtmlDoc();
-    //monthDoc.AppendNodeToBody(indexTable);
+    auto monthDoc = this->getHtmlDoc("../../index.html");
+    monthDoc.AppendNodeToBody(CTML::Node("h2").AppendText("Month: ").AppendText("MONTHNAME").AppendChild(CTML::Node("a")));
+    //monthDoc.AppendNodeToBody(monthTable);
 
     // Month File Output
     DLog("     -> write month file: %s\n", filePath.c_str());
-    std::ofstream monthFh;
+    std::ofstream monthFh{};
     monthFh.open(filePath.string(), std::ofstream::out);
     monthFh << monthDoc.ToString(CTML::StringFormatting::MULTIPLE_LINES); // TODO
     monthFh.close();
@@ -421,44 +344,14 @@ namespace Wallet
 
   void MutableWallet::htmlOutputDay(const Container::DayEntryContainer& dayContainer) const noexcept
   {
-    // DLog(" -> MutableWallet::htmlOutputDay()\n");
+    DLog("       -> MutableWallet::htmlOutputDay()\n");
 
     for (const auto& entry : dayContainer.entries) {
       DLog("       -> entry %s\n", entry.id.c_str());
     }
   }
 
-  CTML::Document MutableWallet::getHtmlDoc() const noexcept
-  {
-    CTML::Document doc;
-    this->setHtmlHead(doc);
-    doc.AppendNodeToBody(this->getHtmlSignatur());
-    return doc;
-  }
-
-  constexpr void MutableWallet::setHtmlHead(CTML::Document& document) const noexcept
-  {
-    document.AppendNodeToHead(
-      CTML::Node("meta")
-        .SetAttribute("content", "text/html; charset=utf-8")
-        .SetAttribute("http-equiv", "Content-Type").UseClosingTag(false));
-    document.AppendNodeToHead(CTML::Node("title", std::string{PROJECT_NAME}));
-    document.AppendNodeToBody(CTML::Node("h1").AppendChild(
-      CTML::Node("a", std::string{PROJECT_NAME}).SetAttribute("href", "./index.html")));
-  }
-
-  CTML::Node MutableWallet::getHtmlSignatur() const noexcept
-  {
-    CTML::Node link{"a"};
-    link.SetAttribute("href", std::string{PROJECT_HOMEPAGE_URL});
-    link.AppendText(std::string{PROJECT_NAME});
-
-    const auto now = Components::getNowStr(HUMAN_DATETIME_FORMAT);
-    CTML::Node sig{"p", std::string{"Generated @ " + now + " by "}};
-    sig.AppendChild(link);
-    sig.AppendText(" " PROJECT_VERSION);
-    return sig;
-  }
+   */
 
   void MutableWallet::setupVariables() noexcept
   {
@@ -505,7 +398,7 @@ namespace Wallet
     }
 
     const path versionFile = this->path / "version";
-    ifstream iVersionFh;
+    ifstream iVersionFh{};
     decltype(this->version) oldVersion{0};
     if (exists(versionFile)) {
       iVersionFh.open(versionFile.string(), ofstream::in);
@@ -514,7 +407,7 @@ namespace Wallet
     }
 
     if (this->version > oldVersion) {
-      ofstream oVersionFh;
+      ofstream oVersionFh{};
       oVersionFh.open(versionFile.string(), ofstream::out);
       oVersionFh << this->version;
       oVersionFh.close();
@@ -523,7 +416,7 @@ namespace Wallet
     // Create main .gitignore file.
     const path gitignoreFile = this->path / ".gitignore";
     if (!exists(gitignoreFile)) {
-      ofstream gitignoreFh;
+      ofstream gitignoreFh{};
       gitignoreFh.open(gitignoreFile.string(), ofstream::out);
       gitignoreFh << "/tmp/" << '\n';
       gitignoreFh << "/html/" << '\n';
@@ -551,7 +444,7 @@ namespace Wallet
     }
 
     // Create lock file.
-    std::ofstream lockFh(this->lockPath.string());
+    std::ofstream lockFh{this->lockPath.string()};
     lockFh << "locked";
     lockFh.close();
 
@@ -616,7 +509,7 @@ namespace Wallet
     }
     this->isIndexModified = false;
 
-    std::ofstream fout(this->indexPath.string());
+    std::ofstream fout{this->indexPath.string()};
     fout << this->index;
     fout.close();
   }

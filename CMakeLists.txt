@@ -1,9 +1,11 @@
 cmake_minimum_required(VERSION 3.7.0)
 
 project(WalletCpp VERSION 0.4.0 LANGUAGES CXX)
-set(PROJECT_VERSION_APPENDIX "-dev.5")
+set(PROJECT_VERSION_APPENDIX "-dev.6")
 set(PROJECT_COPYRIGHT "Copyright (C) 2018 Christian Mayer <https://fox21.at>")
 set(PROJECT_HOMEPAGE_URL "https://github.com/TheFox/wallet-cpp")
+
+set(WALLETCPP_USE_GNUPLOT ON)
 
 set(CMAKE_CXX_FLAGS "-Wall -Wshadow")
 set(CMAKE_CXX_FLAGS_DEBUG "-g -O0 -DDEBUG -Wno-unused-variable -fsanitize=address")
@@ -59,7 +61,11 @@ add_executable(wallet
     src/class/command/list_command.cpp src/class/command/list_command.hpp
     src/class/entry.cpp src/class/entry.hpp
     src/class/entry_container.cpp src/class/entry_container.hpp
-    src/class/account_able.cpp src/class/account_able.hpp)
+    src/class/account_able.cpp src/class/account_able.hpp
+    src/class/html/html_generator.cpp src/class/html/html_generator.hpp
+    src/class/html/base_html.cpp src/class/html/base_html.hpp
+    src/class/html/index_html.cpp src/class/html/index_html.hpp
+    src/class/html/year_html.cpp src/class/html/year_html.hpp)
 target_include_directories(wallet PRIVATE ${PROJECT_SOURCE_DIR}/src)
 target_compile_features(wallet PRIVATE
     cxx_noexcept
@@ -71,7 +77,7 @@ get_target_property(wallet_std wallet CXX_STANDARD)
 target_include_directories(wallet PRIVATE ${Boost_INCLUDE_DIRS})
 target_link_libraries(wallet ${Boost_LIBRARIES} ${YAML_CPP_LIBRARIES})
 
-if(${USE_GNUPLOT})
+if(${WALLETCPP_USE_GNUPLOT})
     add_definitions(-DUSE_GNUPLOT)
 endif()
 
