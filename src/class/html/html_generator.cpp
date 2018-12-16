@@ -1,5 +1,5 @@
 
-#include <iomanip> // setprecision, setfill, setw
+#include <iomanip> // setprecision
 #include <ios> // fixed
 
 #include "html_generator.hpp"

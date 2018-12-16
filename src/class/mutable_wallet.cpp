@@ -6,7 +6,6 @@
 //#include <ios> // fixed
 
 #include "debug.hpp"
-//#include "config.hpp"
 #include "mutable_wallet.hpp"
 #include "entry.hpp"
 #include "entry_container.hpp"
@@ -20,7 +19,8 @@ namespace Wallet
     DLog(" -> MutableWallet::MutableWallet\n");
   }
 
-  MutableWallet::~MutableWallet() noexcept(noexcept(MutableWallet::saveIndex()) && noexcept(MutableWallet::removeLock()))
+  MutableWallet::~MutableWallet()
+    noexcept(noexcept(saveIndex()) && noexcept(removeLock()))
   {
     DLog(" -> MutableWallet::~MutableWallet\n");
 
