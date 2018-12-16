@@ -11,7 +11,6 @@
 #    include <experimental/filesystem>
 #  elif __has_include(<boost/filesystem.hpp>)
 #    include <boost/filesystem.hpp>
-//namespace fs = boost::filesystem;
 #  else
 #    error "Missing <filesystem>"
 #  endif
@@ -19,7 +18,7 @@
 
 #include "../entry_container.hpp"
 
-namespace Wallet::Html
+namespace Wallet { namespace Html
 {
   class HtmlGenerator final
   {
@@ -36,6 +35,6 @@ namespace Wallet::Html
     // Methods
     void setup() const noexcept;
   };
-} // Wallet::Html Namespace
+}} // Wallet::Html Namespace
 
 #endif // WALLETCPP_HTML_HTML_GENERATOR_HPP_

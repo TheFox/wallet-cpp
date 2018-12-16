@@ -212,7 +212,8 @@ namespace Wallet
         // Iterate Day entries.
         for (const auto& entryNode : node) {
           // emplace_back() is Nice!!
-          const auto entry = dayMap.entries.emplace_back(entryNode);
+          const Entry entry{entryNode};
+          dayMap.entries.push_back(entry);
 
           // Container
           container.entryCount++;

@@ -4,7 +4,7 @@
 
 #include "base_html.hpp"
 
-namespace Wallet::Html
+namespace Wallet { namespace Html
 {
   struct IndexHtmlRow
   {
@@ -28,6 +28,6 @@ namespace Wallet::Html
   private:
     CTML::Node tableBody{"tbody"};
   };
-} // Wallet::Html Namespace
+}} // Wallet::Html Namespace
 
 #endif // WALLETCPP_HTML_INDEX_HTML_HPP_

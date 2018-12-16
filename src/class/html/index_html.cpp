@@ -2,7 +2,7 @@
 #include "index_html.hpp"
 #include "../../debug.hpp"
 
-namespace Wallet::Html
+namespace Wallet { namespace Html
 {
   IndexHtml::IndexHtml(boost::filesystem::path _basePath) :
     BaseHtml{std::move(_basePath), boost::filesystem::path{"index.html"}, "Index"}
@@ -71,4 +71,4 @@ namespace Wallet::Html
     indexFh << indexDoc.ToString(CTML::StringFormatting::MULTIPLE_LINES); // TODO
     indexFh.close();
   }
-} // Wallet::Html Namespace
+}} // Wallet::Html Namespace

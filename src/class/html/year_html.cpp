@@ -6,7 +6,7 @@
 #include "../../debug.hpp"
 #include "month_html.hpp"
 
-namespace Wallet::Html
+namespace Wallet { namespace Html
 {
   YearHtml::YearHtml(boost::filesystem::path _basePath, Wallet::Container::YearEntryContainer _container) :
     BaseHtml{std::move(_basePath), boost::filesystem::path{"index.html"}, "Year " + std::to_string(_container.year)},
@@ -83,4 +83,4 @@ namespace Wallet::Html
     indexFh << yearDoc.ToString(CTML::StringFormatting::MULTIPLE_LINES); // TODO
     indexFh.close();
   }
-} // Wallet::Html Namespace
+}} // Wallet::Html Namespace

@@ -18,7 +18,7 @@ namespace bdt = boost::date_time;
 #define DATETIME_FORMAT "%Y-%m-%dT%T+00:00"
 #define HUMAN_DATETIME_FORMAT "%Y-%m-%d %T +00:00"
 
-namespace Wallet::Components
+namespace Wallet { namespace Components
 {
   // Types
   using Date = bdt::year_month_day_base<std::uint16_t, std::uint16_t, std::uint16_t>;
@@ -28,6 +28,6 @@ namespace Wallet::Components
   std::string ftos(const std::float_t&, int = 2) noexcept;
   std::float_t stof(std::string) noexcept;
   Date parseDate(const std::string&) noexcept;
-}
+}} // Wallet::Components Namespace
 
 #endif // WALLETCPP_COMPONENTS_HPP_

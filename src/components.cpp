@@ -20,7 +20,7 @@
 
 #include "components.hpp"
 
-namespace Wallet::Components
+namespace Wallet { namespace Components
 {
   std::string getNowStr(const std::string format) noexcept
   {
@@ -115,4 +115,4 @@ namespace Wallet::Components
     }
     return ymd;
   }
-} // Wallet::Components Namespace
+}} // Wallet::Components Namespace

@@ -7,7 +7,7 @@
 #include "base_html.hpp"
 #include "../entry_container.hpp"
 
-namespace Wallet::Html
+namespace Wallet { namespace Html
 {
   class MonthHtml final : public BaseHtml
   {
@@ -23,6 +23,6 @@ namespace Wallet::Html
     static std::string getMonthFile(Container::ContainerMonth) noexcept;
     static std::string getMonthName(Container::ContainerMonth) noexcept;
   };
-}
+}} // Wallet::Html Namespace
 
 #endif // WALLETCPP_HTML_MONTH_HTML_HPP_

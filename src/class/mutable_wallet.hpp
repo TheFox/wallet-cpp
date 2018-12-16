@@ -12,7 +12,6 @@
 #    include <experimental/filesystem>
 #  elif __has_include(<boost/filesystem.hpp>)
 #    include <boost/filesystem.hpp>
-//namespace fs = boost::filesystem;
 #  else
 #    error "Missing <filesystem>"
 #  endif

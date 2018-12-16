@@ -5,7 +5,7 @@
 #include "base_html.hpp"
 #include "../entry_container.hpp"
 
-namespace Wallet::Html
+namespace Wallet { namespace Html
 {
   class YearHtml final : public BaseHtml
   {
@@ -16,6 +16,6 @@ namespace Wallet::Html
   private:
     const Wallet::Container::YearEntryContainer container{};
   };
-} // Wallet::Html Namespace
+}} // Wallet::Html Namespace
 
 #endif // WALLETCPP_HTML_YEAR_HTML_HPP_

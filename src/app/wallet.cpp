@@ -7,7 +7,6 @@
 #ifdef __has_include
 #  if __has_include(<boost/program_options.hpp>)
 #    include <boost/program_options.hpp>
-namespace bpo = boost::program_options;
 #  else
 #    error "Missing <program_options>"
 #  endif
@@ -29,15 +28,15 @@ int main(int argc, char* const argv[])
   using std::cout;
   using std::cerr;
   using std::endl;
-  using bpo::options_description;
-  using bpo::value;
+  using boost::program_options::options_description;
+  using boost::program_options::value;
   using Wallet::CommandFactory;
   using Wallet::CommandOptions;
 
   DLog("--- DEBUG ---\n");
 
   // Commands
-  bpo::positional_options_description commandPos;
+  boost::program_options::positional_options_description commandPos;
   commandPos.add("command", 1);
 
   // Generic options
@@ -85,15 +84,15 @@ int main(int argc, char* const argv[])
     .add(addCmdOpts)
     .add(htmlCmdOpts);
 
-  auto parsedOptions = bpo::command_line_parser(argc, argv)
+  auto parsedOptions = boost::program_options::command_line_parser(argc, argv)
     .options(opts)
     .positional(commandPos)
     .allow_unregistered()
     .run();
 
-  bpo::variables_map vm{};
-  bpo::store(parsedOptions, vm);
-  bpo::notify(vm);
+  boost::program_options::variables_map vm{};
+  boost::program_options::store(parsedOptions, vm);
+  boost::program_options::notify(vm);
 
   string commandName{};
   if (vm.count("command")) {

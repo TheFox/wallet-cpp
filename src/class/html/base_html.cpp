@@ -4,7 +4,7 @@
 #include "base_html.hpp"
 #include "../../components.hpp"
 
-namespace Wallet::Html
+namespace Wallet { namespace Html
 {
   BaseHtml::BaseHtml(boost::filesystem::path _basePath, boost::filesystem::path _fileName, std::string _title) :
     title(std::move(_title)), basePath(std::move(_basePath)), fileName(std::move(_fileName))
@@ -51,7 +51,7 @@ namespace Wallet::Html
     link.SetAttribute("href", std::string{PROJECT_HOMEPAGE_URL});
     link.AppendText(std::string{PROJECT_NAME});
 
-    const auto now = Wallet::Components::getNowStr(HUMAN_DATETIME_FORMAT);
+    const auto now = Components::getNowStr(HUMAN_DATETIME_FORMAT);
     CTML::Node sig{"p", std::string{"Generated @ " + now + " by "}};
     sig.AppendChild(link);
     sig.AppendText(" " PROJECT_VERSION);
@@ -59,4 +59,4 @@ namespace Wallet::Html
 
     return document;
   }
-} // Wallet::Html Namespace
+}} // Wallet::Html Namespace

@@ -7,14 +7,14 @@ set(PROJECT_HOMEPAGE_URL "https://github.com/TheFox/wallet-cpp")
 
 set(WALLETCPP_USE_GNUPLOT ON)
 
-set(CMAKE_CXX_FLAGS "-Wall -Wshadow -std=c++17")
+set(CMAKE_CXX_FLAGS "-Wall -Wshadow")
 set(CMAKE_CXX_FLAGS_DEBUG "-g -O0 -DDEBUG -Wno-unused-variable -fsanitize=address")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG -Wunused-variable")
 set(CMAKE_CXX_FLAGS_TEST "-g -O0 -DDEBUG -Wno-unused-variable")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
 
-# Set minimum C++ to 2017 standards.
-set(CMAKE_CXX_STANDARD 17)
+# Set minimum C++ to 2014 standards.
+set(CMAKE_CXX_STANDARD 14)
 #set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 configure_file(

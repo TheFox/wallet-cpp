@@ -8,7 +8,7 @@
 #include "entry.hpp"
 #include "account_able.hpp"
 
-namespace Wallet::Container
+namespace Wallet { namespace Container
 {
   // Types
   using EntryVec = std::vector<Entry>;
@@ -51,6 +51,6 @@ namespace Wallet::Container
   {
     YearMap years{};
   };
-} // Wallet::Container Namespace
+}} // Wallet::Container Namespace
 
 #endif // WALLETCPP_ENTRY_CONTAINER_HPP_

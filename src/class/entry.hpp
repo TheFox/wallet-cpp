@@ -60,7 +60,7 @@ namespace Wallet
 
   private:
     // Variables
-    calendar::date date{};
+    boost::gregorian::date date{};
   };
 } // Wallet Namespace
 

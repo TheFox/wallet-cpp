@@ -11,7 +11,6 @@
 #    include <experimental/filesystem>
 #  elif __has_include(<boost/filesystem.hpp>)
 #    include <boost/filesystem.hpp>
-//namespace fs = boost::filesystem;
 #  else
 #    error "Missing <filesystem>"
 #  endif
@@ -22,7 +21,7 @@
 #  endif
 #endif // __has_include
 
-namespace Wallet::Html
+namespace Wallet { namespace Html
 {
   class BaseHtml
   {
@@ -38,6 +37,6 @@ namespace Wallet::Html
     const boost::filesystem::path basePath{};
     const boost::filesystem::path fileName{};
   };
-} // Wallet::Html Namespace
+}} // Wallet::Html Namespace
 
 #endif // WALLETCPP_HTML_BASE_HTML_HPP_

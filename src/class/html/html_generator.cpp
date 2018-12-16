@@ -7,7 +7,7 @@
 #include "index_html.hpp"
 #include "year_html.hpp"
 
-namespace Wallet::Html
+namespace Wallet { namespace Html
 {
   HtmlGenerator::HtmlGenerator(boost::filesystem::path _basePath, Wallet::Container::EntryContainer _container) :
     yearPath(_basePath / "year"), basePath(std::move(_basePath)), container(std::move(_container))
@@ -82,4 +82,4 @@ namespace Wallet::Html
       boost::filesystem::create_directory(this->yearPath);
     }
   }
-} // Wallet::Html Namespace
+}} // Wallet::Html Namespace

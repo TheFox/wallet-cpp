@@ -5,7 +5,6 @@
 #ifdef __has_include
 #  if __has_include(<boost/date_time/gregorian/gregorian.hpp>)
 #    include <boost/date_time/gregorian/gregorian.hpp>
-//namespace calendar = boost::gregorian;
 #  else
 #    error "Missing <boost/date_time/gregorian/gregorian.hpp>"
 #  endif
@@ -14,7 +13,7 @@
 #include "month_html.hpp"
 #include "../../debug.hpp"
 
-namespace Wallet::Html
+namespace Wallet { namespace Html
 {
   MonthHtml::MonthHtml(boost::filesystem::path _basePath, Container::MonthPair _map) :
     BaseHtml{std::move(_basePath), boost::filesystem::path{getMonthFile(_map.first)},
@@ -128,4 +127,4 @@ namespace Wallet::Html
     boost::gregorian::greg_month month{_month};
     return month.as_long_string();
   }
-}
+}} // Wallet::Html Namespace
