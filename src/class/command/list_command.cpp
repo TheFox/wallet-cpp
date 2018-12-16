@@ -82,7 +82,7 @@ namespace Wallet
       << ' ' << setw(10) << right << std::fixed << std::setprecision(2) << container.revenue
       << ' ' << setw(10) << right << std::fixed << std::setprecision(2) << container.expense
       << ' ' << setw(10) << right << std::fixed << std::setprecision(2) << container.balance
-      << "   Total"
+      << "   TOTAL"
       << endl;
   }
 } // Wallet Namespace

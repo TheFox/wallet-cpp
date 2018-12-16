@@ -12,18 +12,18 @@ namespace Wallet::Html
     BaseHtml{std::move(_basePath), fs::path{"index.html"}, "Year " + std::to_string(_container.year)},
     container(std::move(_container))
   {
-    DLog(" -> YearHtml::YearHtml('%s', '%s')\n", this->getBasePath().c_str(), this->getFileName().c_str());
+    //DLog(" -> YearHtml::YearHtml('%s', '%s')\n", this->getBasePath().c_str(), this->getFileName().c_str());
   }
 
   void YearHtml::generate() const noexcept
   {
-    DLog(" -> YearHtml::generate()\n");
+    //DLog(" -> YearHtml::generate()\n");
 
     // Table Body
     CTML::Node tableBody("tbody");
 
     for (const auto& monthPair : this->container.months) {
-      DLog("   -> month pair\n");
+      //DLog("   -> month pair\n");
 
       MonthHtml monthHtml{this->basePath, monthPair};
       monthHtml.generate();
@@ -40,32 +40,47 @@ namespace Wallet::Html
       tableBody.AppendChild(tableRow);
     }
 
-    // Index Table Head Row
-    CTML::Node indexTableHeadTr{"tr"};
-    indexTableHeadTr.AppendChild(CTML::Node{"th.left", "Month"});
-    indexTableHeadTr.AppendChild(CTML::Node{"th.right", "Revenue"});
-    indexTableHeadTr.AppendChild(CTML::Node{"th.right", "Expense"});
-    indexTableHeadTr.AppendChild(CTML::Node{"th.right", "Balance"});
+    // Total Row
+    CTML::Node totalTr{"tr"};
 
-    // Index Table Head
-    CTML::Node indexTableHead{"thead"};
-    indexTableHead.AppendChild(indexTableHeadTr);
+    // Total Columns
+    totalTr.AppendChild(CTML::Node{"td.left", "TOTAL"});
+    totalTr.AppendChild(CTML::Node{"td.right", this->container.getRevenueStr()});
+    totalTr.AppendChild(CTML::Node{"td.right red", this->container.getExpenseStr()});
+    totalTr.AppendChild(CTML::Node{"td.right", this->container.getBalanceStr()});
 
-    // Index Table
-    CTML::Node indexTable{"table.list"};
-    indexTable.SetAttribute("border", "1"); // TODO
-    indexTable.AppendChild(indexTableHead);
-    indexTable.AppendChild(tableBody);
+    // Table Head Row
+    CTML::Node tableHeadTr{"tr"};
+    tableHeadTr.AppendChild(CTML::Node{"th.left", "Month"});
+    tableHeadTr.AppendChild(CTML::Node{"th.right", "Revenue"});
+    tableHeadTr.AppendChild(CTML::Node{"th.right", "Expense"});
+    tableHeadTr.AppendChild(CTML::Node{"th.right", "Balance"});
 
-    // Index Doc
-    auto indexDoc = this->getHtmlDoc("../../index.html");
-    indexDoc.AppendNodeToBody(indexTable);
+    // Table Head
+    CTML::Node tableHead{"thead"};
+    tableHead.AppendChild(tableHeadTr);
+
+    // Table Footer
+    CTML::Node tableFoot{"tfoot"};
+    tableFoot.AppendChild(totalTr);
+
+    // Table
+    CTML::Node table{"table.list"};
+    table.SetAttribute("border", "1"); // TODO
+    table.AppendChild(tableHead);
+    table.AppendChild(tableBody);
+    table.AppendChild(tableFoot);
+
+    // Year Doc
+    auto yearDoc = this->getHtmlDoc("../../index.html");
+    yearDoc.AppendNodeToBody(CTML::Node{"h2", this->title});
+    yearDoc.AppendNodeToBody(table);
 
     // Output: index.html
-    DLog(" -> write year index file\n");
+    //DLog(" -> write year index file\n");
     std::ofstream indexFh{};
     indexFh.open(this->getFullPath(), std::ofstream::out);
-    indexFh << indexDoc.ToString(CTML::StringFormatting::MULTIPLE_LINES); // TODO
+    indexFh << yearDoc.ToString(CTML::StringFormatting::MULTIPLE_LINES); // TODO
     indexFh.close();
   }
 } // Wallet::Html Namespace

@@ -9,31 +9,31 @@ namespace Wallet::Html
   BaseHtml::BaseHtml(fs::path _basePath, fs::path _fileName, std::string _title) :
     title(std::move(_title)), basePath(std::move(_basePath)), fileName(std::move(_fileName))
   {
-    DLog(" -> BaseHtml::BaseHtml('%s', '%s', '%s')\n", this->basePath.string().c_str(), this->fileName.string().c_str(),
-      this->title.c_str());
+    //DLog(" -> BaseHtml::BaseHtml('%s', '%s', '%s')\n", this->basePath.string().c_str(), this->fileName.string().c_str(),
+    //  this->title.c_str());
   }
 
   std::string BaseHtml::getFullPath() const noexcept
   {
-    DLog(" -> BaseHtml::getFullPath()\n");
+    //DLog(" -> BaseHtml::getFullPath()\n");
     return (this->basePath / this->fileName).string();
   }
 
   std::string BaseHtml::getBasePath() const noexcept
   {
-    DLog(" -> BaseHtml::getBasePath()\n");
+    //DLog(" -> BaseHtml::getBasePath()\n");
     return this->basePath.string();
   }
 
   std::string BaseHtml::getFileName() const noexcept
   {
-    DLog(" -> BaseHtml::getFileName()\n");
+    //DLog(" -> BaseHtml::getFileName()\n");
     return this->fileName.string();
   }
 
   CTML::Document BaseHtml::getHtmlDoc(const std::string index) const noexcept
   {
-    DLog(" -> BaseHtml::getHtmlDoc(%s)\n", index.c_str());
+    //DLog(" -> BaseHtml::getHtmlDoc(%s)\n", index.c_str());
 
     CTML::Document document;
 

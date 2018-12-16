@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.7.0)
 
 project(WalletCpp VERSION 0.4.0 LANGUAGES CXX)
-set(PROJECT_VERSION_APPENDIX "-dev.7")
+set(PROJECT_VERSION_APPENDIX "-dev.8")
 set(PROJECT_COPYRIGHT "Copyright (C) 2018 Christian Mayer <https://fox21.at>")
 set(PROJECT_HOMEPAGE_URL "https://github.com/TheFox/wallet-cpp")
 

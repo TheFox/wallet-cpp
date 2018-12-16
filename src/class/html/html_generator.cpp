@@ -12,7 +12,7 @@ namespace Wallet::Html
   HtmlGenerator::HtmlGenerator(fs::path _basePath, Wallet::Container::EntryContainer _container) :
     yearPath(_basePath / "year"), basePath(std::move(_basePath)), container(std::move(_container))
   {
-    DLog(" -> HtmlGenerator::HtmlGenerator(%s, %p)\n", this->basePath.c_str(), &this->container);
+    //DLog(" -> HtmlGenerator::HtmlGenerator(%s, %p)\n", this->basePath.c_str(), &this->container);
   }
 
   void HtmlGenerator::generate() const noexcept
@@ -30,7 +30,7 @@ namespace Wallet::Html
 
     // Iterate Years.
     for (const auto& yearPair : container.years) {
-      DLog(" -> year: %d\n", yearPair.first);
+      //DLog(" -> year: %d\n", yearPair.first);
 
       const auto yearStr = std::to_string(yearPair.first);
 

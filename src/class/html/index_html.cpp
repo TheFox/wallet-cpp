@@ -7,12 +7,12 @@ namespace Wallet::Html
   IndexHtml::IndexHtml(fs::path _basePath) :
     BaseHtml{std::move(_basePath), fs::path{"index.html"}, "Index"}
   {
-    DLog(" -> IndexHtml::IndexHtml('%s')\n", this->getBasePath().c_str());
+    //DLog(" -> IndexHtml::IndexHtml('%s')\n", this->getBasePath().c_str());
   }
 
   void IndexHtml::addRow(const IndexHtmlRow row)
   {
-    DLog(" -> IndexHtml::addRow()\n");
+    //DLog(" -> IndexHtml::addRow()\n");
 
     CTML::Node yearTd{"td.left"};
     yearTd.AppendChild(CTML::Node("a", row.year)

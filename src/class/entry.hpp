@@ -45,6 +45,7 @@ namespace Wallet
 
     // Parameter: Category
     std::string category{};
+    std::string getCategoryHtml() const noexcept;
 
     // Parameter: Comment
     std::string comment{};
