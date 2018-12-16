@@ -10,7 +10,7 @@ namespace Wallet::Html
   class YearHtml final : public BaseHtml
   {
   public:
-    YearHtml(fs::path, Wallet::Container::YearEntryContainer);
+    YearHtml(boost::filesystem::path, Wallet::Container::YearEntryContainer);
     void generate() const noexcept;
 
   private:

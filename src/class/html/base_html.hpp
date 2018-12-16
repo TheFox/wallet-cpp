@@ -11,7 +11,7 @@
 #    include <experimental/filesystem>
 #  elif __has_include(<boost/filesystem.hpp>)
 #    include <boost/filesystem.hpp>
-namespace fs = boost::filesystem;
+//namespace fs = boost::filesystem;
 #  else
 #    error "Missing <filesystem>"
 #  endif
@@ -27,7 +27,7 @@ namespace Wallet::Html
   class BaseHtml
   {
   public:
-    explicit BaseHtml(fs::path, fs::path, std::string);
+    explicit BaseHtml(boost::filesystem::path, boost::filesystem::path, std::string);
     const std::string title{};
     std::string getFullPath() const noexcept;
     std::string getBasePath() const noexcept;
@@ -35,8 +35,8 @@ namespace Wallet::Html
 
   protected:
     CTML::Document getHtmlDoc(std::string = "./index.html") const noexcept;
-    const fs::path basePath{};
-    const fs::path fileName{};
+    const boost::filesystem::path basePath{};
+    const boost::filesystem::path fileName{};
   };
 } // Wallet::Html Namespace
 

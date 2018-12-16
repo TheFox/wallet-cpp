@@ -11,7 +11,7 @@
 #    include <experimental/filesystem>
 #  elif __has_include(<boost/filesystem.hpp>)
 #    include <boost/filesystem.hpp>
-namespace fs = boost::filesystem;
+//namespace fs = boost::filesystem;
 #  else
 #    error "Missing <filesystem>"
 #  endif
@@ -24,13 +24,13 @@ namespace Wallet::Html
   class HtmlGenerator final
   {
   public:
-    HtmlGenerator(fs::path, Wallet::Container::EntryContainer);
+    HtmlGenerator(boost::filesystem::path, Wallet::Container::EntryContainer);
     void generate() const noexcept;
 
   private:
     // Variables
-    const fs::path yearPath{};
-    const fs::path basePath{};
+    const boost::filesystem::path yearPath{};
+    const boost::filesystem::path basePath{};
     const Wallet::Container::EntryContainer container{};
 
     // Methods

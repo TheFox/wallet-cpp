@@ -12,7 +12,7 @@
 #    include <experimental/filesystem>
 #  elif __has_include(<boost/filesystem.hpp>)
 #    include <boost/filesystem.hpp>
-namespace fs = boost::filesystem;
+//namespace fs = boost::filesystem;
 #  else
 #    error "Missing <filesystem>"
 #  endif
@@ -58,11 +58,11 @@ namespace Wallet
 
   protected:
     // Variables
-    const fs::path path{};
-    fs::path dataPath{};
-    fs::path indexPath{};
-    fs::path tmpPath{};
-    fs::path lockPath{};
+    const boost::filesystem::path path{};
+    boost::filesystem::path dataPath{};
+    boost::filesystem::path indexPath{};
+    boost::filesystem::path tmpPath{};
+    boost::filesystem::path lockPath{};
 
     // Functions
     void setupVariables() noexcept;

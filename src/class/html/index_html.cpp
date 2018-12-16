@@ -4,8 +4,8 @@
 
 namespace Wallet::Html
 {
-  IndexHtml::IndexHtml(fs::path _basePath) :
-    BaseHtml{std::move(_basePath), fs::path{"index.html"}, "Index"}
+  IndexHtml::IndexHtml(boost::filesystem::path _basePath) :
+    BaseHtml{std::move(_basePath), boost::filesystem::path{"index.html"}, "Index"}
   {
     //DLog(" -> IndexHtml::IndexHtml('%s')\n", this->getBasePath().c_str());
   }

@@ -9,7 +9,7 @@
 
 namespace Wallet::Html
 {
-  HtmlGenerator::HtmlGenerator(fs::path _basePath, Wallet::Container::EntryContainer _container) :
+  HtmlGenerator::HtmlGenerator(boost::filesystem::path _basePath, Wallet::Container::EntryContainer _container) :
     yearPath(_basePath / "year"), basePath(std::move(_basePath)), container(std::move(_container))
   {
     //DLog(" -> HtmlGenerator::HtmlGenerator(%s, %p)\n", this->basePath.c_str(), &this->container);
@@ -36,8 +36,8 @@ namespace Wallet::Html
 
       // Create Directory
       const auto yearDirPath = this->yearPath / yearStr;
-      if (!fs::exists(yearDirPath)) {
-        fs::create_directories(yearDirPath);
+      if (!boost::filesystem::exists(yearDirPath)) {
+        boost::filesystem::create_directories(yearDirPath);
       }
 
       YearHtml yearHtml{yearDirPath, yearPair.second};
@@ -72,11 +72,14 @@ namespace Wallet::Html
 
   void HtmlGenerator::setup() const noexcept
   {
-    if (!fs::exists(this->basePath)) {
-      fs::create_directory(this->basePath);
+    using boost::filesystem::exists;
+    using boost::filesystem::create_directory;
+
+    if (!exists(this->basePath)) {
+      boost::filesystem::create_directory(this->basePath);
     }
-    if (!fs::exists(this->yearPath)) {
-      fs::create_directory(this->yearPath);
+    if (!exists(this->yearPath)) {
+      boost::filesystem::create_directory(this->yearPath);
     }
   }
 } // Wallet::Html Namespace

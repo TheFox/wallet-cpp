@@ -2,9 +2,6 @@
 #ifndef WALLETCPP_HTML_INDEX_HTML_HPP_
 #define WALLETCPP_HTML_INDEX_HTML_HPP_
 
-#ifdef __has_include
-#endif // __has_include
-
 #include "base_html.hpp"
 
 namespace Wallet::Html
@@ -24,7 +21,7 @@ namespace Wallet::Html
   class IndexHtml final : public BaseHtml
   {
   public:
-    explicit IndexHtml(fs::path);
+    explicit IndexHtml(boost::filesystem::path);
     void addRow(IndexHtmlRow);
     void generate(IndexHtmlRow);
 

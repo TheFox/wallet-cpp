@@ -7,7 +7,7 @@ set(PROJECT_HOMEPAGE_URL "https://github.com/TheFox/wallet-cpp")
 
 set(WALLETCPP_USE_GNUPLOT ON)
 
-set(CMAKE_CXX_FLAGS "-Wall -Wshadow")
+set(CMAKE_CXX_FLAGS "-Wall -Wshadow -std=c++17")
 set(CMAKE_CXX_FLAGS_DEBUG "-g -O0 -DDEBUG -Wno-unused-variable -fsanitize=address")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG -Wunused-variable")
 set(CMAKE_CXX_FLAGS_TEST "-g -O0 -DDEBUG -Wno-unused-variable")
@@ -15,7 +15,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
 
 # Set minimum C++ to 2017 standards.
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
+#set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 configure_file(
     "${PROJECT_SOURCE_DIR}/src/config.hpp.in"
@@ -68,12 +68,12 @@ add_executable(wallet
     src/class/html/year_html.cpp src/class/html/year_html.hpp
     src/class/html/month_html.cpp src/class/html/month_html.hpp)
 target_include_directories(wallet PRIVATE ${PROJECT_SOURCE_DIR}/src)
-target_compile_features(wallet PRIVATE
-    cxx_noexcept
-    cxx_constexpr
-    cxx_final
-    cxx_deleted_functions
-    cxx_override)
+#target_compile_features(wallet PRIVATE
+#    cxx_noexcept
+#    cxx_constexpr
+#    cxx_final
+#    cxx_deleted_functions
+#    cxx_override)
 get_target_property(wallet_std wallet CXX_STANDARD)
 target_include_directories(wallet PRIVATE ${Boost_INCLUDE_DIRS})
 target_link_libraries(wallet ${Boost_LIBRARIES} ${YAML_CPP_LIBRARIES})

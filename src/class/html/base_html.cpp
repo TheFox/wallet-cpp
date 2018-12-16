@@ -6,7 +6,7 @@
 
 namespace Wallet::Html
 {
-  BaseHtml::BaseHtml(fs::path _basePath, fs::path _fileName, std::string _title) :
+  BaseHtml::BaseHtml(boost::filesystem::path _basePath, boost::filesystem::path _fileName, std::string _title) :
     title(std::move(_title)), basePath(std::move(_basePath)), fileName(std::move(_fileName))
   {
     //DLog(" -> BaseHtml::BaseHtml('%s', '%s', '%s')\n", this->basePath.string().c_str(), this->fileName.string().c_str(),

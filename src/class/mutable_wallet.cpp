@@ -20,7 +20,7 @@ namespace Wallet
     DLog(" -> MutableWallet::MutableWallet\n");
   }
 
-  MutableWallet::~MutableWallet() noexcept(noexcept(this->saveIndex()) && noexcept(this->removeLock()))
+  MutableWallet::~MutableWallet() noexcept(noexcept(MutableWallet::saveIndex()) && noexcept(MutableWallet::removeLock()))
   {
     DLog(" -> MutableWallet::~MutableWallet\n");
 
@@ -46,6 +46,7 @@ namespace Wallet
   {
     using YAML::Node;
     using YAML::NodeType;
+    using boost::filesystem::exists;
 
     DLog(" -> MutableWallet::add(%p, u=%c)\n", &entry, isUnique ? 'Y' : 'N');
 
@@ -66,7 +67,7 @@ namespace Wallet
     const auto now = Components::getNowStr();
 
     Node month{};
-    if (fs::exists(monthFilePathStr)) {
+    if (exists(monthFilePathStr)) {
       DLog(" -> load month file: %s\n", monthFilePathStr.c_str());
 
       // Load YAML file.
@@ -120,11 +121,13 @@ namespace Wallet
 
   Container::EntryContainer MutableWallet::getEntries(const Components::Date date) const
   {
+    using boost::filesystem::exists;
+
     DLog(" -> MutableWallet::getEntries(%d, %d, %d)\n", date.year, date.month, date.day);
 
     Container::EntryContainer container{};
 
-    if (!fs::exists(this->dataPath)) {
+    if (!exists(this->dataPath)) {
       throw std::string{"Wallet does not exists."};
     }
 
@@ -133,7 +136,7 @@ namespace Wallet
     const bool hasDay = date.day != 0;
 
     // Iterate files.
-    for (auto& directoryItem : fs::directory_iterator(this->dataPath)) {
+    for (auto& directoryItem : boost::filesystem::directory_iterator(this->dataPath)) {
       const auto& filePath = directoryItem.path();
       const auto& fileStr = filePath.string();
       const auto fileNameStr = filePath.filename().string();
@@ -243,16 +246,12 @@ namespace Wallet
 
   void MutableWallet::htmlOutput(const std::string& _path) const noexcept
   {
-    using fs::create_directories;
-    using fs::exists;
-    using std::string;
-
     DLog(" -> MutableWallet::htmlOutput()\n");
 
     const auto& container = this->getEntries({0, 0, 0});
     DLog(" -> MutableWallet::htmlOutput() -> container %p\n", &container);
 
-    fs::path htmlPath;
+    boost::filesystem::path htmlPath;
     if (_path.size() > 0) {
       htmlPath = _path;
     } else {
@@ -281,9 +280,10 @@ namespace Wallet
     using std::endl;
     using std::ofstream;
     using std::ifstream;
-    using fs::exists;
-    using fs::path;
-    using fs::create_directories;
+    using boost::filesystem::exists;
+    using boost::filesystem::path;
+    using boost::filesystem::create_directories;
+    using boost::filesystem::remove;
 
     // Make main directory.
     if (exists(this->path)) {
@@ -336,7 +336,7 @@ namespace Wallet
     // Remove old tmp/.gitignore file.
     const path oldGitignoreFile = this->tmpPath / ".gitignore";
     if (exists(oldGitignoreFile)) {
-      fs::remove(oldGitignoreFile);
+      remove(oldGitignoreFile);
     }
   }
 
@@ -349,7 +349,7 @@ namespace Wallet
       return;
     }
 
-    if (fs::exists(this->lockPath)) {
+    if (exists(this->lockPath)) {
       throw std::string{"Wallet is locked."};
     }
 
@@ -363,6 +363,9 @@ namespace Wallet
 
   void MutableWallet::removeLock() noexcept
   {
+    using boost::filesystem::exists;
+    using boost::filesystem::remove;
+
     DLog(" -> MutableWallet::removeLock\n");
 
     if (!this->isLocked) {
@@ -371,8 +374,8 @@ namespace Wallet
 
     // Remove lock file.
     const auto _lockPath = this->lockPath.string();
-    if (fs::exists(_lockPath)) {
-      fs::remove(_lockPath);
+    if (exists(_lockPath)) {
+      remove(_lockPath);
     }
 
     this->isLocked = false;
@@ -387,7 +390,7 @@ namespace Wallet
     }
     this->isIndexLoaded = true;
 
-    if (fs::exists(this->indexPath)) {
+    if (exists(this->indexPath)) {
       // Load YAML file.
       this->index = YAML::LoadFile(this->indexPath.string());
     } else {
