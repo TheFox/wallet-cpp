@@ -25,7 +25,7 @@ namespace Wallet
 {
   Entry::Entry() noexcept
   {
-//     DLog(" -> Entry::Entry(%p)\n", this);
+     //DLog(" -> Entry::Entry(%p)\n", this);
 
     using calendar::date;
     using calendar::day_clock;
@@ -35,7 +35,7 @@ namespace Wallet
 
   Entry::Entry(const CommandOptions& options) noexcept : Entry()
   {
-//     DLog(" -> Entry::Entry(%p, CommandOptions %p)\n", this, &options);
+     //DLog(" -> Entry::Entry(%p, CommandOptions %p)\n", this, &options);
 
     // ID
     if (options.id.empty()) {
@@ -73,7 +73,7 @@ namespace Wallet
 
   Entry::Entry(const YAML::Node& node) noexcept
   {
-//     DLog(" -> Entry::Entry(%p, YAML::Node)\n", this);
+     //DLog(" -> Entry::Entry(%p, YAML::Node)\n", this);
 
     if (node["id"].IsDefined()) {
       this->id = node["id"].as<decltype(this->id)>();
@@ -103,7 +103,7 @@ namespace Wallet
 
   void Entry::setDate(const std::string _dateStr)
   {
-    DLog(" -> Entry::setDate(%s)\n", _dateStr.c_str());
+    //DLog(" -> Entry::setDate(%s)\n", _dateStr.c_str());
 
     using std::string_view;
     using calendar::date;

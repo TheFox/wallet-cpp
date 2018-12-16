@@ -1,5 +1,6 @@
 
 #include <fstream> // ofstream
+#include <string>
 
 #include "year_html.hpp"
 #include "../../debug.hpp"
@@ -8,9 +9,9 @@
 namespace Wallet::Html
 {
   YearHtml::YearHtml(fs::path _path, Wallet::Container::YearEntryContainer _container)
-    : BaseHtml{_path / "index.html"}, basePath(std::move(_path)), container(std::move(_container))
+    : BaseHtml{_path / "index.html", "Year " + std::to_string(_container.year)}, basePath(std::move(_path)), container(std::move(_container))
   {
-    DLog(" -> YearHtml::YearHtml(%s)\n", this->path.c_str());
+    DLog(" -> YearHtml::YearHtml('%s')\n", this->path.c_str());
   }
 
   void YearHtml::generate() const noexcept
@@ -23,20 +24,12 @@ namespace Wallet::Html
     for (const auto& monthPair : this->container.months) {
       DLog("   -> month pair\n");
 
-      const auto monthStr = std::to_string(monthPair.first);
-
-      std::stringstream monthFilePathSs;
-      monthFilePathSs << "month_";
-      monthFilePathSs << std::setfill('0') << std::setw(2) << monthStr;
-      monthFilePathSs << ".html";
-      const auto monthFilePath = monthFilePathSs.str();
-
-      //this->htmlOutputMonth(, yearDirPath / monthFilePath);
-      MonthHtml monthHtml{"MONTHNAME", this->basePath, monthPair}; // TODO
+      MonthHtml monthHtml{this->basePath, monthPair, std::to_string(this->container.year)};
       monthHtml.generate();
 
       CTML::Node monthTd{"td.left"};
-      monthTd.AppendChild(CTML::Node("a", "Month " + monthStr).SetAttribute("href", monthFilePath));
+      monthTd.AppendChild(
+        CTML::Node("a", monthHtml.name).SetAttribute("href", monthHtml.path.string()));
 
       CTML::Node tableRow{"tr"};
       tableRow.AppendChild(monthTd);
@@ -64,7 +57,7 @@ namespace Wallet::Html
     indexTable.AppendChild(tableBody);
 
     // Index Doc
-    auto indexDoc = BaseHtml::getHtmlDoc("../../index.html");
+    auto indexDoc = this->getHtmlDoc("../../index.html");
     indexDoc.AppendNodeToBody(indexTable);
 
     // Output: index.html

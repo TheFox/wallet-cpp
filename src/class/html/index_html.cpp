@@ -4,8 +4,9 @@
 
 namespace Wallet::Html
 {
-  IndexHtml::IndexHtml(fs::path _path) : BaseHtml{std::move(_path)}{
-    DLog(" -> IndexHtml::IndexHtml(%s)\n", this->path.c_str());
+  IndexHtml::IndexHtml(fs::path _basePath) : BaseHtml{std::move(_basePath), "index.html", "Index"}
+  {
+    DLog(" -> IndexHtml::IndexHtml('%s')\n", this->basePath.string().c_str());
   }
 
   void IndexHtml::addRow(const IndexHtmlRow row)

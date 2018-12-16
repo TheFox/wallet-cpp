@@ -2,6 +2,8 @@
 #ifndef WALLETCPP_HTML_BASE_HTML_HPP_
 #define WALLETCPP_HTML_BASE_HTML_HPP_
 
+#include <string>
+
 #ifdef __has_include
 #  if __has_include(<filesystem>)
 #    include <filesystem>
@@ -25,11 +27,13 @@ namespace Wallet::Html
   class BaseHtml
   {
   public:
-    explicit BaseHtml(fs::path);
+    explicit BaseHtml(fs::path, fs::path, std::string);
+    const std::string title{};
 
   protected:
-    const fs::path path{};
-    static CTML::Document getHtmlDoc(std::string = "./index.html") noexcept;
+    const fs::path basePath{};
+    const fs::path fileName{};
+    CTML::Document getHtmlDoc(std::string = "./index.html") const noexcept;
   };
 } // Wallet::Html Namespace
 

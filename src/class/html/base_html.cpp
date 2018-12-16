@@ -6,12 +6,14 @@
 
 namespace Wallet::Html
 {
-  BaseHtml::BaseHtml(fs::path _path) : path(std::move(_path))
+  BaseHtml::BaseHtml(fs::path _basePath, std::string _title) :
+    basePath(std::move(_basePath)), fileName(std::move(_fileName)), title(std::move(_title))
   {
-    DLog(" -> BaseHtml::BaseHtml(%s)\n", this->path.c_str());
+    DLog(" -> BaseHtml::BaseHtml('%s', '%s', '%s')\n", this->basePath.string().c_str(), this->fileName.string().c_str(),
+      this->title.c_str());
   }
 
-  CTML::Document BaseHtml::getHtmlDoc(const std::string index) noexcept{
+  CTML::Document BaseHtml::getHtmlDoc(const std::string index) const noexcept{
     DLog(" -> BaseHtml::getHtmlDoc(%s)\n", index.c_str());
 
     CTML::Document document;
@@ -21,7 +23,7 @@ namespace Wallet::Html
       CTML::Node("meta")
         .SetAttribute("content", "text/html; charset=utf-8")
         .SetAttribute("http-equiv", "Content-Type").UseClosingTag(false));
-    document.AppendNodeToHead(CTML::Node("title", std::string{PROJECT_NAME}));
+    document.AppendNodeToHead(CTML::Node("title", this->title + " -- " + std::string{PROJECT_NAME}));
     document.AppendNodeToBody(CTML::Node("h1").AppendChild(
       CTML::Node("a", std::string{PROJECT_NAME}).SetAttribute("href", index)));
 

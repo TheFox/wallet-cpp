@@ -26,7 +26,7 @@ namespace Wallet::Html
     AccountAble::Number balanceSum{0.0};
 
     // Index HTML
-    IndexHtml indexHtml{this->basePath / "index.html"};
+    IndexHtml indexHtml{this->basePath};
 
     // Iterate Years.
     for (const auto& yearPair : container.years) {

@@ -38,7 +38,7 @@ namespace Wallet::Container
   };
 
   using MonthMap = std::map<ContainerMonth, MonthEntryContainer>;
-  //using MonthPair = std::pair<ContainerMonth,
+  using MonthPair = std::pair<ContainerMonth, MonthEntryContainer>;
   struct YearEntryContainer final : public BaseEntryContainer
   {
     ContainerYear year{};
