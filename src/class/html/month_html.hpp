@@ -12,7 +12,7 @@ namespace Wallet::Html
   class MonthHtml final : public BaseHtml
   {
   public:
-    MonthHtml(fs::path, Container::MonthPair, std::string /* year */);
+    MonthHtml(fs::path, Container::MonthPair);
     void generate() const noexcept;
     const std::string name{};
 

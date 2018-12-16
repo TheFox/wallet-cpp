@@ -33,6 +33,7 @@ namespace Wallet::Container
   using DayMap = std::map<ContainerDay, DayEntryContainer>;
   struct MonthEntryContainer final : public BaseEntryContainer
   {
+    ContainerYear year{};
     ContainerMonth month{};
     DayMap days{};
   };

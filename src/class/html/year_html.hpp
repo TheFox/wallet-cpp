@@ -14,7 +14,6 @@ namespace Wallet::Html
     void generate() const noexcept;
 
   private:
-    const fs::path basePath{};
     const Wallet::Container::YearEntryContainer container{};
   };
 } // Wallet::Html Namespace

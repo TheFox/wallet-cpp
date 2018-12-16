@@ -4,9 +4,10 @@
 
 namespace Wallet::Html
 {
-  IndexHtml::IndexHtml(fs::path _basePath) : BaseHtml{std::move(_basePath), "index.html", "Index"}
+  IndexHtml::IndexHtml(fs::path _basePath) :
+    BaseHtml{std::move(_basePath), fs::path{"index.html"}, "Index"}
   {
-    DLog(" -> IndexHtml::IndexHtml('%s')\n", this->basePath.string().c_str());
+    DLog(" -> IndexHtml::IndexHtml('%s')\n", this->getBasePath().c_str());
   }
 
   void IndexHtml::addRow(const IndexHtmlRow row)
@@ -66,7 +67,7 @@ namespace Wallet::Html
 
     // Output: index.html
     std::ofstream indexFh{};
-    indexFh.open(this->path.string(), std::ofstream::out);
+    indexFh.open(this->getFullPath(), std::ofstream::out);
     indexFh << indexDoc.ToString(CTML::StringFormatting::MULTIPLE_LINES); // TODO
     indexFh.close();
   }

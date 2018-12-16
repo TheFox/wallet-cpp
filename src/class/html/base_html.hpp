@@ -29,11 +29,14 @@ namespace Wallet::Html
   public:
     explicit BaseHtml(fs::path, fs::path, std::string);
     const std::string title{};
+    std::string getFullPath() const noexcept;
+    std::string getBasePath() const noexcept;
+    std::string getFileName() const noexcept;
 
   protected:
+    CTML::Document getHtmlDoc(std::string = "./index.html") const noexcept;
     const fs::path basePath{};
     const fs::path fileName{};
-    CTML::Document getHtmlDoc(std::string = "./index.html") const noexcept;
   };
 } // Wallet::Html Namespace
 

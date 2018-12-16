@@ -8,10 +8,11 @@
 
 namespace Wallet::Html
 {
-  YearHtml::YearHtml(fs::path _path, Wallet::Container::YearEntryContainer _container)
-    : BaseHtml{_path / "index.html", "Year " + std::to_string(_container.year)}, basePath(std::move(_path)), container(std::move(_container))
+  YearHtml::YearHtml(fs::path _basePath, Wallet::Container::YearEntryContainer _container) :
+    BaseHtml{std::move(_basePath), fs::path{"index.html"}, "Year " + std::to_string(_container.year)},
+    container(std::move(_container))
   {
-    DLog(" -> YearHtml::YearHtml('%s')\n", this->path.c_str());
+    DLog(" -> YearHtml::YearHtml('%s', '%s')\n", this->getBasePath().c_str(), this->getFileName().c_str());
   }
 
   void YearHtml::generate() const noexcept
@@ -24,12 +25,12 @@ namespace Wallet::Html
     for (const auto& monthPair : this->container.months) {
       DLog("   -> month pair\n");
 
-      MonthHtml monthHtml{this->basePath, monthPair, std::to_string(this->container.year)};
+      MonthHtml monthHtml{this->basePath, monthPair};
       monthHtml.generate();
 
       CTML::Node monthTd{"td.left"};
       monthTd.AppendChild(
-        CTML::Node("a", monthHtml.name).SetAttribute("href", monthHtml.path.string()));
+        CTML::Node("a", monthHtml.name).SetAttribute("href", monthHtml.getFileName()));
 
       CTML::Node tableRow{"tr"};
       tableRow.AppendChild(monthTd);
@@ -63,7 +64,7 @@ namespace Wallet::Html
     // Output: index.html
     DLog(" -> write year index file\n");
     std::ofstream indexFh{};
-    indexFh.open(this->path.string(), std::ofstream::out);
+    indexFh.open(this->getFullPath(), std::ofstream::out);
     indexFh << indexDoc.ToString(CTML::StringFormatting::MULTIPLE_LINES); // TODO
     indexFh.close();
   }
