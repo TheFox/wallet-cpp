@@ -46,8 +46,7 @@ namespace Wallet
     explicit MutableWallet(std::string) noexcept;
 
     // Destructor
-    ~MutableWallet()
-      noexcept(noexcept(saveIndex()) && noexcept(removeLock()));
+    ~MutableWallet() noexcept;
 
     // Functions
     virtual void setup();

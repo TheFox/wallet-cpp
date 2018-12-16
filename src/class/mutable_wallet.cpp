@@ -19,8 +19,7 @@ namespace Wallet
     DLog(" -> MutableWallet::MutableWallet\n");
   }
 
-  MutableWallet::~MutableWallet()
-    noexcept(noexcept(saveIndex()) && noexcept(removeLock()))
+  MutableWallet::~MutableWallet() noexcept
   {
     DLog(" -> MutableWallet::~MutableWallet\n");
 
