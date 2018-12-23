@@ -17,6 +17,10 @@ namespace Wallet::Container
   using ContainerMonth = std::uint8_t;
   using ContainerYear = std::uint16_t;
 
+  struct CategoryContainer final : public Accountable
+  {
+  };
+
   struct BaseEntryContainer : public Accountable
   {
     // Properties
@@ -31,11 +35,13 @@ namespace Wallet::Container
   };
 
   using DayMap = std::map<ContainerDay, DayEntryContainer>;
+  using CategoryMap = std::map<std::string, CategoryContainer>;
   struct MonthEntryContainer final : public BaseEntryContainer
   {
     ContainerYear year{};
     ContainerMonth month{};
     DayMap days{};
+    CategoryMap categories{};
   };
 
   using MonthMap = std::map<ContainerMonth, MonthEntryContainer>;
@@ -44,6 +50,7 @@ namespace Wallet::Container
   {
     ContainerYear year{};
     MonthMap months{};
+    CategoryMap categories{};
   };
 
   using YearMap = std::map<ContainerYear, YearEntryContainer>;

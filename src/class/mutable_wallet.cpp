@@ -219,8 +219,7 @@ namespace Wallet
         // Iterate Day entries.
         for (const auto& entryNode : node) {
           // emplace_back() is Nice!!
-          const Entry entry{entryNode};
-          dayMap.entries.push_back(entry);
+          const auto& entry = dayMap.entries.emplace_back(entryNode);
 
           // Container
           container.entryCount++;
@@ -234,11 +233,23 @@ namespace Wallet
           yearMap.expense += entry.expense;
           yearMap.balance += entry.balance;
 
+          // Year Category
+          auto& ycategory = yearMap.categories[entry.category];
+          ycategory.revenue += entry.revenue;
+          ycategory.expense += entry.expense;
+          ycategory.balance += entry.balance;
+
           // Month
           monthMap.entryCount++;
           monthMap.revenue += entry.revenue;
           monthMap.expense += entry.expense;
           monthMap.balance += entry.balance;
+
+          // Month Category
+          auto& mcategory = monthMap.categories[entry.category];
+          mcategory.revenue += entry.revenue;
+          mcategory.expense += entry.expense;
+          mcategory.balance += entry.balance;
 
           // Day
           dayMap.entryCount++;

@@ -121,7 +121,7 @@ int main(int argc, char* const argv[])
     cout << commonOpts << endl;
     cout << addCmdOpts << endl;
     cout << htmlCmdOpts << endl;
-    
+
     cout << endl;
     cout << "Build settings:" << endl;
     cout << "  WALLETCPP_GNUPLOT_SUPPORT: "

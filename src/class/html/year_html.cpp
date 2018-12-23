@@ -19,6 +19,8 @@ namespace Wallet::Html
   {
     //DLog(" -> YearHtml::generate()\n");
 
+    const auto categoryCountStr = std::to_string(this->container.categories.size());
+
     // Table Body
     CTML::Node tableBody("tbody");
 
@@ -37,6 +39,9 @@ namespace Wallet::Html
       tableRow.AppendChild(CTML::Node{"td.right", monthPair.second.getRevenueStr()});
       tableRow.AppendChild(CTML::Node{"td.right red", monthPair.second.getExpenseStr()});
       tableRow.AppendChild(CTML::Node{"td.right", monthPair.second.getBalanceStr()});
+      tableRow.AppendChild(CTML::Node{"td", "CAT1"});
+      tableRow.AppendChild(CTML::Node{"td", "CAT1"});
+      tableRow.AppendChild(CTML::Node{"td", "CAT1"}); // TODO
       tableBody.AppendChild(tableRow);
     }
 
@@ -44,21 +49,34 @@ namespace Wallet::Html
     CTML::Node totalTr{"tr"};
 
     // Total Columns
-    totalTr.AppendChild(CTML::Node{"td.left", "TOTAL"});
-    totalTr.AppendChild(CTML::Node{"td.right", this->container.getRevenueStr()});
-    totalTr.AppendChild(CTML::Node{"td.right red", this->container.getExpenseStr()});
-    totalTr.AppendChild(CTML::Node{"td.right", this->container.getBalanceStr()});
+    totalTr.AppendChild(CTML::Node{"td left", "TOTAL"});
+    totalTr.AppendChild(CTML::Node{"td right", this->container.getRevenueStr()});
+    totalTr.AppendChild(CTML::Node{"td right red", this->container.getExpenseStr()});
+    totalTr.AppendChild(CTML::Node{"td right", this->container.getBalanceStr()});
+    totalTr.AppendChild(CTML::Node{"td", "CAT2"});
+    totalTr.AppendChild(CTML::Node{"td", "CAT2"});
+    totalTr.AppendChild(CTML::Node{"td", "CAT2"}); // TODO
 
     // Table Head Row
-    CTML::Node tableHeadTr{"tr"};
-    tableHeadTr.AppendChild(CTML::Node{"th.left", "Month"});
-    tableHeadTr.AppendChild(CTML::Node{"th.right", "Revenue"});
-    tableHeadTr.AppendChild(CTML::Node{"th.right", "Expense"});
-    tableHeadTr.AppendChild(CTML::Node{"th.right", "Balance"});
+    CTML::Node tableHeadTr1{"tr"};
+    tableHeadTr1.AppendChild(CTML::Node{"th.left", "Month"});
+    tableHeadTr1.AppendChild(CTML::Node{"th.right", "Revenue"});
+    tableHeadTr1.AppendChild(CTML::Node{"th.right", "Expense"});
+    tableHeadTr1.AppendChild(CTML::Node{"th.right", "Balance"});
+    tableHeadTr1.AppendChild(CTML::Node{"th.right", categoryCountStr + " Categories"}.SetAttribute("colspan", categoryCountStr));
+
+    // Table Head Categories
+    CTML::Node tableHeadTr2{"tr"};
+    tableHeadTr2.AppendChild(CTML::Node{"th", "NIX"}.SetAttribute("colspan", "4"));
+    for (const auto& categoryPair : this->container.categories){
+      //DLog("   -> category pair: %s\n", categoryPair.first.c_str());
+      tableHeadTr2.AppendChild(CTML::Node{"th", categoryPair.first});
+    }
 
     // Table Head
     CTML::Node tableHead{"thead"};
-    tableHead.AppendChild(tableHeadTr);
+    tableHead.AppendChild(tableHeadTr1);
+    tableHead.AppendChild(tableHeadTr2);
 
     // Table Footer
     CTML::Node tableFoot{"tfoot"};
