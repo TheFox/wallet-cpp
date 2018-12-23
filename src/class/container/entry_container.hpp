@@ -1,9 +1,11 @@
 
-#ifndef WALLETCPP_ENTRY_CONTAINER_HPP_
-#define WALLETCPP_ENTRY_CONTAINER_HPP_
+#ifndef WALLETCPP_CONTAINER_ENTRY_CONTAINER_HPP_
+#define WALLETCPP_CONTAINER_ENTRY_CONTAINER_HPP_
 
+#include <utility> // pair
 #include <map>
-#include <cstdint>
+#include <cstdint> // uint8_t
+#include <functional> // function
 
 #include "class/entry.hpp"
 #include "class/accountable.hpp"
@@ -21,6 +23,21 @@ namespace Wallet::Container
   {
   };
 
+  class CategoryComparator
+  {
+  public:
+    bool operator()(const std::string&, const std::string&) const;
+  };
+
+  using CategoryMap = std::map<std::string, CategoryContainer, CategoryComparator>;
+  struct BaseCategoryContainer
+  {
+    BaseCategoryContainer();
+
+    // Properties
+    CategoryMap categories{};
+  };
+
   struct BaseEntryContainer : public Accountable
   {
     // Properties
@@ -35,22 +52,21 @@ namespace Wallet::Container
   };
 
   using DayMap = std::map<ContainerDay, DayEntryContainer>;
-  using CategoryMap = std::map<std::string, CategoryContainer>;
-  struct MonthEntryContainer final : public BaseEntryContainer
+  struct MonthEntryContainer final : public BaseEntryContainer, public BaseCategoryContainer
   {
+    // Properties
     ContainerYear year{};
     ContainerMonth month{};
     DayMap days{};
-    CategoryMap categories{};
   };
 
   using MonthMap = std::map<ContainerMonth, MonthEntryContainer>;
   using MonthPair = std::pair<ContainerMonth, MonthEntryContainer>;
-  struct YearEntryContainer final : public BaseEntryContainer
+  struct YearEntryContainer final : public BaseEntryContainer, public BaseCategoryContainer
   {
+    // Properties
     ContainerYear year{};
     MonthMap months{};
-    CategoryMap categories{};
   };
 
   using YearMap = std::map<ContainerYear, YearEntryContainer>;
@@ -60,4 +76,4 @@ namespace Wallet::Container
   };
 } // Wallet::Container Namespace
 
-#endif // WALLETCPP_ENTRY_CONTAINER_HPP_
+#endif // WALLETCPP_CONTAINER_ENTRY_CONTAINER_HPP_

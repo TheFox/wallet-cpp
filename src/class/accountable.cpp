@@ -50,4 +50,16 @@ namespace Wallet
   {
     this->balance = this->revenue + this->expense;
   }
+
+  /**
+   * Get HTML class based on the Balance.
+   */
+  std::string Accountable::getHtmlClass() const noexcept
+  {
+    if (this->balance < 0) {
+      return "red";
+    }
+
+    return std::string{};
+  }
 } // Wallet Namespace

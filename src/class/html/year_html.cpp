@@ -25,8 +25,6 @@ namespace Wallet::Html
     CTML::Node tableBody("tbody");
 
     for (const auto& monthPair : this->container.months) {
-      //DLog("   -> month pair\n");
-
       MonthHtml monthHtml{this->basePath, monthPair};
       monthHtml.generate();
 
@@ -38,10 +36,17 @@ namespace Wallet::Html
       tableRow.AppendChild(monthTd);
       tableRow.AppendChild(CTML::Node{"td.right", monthPair.second.getRevenueStr()});
       tableRow.AppendChild(CTML::Node{"td.right red", monthPair.second.getExpenseStr()});
-      tableRow.AppendChild(CTML::Node{"td.right", monthPair.second.getBalanceStr()});
-      tableRow.AppendChild(CTML::Node{"td", "CAT1"});
-      tableRow.AppendChild(CTML::Node{"td", "CAT1"});
-      tableRow.AppendChild(CTML::Node{"td", "CAT1"}); // TODO
+      tableRow.AppendChild(CTML::Node{"td.right " + monthPair.second.getHtmlClass(), monthPair.second.getBalanceStr()});
+
+      for (const auto& categoryPair : this->container.categories) {
+        try {
+          tableRow.AppendChild(CTML::Node{"td.left", monthPair.second.categories.at(categoryPair.first).getBalanceStr()});
+        }
+        catch (const std::out_of_range& exception) {
+          tableRow.AppendChild(CTML::Node{"td", " "});
+        }
+      }
+
       tableBody.AppendChild(tableRow);
     }
 
@@ -52,10 +57,10 @@ namespace Wallet::Html
     totalTr.AppendChild(CTML::Node{"td left", "TOTAL"});
     totalTr.AppendChild(CTML::Node{"td right", this->container.getRevenueStr()});
     totalTr.AppendChild(CTML::Node{"td right red", this->container.getExpenseStr()});
-    totalTr.AppendChild(CTML::Node{"td right", this->container.getBalanceStr()});
-    totalTr.AppendChild(CTML::Node{"td", "CAT2"});
-    totalTr.AppendChild(CTML::Node{"td", "CAT2"});
-    totalTr.AppendChild(CTML::Node{"td", "CAT2"}); // TODO
+    totalTr.AppendChild(CTML::Node{"td right " + this->container.getHtmlClass(), this->container.getBalanceStr()});
+    for (const auto& categoryPair : this->container.categories) {
+      totalTr.AppendChild(CTML::Node{"td." + categoryPair.second.getHtmlClass(), categoryPair.second.getBalanceStr()});
+    }
 
     // Table Head Row
     CTML::Node tableHeadTr1{"tr"};
@@ -63,14 +68,15 @@ namespace Wallet::Html
     tableHeadTr1.AppendChild(CTML::Node{"th.right", "Revenue"});
     tableHeadTr1.AppendChild(CTML::Node{"th.right", "Expense"});
     tableHeadTr1.AppendChild(CTML::Node{"th.right", "Balance"});
-    tableHeadTr1.AppendChild(CTML::Node{"th.right", categoryCountStr + " Categories"}.SetAttribute("colspan", categoryCountStr));
+    CTML::Node categoryTh{"th.right", categoryCountStr + " Categories"};
+    categoryTh.SetAttribute("colspan", categoryCountStr);
+    tableHeadTr1.AppendChild(categoryTh);
 
     // Table Head Categories
     CTML::Node tableHeadTr2{"tr"};
-    tableHeadTr2.AppendChild(CTML::Node{"th", "NIX"}.SetAttribute("colspan", "4"));
-    for (const auto& categoryPair : this->container.categories){
-      //DLog("   -> category pair: %s\n", categoryPair.first.c_str());
-      tableHeadTr2.AppendChild(CTML::Node{"th", categoryPair.first});
+    tableHeadTr2.AppendChild(CTML::Node{"th", " "}.SetAttribute("colspan", "4"));
+    for (const auto& categoryPair : this->container.categories) {
+      tableHeadTr2.AppendChild(CTML::Node{"th.left", categoryPair.first});
     }
 
     // Table Head

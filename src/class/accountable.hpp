@@ -30,6 +30,7 @@ namespace Wallet
 
     // Functions
     void calcBalance() noexcept;
+    std::string getHtmlClass() const noexcept;
   };
 } // Wallet Namespace
 
