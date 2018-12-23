@@ -29,7 +29,7 @@ This will only build the binary.
 
 Then the binary is available in `build_release/bin`.
 
-After building the project, run:
+If you want to install Wallet, run:
 
 ```bash
 ./bin/install.sh
