@@ -54,7 +54,7 @@ namespace Wallet
   /**
    * Get HTML class based on the Balance.
    */
-  std::string Accountable::getHtmlClass() const noexcept
+  std::string Accountable::getBalanceHtmlClass() const noexcept
   {
     if (this->balance < 0) {
       return "red";

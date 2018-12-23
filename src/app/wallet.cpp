@@ -131,6 +131,8 @@ int main(int argc, char* const argv[])
       << "NO"
 #endif
       << endl;
+    cout << "  PROJECT_INSTALL_BASE_DIR: " << PROJECT_INSTALL_BASE_DIR << endl;
+    cout << "  PROJECT_SHARE_BASE_DIR: " << PROJECT_SHARE_BASE_DIR << endl;
 
     return 3;
   }

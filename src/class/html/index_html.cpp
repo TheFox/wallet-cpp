@@ -24,24 +24,29 @@ namespace Wallet::Html
     tableRow.AppendChild(yearTd);
     tableRow.AppendChild(revenueTd);
     tableRow.AppendChild(CTML::Node{"td.right red", row.expense});
-    tableRow.AppendChild(CTML::Node{"td.right", row.balance});
-    tableRow.AppendChild(CTML::Node{"td.right", row.balanceSum});
+    tableRow.AppendChild(CTML::Node{"td.right " + row.balanceClass, row.balance});
+    tableRow.AppendChild(CTML::Node{"td.right " + row.balanceSumClass, row.balanceSum});
 
     // Add to Table.
     this->tableBody.AppendChild(tableRow);
   }
 
-  void IndexHtml::generate(const IndexHtmlRow row)
+  void IndexHtml::generate(const IndexHtmlRow totalRow)
   {
     DLog(" -> IndexHtml::generate()\n");
 
-    CTML::Node tableRow{"tr"};
-    tableRow.AppendChild(CTML::Node{"td.left", "TOTAL"});
-    tableRow.AppendChild(CTML::Node{"td.right", row.revenue});
-    tableRow.AppendChild(CTML::Node{"td.right red", row.expense});
-    tableRow.AppendChild(CTML::Node{"td.right", row.balance});
-    tableRow.AppendChild(CTML::Node{"td.right", " "});
-    tableBody.AppendChild(tableRow);
+    // Total Row
+    CTML::Node totalTableRow{"tr"};
+    totalTableRow.AppendChild(CTML::Node{"td.left", totalRow.year});
+    totalTableRow.AppendChild(CTML::Node{"td.right", totalRow.revenue});
+    totalTableRow.AppendChild(CTML::Node{"td.right red", totalRow.expense});
+    totalTableRow.AppendChild(CTML::Node{"td.right", totalRow.balance});
+    totalTableRow.AppendChild(CTML::Node{"td.right", " "});
+
+    // Footer
+    CTML::Node tableFoot{"tfoot"};
+    tableFoot.AppendChild(totalTableRow);
+    this->tableBody.AppendChild(tableFoot);
 
     // Index Table Head Row
     CTML::Node indexTableHeadTr{"tr"};
@@ -57,9 +62,8 @@ namespace Wallet::Html
 
     // Index Table
     CTML::Node indexTable{"table.list"};
-    indexTable.SetAttribute("border", "1"); // TODO
     indexTable.AppendChild(indexTableHead);
-    indexTable.AppendChild(tableBody);
+    indexTable.AppendChild(this->tableBody);
 
     // Index Doc
     auto indexDoc = BaseHtml::getHtmlDoc();

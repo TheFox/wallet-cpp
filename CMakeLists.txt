@@ -1,9 +1,12 @@
 cmake_minimum_required(VERSION 3.8.0)
 
 project(WalletCpp VERSION 0.4.0 LANGUAGES CXX)
-set(PROJECT_VERSION_APPENDIX "-dev.10")
+set(PROJECT_VERSION_APPENDIX "-dev.11")
 set(PROJECT_COPYRIGHT "Copyright (C) 2018 Christian Mayer <https://fox21.at>")
 set(PROJECT_HOMEPAGE_URL "https://github.com/TheFox/wallet-cpp")
+set(PROJECT_INSTALL_BASE_DIR "/usr/local")
+set(PROJECT_SHARE_BASE_DIR "${PROJECT_INSTALL_BASE_DIR}/share/wallet_cpp")
+set(PROJECT_SHARE_RESOURCES_DIR "${PROJECT_SHARE_BASE_DIR}/resources")
 
 #-DWALLETCPP_GNUPLOT_SUPPORT:BOOL=OFF
 set(WALLETCPP_GNUPLOT_SUPPORT ON CACHE BOOL "Turn on/off building with Gnuplot support.")
@@ -18,18 +21,24 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# Config File
 configure_file(
     "${PROJECT_SOURCE_DIR}/src/config.hpp.in"
     "${CMAKE_CURRENT_BINARY_DIR}/src/config.hpp"
     NEWLINE_STYLE LF)
 include_directories("${CMAKE_CURRENT_BINARY_DIR}/src")
-include_directories("${PROJECT_SOURCE_DIR}/lib/ctml/include")
 
-# Term Color
-find_package(termcolor QUIET)
+# CTML
+include_directories("${PROJECT_SOURCE_DIR}/lib/ctml/include")
 
 # yaml-cpp
 find_package(yaml-cpp REQUIRED)
+
+# mstch
+#find_package(mstch QUIET)
+
+# Term Color
+find_package(termcolor QUIET)
 
 # Catch2
 find_package(catch2 QUIET)
@@ -67,7 +76,8 @@ add_executable(wallet
     src/class/html/base_html.cpp src/class/html/base_html.hpp
     src/class/html/index_html.cpp src/class/html/index_html.hpp
     src/class/html/year_html.cpp src/class/html/year_html.hpp
-    src/class/html/month_html.cpp src/class/html/month_html.hpp)
+    src/class/html/month_html.cpp src/class/html/month_html.hpp
+    resources/css/style.css)
 target_include_directories(wallet PRIVATE ${PROJECT_SOURCE_DIR}/src)
 target_compile_features(wallet PRIVATE
     cxx_noexcept
@@ -101,16 +111,26 @@ if(CMAKE_BUILD_TYPE_LOWER STREQUAL "test")
     target_link_libraries(test ${Boost_LIBRARIES} ${YAML_CPP_LIBRARIES})
 endif()
 
-# Wallet Install
-install(TARGETS wallet RUNTIME DESTINATION /usr/local/bin)
+# Install Wallet
+install(TARGETS wallet RUNTIME DESTINATION ${PROJECT_INSTALL_BASE_DIR}/bin)
+
+# Install Resources
+install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/resources
+    DESTINATION ${PROJECT_SHARE_BASE_DIR})
 
 message(STATUS "CXX_STANDARD wallet ${wallet_std}")
 message(STATUS "CXX_STANDARD test ${test_std}")
 message(STATUS "CMAKE_CXX_COMPILER ${CMAKE_CXX_COMPILER}")
 message(STATUS "CMAKE_CXX_COMPILER_LAUNCHER ${CMAKE_CXX_COMPILER_LAUNCHER}")
-message(STATUS "PROJECT_SOURCE_DIR ${PROJECT_SOURCE_DIR}")
 message(STATUS "CMAKE_CURRENT_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}")
 message(STATUS "CMAKE_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX}")
+message(STATUS "CMAKE_CURRENT_LIST_DIR ${CMAKE_CURRENT_LIST_DIR}")
+message(STATUS "PROJECT_SOURCE_DIR ${PROJECT_SOURCE_DIR}")
+message(STATUS "PROJECT_INSTALL_BASE_DIR ${PROJECT_INSTALL_BASE_DIR}")
+message(STATUS "PROJECT_SHARE_BASE_DIR ${PROJECT_SHARE_BASE_DIR}")
+message(STATUS "PROJECT_SHARE_RESOURCES_DIR ${PROJECT_SHARE_RESOURCES_DIR}")
+message(STATUS "INSTALL_PATH ${INSTALL_PATH}")
+message(STATUS "RESOURCE_FILES ${RESOURCE_FILES}")
 
 message(STATUS "YAML_CPP_INCLUDE_DIR ${YAML_CPP_INCLUDE_DIR}")
 message(STATUS "YAML_CPP_LIBRARIES ${YAML_CPP_LIBRARIES}")

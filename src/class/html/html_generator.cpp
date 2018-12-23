@@ -3,6 +3,7 @@
 #include <ios> // fixed
 
 #include "debug.hpp"
+#include "config.hpp"
 #include "html_generator.hpp"
 #include "index_html.hpp"
 #include "year_html.hpp"
@@ -56,18 +57,21 @@ namespace Wallet::Html
         yearPair.second.getRevenueStr(),
         yearPair.second.getExpenseStr(),
         yearPair.second.getBalanceStr(),
-        balanceSumSs.str()
+        yearPair.second.getBalanceHtmlClass(),
+        balanceSumSs.str(),
+        balanceSum < 0 ? "red" : ""
       };
       indexHtml.addRow(row);
     }
 
     // Generate HTML file.
-    const IndexHtmlRow row{
+    const IndexHtmlRow totalRow{
+      "TOTAL",
       container.getRevenueStr(),
       container.getExpenseStr(),
       container.getBalanceStr()
     };
-    indexHtml.generate(row);
+    indexHtml.generate(totalRow);
   }
 
   void HtmlGenerator::setup() const noexcept
@@ -81,5 +85,7 @@ namespace Wallet::Html
     if (!exists(this->yearPath)) {
       fs::create_directory(this->yearPath);
     }
+    fs::copy_file(fs::path{PROJECT_SHARE_RESOURCES_DIR} / "css/style.css",
+      this->basePath / "style.css", fs::copy_option::overwrite_if_exists);
   }
 } // Wallet::Html Namespace

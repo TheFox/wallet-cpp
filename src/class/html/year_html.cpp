@@ -36,11 +36,14 @@ namespace Wallet::Html
       tableRow.AppendChild(monthTd);
       tableRow.AppendChild(CTML::Node{"td.right", monthPair.second.getRevenueStr()});
       tableRow.AppendChild(CTML::Node{"td.right red", monthPair.second.getExpenseStr()});
-      tableRow.AppendChild(CTML::Node{"td.right " + monthPair.second.getHtmlClass(), monthPair.second.getBalanceStr()});
+      tableRow.AppendChild(
+        CTML::Node{"td.right " + monthPair.second.getBalanceHtmlClass(), monthPair.second.getBalanceStr()});
 
       for (const auto& categoryPair : this->container.categories) {
         try {
-          tableRow.AppendChild(CTML::Node{"td.left", monthPair.second.categories.at(categoryPair.first).getBalanceStr()});
+          const auto& category = monthPair.second.categories.at(categoryPair.first);
+          CTML::Node categoryTd{"td.right " + category.getBalanceHtmlClass(), category.getBalanceStr()};
+          tableRow.AppendChild(categoryTd);
         }
         catch (const std::out_of_range& exception) {
           tableRow.AppendChild(CTML::Node{"td", " "});
@@ -54,12 +57,14 @@ namespace Wallet::Html
     CTML::Node totalTr{"tr"};
 
     // Total Columns
-    totalTr.AppendChild(CTML::Node{"td left", "TOTAL"});
-    totalTr.AppendChild(CTML::Node{"td right", this->container.getRevenueStr()});
-    totalTr.AppendChild(CTML::Node{"td right red", this->container.getExpenseStr()});
-    totalTr.AppendChild(CTML::Node{"td right " + this->container.getHtmlClass(), this->container.getBalanceStr()});
+    totalTr.AppendChild(CTML::Node{"td.left", "TOTAL"});
+    totalTr.AppendChild(CTML::Node{"td.right", this->container.getRevenueStr()});
+    totalTr.AppendChild(CTML::Node{"td.right red", this->container.getExpenseStr()});
+    totalTr.AppendChild(
+      CTML::Node{"td.right " + this->container.getBalanceHtmlClass(), this->container.getBalanceStr()});
     for (const auto& categoryPair : this->container.categories) {
-      totalTr.AppendChild(CTML::Node{"td." + categoryPair.second.getHtmlClass(), categoryPair.second.getBalanceStr()});
+      totalTr.AppendChild(
+        CTML::Node{"td.right " + categoryPair.second.getBalanceHtmlClass(), categoryPair.second.getBalanceStr()});
     }
 
     // Table Head Row
@@ -90,13 +95,12 @@ namespace Wallet::Html
 
     // Table
     CTML::Node table{"table.list"};
-    table.SetAttribute("border", "1"); // TODO
     table.AppendChild(tableHead);
     table.AppendChild(tableBody);
     table.AppendChild(tableFoot);
 
     // Year Doc
-    auto yearDoc = this->getHtmlDoc("../../index.html");
+    auto yearDoc = this->getHtmlDoc("../..");
     yearDoc.AppendNodeToBody(CTML::Node{"h2", this->title});
     yearDoc.AppendNodeToBody(table);
 

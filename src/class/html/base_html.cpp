@@ -19,11 +19,10 @@ namespace Wallet::Html
     return (this->basePath / this->fileName).string();
   }
 
-  std::string BaseHtml::getBasePath() const noexcept
-  {
-    //DLog(" -> BaseHtml::getBasePath()\n");
-    return this->basePath.string();
-  }
+  //std::string BaseHtml::getBasePath() const noexcept
+  //{
+  //  return this->basePath.string();
+  //}
 
   std::string BaseHtml::getFileName() const noexcept
   {
@@ -31,20 +30,35 @@ namespace Wallet::Html
     return this->fileName.string();
   }
 
-  CTML::Document BaseHtml::getHtmlDoc(const std::string index) const noexcept
+  CTML::Document BaseHtml::getHtmlDoc(const std::string relPath) const noexcept
   {
-    //DLog(" -> BaseHtml::getHtmlDoc(%s)\n", index.c_str());
+    //DLog(" -> BaseHtml::getHtmlDoc(%s)\n", relPath.c_str());
 
     CTML::Document document;
 
+    // Meta
+    CTML::Node meta{"meta"};
+    meta.SetAttribute("content", "text/html; charset=utf-8")
+        .SetAttribute("http-equiv", "Content-Type").UseClosingTag(false);
+
     // Head
-    document.AppendNodeToHead(
-      CTML::Node("meta")
-        .SetAttribute("content", "text/html; charset=utf-8")
-        .SetAttribute("http-equiv", "Content-Type").UseClosingTag(false));
-    document.AppendNodeToHead(CTML::Node("title", this->title + " -- " + std::string{PROJECT_NAME}));
+    document.AppendNodeToHead(meta);
+    document.AppendNodeToHead(CTML::Node{"title", this->title + " -- " + PROJECT_NAME});
+
+    // CSS
+    CTML::Node css{"link"};
+    css.SetAttribute("rel", "stylesheet")
+#ifdef NDEBUG
+       .SetAttribute("href", relPath + "/style.css")
+#else
+       .SetAttribute("href", relPath + "/../../resources/css/style.css")
+#endif
+       .SetAttribute("type", "text/css");
+    document.AppendNodeToHead(css);
+
+    // Title
     document.AppendNodeToBody(CTML::Node("h1").AppendChild(
-      CTML::Node("a", std::string{PROJECT_NAME}).SetAttribute("href", index)));
+      CTML::Node("a", std::string{PROJECT_NAME}).SetAttribute("href", relPath + "/index.html")));
 
     // Signature
     CTML::Node link{"a"};

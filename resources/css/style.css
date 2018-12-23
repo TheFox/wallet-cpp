@@ -1,0 +1,35 @@
+
+/* Style */
+
+html {
+  -webkit-text-size-adjust: none;
+}
+
+.right {
+    text-align: right;
+}
+
+.left {
+    text-align: left;
+}
+
+.red {
+    color: red;
+}
+
+table.list, table.list th, table.list td {
+    border: 1px solid black;
+}
+
+tfoot {
+    font-weight: bold;
+}
+
+th.first_column {
+    width: 90px;
+}
+
+th.primary_column {
+    min-width: 180px;
+    width: 300px;
+}

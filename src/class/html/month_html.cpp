@@ -46,10 +46,11 @@ namespace Wallet::Html
         tableTr.AppendChild(CTML::Node{"td.left", std::to_string(entryCount)}.SetAttribute("valign", "top"));
         tableTr.AppendChild(CTML::Node{"td.left", entry.getDateStr()}.SetAttribute("valign", "top"));
         tableTr.AppendChild(CTML::Node{"td.left", entry.title}.SetAttribute("valign", "top"));
-        tableTr.AppendChild(CTML::Node{"td.left", entry.getRevenueStr()}.SetAttribute("valign", "top"));
-        tableTr.AppendChild(CTML::Node{"td.left", entry.getExpenseStr()}.SetAttribute("valign", "top"));
-        tableTr.AppendChild(CTML::Node{"td.left", entry.getBalanceStr()}.SetAttribute("valign", "top"));
-        tableTr.AppendChild(CTML::Node{"td.left", entry.getCategoryHtml()}.SetAttribute("valign", "top"));
+        tableTr.AppendChild(CTML::Node{"td.right", entry.getRevenueStr()}.SetAttribute("valign", "top"));
+        tableTr.AppendChild(CTML::Node{"td.right red", entry.getExpenseStr()}.SetAttribute("valign", "top"));
+        tableTr.AppendChild(
+          CTML::Node{"td.right " + entry.getBalanceHtmlClass(), entry.getBalanceStr()}.SetAttribute("valign", "top"));
+        tableTr.AppendChild(CTML::Node{"td.right", entry.getCategoryHtml()}.SetAttribute("valign", "top"));
         tableTr.AppendChild(CTML::Node{"td.left", entry.comment}.SetAttribute("valign", "top"));
 
         // Add TR to Table.
@@ -66,7 +67,7 @@ namespace Wallet::Html
     totalTr.AppendChild(CTML::Node{"td.left", "TOTAL"});
     totalTr.AppendChild(CTML::Node{"td.right", this->container.getRevenueStr()});
     totalTr.AppendChild(CTML::Node{"td.right red", this->container.getExpenseStr()});
-    totalTr.AppendChild(CTML::Node{"td.right", this->container.getBalanceStr()});
+    totalTr.AppendChild(CTML::Node{"td.right " + this->container.getBalanceHtmlClass(), this->container.getBalanceStr()});
     totalTr.AppendChild(CTML::Node{"td", " "});
     totalTr.AppendChild(CTML::Node{"td", " "});
 
@@ -75,8 +76,8 @@ namespace Wallet::Html
 
     // Table Head Columns
     tableHeadTr.AppendChild(CTML::Node{"th.left", "#"});
-    tableHeadTr.AppendChild(CTML::Node{"th.left", "Date"});
-    tableHeadTr.AppendChild(CTML::Node{"th.left", "Title"});
+    tableHeadTr.AppendChild(CTML::Node{"th.left first_column", "Date"});
+    tableHeadTr.AppendChild(CTML::Node{"th.left primary_column", "Title"});
     tableHeadTr.AppendChild(CTML::Node{"th.right", "Revenue"});
     tableHeadTr.AppendChild(CTML::Node{"th.right", "Expense"});
     tableHeadTr.AppendChild(CTML::Node{"th.right", "Balance"});
@@ -93,13 +94,12 @@ namespace Wallet::Html
 
     // Table
     CTML::Node table{"table.list"};
-    table.SetAttribute("border", "1"); // TODO
     table.AppendChild(tableHead);
     table.AppendChild(tableBody);
     table.AppendChild(tableFoot);
 
     // Month Doc
-    auto monthDoc = this->getHtmlDoc("../../index.html");
+    auto monthDoc = this->getHtmlDoc("../..");
     monthDoc.AppendNodeToBody(
       CTML::Node{"h2"}.AppendText("Month: " + this->name + " ").AppendChild(
         CTML::Node{"a", this->year}.SetAttribute("href", "index.html")));
