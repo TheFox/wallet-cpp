@@ -4,7 +4,7 @@
 
 #include "base_html.hpp"
 
-namespace Wallet { namespace Html
+namespace Wallet::Html
 {
   struct IndexHtmlRow
   {
@@ -21,13 +21,13 @@ namespace Wallet { namespace Html
   class IndexHtml final : public BaseHtml
   {
   public:
-    explicit IndexHtml(boost::filesystem::path);
+    explicit IndexHtml(fs::path);
     void addRow(IndexHtmlRow);
     void generate(IndexHtmlRow);
 
   private:
     CTML::Node tableBody{"tbody"};
   };
-}} // Wallet::Html Namespace
+} // Wallet::Html Namespace
 
 #endif // WALLETCPP_HTML_INDEX_HTML_HPP_

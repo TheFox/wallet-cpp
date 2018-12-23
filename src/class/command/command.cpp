@@ -1,6 +1,6 @@
 
-#include "../../debug.hpp"
 #include "command.hpp"
+#include "debug.hpp"
 
 namespace Wallet
 {

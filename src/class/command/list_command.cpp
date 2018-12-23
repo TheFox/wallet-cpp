@@ -9,9 +9,9 @@
 #include <cstddef>
 
 #include "list_command.hpp"
-#include "../immutable_wallet.hpp"
-#include "../entry.hpp"
-#include "../../components.hpp"
+#include "components.hpp"
+#include "class/immutable_wallet.hpp"
+#include "class/entry.hpp"
 
 namespace Wallet
 {

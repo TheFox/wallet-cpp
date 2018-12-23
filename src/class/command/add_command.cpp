@@ -5,11 +5,11 @@
 
 #include <iostream>
 
-#include "../../debug.hpp"
-#include "../../components.hpp"
-#include "../mutable_wallet.hpp"
-#include "../entry.hpp"
 #include "add_command.hpp"
+#include "debug.hpp"
+#include "components.hpp"
+#include "class/mutable_wallet.hpp"
+#include "class/entry.hpp"
 
 namespace Wallet
 {

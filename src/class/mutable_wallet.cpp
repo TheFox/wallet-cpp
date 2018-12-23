@@ -5,11 +5,19 @@
 //#include <iomanip> // setprecision, setfill, setw
 //#include <ios> // fixed
 
+#ifdef __has_include
+#  if __has_include(<yaml-cpp/yaml.h>)
+#    include <yaml-cpp/yaml.h>
+#  else
+#    error "Missing <yaml-cpp/yaml.h>"
+#  endif
+#endif // __has_include
+
 #include "debug.hpp"
+#include "components.hpp"
 #include "mutable_wallet.hpp"
 #include "entry.hpp"
-#include "entry_container.hpp"
-#include "../components.hpp"
+#include "container/entry_container.hpp"
 #include "html/html_generator.hpp"
 
 namespace Wallet
@@ -45,7 +53,7 @@ namespace Wallet
   {
     using YAML::Node;
     using YAML::NodeType;
-    using boost::filesystem::exists;
+    using fs::exists;
 
     DLog(" -> MutableWallet::add(%p, u=%c)\n", &entry, isUnique ? 'Y' : 'N');
 
@@ -120,7 +128,7 @@ namespace Wallet
 
   Container::EntryContainer MutableWallet::getEntries(const Components::Date date) const
   {
-    using boost::filesystem::exists;
+    using fs::exists;
 
     DLog(" -> MutableWallet::getEntries(%d, %d, %d)\n", date.year, date.month, date.day);
 
@@ -135,7 +143,7 @@ namespace Wallet
     const bool hasDay = date.day != 0;
 
     // Iterate files.
-    for (auto& directoryItem : boost::filesystem::directory_iterator(this->dataPath)) {
+    for (auto& directoryItem : fs::directory_iterator(this->dataPath)) {
       const auto& filePath = directoryItem.path();
       const auto& fileStr = filePath.string();
       const auto fileNameStr = filePath.filename().string();
@@ -251,7 +259,7 @@ namespace Wallet
     const auto& container = this->getEntries({0, 0, 0});
     DLog(" -> MutableWallet::htmlOutput() -> container %p\n", &container);
 
-    boost::filesystem::path htmlPath;
+    fs::path htmlPath;
     if (_path.size() > 0) {
       htmlPath = _path;
     } else {
@@ -280,10 +288,10 @@ namespace Wallet
     using std::endl;
     using std::ofstream;
     using std::ifstream;
-    using boost::filesystem::exists;
-    using boost::filesystem::path;
-    using boost::filesystem::create_directories;
-    using boost::filesystem::remove;
+    using fs::exists;
+    using fs::path;
+    using fs::create_directories;
+    using fs::remove;
 
     // Make main directory.
     if (exists(this->path)) {
@@ -363,8 +371,8 @@ namespace Wallet
 
   void MutableWallet::removeLock() noexcept
   {
-    using boost::filesystem::exists;
-    using boost::filesystem::remove;
+    using fs::exists;
+    using fs::remove;
 
     DLog(" -> MutableWallet::removeLock\n");
 

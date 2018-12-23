@@ -12,28 +12,15 @@
 #    include <experimental/filesystem>
 #  elif __has_include(<boost/filesystem.hpp>)
 #    include <boost/filesystem.hpp>
+namespace fs = boost::filesystem;
 #  else
 #    error "Missing <filesystem>"
 #  endif
-#  if __has_include(<optional>)
-#    include <optional>
-#  elif __has_include(<experimental/optional>)
-#    include <experimental/optional>
-#  elif __has_include(<boost/optional.hpp>)
-#    include <boost/optional.hpp>
-#  else
-#    error "Missing <optional>"
-#  endif
-#  if __has_include(<yaml-cpp/yaml.h>)
-#    include <yaml-cpp/yaml.h>
-#  else
-#    error "Missing <yaml-cpp/yaml.h>"
-#  endif
 #endif // __has_include
 
+#include "components.hpp"
 #include "entry.hpp"
-#include "entry_container.hpp"
-#include "../components.hpp"
+#include "container/entry_container.hpp"
 
 #define WALLET_MONTH_FILE_VERSION 2
 
@@ -57,11 +44,11 @@ namespace Wallet
 
   protected:
     // Variables
-    const boost::filesystem::path path{};
-    boost::filesystem::path dataPath{};
-    boost::filesystem::path indexPath{};
-    boost::filesystem::path tmpPath{};
-    boost::filesystem::path lockPath{};
+    const fs::path path{};
+    fs::path dataPath{};
+    fs::path indexPath{};
+    fs::path tmpPath{};
+    fs::path lockPath{};
 
     // Functions
     void setupVariables() noexcept;

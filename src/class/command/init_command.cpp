@@ -1,6 +1,6 @@
 
 #include "init_command.hpp"
-#include "../mutable_wallet.hpp"
+#include "class/mutable_wallet.hpp"
 
 namespace Wallet
 {

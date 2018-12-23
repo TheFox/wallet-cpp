@@ -3,7 +3,7 @@
 #define WALLETCPP_LIST_COMMAND_HPP_
 
 #include "command.hpp"
-#include "../entry_container.hpp"
+#include "class/container/entry_container.hpp"
 
 namespace Wallet
 {

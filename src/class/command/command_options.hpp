@@ -5,18 +5,6 @@
 #include <string>
 #include <cmath>
 
-#ifdef __has_include
-#  if __has_include(<optional>)
-#    include <optional>
-#  elif __has_include(<experimental/optional>)
-#    include <experimental/optional>
-#  elif __has_include(<boost/optional.hpp>)
-#    include <boost/optional.hpp>
-#  else
-#    error "Missing <optional>"
-#  endif
-#endif
-
 namespace Wallet
 {
   struct CommandOptions
@@ -34,7 +22,6 @@ namespace Wallet
     std::string comment{};
 
     // HTML Command
-    // std::optional<std::string> path{};
     std::string path{};
 
     // Status

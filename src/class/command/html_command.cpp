@@ -1,6 +1,6 @@
 
 #include "html_command.hpp"
-#include "../immutable_wallet.hpp"
+#include "class/immutable_wallet.hpp"
 
 namespace Wallet
 {

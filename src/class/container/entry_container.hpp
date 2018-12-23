@@ -5,10 +5,10 @@
 #include <map>
 #include <cstdint>
 
-#include "entry.hpp"
-#include "account_able.hpp"
+#include "class/entry.hpp"
+#include "class/account_able.hpp"
 
-namespace Wallet { namespace Container
+namespace Wallet::Container
 {
   // Types
   using EntryVec = std::vector<Entry>;
@@ -51,6 +51,6 @@ namespace Wallet { namespace Container
   {
     YearMap years{};
   };
-}} // Wallet::Container Namespace
+} // Wallet::Container Namespace
 
 #endif // WALLETCPP_ENTRY_CONTAINER_HPP_

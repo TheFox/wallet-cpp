@@ -1,12 +1,12 @@
 
-#include "../../debug.hpp"
-#include "config.hpp"
 #include "base_html.hpp"
-#include "../../components.hpp"
+#include "debug.hpp"
+#include "config.hpp"
+#include "components.hpp"
 
-namespace Wallet { namespace Html
+namespace Wallet::Html
 {
-  BaseHtml::BaseHtml(boost::filesystem::path _basePath, boost::filesystem::path _fileName, std::string _title) :
+  BaseHtml::BaseHtml(fs::path _basePath, fs::path _fileName, std::string _title) :
     title(std::move(_title)), basePath(std::move(_basePath)), fileName(std::move(_fileName))
   {
     //DLog(" -> BaseHtml::BaseHtml('%s', '%s', '%s')\n", this->basePath.string().c_str(), this->fileName.string().c_str(),
@@ -59,4 +59,4 @@ namespace Wallet { namespace Html
 
     return document;
   }
-}} // Wallet::Html Namespace
+} // Wallet::Html Namespace

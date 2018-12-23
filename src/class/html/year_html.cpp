@@ -2,14 +2,14 @@
 #include <fstream> // ofstream
 #include <string>
 
+#include "debug.hpp"
 #include "year_html.hpp"
-#include "../../debug.hpp"
 #include "month_html.hpp"
 
-namespace Wallet { namespace Html
+namespace Wallet::Html
 {
-  YearHtml::YearHtml(boost::filesystem::path _basePath, Wallet::Container::YearEntryContainer _container) :
-    BaseHtml{std::move(_basePath), boost::filesystem::path{"index.html"}, "Year " + std::to_string(_container.year)},
+  YearHtml::YearHtml(fs::path _basePath, Wallet::Container::YearEntryContainer _container) :
+    BaseHtml{std::move(_basePath), fs::path{"index.html"}, "Year " + std::to_string(_container.year)},
     container(std::move(_container))
   {
     //DLog(" -> YearHtml::YearHtml('%s', '%s')\n", this->getBasePath().c_str(), this->getFileName().c_str());
@@ -83,4 +83,4 @@ namespace Wallet { namespace Html
     indexFh << yearDoc.ToString(CTML::StringFormatting::MULTIPLE_LINES); // TODO
     indexFh.close();
   }
-}} // Wallet::Html Namespace
+} // Wallet::Html Namespace

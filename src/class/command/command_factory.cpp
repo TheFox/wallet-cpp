@@ -1,6 +1,6 @@
 
-#include "../../debug.hpp"
 #include "command_factory.hpp"
+#include "debug.hpp"
 #include "command.hpp"
 #include "help_command.hpp"
 #include "add_command.hpp"

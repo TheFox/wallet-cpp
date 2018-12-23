@@ -11,14 +11,15 @@
 #    include <boost/uuid/uuid.hpp>
 #    include <boost/uuid/random_generator.hpp>
 #    include <boost/uuid/uuid_io.hpp>
+namespace uuid = boost::uuids;
 #  else
 #    error "Missing <boost/uuid/uuid.hpp>"
 #  endif
 #endif // __has_include
 
-#include "../debug.hpp"
+#include "debug.hpp"
 #include "entry.hpp"
-#include "../components.hpp"
+#include "components.hpp"
 
 namespace Wallet
 {
@@ -26,8 +27,8 @@ namespace Wallet
   {
     //DLog(" -> Entry::Entry(%p)\n", this);
 
-    using boost::gregorian::date;
-    using boost::gregorian::day_clock;
+    using calendar::date;
+    using calendar::day_clock;
 
     this->date = day_clock::local_day();
   }
@@ -51,7 +52,7 @@ namespace Wallet
       this->setDate(options.date);
     }
     // DLog(" -> set date: %s\n", this->date.to_iso_extended_string().c_str());
-    boost::gregorian::to_iso_extended_string(this->date);
+    calendar::to_iso_extended_string(this->date);
 
     // Revenue
     this->revenue = options.revenue;
@@ -81,7 +82,7 @@ namespace Wallet
       this->title = node["title"].as<decltype(this->title)>();
     }
     if (node["date"].IsDefined()) {
-      this->date = boost::gregorian::from_string(node["date"].as<std::string>());
+      this->date = calendar::from_string(node["date"].as<std::string>());
     }
     if (node["revenue"].IsDefined()) {
       this->revenue = node["revenue"].as<decltype(this->revenue)>();
@@ -105,9 +106,9 @@ namespace Wallet
     //DLog(" -> Entry::setDate(%s)\n", _dateStr.c_str());
 
     using std::string_view;
-    using boost::gregorian::date;
-    using boost::gregorian::days;
-    using boost::gregorian::day_clock;
+    using calendar::date;
+    using calendar::days;
+    using calendar::day_clock;
     using std::string_view_literals::operator ""sv;
 
     // Yesterday
@@ -149,19 +150,19 @@ namespace Wallet
     } else {
       // Parse date string.
       try {
-        this->date = boost::gregorian::from_simple_string(_dateStr);
+        this->date = calendar::from_simple_string(_dateStr);
       }
       catch (std::exception& e) {
         try {
-          this->date = boost::gregorian::from_undelimited_string(_dateStr);
+          this->date = calendar::from_undelimited_string(_dateStr);
         }
         catch (std::exception& e) {
           try {
-            this->date = boost::gregorian::from_us_string(_dateStr);
+            this->date = calendar::from_us_string(_dateStr);
           }
           catch (std::exception& e) {
             try {
-              this->date = boost::gregorian::from_uk_string(_dateStr);
+              this->date = calendar::from_uk_string(_dateStr);
             }
             catch (std::exception& e) {
               throw std::string{e.what()};
@@ -171,12 +172,12 @@ namespace Wallet
       }
     }
 
-    DLog(" -> date: %s\n", boost::gregorian::to_iso_extended_string(this->date).c_str());
+    DLog(" -> date: %s\n", calendar::to_iso_extended_string(this->date).c_str());
   }
 
   std::string Entry::getDateStr() const noexcept
   {
-    return boost::gregorian::to_iso_extended_string(this->date);
+    return calendar::to_iso_extended_string(this->date);
   }
 
   std::string Entry::getCategoryHtml() const noexcept
@@ -189,8 +190,8 @@ namespace Wallet
 
   void Entry::generateRandomId() noexcept
   {
-    using boost::uuids::random_generator;
-    using boost::uuids::uuid;
+    using uuid::random_generator;
+    using uuid::uuid;
     using std::stringstream;
 
     // Random UUID

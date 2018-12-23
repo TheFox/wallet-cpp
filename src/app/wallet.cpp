@@ -7,6 +7,7 @@
 #ifdef __has_include
 #  if __has_include(<boost/program_options.hpp>)
 #    include <boost/program_options.hpp>
+namespace bpo = boost::program_options;
 #  else
 #    error "Missing <program_options>"
 #  endif
@@ -15,12 +16,12 @@
 #  endif
 #endif // __has_include
 
+#include "debug.hpp"
 #include "config.hpp"
-#include "../class/command/command_options.hpp"
-#include "../class/command/command_factory.hpp"
-#include "../class/command/command.hpp"
-#include "../components.hpp"
-#include "../debug.hpp"
+#include "components.hpp"
+#include "class/command/command_options.hpp"
+#include "class/command/command_factory.hpp"
+#include "class/command/command.hpp"
 
 int main(int argc, char* const argv[])
 {
@@ -28,15 +29,15 @@ int main(int argc, char* const argv[])
   using std::cout;
   using std::cerr;
   using std::endl;
-  using boost::program_options::options_description;
-  using boost::program_options::value;
+  using bpo::options_description;
+  using bpo::value;
   using Wallet::CommandFactory;
   using Wallet::CommandOptions;
 
   DLog("--- DEBUG ---\n");
 
   // Commands
-  boost::program_options::positional_options_description commandPos;
+  bpo::positional_options_description commandPos;
   commandPos.add("command", 1);
 
   // Generic options
@@ -84,15 +85,15 @@ int main(int argc, char* const argv[])
     .add(addCmdOpts)
     .add(htmlCmdOpts);
 
-  auto parsedOptions = boost::program_options::command_line_parser(argc, argv)
+  auto parsedOptions = bpo::command_line_parser(argc, argv)
     .options(opts)
     .positional(commandPos)
     .allow_unregistered()
     .run();
 
-  boost::program_options::variables_map vm{};
-  boost::program_options::store(parsedOptions, vm);
-  boost::program_options::notify(vm);
+  bpo::variables_map vm{};
+  bpo::store(parsedOptions, vm);
+  bpo::notify(vm);
 
   string commandName{};
   if (vm.count("command")) {

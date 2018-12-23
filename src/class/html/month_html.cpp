@@ -10,13 +10,13 @@
 #  endif
 #endif // __has_include
 
+#include "debug.hpp"
 #include "month_html.hpp"
-#include "../../debug.hpp"
 
-namespace Wallet { namespace Html
+namespace Wallet::Html
 {
-  MonthHtml::MonthHtml(boost::filesystem::path _basePath, Container::MonthPair _map) :
-    BaseHtml{std::move(_basePath), boost::filesystem::path{getMonthFile(_map.first)},
+  MonthHtml::MonthHtml(fs::path _basePath, Container::MonthPair _map) :
+    BaseHtml{std::move(_basePath), fs::path{getMonthFile(_map.first)},
       getMonthName(_map.first) + " " + std::to_string(_map.second.year)},
     name(getMonthName(_map.first)), container(std::move(_map.second)), year(std::to_string(_map.second.year))
   {
@@ -127,4 +127,4 @@ namespace Wallet { namespace Html
     boost::gregorian::greg_month month{_month};
     return month.as_long_string();
   }
-}} // Wallet::Html Namespace
+} // Wallet::Html Namespace
