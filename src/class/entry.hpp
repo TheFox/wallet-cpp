@@ -18,12 +18,12 @@ namespace calendar = boost::gregorian;
 #  endif
 #endif // __has_include
 
-#include "account_able.hpp"
+#include "accountable.hpp"
 #include "command/command_options.hpp"
 
 namespace Wallet
 {
-  class Entry final : public AccountAble
+  class Entry final : public Accountable
   {
   public:
     // Constructor

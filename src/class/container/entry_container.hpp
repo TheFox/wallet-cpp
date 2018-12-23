@@ -6,7 +6,7 @@
 #include <cstdint>
 
 #include "class/entry.hpp"
-#include "class/account_able.hpp"
+#include "class/accountable.hpp"
 
 namespace Wallet::Container
 {
@@ -17,7 +17,7 @@ namespace Wallet::Container
   using ContainerMonth = std::uint8_t;
   using ContainerYear = std::uint16_t;
 
-  struct BaseEntryContainer : public AccountAble
+  struct BaseEntryContainer : public Accountable
   {
     // Properties
     std::size_t dayCount{};

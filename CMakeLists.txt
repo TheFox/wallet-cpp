@@ -1,11 +1,12 @@
 cmake_minimum_required(VERSION 3.8.0)
 
 project(WalletCpp VERSION 0.4.0 LANGUAGES CXX)
-set(PROJECT_VERSION_APPENDIX "-dev.9")
+set(PROJECT_VERSION_APPENDIX "-dev.10")
 set(PROJECT_COPYRIGHT "Copyright (C) 2018 Christian Mayer <https://fox21.at>")
 set(PROJECT_HOMEPAGE_URL "https://github.com/TheFox/wallet-cpp")
 
-set(WALLETCPP_USE_GNUPLOT ON)
+#-DWALLETCPP_GNUPLOT_SUPPORT:BOOL=OFF
+set(WALLETCPP_GNUPLOT_SUPPORT ON CACHE BOOL "Turn on/off building with Gnuplot support.")
 
 set(CMAKE_CXX_FLAGS "-Wall -Wshadow -std=c++17")
 set(CMAKE_CXX_FLAGS_DEBUG "-g -O0 -DDEBUG -Wno-unused-variable -fsanitize=address")
@@ -61,7 +62,7 @@ add_executable(wallet
     src/class/command/list_command.cpp src/class/command/list_command.hpp
     src/class/entry.cpp src/class/entry.hpp
     src/class/container/entry_container.cpp src/class/container/entry_container.hpp
-    src/class/account_able.cpp src/class/account_able.hpp
+    src/class/accountable.cpp src/class/accountable.hpp
     src/class/html/html_generator.cpp src/class/html/html_generator.hpp
     src/class/html/base_html.cpp src/class/html/base_html.hpp
     src/class/html/index_html.cpp src/class/html/index_html.hpp
@@ -78,10 +79,6 @@ get_target_property(wallet_std wallet CXX_STANDARD)
 target_include_directories(wallet PRIVATE ${Boost_INCLUDE_DIRS})
 target_link_libraries(wallet ${Boost_LIBRARIES} ${YAML_CPP_LIBRARIES})
 
-if(${WALLETCPP_USE_GNUPLOT})
-    add_definitions(-DUSE_GNUPLOT)
-endif()
-
 # Test Target
 string(TOLOWER "${CMAKE_BUILD_TYPE}" CMAKE_BUILD_TYPE_LOWER)
 if(CMAKE_BUILD_TYPE_LOWER STREQUAL "test")
@@ -90,7 +87,7 @@ if(CMAKE_BUILD_TYPE_LOWER STREQUAL "test")
         src/test/entry_test.hpp
         src/components.cpp src/components.hpp
         src/class/entry.cpp src/class/entry.hpp
-        src/class/account_able.cpp src/class/account_able.hpp)
+        src/class/accountable.cpp src/class/accountable.hpp)
     target_include_directories(test PRIVATE ${PROJECT_SOURCE_DIR}/src)
     target_link_libraries(test Catch2::Catch2)
     target_compile_features(test PRIVATE
@@ -121,3 +118,5 @@ message(STATUS "YAML_CPP_LIBRARIES ${YAML_CPP_LIBRARIES}")
 message(STATUS "Catch2_HEADER_DIR ${Catch2_HEADER_DIR}")
 
 message(STATUS "Boost_INCLUDE_DIRS ${Boost_INCLUDE_DIRS}")
+
+message(STATUS "WALLETCPP_GNUPLOT_SUPPORT ${WALLETCPP_GNUPLOT_SUPPORT}")

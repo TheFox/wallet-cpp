@@ -23,7 +23,7 @@ namespace Wallet::Html
     this->setup();
 
     // Balance Sum
-    AccountAble::Number balanceSum{0.0};
+    Accountable::Number balanceSum{0.0};
 
     // Index HTML
     IndexHtml indexHtml{this->basePath};

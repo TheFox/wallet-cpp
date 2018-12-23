@@ -3,17 +3,17 @@
 #include <iomanip> // setprecision
 #include <ios> // fixed
 
-#include "account_able.hpp"
+#include "accountable.hpp"
 
 namespace Wallet
 {
-  void AccountAble::setRevenue(AccountAble::Number _revenue) noexcept
+  void Accountable::setRevenue(Accountable::Number _revenue) noexcept
   {
     this->revenue = _revenue;
     this->calcBalance();
   }
 
-  std::string AccountAble::getRevenueStr() const noexcept
+  std::string Accountable::getRevenueStr() const noexcept
   {
     std::stringstream ss;
     if (this->revenue > 0.0) {
@@ -22,13 +22,13 @@ namespace Wallet
     return ss.str();
   }
 
-  void AccountAble::setExpense(AccountAble::Number _expense) noexcept
+  void Accountable::setExpense(Accountable::Number _expense) noexcept
   {
     this->expense = -std::abs(_expense);
     this->calcBalance();
   }
 
-  std::string AccountAble::getExpenseStr() const noexcept
+  std::string Accountable::getExpenseStr() const noexcept
   {
     std::stringstream ss;
     if (this->expense < 0.0) {
@@ -37,7 +37,7 @@ namespace Wallet
     return ss.str();
   }
 
-  std::string AccountAble::getBalanceStr() const noexcept
+  std::string Accountable::getBalanceStr() const noexcept
   {
     std::stringstream ss;
     if (this->balance != 0.0) {
@@ -46,7 +46,7 @@ namespace Wallet
     return ss.str();
   }
 
-  void AccountAble::calcBalance() noexcept
+  void Accountable::calcBalance() noexcept
   {
     this->balance = this->revenue + this->expense;
   }

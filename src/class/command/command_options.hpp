@@ -3,7 +3,8 @@
 #define WALLETCPP_COMMAND_OPTIONS_HPP_
 
 #include <string>
-#include <cmath>
+
+#include "class/accountable.hpp"
 
 namespace Wallet
 {
@@ -16,8 +17,8 @@ namespace Wallet
     std::string id{};
     std::string title{};
     std::string date{};
-    std::float_t revenue{};
-    std::float_t expense{};
+    Accountable::Number revenue{};
+    Accountable::Number expense{};
     std::string category{"default"};
     std::string comment{};
 

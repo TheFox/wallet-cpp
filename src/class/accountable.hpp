@@ -3,11 +3,11 @@
 #define WALLETCPP_ACCOUNT_ABLE_HPP_
 
 #include <string>
-#include <cmath>
+#include <cmath> // float_t
 
 namespace Wallet
 {
-  struct AccountAble
+  struct Accountable
   {
     // Types
     using Number = std::float_t;
