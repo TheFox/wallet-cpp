@@ -17,10 +17,10 @@ namespace Wallet::Container
       return false;
     }
 
+    // Make 'default' always first.
     if (c1 == "default") {
       return true;
     }
-
     if (c2 == "default") {
       return false;
     }

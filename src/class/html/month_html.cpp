@@ -5,6 +5,7 @@
 #ifdef __has_include
 #  if __has_include(<boost/date_time/gregorian/gregorian.hpp>)
 #    include <boost/date_time/gregorian/gregorian.hpp>
+namespace calendar = boost::gregorian;
 #  else
 #    error "Missing <boost/date_time/gregorian/gregorian.hpp>"
 #  endif
@@ -29,7 +30,7 @@ namespace Wallet::Html
     //DLog(" -> YearHtml::generate()\n");
 
     // Table Body
-    CTML::Node tableBody("tbody");
+    //CTML::Node tableBody("tbody");
 
     std::uint64_t entryCount{};
     for (const auto& dayPair : this->container.days) {
@@ -40,76 +41,76 @@ namespace Wallet::Html
         //DLog("     -> entry: %llu %s\n", entryCount, entry.id.c_str());
 
         // Table Row
-        CTML::Node tableTr{"tr"};
+        //CTML::Node tableTr{"tr"};
 
         // Table Columns
-        tableTr.AppendChild(CTML::Node{"td.left", std::to_string(entryCount)}.SetAttribute("valign", "top"));
-        tableTr.AppendChild(CTML::Node{"td.left", entry.getDateStr()}.SetAttribute("valign", "top"));
-        tableTr.AppendChild(CTML::Node{"td.left", entry.title}.SetAttribute("valign", "top"));
-        tableTr.AppendChild(CTML::Node{"td.right", entry.getRevenueStr()}.SetAttribute("valign", "top"));
-        tableTr.AppendChild(CTML::Node{"td.right red", entry.getExpenseStr()}.SetAttribute("valign", "top"));
-        tableTr.AppendChild(
-          CTML::Node{"td.right " + entry.getBalanceHtmlClass(), entry.getBalanceStr()}.SetAttribute("valign", "top"));
-        tableTr.AppendChild(CTML::Node{"td.right", entry.getCategoryHtml()}.SetAttribute("valign", "top"));
-        tableTr.AppendChild(CTML::Node{"td.left", entry.comment}.SetAttribute("valign", "top"));
+        //tableTr.AppendChild(CTML::Node{"td.left", std::to_string(entryCount)}.SetAttribute("valign", "top"));
+        //tableTr.AppendChild(CTML::Node{"td.left", entry.getDateStr()}.SetAttribute("valign", "top"));
+        //tableTr.AppendChild(CTML::Node{"td.left", entry.title}.SetAttribute("valign", "top"));
+        //tableTr.AppendChild(CTML::Node{"td.right", entry.getRevenueStr()}.SetAttribute("valign", "top"));
+        //tableTr.AppendChild(CTML::Node{"td.right red", entry.getExpenseStr()}.SetAttribute("valign", "top"));
+        //tableTr.AppendChild(
+        //  CTML::Node{"td.right " + entry.getBalanceHtmlClass(), entry.getBalanceStr()}.SetAttribute("valign", "top"));
+        //tableTr.AppendChild(CTML::Node{"td.right", entry.getCategoryHtml()}.SetAttribute("valign", "top"));
+        //tableTr.AppendChild(CTML::Node{"td.left", entry.comment}.SetAttribute("valign", "top"));
 
         // Add TR to Table.
-        tableBody.AppendChild(tableTr);
+        //tableBody.AppendChild(tableTr);
       }
     }
 
     // Total Row
-    CTML::Node totalTr{"tr"};
+    //CTML::Node totalTr{"tr"};
 
     // Total Columns
-    totalTr.AppendChild(CTML::Node{"td", " "});
-    totalTr.AppendChild(CTML::Node{"td", " "});
-    totalTr.AppendChild(CTML::Node{"td.left", "TOTAL"});
-    totalTr.AppendChild(CTML::Node{"td.right", this->container.getRevenueStr()});
-    totalTr.AppendChild(CTML::Node{"td.right red", this->container.getExpenseStr()});
-    totalTr.AppendChild(CTML::Node{"td.right " + this->container.getBalanceHtmlClass(), this->container.getBalanceStr()});
-    totalTr.AppendChild(CTML::Node{"td", " "});
-    totalTr.AppendChild(CTML::Node{"td", " "});
+    //totalTr.AppendChild(CTML::Node{"td", " "});
+    //totalTr.AppendChild(CTML::Node{"td", " "});
+    //totalTr.AppendChild(CTML::Node{"td.left", "TOTAL"});
+    //totalTr.AppendChild(CTML::Node{"td.right", this->container.getRevenueStr()});
+    //totalTr.AppendChild(CTML::Node{"td.right red", this->container.getExpenseStr()});
+    //totalTr.AppendChild(CTML::Node{"td.right " + this->container.getBalanceHtmlClass(), this->container.getBalanceStr()});
+    //totalTr.AppendChild(CTML::Node{"td", " "});
+    //totalTr.AppendChild(CTML::Node{"td", " "});
 
     // Table Head Row
-    CTML::Node tableHeadTr{"tr"};
+    //CTML::Node tableHeadTr{"tr"};
 
     // Table Head Columns
-    tableHeadTr.AppendChild(CTML::Node{"th.left", "#"});
-    tableHeadTr.AppendChild(CTML::Node{"th.left first_column", "Date"});
-    tableHeadTr.AppendChild(CTML::Node{"th.left primary_column", "Title"});
-    tableHeadTr.AppendChild(CTML::Node{"th.right", "Revenue"});
-    tableHeadTr.AppendChild(CTML::Node{"th.right", "Expense"});
-    tableHeadTr.AppendChild(CTML::Node{"th.right", "Balance"});
-    tableHeadTr.AppendChild(CTML::Node{"th.right", "Category"});
-    tableHeadTr.AppendChild(CTML::Node{"th.left", "Comment"});
+    //tableHeadTr.AppendChild(CTML::Node{"th.left", "#"});
+    //tableHeadTr.AppendChild(CTML::Node{"th.left first_column", "Date"});
+    //tableHeadTr.AppendChild(CTML::Node{"th.left primary_column", "Title"});
+    //tableHeadTr.AppendChild(CTML::Node{"th.right", "Revenue"});
+    //tableHeadTr.AppendChild(CTML::Node{"th.right", "Expense"});
+    //tableHeadTr.AppendChild(CTML::Node{"th.right", "Balance"});
+    //tableHeadTr.AppendChild(CTML::Node{"th.right", "Category"});
+    //tableHeadTr.AppendChild(CTML::Node{"th.left", "Comment"});
 
     // Table Head
-    CTML::Node tableHead{"thead"};
-    tableHead.AppendChild(tableHeadTr);
+    //CTML::Node tableHead{"thead"};
+    //tableHead.AppendChild(tableHeadTr);
 
     // Table Footer
-    CTML::Node tableFoot{"tfoot"};
-    tableFoot.AppendChild(totalTr);
+    //CTML::Node tableFoot{"tfoot"};
+    //tableFoot.AppendChild(totalTr);
 
     // Table
-    CTML::Node table{"table.list"};
-    table.AppendChild(tableHead);
-    table.AppendChild(tableBody);
-    table.AppendChild(tableFoot);
+    //CTML::Node table{"table.list"};
+    //table.AppendChild(tableHead);
+    //table.AppendChild(tableBody);
+    //table.AppendChild(tableFoot);
 
     // Month Doc
-    auto monthDoc = this->getHtmlDoc("../..");
-    monthDoc.AppendNodeToBody(
-      CTML::Node{"h2"}.AppendText("Month: " + this->name + " ").AppendChild(
-        CTML::Node{"a", this->year}.SetAttribute("href", "index.html")));
-    monthDoc.AppendNodeToBody(table);
+    //auto monthDoc = this->getHtmlDoc("../..");
+    //monthDoc.AppendNodeToBody(
+    //  CTML::Node{"h2"}.AppendText("Month: " + this->name + " ").AppendChild(
+    //    CTML::Node{"a", this->year}.SetAttribute("href", "index.html")));
+    //monthDoc.AppendNodeToBody(table);
 
     // Month File Output
     //DLog("     -> write month file: %s\n", this->getFullPath().c_str());
     std::ofstream monthFh{};
     monthFh.open(this->getFullPath(), std::ofstream::out);
-    monthFh << monthDoc.ToString(CTML::StringFormatting::MULTIPLE_LINES); // TODO
+    //monthFh << monthDoc.ToString(CTML::StringFormatting::MULTIPLE_LINES); // TODO
     monthFh.close();
   }
 
@@ -124,7 +125,7 @@ namespace Wallet::Html
 
   std::string MonthHtml::getMonthName(const Container::ContainerMonth _month) noexcept
   {
-    boost::gregorian::greg_month month{_month};
+    calendar::greg_month month{_month};
     return month.as_long_string();
   }
 } // Wallet::Html Namespace

@@ -28,14 +28,10 @@ configure_file(
     NEWLINE_STYLE LF)
 include_directories("${CMAKE_CURRENT_BINARY_DIR}/src")
 
-# CTML
-include_directories("${PROJECT_SOURCE_DIR}/lib/ctml/include")
-
 # yaml-cpp
 find_package(yaml-cpp REQUIRED)
 
 # mstch
-#find_package(mstch QUIET)
 
 # Term Color
 find_package(termcolor QUIET)

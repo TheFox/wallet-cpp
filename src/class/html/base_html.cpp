@@ -19,17 +19,13 @@ namespace Wallet::Html
     return (this->basePath / this->fileName).string();
   }
 
-  //std::string BaseHtml::getBasePath() const noexcept
-  //{
-  //  return this->basePath.string();
-  //}
-
   std::string BaseHtml::getFileName() const noexcept
   {
     //DLog(" -> BaseHtml::getFileName()\n");
     return this->fileName.string();
   }
 
+  /*
   CTML::Document BaseHtml::getHtmlDoc(const std::string relPath) const noexcept
   {
     //DLog(" -> BaseHtml::getHtmlDoc(%s)\n", relPath.c_str());
@@ -72,5 +68,5 @@ namespace Wallet::Html
     document.AppendNodeToBody(sig);
 
     return document;
-  }
+  }*/
 } // Wallet::Html Namespace

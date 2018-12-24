@@ -271,10 +271,10 @@ namespace Wallet
     DLog(" -> MutableWallet::htmlOutput() -> container %p\n", &container);
 
     fs::path htmlPath;
-    if (_path.size() > 0) {
-      htmlPath = _path;
-    } else {
+    if (_path.empty()) {
       htmlPath = this->path / "html";
+    } else {
+      htmlPath = _path;
     }
 
     const Wallet::Html::HtmlGenerator htmlGenerator{htmlPath, container};

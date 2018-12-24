@@ -28,7 +28,7 @@ namespace Wallet::Html
     void generate(IndexHtmlRow);
 
   private:
-    CTML::Node tableBody{"tbody"};
+    //CTML::Node tableBody{"tbody"};
   };
 } // Wallet::Html Namespace
 
