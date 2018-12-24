@@ -6,6 +6,25 @@
 
 namespace Wallet::Html
 {
+  BaseMustacheObject::BaseMustacheObject()
+  {
+    DLog(" -> BaseMustacheObject::BaseMustacheObject()\n");
+    this->register_methods(this, {
+      {"PROJECT_NAME", &BaseMustacheObject::getProjectName},
+      {"PROJECT_VERSION", &BaseMustacheObject::getProjectVersion},
+    });
+  }
+
+  mstch::node BaseMustacheObject::getProjectName()
+  {
+    return std::string{PROJECT_NAME};
+  }
+
+  mstch::node BaseMustacheObject::getProjectVersion()
+  {
+    return std::string{PROJECT_VERSION};
+  }
+
   BaseHtml::BaseHtml(fs::path _basePath, fs::path _fileName, std::string _title) :
     title(std::move(_title)), basePath(std::move(_basePath)), fileName(std::move(_fileName))
   {

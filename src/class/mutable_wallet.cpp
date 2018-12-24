@@ -1,5 +1,5 @@
 
-#include <fstream> // ofstream
+#include <fstream> // ofstream, ifstream
 #include <iostream>
 #include <cstdint>
 //#include <iomanip> // setprecision, setfill, setw
@@ -327,17 +327,15 @@ namespace Wallet
     }
 
     const path versionFile = this->path / "version";
-    ifstream iVersionFh{};
     decltype(this->version) oldVersion{0};
     if (exists(versionFile)) {
-      iVersionFh.open(versionFile.string(), ofstream::in);
+      ifstream iVersionFh{versionFile.string()};
       iVersionFh >> oldVersion;
       iVersionFh.close();
     }
 
     if (this->version > oldVersion) {
-      ofstream oVersionFh{};
-      oVersionFh.open(versionFile.string(), ofstream::out);
+      ofstream oVersionFh{versionFile.string()};
       oVersionFh << this->version;
       oVersionFh.close();
     }
@@ -345,8 +343,7 @@ namespace Wallet
     // Create main .gitignore file.
     const path gitignoreFile = this->path / ".gitignore";
     if (!exists(gitignoreFile)) {
-      ofstream gitignoreFh{};
-      gitignoreFh.open(gitignoreFile.string(), ofstream::out);
+      ofstream gitignoreFh{gitignoreFile.string()};
       gitignoreFh << "/tmp/" << '\n';
       gitignoreFh << "/html/" << '\n';
       gitignoreFh.close();

@@ -21,13 +21,13 @@ namespace Wallet::Html
       getMonthName(_map.first) + " " + std::to_string(_map.second.year)},
     name(getMonthName(_map.first)), container(std::move(_map.second)), year(std::to_string(_map.second.year))
   {
-    //DLog(" -> MonthHtml::MonthHtml(bp'%s') -> p'%s' n'%s'\n", this->getBasePath().c_str(),
-    //  this->getFileName().c_str(), this->name.c_str());
+    DLog(" -> MonthHtml::MonthHtml(bp'%s') -> p'%s' n'%s'\n", this->basePath.c_str(),
+      this->getFileName().c_str(), this->name.c_str());
   }
 
   void MonthHtml::generate() const noexcept
   {
-    //DLog(" -> YearHtml::generate()\n");
+    DLog(" -> YearHtml::generate()\n");
 
     // Table Body
     //CTML::Node tableBody("tbody");
@@ -108,8 +108,7 @@ namespace Wallet::Html
 
     // Month File Output
     //DLog("     -> write month file: %s\n", this->getFullPath().c_str());
-    std::ofstream monthFh{};
-    monthFh.open(this->getFullPath(), std::ofstream::out);
+    std::ofstream monthFh{this->getFullPath()};
     //monthFh << monthDoc.ToString(CTML::StringFormatting::MULTIPLE_LINES); // TODO
     monthFh.close();
   }

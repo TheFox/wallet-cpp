@@ -12,12 +12,12 @@ namespace Wallet::Html
     BaseHtml{std::move(_basePath), fs::path{"index.html"}, "Year " + std::to_string(_container.year)},
     container(std::move(_container))
   {
-    //DLog(" -> YearHtml::YearHtml('%s', '%s')\n", this->getBasePath().c_str(), this->getFileName().c_str());
+    DLog(" -> YearHtml::YearHtml('%s', '%s')\n", this->basePath.c_str(), this->getFileName().c_str());
   }
 
   void YearHtml::generate() const noexcept
   {
-    //DLog(" -> YearHtml::generate()\n");
+    DLog(" -> YearHtml::generate()\n");
 
     const auto categoryCountStr = std::to_string(this->container.categories.size());
 
@@ -106,8 +106,7 @@ namespace Wallet::Html
 
     // Output: index.html
     //DLog(" -> write year index file\n");
-    std::ofstream indexFh{};
-    indexFh.open(this->getFullPath(), std::ofstream::out);
+    std::ofstream indexFh{this->getFullPath()};
     //indexFh << yearDoc.ToString(CTML::StringFormatting::MULTIPLE_LINES); // TODO
     indexFh.close();
   }

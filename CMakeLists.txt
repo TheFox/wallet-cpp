@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.8.0)
 
 project(WalletCpp VERSION 0.4.0 LANGUAGES CXX)
-set(PROJECT_VERSION_APPENDIX "-dev.11")
+set(PROJECT_VERSION_APPENDIX "-dev.12")
 set(PROJECT_COPYRIGHT "Copyright (C) 2018 Christian Mayer <https://fox21.at>")
 set(PROJECT_HOMEPAGE_URL "https://github.com/TheFox/wallet-cpp")
 set(PROJECT_INSTALL_BASE_DIR "/usr/local")
@@ -32,6 +32,7 @@ include_directories("${CMAKE_CURRENT_BINARY_DIR}/src")
 find_package(yaml-cpp REQUIRED)
 
 # mstch
+find_package(mstch REQUIRED)
 
 # Term Color
 find_package(termcolor QUIET)
@@ -73,7 +74,8 @@ add_executable(wallet
     src/class/html/index_html.cpp src/class/html/index_html.hpp
     src/class/html/year_html.cpp src/class/html/year_html.hpp
     src/class/html/month_html.cpp src/class/html/month_html.hpp
-    resources/css/style.css)
+    resources/css/style.css
+    resources/views/index.mustache)
 target_include_directories(wallet PRIVATE ${PROJECT_SOURCE_DIR}/src)
 target_compile_features(wallet PRIVATE
     cxx_noexcept
@@ -84,6 +86,7 @@ target_compile_features(wallet PRIVATE
 get_target_property(wallet_std wallet CXX_STANDARD)
 target_include_directories(wallet PRIVATE ${Boost_INCLUDE_DIRS})
 target_link_libraries(wallet ${Boost_LIBRARIES} ${YAML_CPP_LIBRARIES})
+target_link_libraries(wallet mstch::mstch)
 
 # Test Target
 string(TOLOWER "${CMAKE_BUILD_TYPE}" CMAKE_BUILD_TYPE_LOWER)

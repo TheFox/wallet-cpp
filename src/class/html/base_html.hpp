@@ -17,8 +17,20 @@ namespace fs = boost::filesystem;
 #  endif
 #endif // __has_include
 
+#include <mstch/mstch.hpp>
+
 namespace Wallet::Html
 {
+  class BaseMustacheObject : public mstch::object
+  {
+  public:
+    BaseMustacheObject();
+
+  private:
+    mstch::node getProjectName();
+    mstch::node getProjectVersion();
+  };
+
   class BaseHtml
   {
   public:

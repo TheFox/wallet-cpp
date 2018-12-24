@@ -1,18 +1,28 @@
 
+#include <fstream> // ifstream
+#include <iterator> // istreambuf_iterator
+#include <ios> // std::ios::end
+#include <memory> // make_shared
+
 #include "debug.hpp"
 #include "index_html.hpp"
 
 namespace Wallet::Html
 {
+  IndexMustacheObject::IndexMustacheObject()
+  {
+    DLog(" -> IndexMustacheObject::IndexMustacheObject()\n");
+  }
+
   IndexHtml::IndexHtml(fs::path _basePath) :
     BaseHtml{std::move(_basePath), fs::path{"index.html"}, "Index"}
   {
-    //DLog(" -> IndexHtml::IndexHtml('%s')\n", this->getBasePath().c_str());
+    DLog(" -> IndexHtml::IndexHtml('%s')\n", this->basePath.c_str());
   }
 
-  void IndexHtml::addRow(const IndexHtmlRow row)
+  void IndexHtml::addRow(const IndexHtmlRow row) noexcept
   {
-    //DLog(" -> IndexHtml::addRow()\n");
+    DLog(" -> IndexHtml::addRow()\n");
 
     //CTML::Node yearTd{"td.left"};
     //yearTd.AppendChild(CTML::Node("a", row.year)
@@ -69,10 +79,34 @@ namespace Wallet::Html
     //auto indexDoc = BaseHtml::getHtmlDoc();
     //indexDoc.AppendNodeToBody(indexTable);
 
+    if (!fs::exists(WALLETCPP_INDEX_VIEW_PATH)) {
+      throw std::string{"Index template file does not exists: "} + WALLETCPP_INDEX_VIEW_PATH;
+    }
+
+    // Template File Handle
+    // https://stackoverflow.com/a/2602258
+    std::ifstream tplFh{WALLETCPP_INDEX_VIEW_PATH};
+
+    tplFh.seekg(0, std::ios::end);
+    const auto fileSize1 = static_cast<std::streamoff>(tplFh.tellg());
+    const auto fileSize2 = static_cast<std::size_t>(fileSize1);
+    tplFh.seekg(0, std::ios::beg);
+
+    // Template String
+    std::string tplStr(fileSize2, ' ');
+
+    // Read file into String.
+    tplFh.read(&tplStr[0], fileSize2);
+
+    // Close template file.
+    tplFh.close();
+
+    //mstch::map context{};
+    const auto context = std::make_shared<IndexMustacheObject>();
+
     // Output: index.html
-    std::ofstream indexFh{};
-    indexFh.open(this->getFullPath(), std::ofstream::out);
-    //indexFh << indexDoc.ToString(CTML::StringFormatting::MULTIPLE_LINES); // TODO
+    std::ofstream indexFh{this->getFullPath()};
+    indexFh << mstch::render(tplStr, context);
     indexFh.close();
   }
 } // Wallet::Html Namespace

@@ -2,24 +2,25 @@
 
 ## Dependencies
 
-- [CMake](https://cmake.org/)
-- [Boost](https://www.boost.org/)
-- [yaml-cpp](https://github.com/jbeder/yaml-cpp)
+- [CMake](https://cmake.org/) (For building)
+- [Boost](https://www.boost.org/) (Filesystem / DateTime / Program Options)
+- [yaml-cpp](https://github.com/jbeder/yaml-cpp) (Data source)
+- [mstch](https://github.com/no1msd/mstch) (Mustache for C++: generate HTML files)
 
 ### Optional
 
-- [termcolor](https://github.com/ikalnytskyi/termcolor)
+- [termcolor](https://github.com/ikalnytskyi/termcolor) (Color in Terminal)
 - [Catch2](https://github.com/catchorg/Catch2) (Unit tests)
 
 ### Install dependencies on macOS
 
 ```
-brew install boost yaml-cpp
+brew install boost yaml-cpp mstch
 ```
 
 ## Build from Source
 
-You need a modern C++ compiler that supports C++17 and CMake 3.7 or later.
+You need a modern C++ compiler that supports C++17 and CMake 3.8 or later.
 
 This will only build the binary.
 

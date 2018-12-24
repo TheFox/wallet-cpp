@@ -13,7 +13,7 @@
 namespace Wallet::Container
 {
   // Types
-  using EntryVec = std::vector<Entry>;
+  using EntryArray = std::vector<Entry>;
 
   using ContainerDay = std::uint8_t;
   using ContainerMonth = std::uint8_t;
@@ -48,7 +48,7 @@ namespace Wallet::Container
   struct DayEntryContainer final : public BaseEntryContainer
   {
     ContainerDay day{};
-    EntryVec entries{};
+    EntryArray entries{};
   };
 
   using DayMap = std::map<ContainerDay, DayEntryContainer>;

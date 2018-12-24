@@ -2,7 +2,15 @@
 #ifndef WALLETCPP_HTML_INDEX_HTML_HPP_
 #define WALLETCPP_HTML_INDEX_HTML_HPP_
 
+#include <string>
+
 #include "base_html.hpp"
+
+#ifdef DEBUG
+#define WALLETCPP_INDEX_VIEW_PATH "./resources/views/index.mustache"
+#else
+#define WALLETCPP_INDEX_VIEW_PATH PROJECT_SHARE_RESOURCES_DIR "/views/index.mustache"
+#endif
 
 namespace Wallet::Html
 {
@@ -17,6 +25,12 @@ namespace Wallet::Html
     const std::string balanceSumClass{};
   };
 
+  class IndexMustacheObject final : public BaseMustacheObject
+  {
+  public:
+    IndexMustacheObject();
+  };
+
   /**
    * Generates the main index.html file.
    */
@@ -24,7 +38,7 @@ namespace Wallet::Html
   {
   public:
     explicit IndexHtml(fs::path);
-    void addRow(IndexHtmlRow);
+    void addRow(IndexHtmlRow) noexcept;
     void generate(IndexHtmlRow);
 
   private:
