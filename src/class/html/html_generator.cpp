@@ -85,7 +85,10 @@ namespace Wallet::Html
     if (!exists(this->yearPath)) {
       fs::create_directory(this->yearPath);
     }
+
+#ifdef NDEBUG
     fs::copy_file(fs::path{PROJECT_SHARE_RESOURCES_DIR} / "css/style.css",
       this->basePath / "style.css", fs::copy_option::overwrite_if_exists);
+#endif
   }
 } // Wallet::Html Namespace

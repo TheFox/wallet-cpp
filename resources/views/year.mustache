@@ -11,28 +11,23 @@
 
 <p>Generated @ {{ generated_at }} by <a href="{{{ PROJECT_HOMEPAGE_URL }}}">{{ PROJECT_NAME }}</a> {{ PROJECT_VERSION }}</p>
 
+<h2>Year: {{ year }}</h2>
+
 <table class="list">
     <thead>
     <tr>
-        <th class="left">Year</th>
+        <th class="left">Month</th>
         <th class="right">Revenue</th>
         <th class="right">Expense</th>
         <th class="right">Balance</th>
-        <th class="right">Balance &#8721;</th>
+        <th colspan="{{{ category_count }}}">{{{ category_count }}} Categories</th>
+    </tr>
+    <tr>
+        <th colspan="4">&nbsp;</th>
     </tr>
     </thead>
 
-    <tbody>
-    {{#entries}}
-        <tr>
-            <td class="left"><a href="year/{{{ year }}}/index.html">{{ year }}</a></td>
-            <td class="right">{{ revenue }}</td>
-            <td class="right red">{{ expense }}</td>
-            <td class="right {{{ balance_class }}}">{{ balance }}</td>
-            <td class="right {{{ balance_sum_class }}}">{{ balance_sum }}</td>
-        </tr>
-    {{/entries}}
-    </tbody>
+    <tbody></tbody>
 
     <tfoot>
     {{#total}}

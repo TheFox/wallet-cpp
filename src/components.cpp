@@ -4,6 +4,8 @@
 #include <string>
 #include <iomanip> // setprecision
 #include <ios> // fixed
+#include <fstream> // ifstream
+#include <ios> // std::ios::beg, std::ios::end
 
 #ifdef __has_include
 #  if __has_include(<boost/date_time/local_time/local_time.hpp>)
@@ -114,5 +116,28 @@ namespace Wallet::Components
         break;
     }
     return ymd;
+  }
+
+  std::string readFileIntoString(const std::string& path) noexcept{
+    // File Handle
+    // https://stackoverflow.com/a/2602258
+    std::ifstream fh{path};
+
+    // Get File size.
+    fh.seekg(0, std::ios::end);
+    const auto fileSize1 = static_cast<std::streamoff>(fh.tellg());
+    const auto fileSize2 = static_cast<std::size_t>(fileSize1);
+    fh.seekg(0, std::ios::beg);
+
+    // String
+    std::string str(fileSize2, ' ');
+
+    // Read file into String.
+    fh.read(&str[0], fileSize2);
+
+    // Close template file.
+    fh.close();
+
+    return str;
   }
 } // Wallet::Components Namespace

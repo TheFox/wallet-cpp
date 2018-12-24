@@ -28,7 +28,8 @@ namespace Wallet::Html
   class IndexMustacheObject final : public BaseMustacheObject
   {
   public:
-    IndexMustacheObject();
+    // Constructor
+    IndexMustacheObject(mstch::array, mstch::map);
   };
 
   /**
@@ -42,7 +43,8 @@ namespace Wallet::Html
     void generate(IndexHtmlRow);
 
   private:
-    //CTML::Node tableBody{"tbody"};
+    // Properties
+    mstch::array entries{};
   };
 } // Wallet::Html Namespace
 

@@ -28,6 +28,7 @@ namespace Wallet::Components
   std::string ftos(const std::float_t&, int = 2) noexcept;
   std::float_t stof(std::string) noexcept;
   Date parseDate(const std::string&) noexcept;
+  std::string readFileIntoString(const std::string&) noexcept;
 } // Wallet::Components Namespace
 
 #endif // WALLETCPP_COMPONENTS_HPP_

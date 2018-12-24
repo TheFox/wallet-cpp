@@ -3,11 +3,36 @@
 #include <string>
 
 #include "debug.hpp"
+#include "components.hpp"
 #include "year_html.hpp"
 #include "month_html.hpp"
 
 namespace Wallet::Html
 {
+  YearMustacheObject::YearMustacheObject(std::string _rel, mstch::array _entries, mstch::map _total,
+                                         std::string _year) :
+    BaseMustacheObject(std::move(_rel), std::move(_entries), std::move(_total)), year(std::move(_year))
+  {
+    DLog(" -> YearMustacheObject::YearMustacheObject('%s', '%s')\n", _rel.c_str(), this->year.c_str());
+
+    this->register_methods(this, {
+      {"year", &YearMustacheObject::getYear},
+      {"category_count", &YearMustacheObject::getCategoryCount},
+    });
+  }
+
+  mstch::node YearMustacheObject::getYear() noexcept
+  {
+    DLog(" -> YearMustacheObject::getYear()\n");
+    return this->year;
+  }
+
+  mstch::node YearMustacheObject::getCategoryCount() noexcept
+  {
+    DLog(" -> YearMustacheObject::getCategoryCount()\n");
+    return std::string{"2"}; // TODO
+  }
+
   YearHtml::YearHtml(fs::path _basePath, Wallet::Container::YearEntryContainer _container) :
     BaseHtml{std::move(_basePath), fs::path{"index.html"}, "Year " + std::to_string(_container.year)},
     container(std::move(_container))
@@ -15,7 +40,7 @@ namespace Wallet::Html
     DLog(" -> YearHtml::YearHtml('%s', '%s')\n", this->basePath.c_str(), this->getFileName().c_str());
   }
 
-  void YearHtml::generate() const noexcept
+  void YearHtml::generate() const
   {
     DLog(" -> YearHtml::generate()\n");
 
@@ -25,8 +50,8 @@ namespace Wallet::Html
     //CTML::Node tableBody("tbody");
 
     for (const auto& monthPair : this->container.months) {
-      MonthHtml monthHtml{this->basePath, monthPair};
-      monthHtml.generate();
+      //MonthHtml monthHtml{this->basePath, monthPair};
+      //monthHtml.generate();
 
       //CTML::Node monthTd{"td.left"};
       //monthTd.AppendChild(
@@ -49,30 +74,20 @@ namespace Wallet::Html
           //tableRow.AppendChild(CTML::Node{"td", " "});
         }
       }
-
-      //tableBody.AppendChild(tableRow);
     }
 
-    // Total Row
-    //CTML::Node totalTr{"tr"};
-
     // Total Columns
-    //totalTr.AppendChild(CTML::Node{"td.left", "TOTAL"});
     //totalTr.AppendChild(CTML::Node{"td.right", this->container.getRevenueStr()});
     //totalTr.AppendChild(CTML::Node{"td.right red", this->container.getExpenseStr()});
     //totalTr.AppendChild(
     //  CTML::Node{"td.right " + this->container.getBalanceHtmlClass(), this->container.getBalanceStr()});
-    for (const auto& categoryPair : this->container.categories) {
+    //for (const auto& categoryPair : this->container.categories) {
       //totalTr.AppendChild(
       //  CTML::Node{"td.right " + categoryPair.second.getBalanceHtmlClass(), categoryPair.second.getBalanceStr()});
-    }
+    //}
 
     // Table Head Row
     //CTML::Node tableHeadTr1{"tr"};
-    //tableHeadTr1.AppendChild(CTML::Node{"th.left", "Month"});
-    //tableHeadTr1.AppendChild(CTML::Node{"th.right", "Revenue"});
-    //tableHeadTr1.AppendChild(CTML::Node{"th.right", "Expense"});
-    //tableHeadTr1.AppendChild(CTML::Node{"th.right", "Balance"});
     //CTML::Node categoryTh{"th.right", categoryCountStr + " Categories"};
     //categoryTh.SetAttribute("colspan", categoryCountStr);
     //tableHeadTr1.AppendChild(categoryTh);
@@ -80,34 +95,33 @@ namespace Wallet::Html
     // Table Head Categories
     //CTML::Node tableHeadTr2{"tr"};
     //tableHeadTr2.AppendChild(CTML::Node{"th", " "}.SetAttribute("colspan", "4"));
-    for (const auto& categoryPair : this->container.categories) {
+    //for (const auto& categoryPair : this->container.categories) {
       //tableHeadTr2.AppendChild(CTML::Node{"th.left", categoryPair.first});
+    //}
+
+    if (!fs::exists(WALLETCPP_YEAR_VIEW_PATH)) {
+      throw std::string{"Year template file does not exists: "} + WALLETCPP_YEAR_VIEW_PATH;
     }
 
-    // Table Head
-    //CTML::Node tableHead{"thead"};
-    //tableHead.AppendChild(tableHeadTr1);
-    //tableHead.AppendChild(tableHeadTr2);
+    const std::string tpl = Components::readFileIntoString(WALLETCPP_YEAR_VIEW_PATH);
 
-    // Table Footer
-    //CTML::Node tableFoot{"tfoot"};
-    //tableFoot.AppendChild(totalTr);
+    mstch::array entries{};
 
-    // Table
-    //CTML::Node table{"table.list"};
-    //table.AppendChild(tableHead);
-    //table.AppendChild(tableBody);
-    //table.AppendChild(tableFoot);
+    const auto yearStr=std::to_string(this->container.year);
 
-    // Year Doc
-    //auto yearDoc = this->getHtmlDoc("../..");
-    //yearDoc.AppendNodeToBody(CTML::Node{"h2", this->title});
-    //yearDoc.AppendNodeToBody(table);
+    const mstch::map total{
+      {"year", std::string{"TOTAL"}},
+      {"revenue", std::string{"N/A"}},
+      {"expense", std::string{"N/A"}},
+      {"balance", std::string{"N/A"}},
+      {"balance_class", std::string{"N/A"}},
+    };
+
+    const auto context = std::make_shared<YearMustacheObject>("../..", entries, total, yearStr);
 
     // Output: index.html
-    //DLog(" -> write year index file\n");
     std::ofstream indexFh{this->getFullPath()};
-    //indexFh << yearDoc.ToString(CTML::StringFormatting::MULTIPLE_LINES); // TODO
+    indexFh << mstch::render(tpl, context);
     indexFh.close();
   }
 } // Wallet::Html Namespace

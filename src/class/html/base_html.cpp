@@ -1,6 +1,6 @@
 
-#include "base_html.hpp"
 #include "debug.hpp"
+#include "base_html.hpp"
 #include "config.hpp"
 #include "components.hpp"
 
@@ -9,20 +9,87 @@ namespace Wallet::Html
   BaseMustacheObject::BaseMustacheObject()
   {
     DLog(" -> BaseMustacheObject::BaseMustacheObject()\n");
+
+    this->setup();
+  }
+
+  BaseMustacheObject::BaseMustacheObject(mstch::array _entries, mstch::map _total) :
+    entries(std::move(_entries)), total(std::move(_total))
+  {
+    DLog(" -> BaseMustacheObject::BaseMustacheObject(mstch::array, mstch::map) -> '%s'\n", this->relativePath.c_str());
+
+    this->setup();
+  }
+
+  BaseMustacheObject::BaseMustacheObject(std::string _rel, mstch::array _entries, mstch::map _total) :
+    relativePath(std::move(_rel)), entries(std::move(_entries)), total(std::move(_total))
+  {
+    DLog(" -> BaseMustacheObject::BaseMustacheObject('%s', mstch::array, mstch::map)\n", this->relativePath.c_str());
+
+    this->setup();
+  }
+
+  void BaseMustacheObject::setup() noexcept
+  {
+    DLog(" -> BaseMustacheObject::setup()\n");
+
     this->register_methods(this, {
-      {"PROJECT_NAME", &BaseMustacheObject::getProjectName},
-      {"PROJECT_VERSION", &BaseMustacheObject::getProjectVersion},
+      {"PROJECT_NAME",         &BaseMustacheObject::getProjectName},
+      {"PROJECT_HOMEPAGE_URL", &BaseMustacheObject::getProjectHomepageUrl},
+      {"PROJECT_VERSION",      &BaseMustacheObject::getProjectVersion},
+      {"generated_at",         &BaseMustacheObject::getGeneratedAt},
+      {"relative_path",        &BaseMustacheObject::getRelativePath},
+      {"css_relative_path",    &BaseMustacheObject::getCssRelativePath},
+
+      {"entries",              &BaseMustacheObject::getEntries},
+      {"total",                &BaseMustacheObject::getTotal},
     });
   }
 
-  mstch::node BaseMustacheObject::getProjectName()
+  mstch::node BaseMustacheObject::getProjectName() noexcept
   {
     return std::string{PROJECT_NAME};
   }
 
-  mstch::node BaseMustacheObject::getProjectVersion()
+  mstch::node BaseMustacheObject::getProjectHomepageUrl() noexcept
+  {
+    return std::string{PROJECT_HOMEPAGE_URL};
+  }
+
+  mstch::node BaseMustacheObject::getProjectVersion() noexcept
   {
     return std::string{PROJECT_VERSION};
+  }
+
+  mstch::node BaseMustacheObject::getGeneratedAt() noexcept
+  {
+    return Components::getNowStr(HUMAN_DATETIME_FORMAT);
+  }
+
+  mstch::node BaseMustacheObject::getRelativePath() noexcept
+  {
+    return this->relativePath;
+  }
+
+  mstch::node BaseMustacheObject::getCssRelativePath() noexcept
+  {
+#ifdef DEBUG
+    return this->relativePath + "/../../resources/css";
+#else
+    return this->getRelativePath();
+#endif
+  }
+
+  mstch::node BaseMustacheObject::getEntries() noexcept
+  {
+    DLog(" -> BaseMustacheObject::getEntries() -> size %lu\n", this->entries.size());
+    return this->entries;
+  }
+
+  mstch::node BaseMustacheObject::getTotal() noexcept
+  {
+    DLog(" -> BaseMustacheObject::getTotal() -> size %lu\n", this->total.size());
+    return this->total;
   }
 
   BaseHtml::BaseHtml(fs::path _basePath, fs::path _fileName, std::string _title) :
@@ -34,58 +101,11 @@ namespace Wallet::Html
 
   std::string BaseHtml::getFullPath() const noexcept
   {
-    //DLog(" -> BaseHtml::getFullPath()\n");
     return (this->basePath / this->fileName).string();
   }
 
   std::string BaseHtml::getFileName() const noexcept
   {
-    //DLog(" -> BaseHtml::getFileName()\n");
     return this->fileName.string();
   }
-
-  /*
-  CTML::Document BaseHtml::getHtmlDoc(const std::string relPath) const noexcept
-  {
-    //DLog(" -> BaseHtml::getHtmlDoc(%s)\n", relPath.c_str());
-
-    CTML::Document document;
-
-    // Meta
-    CTML::Node meta{"meta"};
-    meta.SetAttribute("content", "text/html; charset=utf-8")
-        .SetAttribute("http-equiv", "Content-Type").UseClosingTag(false);
-
-    // Head
-    document.AppendNodeToHead(meta);
-    document.AppendNodeToHead(CTML::Node{"title", this->title + " -- " + PROJECT_NAME});
-
-    // CSS
-    CTML::Node css{"link"};
-    css.SetAttribute("rel", "stylesheet")
-#ifdef NDEBUG
-       .SetAttribute("href", relPath + "/style.css")
-#else
-       .SetAttribute("href", relPath + "/../../resources/css/style.css")
-#endif
-       .SetAttribute("type", "text/css");
-    document.AppendNodeToHead(css);
-
-    // Title
-    document.AppendNodeToBody(CTML::Node("h1").AppendChild(
-      CTML::Node("a", std::string{PROJECT_NAME}).SetAttribute("href", relPath + "/index.html")));
-
-    // Signature
-    CTML::Node link{"a"};
-    link.SetAttribute("href", std::string{PROJECT_HOMEPAGE_URL});
-    link.AppendText(std::string{PROJECT_NAME});
-
-    const auto now = Components::getNowStr(HUMAN_DATETIME_FORMAT);
-    CTML::Node sig{"p", std::string{"Generated @ " + now + " by "}};
-    sig.AppendChild(link);
-    sig.AppendText(" " PROJECT_VERSION);
-    document.AppendNodeToBody(sig);
-
-    return document;
-  }*/
 } // Wallet::Html Namespace
