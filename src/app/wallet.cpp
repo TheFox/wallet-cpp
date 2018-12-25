@@ -127,13 +127,11 @@ int main(int argc, char* const argv[])
     cout << "  PROJECT_INSTALL_BASE_DIR: " << PROJECT_INSTALL_BASE_DIR << endl;
     cout << "  PROJECT_SHARE_BASE_DIR: " << PROJECT_SHARE_BASE_DIR << endl;
 
-    cout << "  WALLETCPP_GNUPLOT_SUPPORT: "
 #ifdef WALLETCPP_GNUPLOT_SUPPORT
-      << "YES"
+    cout << "  WALLETCPP_GNUPLOT_SUPPORT: YES" << endl;
 #else
-      << "NO"
+    cout << "  WALLETCPP_GNUPLOT_SUPPORT: NO" << endl;
 #endif
-      << endl;
 
     cout << "  WALLETCPP_INDEX_VIEW_PATH: " << WALLETCPP_INDEX_VIEW_PATH << endl;
     cout << "  WALLETCPP_YEAR_VIEW_PATH: " << WALLETCPP_YEAR_VIEW_PATH << endl;

@@ -47,16 +47,21 @@ namespace Wallet::Html
     mstch::node getTotal() noexcept;
   };
 
+  class BaseGnuplotObject : public mstch::object
+  {
+  };
+
   class BaseHtml
   {
   public:
-    explicit BaseHtml(fs::path, fs::path, std::string);
+    explicit BaseHtml(fs::path, fs::path, fs::path, std::string);
     const std::string title{};
     std::string getFullPath() const noexcept;
     std::string getFileName() const noexcept;
 
   protected:
     const fs::path basePath{};
+    const fs::path tmpPath{};
     const fs::path fileName{};
   };
 } // Wallet::Html Namespace

@@ -280,7 +280,7 @@ namespace Wallet
       htmlPath = _path;
     }
 
-    const Wallet::Html::HtmlGenerator htmlGenerator{htmlPath, container};
+    const Wallet::Html::HtmlGenerator htmlGenerator{htmlPath, this->tmpPath, container};
     htmlGenerator.generate();
   }
 

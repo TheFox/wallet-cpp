@@ -53,7 +53,7 @@ namespace Wallet::Html
   }
 
   MonthHtml::MonthHtml(fs::path _basePath, Container::MonthPair _map) :
-    BaseHtml{std::move(_basePath), fs::path{getMonthFile(_map.first)},
+    BaseHtml{std::move(_basePath), fs::path{}, fs::path{getMonthFile(_map.first)},
       getMonthName(_map.first) + " " + std::to_string(_map.second.year)},
     name(getMonthName(_map.first)), container(std::move(_map.second)), year(std::to_string(_map.second.year))
   {
@@ -63,7 +63,7 @@ namespace Wallet::Html
 
   void MonthHtml::generate() const
   {
-    DLog(" -> MonthHtml::generate()\n");
+    //DLog(" -> MonthHtml::generate()\n");
 
     if (!fs::exists(WALLETCPP_MONTH_VIEW_PATH)) {
       DLog("ERROR: Month template file does not exists: '%s'\n", WALLETCPP_MONTH_VIEW_PATH);

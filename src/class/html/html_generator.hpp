@@ -24,13 +24,14 @@ namespace Wallet::Html
   class HtmlGenerator final
   {
   public:
-    HtmlGenerator(fs::path, Wallet::Container::EntryContainer);
+    HtmlGenerator(fs::path, fs::path, Wallet::Container::EntryContainer);
     void generate() const;
 
   private:
     // Variables
     const fs::path yearPath{};
     const fs::path basePath{};
+    const fs::path tmpPath{};
     const Wallet::Container::EntryContainer container{};
 
     // Methods

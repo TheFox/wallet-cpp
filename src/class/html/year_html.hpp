@@ -24,6 +24,9 @@ namespace Wallet::Html
     mstch::node getCategories() noexcept;
   };
 
+  /**
+   * Generates one year html file.
+   */
   class YearHtml final : public BaseHtml
   {
   public:

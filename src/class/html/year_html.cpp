@@ -17,8 +17,8 @@ namespace Wallet::Html
     BaseMustacheObject(std::move(_rel), std::move(_entries), std::move(_total)), year(std::move(_year)),
     categoryNames(std::move(_categoryNames))
   {
-    DLog(" -> YearMustacheObject::YearMustacheObject('%s', '%s', %lu)\n",
-      _rel.c_str(), this->year.c_str(), _categoryNames.size());
+    //DLog(" -> YearMustacheObject::YearMustacheObject('%s', '%s', %lu)\n",
+    //  _rel.c_str(), this->year.c_str(), _categoryNames.size());
 
     this->register_methods(this, {
       {"year",           &YearMustacheObject::getYear},
@@ -61,10 +61,10 @@ namespace Wallet::Html
   }
 
   YearHtml::YearHtml(fs::path _basePath, Wallet::Container::YearEntryContainer _container) :
-    BaseHtml{std::move(_basePath), fs::path{"index.html"}, "Year " + std::to_string(_container.year)},
+    BaseHtml{std::move(_basePath), fs::path{}, fs::path{"index.html"}, "Year " + std::to_string(_container.year)},
     container(std::move(_container))
   {
-    DLog(" -> YearHtml::YearHtml('%s', '%s')\n", this->basePath.c_str(), this->getFileName().c_str());
+    //DLog(" -> YearHtml::YearHtml('%s', '%s')\n", this->basePath.c_str(), this->getFileName().c_str());
   }
 
   void YearHtml::generate() const
@@ -161,5 +161,10 @@ namespace Wallet::Html
     std::ofstream indexFh{this->getFullPath()};
     indexFh << mstch::render(tpl, context);
     indexFh.close();
+
+#ifdef WALLETCPP_GNUPLOT_SUPPORT
+    DLog(" -> YearHtml::generate() -> GNUPlot support\n");
+    // TODO
+#endif
   }
 } // Wallet::Html Namespace

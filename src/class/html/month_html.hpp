@@ -27,6 +27,9 @@ namespace Wallet::Html
     mstch::node getFileName() noexcept;
   };
 
+  /**
+   * Generates one month html file.
+   */
   class MonthHtml final : public BaseHtml
   {
   public:

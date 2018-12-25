@@ -8,7 +8,7 @@ namespace Wallet::Html
 {
   BaseMustacheObject::BaseMustacheObject()
   {
-    DLog(" -> BaseMustacheObject::BaseMustacheObject()\n");
+    //DLog(" -> BaseMustacheObject::BaseMustacheObject()\n");
 
     this->setup();
   }
@@ -16,7 +16,7 @@ namespace Wallet::Html
   BaseMustacheObject::BaseMustacheObject(mstch::array _entries, mstch::map _total) :
     entries(std::move(_entries)), total(std::move(_total))
   {
-    DLog(" -> BaseMustacheObject::BaseMustacheObject(mstch::array, mstch::map) -> '%s'\n", this->relativePath.c_str());
+    //DLog(" -> BaseMustacheObject::BaseMustacheObject(mstch::array, mstch::map) -> '%s'\n", this->relativePath.c_str());
 
     this->setup();
   }
@@ -24,19 +24,20 @@ namespace Wallet::Html
   BaseMustacheObject::BaseMustacheObject(std::string _rel, mstch::array _entries, mstch::map _total) :
     relativePath(std::move(_rel)), entries(std::move(_entries)), total(std::move(_total))
   {
-    DLog(" -> BaseMustacheObject::BaseMustacheObject('%s', mstch::array, mstch::map)\n", this->relativePath.c_str());
+    //DLog(" -> BaseMustacheObject::BaseMustacheObject('%s', mstch::array, mstch::map)\n", this->relativePath.c_str());
 
     this->setup();
   }
 
   void BaseMustacheObject::setup() noexcept
   {
-    DLog(" -> BaseMustacheObject::setup()\n");
+    //DLog(" -> BaseMustacheObject::setup()\n");
 
     this->register_methods(this, {
       {"PROJECT_NAME",         &BaseMustacheObject::getProjectName},
       {"PROJECT_HOMEPAGE_URL", &BaseMustacheObject::getProjectHomepageUrl},
       {"PROJECT_VERSION",      &BaseMustacheObject::getProjectVersion},
+
       {"generated_at",         &BaseMustacheObject::getGeneratedAt},
       {"relative_path",        &BaseMustacheObject::getRelativePath},
       {"css_relative_path",    &BaseMustacheObject::getCssRelativePath},
@@ -82,18 +83,18 @@ namespace Wallet::Html
 
   mstch::node BaseMustacheObject::getEntries() noexcept
   {
-    DLog(" -> BaseMustacheObject::getEntries() -> size %lu\n", this->entries.size());
+    //DLog(" -> BaseMustacheObject::getEntries() -> size %lu\n", this->entries.size());
     return this->entries;
   }
 
   mstch::node BaseMustacheObject::getTotal() noexcept
   {
-    DLog(" -> BaseMustacheObject::getTotal() -> size %lu\n", this->total.size());
+    //DLog(" -> BaseMustacheObject::getTotal() -> size %lu\n", this->total.size());
     return this->total;
   }
 
-  BaseHtml::BaseHtml(fs::path _basePath, fs::path _fileName, std::string _title) :
-    title(std::move(_title)), basePath(std::move(_basePath)), fileName(std::move(_fileName))
+  BaseHtml::BaseHtml(fs::path _basePath, fs::path _tmpPath, fs::path _fileName, std::string _title) :
+    title(std::move(_title)), basePath(std::move(_basePath)), tmpPath(std::move(_tmpPath)), fileName(std::move(_fileName))
   {
     //DLog(" -> BaseHtml::BaseHtml('%s', '%s', '%s')\n", this->basePath.string().c_str(), this->fileName.string().c_str(),
     //  this->title.c_str());

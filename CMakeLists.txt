@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.8.0)
 
 project(WalletCpp VERSION 0.4.0 LANGUAGES CXX)
-set(PROJECT_VERSION_APPENDIX "-dev.14")
+set(PROJECT_VERSION_APPENDIX "-dev.15")
 set(PROJECT_COPYRIGHT "Copyright (C) 2018 Christian Mayer <https://fox21.at>")
 set(PROJECT_HOMEPAGE_URL "https://github.com/TheFox/wallet-cpp")
 set(PROJECT_INSTALL_BASE_DIR "/usr/local")
@@ -77,7 +77,9 @@ add_executable(wallet
     resources/css/style.css
     resources/views/index.mustache
     resources/views/year.mustache
-    resources/views/month.mustache)
+    resources/views/month.mustache
+    resources/gnuplot/total.mustache
+    resources/gnuplot/year.mustache)
 target_include_directories(wallet PRIVATE ${PROJECT_SOURCE_DIR}/src)
 target_compile_features(wallet PRIVATE
     cxx_noexcept

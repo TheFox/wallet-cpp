@@ -15,7 +15,7 @@
 ### Install dependencies on macOS
 
 ```
-brew install boost yaml-cpp mstch
+brew install boost yaml-cpp mstch gnuplot
 ```
 
 ## Build from Source
