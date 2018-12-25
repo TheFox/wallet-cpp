@@ -1,6 +1,8 @@
 
 #include <fstream> // ofstream
 #include <string>
+#include <iterator> // back_inserter
+#include <algorithm> // transform
 
 #include "debug.hpp"
 #include "components.hpp"
@@ -10,14 +12,17 @@
 namespace Wallet::Html
 {
   YearMustacheObject::YearMustacheObject(std::string _rel, mstch::array _entries, mstch::map _total,
-                                         std::string _year) :
-    BaseMustacheObject(std::move(_rel), std::move(_entries), std::move(_total)), year(std::move(_year))
+                                         std::string _year, Container::CategoryArray _categoryNames) :
+    BaseMustacheObject(std::move(_rel), std::move(_entries), std::move(_total)), year(std::move(_year)),
+    categoryNames(std::move(_categoryNames))
   {
-    DLog(" -> YearMustacheObject::YearMustacheObject('%s', '%s')\n", _rel.c_str(), this->year.c_str());
+    DLog(" -> YearMustacheObject::YearMustacheObject('%s', '%s', %lu)\n",
+      _rel.c_str(), this->year.c_str(), _categoryNames.size());
 
     this->register_methods(this, {
-      {"year", &YearMustacheObject::getYear},
+      {"year",           &YearMustacheObject::getYear},
       {"category_count", &YearMustacheObject::getCategoryCount},
+      {"categories",     &YearMustacheObject::getCategories},
     });
   }
 
@@ -29,8 +34,37 @@ namespace Wallet::Html
 
   mstch::node YearMustacheObject::getCategoryCount() noexcept
   {
-    DLog(" -> YearMustacheObject::getCategoryCount()\n");
-    return std::string{"2"}; // TODO
+    DLog(" -> YearMustacheObject::getCategoryCount() -> %lu\n", this->categoryNames.size());
+    //return std::string{"1"};
+    //return this->categoryNames.size();
+    return std::to_string(this->categoryNames.size());
+  }
+
+  mstch::node YearMustacheObject::getCategories() noexcept
+  {
+    DLog(" -> YearMustacheObject::getCategories() -> %lu\n", this->categoryNames.size());
+
+    // Cache
+    //if (this->hasMappedCategoryNames) {
+    //  return this->mappedCategoryNames;
+    //}
+    //this->hasMappedCategoryNames = true;
+
+    // Iterators
+    const auto cnb = this->categoryNames.cbegin();
+    const auto cne = this->categoryNames.cend();
+
+    mstch::array names{};
+
+    // Transform vector of names to map with 'name' property.
+    std::transform(cnb, cne, std::back_inserter(names), [](std::string name) {
+      //DLog(" -> transform: '%s'\n", name.c_str());
+      return mstch::map{
+        {"name", std::move(name)},
+      };
+    });
+
+    return names;
   }
 
   YearHtml::YearHtml(fs::path _basePath, Wallet::Container::YearEntryContainer _container) :
@@ -42,82 +76,93 @@ namespace Wallet::Html
 
   void YearHtml::generate() const
   {
-    DLog(" -> YearHtml::generate()\n");
-
-    const auto categoryCountStr = std::to_string(this->container.categories.size());
-
-    // Table Body
-    //CTML::Node tableBody("tbody");
-
-    for (const auto& monthPair : this->container.months) {
-      //MonthHtml monthHtml{this->basePath, monthPair};
-      //monthHtml.generate();
-
-      //CTML::Node monthTd{"td.left"};
-      //monthTd.AppendChild(
-      //  CTML::Node("a", monthHtml.name).SetAttribute("href", monthHtml.getFileName()));
-
-      //CTML::Node tableRow{"tr"};
-      //tableRow.AppendChild(monthTd);
-      //tableRow.AppendChild(CTML::Node{"td.right", monthPair.second.getRevenueStr()});
-      //tableRow.AppendChild(CTML::Node{"td.right red", monthPair.second.getExpenseStr()});
-      //tableRow.AppendChild(
-      //  CTML::Node{"td.right " + monthPair.second.getBalanceHtmlClass(), monthPair.second.getBalanceStr()});
-
-      for (const auto& categoryPair : this->container.categories) {
-        try {
-          const auto& category = monthPair.second.categories.at(categoryPair.first);
-          //CTML::Node categoryTd{"td.right " + category.getBalanceHtmlClass(), category.getBalanceStr()};
-          //tableRow.AppendChild(categoryTd);
-        }
-        catch (const std::out_of_range& exception) {
-          //tableRow.AppendChild(CTML::Node{"td", " "});
-        }
-      }
-    }
-
-    // Total Columns
-    //totalTr.AppendChild(CTML::Node{"td.right", this->container.getRevenueStr()});
-    //totalTr.AppendChild(CTML::Node{"td.right red", this->container.getExpenseStr()});
-    //totalTr.AppendChild(
-    //  CTML::Node{"td.right " + this->container.getBalanceHtmlClass(), this->container.getBalanceStr()});
-    //for (const auto& categoryPair : this->container.categories) {
-      //totalTr.AppendChild(
-      //  CTML::Node{"td.right " + categoryPair.second.getBalanceHtmlClass(), categoryPair.second.getBalanceStr()});
-    //}
-
-    // Table Head Row
-    //CTML::Node tableHeadTr1{"tr"};
-    //CTML::Node categoryTh{"th.right", categoryCountStr + " Categories"};
-    //categoryTh.SetAttribute("colspan", categoryCountStr);
-    //tableHeadTr1.AppendChild(categoryTh);
-
-    // Table Head Categories
-    //CTML::Node tableHeadTr2{"tr"};
-    //tableHeadTr2.AppendChild(CTML::Node{"th", " "}.SetAttribute("colspan", "4"));
-    //for (const auto& categoryPair : this->container.categories) {
-      //tableHeadTr2.AppendChild(CTML::Node{"th.left", categoryPair.first});
-    //}
+    DLog(" -> YearHtml::generate() -> %d\n", this->container.year);
 
     if (!fs::exists(WALLETCPP_YEAR_VIEW_PATH)) {
       throw std::string{"Year template file does not exists: "} + WALLETCPP_YEAR_VIEW_PATH;
     }
 
-    const std::string tpl = Components::readFileIntoString(WALLETCPP_YEAR_VIEW_PATH);
+    // Category Names
+    Container::CategoryArray categoryNames{};
 
+    // https://thispointer.com/how-to-copy-all-values-from-a-map-to-a-vector-in-c/
+    std::transform(this->container.categories.cbegin(), this->container.categories.cend(),
+      std::back_inserter(categoryNames),
+      [](const auto& pair) {
+        return pair.first;
+      });
+
+    // Table Body
     mstch::array entries{};
 
-    const auto yearStr=std::to_string(this->container.year);
+    // Categories Iterators
+    const auto cib = this->container.categories.cbegin();
+    const auto cie = this->container.categories.cend();
+
+    for (const auto& monthPair : this->container.months) {
+      MonthHtml monthHtml{this->basePath, monthPair};
+      //monthHtml.generate(); // TODO
+
+      // Match common categories to month categories.
+      mstch::array monthCategories{};
+      std::transform(cib, cie, std::back_inserter(monthCategories), [&monthPair](const auto& pair) {
+        std::string balance{"&nbsp;"};
+        std::string balanceClass{};
+
+        try {
+          // Search by key (Name).
+          const auto& category = monthPair.second.categories.at(pair.first);
+          DLog(" -> category found: '%s'\n", pair.first.c_str());
+
+          balance = category.getBalanceStr();
+          balanceClass = category.getBalanceHtmlClass();
+        } catch (const std::out_of_range& exception) {
+          DLog(" -> nothing found for category '%s'\n", pair.first.c_str());
+        }
+
+        return mstch::map{
+          {"balance",       std::move(balance)},
+          {"balance_class", std::move(balanceClass)},
+        };
+      });
+
+      mstch::map monthMap{
+        {"file_name",        monthHtml.getFileName()},
+        {"month_name",       monthHtml.name},
+        {"revenue",          monthPair.second.getRevenueStr()},
+        {"expense",          monthPair.second.getExpenseStr()},
+        {"balance",          monthPair.second.getBalanceStr()},
+        {"balance_class",    monthPair.second.getBalanceHtmlClass()},
+        {"month_categories", std::move(monthCategories)},
+      };
+      entries.push_back(monthMap);
+    } // this->container.months
+
+    // Match common categories to total month categories.
+    mstch::array monthCategories{};
+    std::transform(cib, cie, std::back_inserter(monthCategories), [&](const auto& pair) {
+      DLog(" -> category: '%s'\n", pair.first.c_str());
+
+      return mstch::map{
+        {"balance",       pair.second.getBalanceStr()},
+        {"balance_class", pair.second.getBalanceHtmlClass()},
+      };
+    });
+
+    const std::string tpl = Components::readFileIntoString(WALLETCPP_YEAR_VIEW_PATH);
+
+    const auto yearStr = std::to_string(this->container.year);
 
     const mstch::map total{
-      {"year", std::string{"TOTAL"}},
-      {"revenue", std::string{"N/A"}},
-      {"expense", std::string{"N/A"}},
-      {"balance", std::string{"N/A"}},
-      {"balance_class", std::string{"N/A"}},
+      {"year",             std::string{"TOTAL"}},
+      {"revenue",          this->container.getRevenueStr()},
+      {"expense",          this->container.getExpenseStr()},
+      {"balance",          this->container.getBalanceStr()},
+      {"balance_class",    this->container.getBalanceHtmlClass()},
+      {"month_categories", std::move(monthCategories)},
     };
 
-    const auto context = std::make_shared<YearMustacheObject>("../..", entries, total, yearStr);
+    const auto context = std::make_shared<YearMustacheObject>("../..", entries, total, yearStr, categoryNames);
 
     // Output: index.html
     std::ofstream indexFh{this->getFullPath()};

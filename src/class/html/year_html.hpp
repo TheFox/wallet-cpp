@@ -17,15 +17,19 @@ namespace Wallet::Html
   {
   public:
     // Constructor
-    YearMustacheObject(std::string, mstch::array, mstch::map, std::string);
+    YearMustacheObject(std::string, mstch::array, mstch::map, std::string, Container::CategoryArray);
 
   private:
     // Properties
     const std::string year{};
+    const Container::CategoryArray categoryNames{};
+    //mstch::array mappedCategoryNames{};
+    //bool hasMappedCategoryNames{};
 
     // Functions
     mstch::node getYear() noexcept;
     mstch::node getCategoryCount() noexcept;
+    mstch::node getCategories() noexcept;
   };
 
   class YearHtml final : public BaseHtml
