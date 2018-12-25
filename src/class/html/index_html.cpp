@@ -2,6 +2,7 @@
 #include <memory> // make_shared
 
 #include "debug.hpp"
+#include "config.hpp"
 #include "index_html.hpp"
 #include "components.hpp"
 
@@ -11,18 +12,18 @@ namespace Wallet::Html
     //entries(std::move(_entries)), total(std::move(_total))
     BaseMustacheObject(std::move(_entries), std::move(_total))
   {
-    DLog(" -> IndexMustacheObject::IndexMustacheObject()\n");
+    //DLog(" -> IndexMustacheObject::IndexMustacheObject()\n");
   }
 
   IndexHtml::IndexHtml(fs::path _basePath) :
     BaseHtml{std::move(_basePath), fs::path{"index.html"}, "Index"}
   {
-    DLog(" -> IndexHtml::IndexHtml('%s')\n", this->basePath.c_str());
+    //DLog(" -> IndexHtml::IndexHtml('%s')\n", this->basePath.c_str());
   }
 
   void IndexHtml::addRow(const IndexHtmlRow row) noexcept
   {
-    DLog(" -> IndexHtml::addRow(%s)\n", row.year.c_str());
+    //DLog(" -> IndexHtml::addRow(%s)\n", row.year.c_str());
 
     const mstch::map rowMap{
       {"year", row.year},
@@ -36,24 +37,25 @@ namespace Wallet::Html
     this->entries.push_back(rowMap);
   }
 
-  void IndexHtml::generate(const IndexHtmlRow totalRow)
+  void IndexHtml::generate(const IndexHtmlRow totalRow) const
   {
     DLog(" -> IndexHtml::generate('%s')\n", totalRow.year.c_str());
 
     if (!fs::exists(WALLETCPP_INDEX_VIEW_PATH)) {
+      DLog("ERROR: Index template file does not exists: '%s'\n", WALLETCPP_INDEX_VIEW_PATH);
       throw std::string{"Index template file does not exists: "} + WALLETCPP_INDEX_VIEW_PATH;
     }
 
-    const std::string tpl = Components::readFileIntoString(WALLETCPP_INDEX_VIEW_PATH);
-
+    // Total
     const mstch::map total{
-      {"year", totalRow.year},
+      {"label", totalRow.year},
       {"revenue", totalRow.revenue},
       {"expense", totalRow.expense},
       {"balance", totalRow.balance},
       {"balance_class", totalRow.balanceClass},
     };
 
+    const std::string tpl = Components::readFileIntoString(WALLETCPP_INDEX_VIEW_PATH);
     const auto context = std::make_shared<IndexMustacheObject>(this->entries, total);
 
     // Output: index.html

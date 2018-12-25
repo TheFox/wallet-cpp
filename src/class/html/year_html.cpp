@@ -5,6 +5,7 @@
 #include <algorithm> // transform
 
 #include "debug.hpp"
+#include "config.hpp"
 #include "components.hpp"
 #include "year_html.hpp"
 #include "month_html.hpp"
@@ -28,27 +29,19 @@ namespace Wallet::Html
 
   mstch::node YearMustacheObject::getYear() noexcept
   {
-    DLog(" -> YearMustacheObject::getYear()\n");
+    //DLog(" -> YearMustacheObject::getYear()\n");
     return this->year;
   }
 
   mstch::node YearMustacheObject::getCategoryCount() noexcept
   {
-    DLog(" -> YearMustacheObject::getCategoryCount() -> %lu\n", this->categoryNames.size());
-    //return std::string{"1"};
-    //return this->categoryNames.size();
+    //DLog(" -> YearMustacheObject::getCategoryCount() -> %lu\n", this->categoryNames.size());
     return std::to_string(this->categoryNames.size());
   }
 
   mstch::node YearMustacheObject::getCategories() noexcept
   {
-    DLog(" -> YearMustacheObject::getCategories() -> %lu\n", this->categoryNames.size());
-
-    // Cache
-    //if (this->hasMappedCategoryNames) {
-    //  return this->mappedCategoryNames;
-    //}
-    //this->hasMappedCategoryNames = true;
+    //DLog(" -> YearMustacheObject::getCategories() -> %lu\n", this->categoryNames.size());
 
     // Iterators
     const auto cnb = this->categoryNames.cbegin();
@@ -79,6 +72,7 @@ namespace Wallet::Html
     DLog(" -> YearHtml::generate() -> %d\n", this->container.year);
 
     if (!fs::exists(WALLETCPP_YEAR_VIEW_PATH)) {
+      DLog("ERROR: Year template file does not exists: '%s'\n", WALLETCPP_YEAR_VIEW_PATH);
       throw std::string{"Year template file does not exists: "} + WALLETCPP_YEAR_VIEW_PATH;
     }
 
@@ -101,7 +95,7 @@ namespace Wallet::Html
 
     for (const auto& monthPair : this->container.months) {
       MonthHtml monthHtml{this->basePath, monthPair};
-      //monthHtml.generate(); // TODO
+      monthHtml.generate();
 
       // Match common categories to month categories.
       mstch::array monthCategories{};
@@ -112,12 +106,12 @@ namespace Wallet::Html
         try {
           // Search by key (Name).
           const auto& category = monthPair.second.categories.at(pair.first);
-          DLog(" -> category found: '%s'\n", pair.first.c_str());
+          //DLog(" -> category found: '%s'\n", pair.first.c_str());
 
           balance = category.getBalanceStr();
           balanceClass = category.getBalanceHtmlClass();
         } catch (const std::out_of_range& exception) {
-          DLog(" -> nothing found for category '%s'\n", pair.first.c_str());
+          //DLog(" -> nothing found for category '%s'\n", pair.first.c_str());
         }
 
         return mstch::map{
@@ -141,7 +135,7 @@ namespace Wallet::Html
     // Match common categories to total month categories.
     mstch::array monthCategories{};
     std::transform(cib, cie, std::back_inserter(monthCategories), [&](const auto& pair) {
-      DLog(" -> category: '%s'\n", pair.first.c_str());
+      //DLog(" -> category: '%s'\n", pair.first.c_str());
 
       return mstch::map{
         {"balance",       pair.second.getBalanceStr()},
@@ -149,12 +143,10 @@ namespace Wallet::Html
       };
     });
 
-    const std::string tpl = Components::readFileIntoString(WALLETCPP_YEAR_VIEW_PATH);
-
     const auto yearStr = std::to_string(this->container.year);
 
     const mstch::map total{
-      {"year",             std::string{"TOTAL"}},
+      {"label",            std::string{"TOTAL"}},
       {"revenue",          this->container.getRevenueStr()},
       {"expense",          this->container.getExpenseStr()},
       {"balance",          this->container.getBalanceStr()},
@@ -162,9 +154,10 @@ namespace Wallet::Html
       {"month_categories", std::move(monthCategories)},
     };
 
+    const std::string tpl = Components::readFileIntoString(WALLETCPP_YEAR_VIEW_PATH);
     const auto context = std::make_shared<YearMustacheObject>("../..", entries, total, yearStr, categoryNames);
 
-    // Output: index.html
+    // Year File Output
     std::ofstream indexFh{this->getFullPath()};
     indexFh << mstch::render(tpl, context);
     indexFh.close();

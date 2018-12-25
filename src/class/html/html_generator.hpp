@@ -25,7 +25,7 @@ namespace Wallet::Html
   {
   public:
     HtmlGenerator(fs::path, Wallet::Container::EntryContainer);
-    void generate() const noexcept;
+    void generate() const;
 
   private:
     // Variables

@@ -16,7 +16,7 @@ namespace Wallet::Html
     //DLog(" -> HtmlGenerator::HtmlGenerator(%s, %p)\n", this->basePath.c_str(), &this->container);
   }
 
-  void HtmlGenerator::generate() const noexcept
+  void HtmlGenerator::generate() const
   {
     DLog(" -> HtmlGenerator::generate()\n");
 

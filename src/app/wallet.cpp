@@ -124,6 +124,9 @@ int main(int argc, char* const argv[])
 
     cout << endl;
     cout << "Build settings:" << endl;
+    cout << "  PROJECT_INSTALL_BASE_DIR: " << PROJECT_INSTALL_BASE_DIR << endl;
+    cout << "  PROJECT_SHARE_BASE_DIR: " << PROJECT_SHARE_BASE_DIR << endl;
+
     cout << "  WALLETCPP_GNUPLOT_SUPPORT: "
 #ifdef WALLETCPP_GNUPLOT_SUPPORT
       << "YES"
@@ -131,8 +134,10 @@ int main(int argc, char* const argv[])
       << "NO"
 #endif
       << endl;
-    cout << "  PROJECT_INSTALL_BASE_DIR: " << PROJECT_INSTALL_BASE_DIR << endl;
-    cout << "  PROJECT_SHARE_BASE_DIR: " << PROJECT_SHARE_BASE_DIR << endl;
+
+    cout << "  WALLETCPP_INDEX_VIEW_PATH: " << WALLETCPP_INDEX_VIEW_PATH << endl;
+    cout << "  WALLETCPP_YEAR_VIEW_PATH: " << WALLETCPP_YEAR_VIEW_PATH << endl;
+    cout << "  WALLETCPP_MONTH_VIEW_PATH: " << WALLETCPP_MONTH_VIEW_PATH << endl;
 
     return 3;
   }

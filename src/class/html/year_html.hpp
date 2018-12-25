@@ -5,12 +5,6 @@
 #include "base_html.hpp"
 #include "class/container/entry_container.hpp"
 
-#ifdef DEBUG
-#define WALLETCPP_YEAR_VIEW_PATH "./resources/views/year.mustache"
-#else
-#define WALLETCPP_YEAR_VIEW_PATH PROJECT_SHARE_RESOURCES_DIR "/views/year.mustache"
-#endif
-
 namespace Wallet::Html
 {
   class YearMustacheObject final : public BaseMustacheObject
@@ -23,8 +17,6 @@ namespace Wallet::Html
     // Properties
     const std::string year{};
     const Container::CategoryArray categoryNames{};
-    //mstch::array mappedCategoryNames{};
-    //bool hasMappedCategoryNames{};
 
     // Functions
     mstch::node getYear() noexcept;

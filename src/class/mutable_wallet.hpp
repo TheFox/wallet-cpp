@@ -40,7 +40,7 @@ namespace Wallet
     void setup(bool);
     virtual bool add(Entry, bool);
     Container::EntryContainer getEntries(Components::Date) const;
-    void htmlOutput(const std::string&) const noexcept;
+    void htmlOutput(const std::string&) const;
 
   protected:
     // Variables

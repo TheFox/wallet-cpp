@@ -2,6 +2,7 @@
 #ifndef WALLETCPP_CONTAINER_ENTRY_CONTAINER_HPP_
 #define WALLETCPP_CONTAINER_ENTRY_CONTAINER_HPP_
 
+#include <string>
 #include <utility> // pair
 #include <map>
 #include <cstdint> // uint8_t
@@ -57,8 +58,9 @@ namespace Wallet::Container
   {
     // Properties
     ContainerYear year{};
-    ContainerMonth month{};
+    //ContainerMonth month{};
     DayMap days{};
+    std::string fileName{};
   };
 
   using MonthMap = std::map<ContainerMonth, MonthEntryContainer>;

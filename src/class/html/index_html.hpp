@@ -6,12 +6,6 @@
 
 #include "base_html.hpp"
 
-#ifdef DEBUG
-#define WALLETCPP_INDEX_VIEW_PATH "./resources/views/index.mustache"
-#else
-#define WALLETCPP_INDEX_VIEW_PATH PROJECT_SHARE_RESOURCES_DIR "/views/index.mustache"
-#endif
-
 namespace Wallet::Html
 {
   struct IndexHtmlRow
@@ -40,7 +34,7 @@ namespace Wallet::Html
   public:
     explicit IndexHtml(fs::path);
     void addRow(IndexHtmlRow) noexcept;
-    void generate(IndexHtmlRow);
+    void generate(IndexHtmlRow) const;
 
   private:
     // Properties

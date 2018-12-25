@@ -1,6 +1,8 @@
 
 #include <fstream> // ofstream
 #include <iomanip> // setprecision, setfill, setw
+#include <iterator> // back_inserter
+#include <algorithm> // transform
 
 #ifdef __has_include
 #  if __has_include(<boost/date_time/gregorian/gregorian.hpp>)
@@ -12,105 +14,108 @@ namespace calendar = boost::gregorian;
 #endif // __has_include
 
 #include "debug.hpp"
+#include "config.hpp"
 #include "month_html.hpp"
+#include "components.hpp"
 
 namespace Wallet::Html
 {
+  MonthMustacheObject::MonthMustacheObject(std::string _rel, mstch::array _entries, mstch::map _total,
+                                           std::string _year, std::string _month, std::string _fileName) :
+    BaseMustacheObject(std::move(_rel), std::move(_entries), std::move(_total)), year(std::move(_year)),
+    month(std::move(_month)), fileName(std::move(_fileName))
+  {
+    //DLog(" -> MonthMustacheObject::MonthMustacheObject()\n");
+
+    this->register_methods(this, {
+      {"year",      &MonthMustacheObject::getYear},
+      {"month",     &MonthMustacheObject::getMonth},
+      {"file_name", &MonthMustacheObject::getFileName},
+    });
+  }
+
+  mstch::node MonthMustacheObject::getYear() noexcept
+  {
+    //DLog(" -> MonthMustacheObject::getYear()\n");
+    return this->year;
+  }
+
+  mstch::node MonthMustacheObject::getMonth() noexcept
+  {
+    //DLog(" -> MonthMustacheObject::getMonth()\n");
+    return this->month;
+  }
+
+  mstch::node MonthMustacheObject::getFileName() noexcept
+  {
+    //DLog(" -> MonthMustacheObject::getFileName()\n");
+    return this->fileName;
+  }
+
   MonthHtml::MonthHtml(fs::path _basePath, Container::MonthPair _map) :
     BaseHtml{std::move(_basePath), fs::path{getMonthFile(_map.first)},
       getMonthName(_map.first) + " " + std::to_string(_map.second.year)},
     name(getMonthName(_map.first)), container(std::move(_map.second)), year(std::to_string(_map.second.year))
   {
-    DLog(" -> MonthHtml::MonthHtml(bp'%s') -> p'%s' n'%s'\n", this->basePath.c_str(),
-      this->getFileName().c_str(), this->name.c_str());
+    //DLog(" -> MonthHtml::MonthHtml(bp'%s') -> p'%s' n'%s'\n", this->basePath.c_str(),
+    //  this->getFileName().c_str(), this->name.c_str());
   }
 
-  void MonthHtml::generate() const noexcept
+  void MonthHtml::generate() const
   {
-    DLog(" -> YearHtml::generate()\n");
+    DLog(" -> MonthHtml::generate()\n");
+
+    if (!fs::exists(WALLETCPP_MONTH_VIEW_PATH)) {
+      DLog("ERROR: Month template file does not exists: '%s'\n", WALLETCPP_MONTH_VIEW_PATH);
+      throw std::string{"Month template file does not exists: "} + WALLETCPP_MONTH_VIEW_PATH;
+    }
 
     // Table Body
-    //CTML::Node tableBody("tbody");
+    mstch::array entries{};
 
     std::uint64_t entryCount{};
     for (const auto& dayPair : this->container.days) {
       //DLog("     -> day pair\n");
 
-      for (const auto& entry : dayPair.second.entries) {
+      const auto eib = dayPair.second.entries.cbegin();
+      const auto eie = dayPair.second.entries.cend();
+
+      // Add Day entries to month entry list.
+      std::transform(eib, eie, std::back_inserter(entries), [&entryCount](const auto& entry) {
         ++entryCount;
-        //DLog("     -> entry: %llu %s\n", entryCount, entry.id.c_str());
 
-        // Table Row
-        //CTML::Node tableTr{"tr"};
+        return mstch::map{
+          {"no",            std::to_string(entryCount)},
+          {"date",          entry.getDateStr()},
+          {"title",         entry.title},
+          {"revenue",       entry.getRevenueStr()},
+          {"expense",       entry.getExpenseStr()},
+          {"balance",       entry.getBalanceStr()},
+          {"balance_class", entry.getBalanceHtmlClass()},
+          {"category",      entry.getCategoryHtml()},
+          {"comment",       entry.comment},
+        };
+      });
+    } // this->container.days
 
-        // Table Columns
-        //tableTr.AppendChild(CTML::Node{"td.left", std::to_string(entryCount)}.SetAttribute("valign", "top"));
-        //tableTr.AppendChild(CTML::Node{"td.left", entry.getDateStr()}.SetAttribute("valign", "top"));
-        //tableTr.AppendChild(CTML::Node{"td.left", entry.title}.SetAttribute("valign", "top"));
-        //tableTr.AppendChild(CTML::Node{"td.right", entry.getRevenueStr()}.SetAttribute("valign", "top"));
-        //tableTr.AppendChild(CTML::Node{"td.right red", entry.getExpenseStr()}.SetAttribute("valign", "top"));
-        //tableTr.AppendChild(
-        //  CTML::Node{"td.right " + entry.getBalanceHtmlClass(), entry.getBalanceStr()}.SetAttribute("valign", "top"));
-        //tableTr.AppendChild(CTML::Node{"td.right", entry.getCategoryHtml()}.SetAttribute("valign", "top"));
-        //tableTr.AppendChild(CTML::Node{"td.left", entry.comment}.SetAttribute("valign", "top"));
+    const mstch::map total{
+      {"label",         std::string{"TOTAL"}},
+      {"revenue",       this->container.getRevenueStr()},
+      {"expense",       this->container.getExpenseStr()},
+      {"balance",       this->container.getBalanceStr()},
+      {"balance_class", this->container.getBalanceHtmlClass()},
+    };
 
-        // Add TR to Table.
-        //tableBody.AppendChild(tableTr);
-      }
-    }
+    const auto yearStr = std::to_string(this->container.year);
 
-    // Total Row
-    //CTML::Node totalTr{"tr"};
-
-    // Total Columns
-    //totalTr.AppendChild(CTML::Node{"td", " "});
-    //totalTr.AppendChild(CTML::Node{"td", " "});
-    //totalTr.AppendChild(CTML::Node{"td.left", "TOTAL"});
-    //totalTr.AppendChild(CTML::Node{"td.right", this->container.getRevenueStr()});
-    //totalTr.AppendChild(CTML::Node{"td.right red", this->container.getExpenseStr()});
-    //totalTr.AppendChild(CTML::Node{"td.right " + this->container.getBalanceHtmlClass(), this->container.getBalanceStr()});
-    //totalTr.AppendChild(CTML::Node{"td", " "});
-    //totalTr.AppendChild(CTML::Node{"td", " "});
-
-    // Table Head Row
-    //CTML::Node tableHeadTr{"tr"};
-
-    // Table Head Columns
-    //tableHeadTr.AppendChild(CTML::Node{"th.left", "#"});
-    //tableHeadTr.AppendChild(CTML::Node{"th.left first_column", "Date"});
-    //tableHeadTr.AppendChild(CTML::Node{"th.left primary_column", "Title"});
-    //tableHeadTr.AppendChild(CTML::Node{"th.right", "Revenue"});
-    //tableHeadTr.AppendChild(CTML::Node{"th.right", "Expense"});
-    //tableHeadTr.AppendChild(CTML::Node{"th.right", "Balance"});
-    //tableHeadTr.AppendChild(CTML::Node{"th.right", "Category"});
-    //tableHeadTr.AppendChild(CTML::Node{"th.left", "Comment"});
-
-    // Table Head
-    //CTML::Node tableHead{"thead"};
-    //tableHead.AppendChild(tableHeadTr);
-
-    // Table Footer
-    //CTML::Node tableFoot{"tfoot"};
-    //tableFoot.AppendChild(totalTr);
-
-    // Table
-    //CTML::Node table{"table.list"};
-    //table.AppendChild(tableHead);
-    //table.AppendChild(tableBody);
-    //table.AppendChild(tableFoot);
-
-    // Month Doc
-    //auto monthDoc = this->getHtmlDoc("../..");
-    //monthDoc.AppendNodeToBody(
-    //  CTML::Node{"h2"}.AppendText("Month: " + this->name + " ").AppendChild(
-    //    CTML::Node{"a", this->year}.SetAttribute("href", "index.html")));
-    //monthDoc.AppendNodeToBody(table);
+    const std::string tpl = Components::readFileIntoString(WALLETCPP_MONTH_VIEW_PATH);
+    const auto context = std::make_shared<MonthMustacheObject>("../..", entries, total, yearStr, this->name,
+      this->container.fileName);
 
     // Month File Output
-    //DLog("     -> write month file: %s\n", this->getFullPath().c_str());
-    std::ofstream monthFh{this->getFullPath()};
-    //monthFh << monthDoc.ToString(CTML::StringFormatting::MULTIPLE_LINES); // TODO
-    monthFh.close();
+    std::ofstream indexFh{this->getFullPath()};
+    indexFh << mstch::render(tpl, context);
+    indexFh.close();
   }
 
   std::string MonthHtml::getMonthFile(const Container::ContainerMonth month) noexcept

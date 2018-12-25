@@ -205,8 +205,11 @@ namespace Wallet
         if (monthMap.year == 0) {
           monthMap.year = year;
         }
-        if (monthMap.month == 0) {
-          monthMap.month = month;
+        //if (monthMap.month == 0) {
+        //  monthMap.month = month;
+        //}
+        if (monthMap.fileName.empty()) {
+          monthMap.fileName = fileNameStr;
         }
 
         // Day
@@ -263,7 +266,7 @@ namespace Wallet
     return container;
   }
 
-  void MutableWallet::htmlOutput(const std::string& _path) const noexcept
+  void MutableWallet::htmlOutput(const std::string& _path) const
   {
     DLog(" -> MutableWallet::htmlOutput()\n");
 
