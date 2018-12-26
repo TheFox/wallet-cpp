@@ -40,7 +40,7 @@ namespace Wallet
     std::string title{};
 
     // Parameter: Date
-    void setDate(std::string);
+    void setDate(const std::string&);
     std::string getDateStr() const noexcept;
 
     // Parameter: Category

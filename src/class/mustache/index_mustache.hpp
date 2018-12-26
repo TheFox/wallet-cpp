@@ -11,9 +11,6 @@ namespace Wallet::Mustache
   public:
     // Constructor
     IndexMustache(mstch::array, mstch::map);
-
-    // Functions
-    mstch::node hasGnuplotSupport() noexcept;
   };
 } // Wallet::Mustache Namespace
 

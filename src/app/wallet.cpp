@@ -25,59 +25,50 @@ namespace bpo = boost::program_options;
 
 int main(int argc, char* const argv[])
 {
-  using std::string;
-  using std::cout;
-  using std::cerr;
-  using std::endl;
-  using bpo::options_description;
-  using bpo::value;
-  using Wallet::CommandFactory;
-  using Wallet::CommandOptions;
-
   DLog("--- DEBUG ---\n");
 
   // Commands
-  bpo::positional_options_description commandPos;
+  bpo::positional_options_description commandPos{};
   commandPos.add("command", 1);
 
   // Generic options
-  options_description commandOpts("Commands");
+  bpo::options_description commandOpts{"Commands"};
   commandOpts.add_options()
-               ("command", value<std::vector<std::string>>()->multitoken()->zero_tokens()->composing(),
+               ("command", bpo::value<std::vector<std::string>>()->multitoken()->zero_tokens()->composing(),
                  "Commands");
 
   // Generic options
-  options_description genericOpts("Generic options");
+  bpo::options_description genericOpts{"Generic options"};
   genericOpts.add_options()
                ("help,h", "This message")
-               ("wallet,w", value<string>()->value_name("path"), "Path to the wallet directory.");
+               ("wallet,w", bpo::value<std::string>()->value_name("path"), "Path to the wallet directory.");
 
   // Common options
-  options_description commonOpts("Common options");
+  bpo::options_description commonOpts{"Common options"};
   commonOpts.add_options()
-              ("date,d", value<string>()->value_name("string"), "Set or filter by Date. (Format: YYYY-MM-DD)")
-              ("category,c", value<string>()->value_name("string"), "Set or filter by Category.");
+              ("date,d", bpo::value<std::string>()->value_name("string"), "Set or filter by Date. (Format: YYYY-MM-DD)")
+              ("category,c", bpo::value<std::string>()->value_name("string"), "Set or filter by Category.");
 
   // Add Command options
-  options_description addCmdOpts("Add Command options");
+  bpo::options_description addCmdOpts{"Add Command options"};
   addCmdOpts.add_options()
-              ("id", value<string>()->value_name("string"), "Set a unique ID.")
-              ("title,t", value<string>()->value_name("string"), "Set a Title.")
-              ("message,m", value<string>()->value_name("string"), "Alias for --title.")
-              ("revenue,r", value<string>()->value_name("number"), "Set a  Revenue.")
-              ("expense,e", value<string>()->value_name("number"), "Set an Expense.")
+              ("id", bpo::value<std::string>()->value_name("string"), "Set a unique ID.")
+              ("title,t", bpo::value<std::string>()->value_name("string"), "Set a Title.")
+              ("message,m", bpo::value<std::string>()->value_name("string"), "Alias for --title.")
+              ("revenue,r", bpo::value<std::string>()->value_name("number"), "Set a  Revenue.")
+              ("expense,e", bpo::value<std::string>()->value_name("number"), "Set an Expense.")
 
-              ("comment,o", value<string>()->value_name("string"), "Set a Comment.")
+              ("comment,o", bpo::value<std::string>()->value_name("string"), "Set a Comment.")
               ("interactive,i", "Use some commands interactively.")
               ("force,f", "Force add command. Even if ID is set and already exists.")
               ("no-force", "Do not force add command.");
 
   // HTML Command options
-  options_description htmlCmdOpts("HTML Command options");
+  bpo::options_description htmlCmdOpts{"HTML Command options"};
   htmlCmdOpts.add_options()
-               ("path,p", value<string>()->value_name("string"), "Output path. Default: <wallet>/html");
+               ("path,p", bpo::value<std::string>()->value_name("string"), "Output path. Default: <wallet>/html");
 
-  options_description opts;
+  bpo::options_description opts{};
   opts
     .add(commandOpts)
     .add(genericOpts)
@@ -95,7 +86,7 @@ int main(int argc, char* const argv[])
   bpo::store(parsedOptions, vm);
   bpo::notify(vm);
 
-  string commandName{};
+  std::string commandName{};
   if (vm.count("command")) {
     auto commands = vm["command"].as<std::vector<std::string>>();
     if (!commands.empty()) {
@@ -105,74 +96,76 @@ int main(int argc, char* const argv[])
 
   // Help
   if (vm.count("help") || commandName.empty()) {
-    cout << PROJECT_NAME << ' ' << PROJECT_VERSION << endl;
-    cout << "Build: " << __DATE__ << ' ' << __TIME__ << endl;
-    cout << PROJECT_COPYRIGHT << endl << endl;
+    std::cout << PROJECT_NAME << ' ' << PROJECT_VERSION << std::endl;
+    std::cout << "Build: " << __DATE__ << ' ' << __TIME__ << std::endl;
+    std::cout << PROJECT_COPYRIGHT << std::endl << std::endl;
 
-    cout << "Usage: " << argv[0] << " <command> [options]" << endl << endl;
-    cout << "Commands:" << endl;
-    cout << "  init   Initialize a new wallet" << endl;
-    cout << "  add    Add a new entry" << endl;
-    cout << "  list   List entries" << endl;
-    cout << "  html   Generate HTML output" << endl;
-    cout << endl;
+    std::cout << "Usage: " << argv[0] << " <command> [options]" << std::endl << std::endl;
+    std::cout << "Commands:" << std::endl;
+    std::cout << "  init   Initialize a new wallet" << std::endl;
+    std::cout << "  add    Add a new entry" << std::endl;
+    std::cout << "  list   List entries" << std::endl;
+    std::cout << "  html   Generate HTML output" << std::endl;
+    std::cout << std::endl;
 
-    cout << genericOpts << endl;
-    cout << commonOpts << endl;
-    cout << addCmdOpts << endl;
-    cout << htmlCmdOpts << endl;
+    std::cout << genericOpts << std::endl;
+    std::cout << commonOpts << std::endl;
+    std::cout << addCmdOpts << std::endl;
+    std::cout << htmlCmdOpts << std::endl;
 
-    cout << endl;
-    cout << "Build settings:" << endl;
-    cout << "  PROJECT_INSTALL_BASE_DIR: " << PROJECT_INSTALL_BASE_DIR << endl;
-    cout << "  PROJECT_SHARE_BASE_DIR: " << PROJECT_SHARE_BASE_DIR << endl;
+    std::cout << std::endl;
+    std::cout << "Build settings:" << std::endl;
+    std::cout << "  PROJECT_INSTALL_BASE_DIR: " << PROJECT_INSTALL_BASE_DIR << std::endl;
+    std::cout << "  PROJECT_SHARE_BASE_DIR: " << PROJECT_SHARE_BASE_DIR << std::endl;
 
 #ifdef WALLETCPP_GNUPLOT_SUPPORT
-    cout << "  WALLETCPP_GNUPLOT_SUPPORT: YES" << endl;
+    std::cout << "  WALLETCPP_GNUPLOT_SUPPORT: YES" << std::endl;
 #else
-    cout << "  WALLETCPP_GNUPLOT_SUPPORT: NO" << endl;
+    std::cout << "  WALLETCPP_GNUPLOT_SUPPORT: NO" << std::endl;
 #endif
 
-    cout << "  WALLETCPP_INDEX_VIEW_PATH: " << WALLETCPP_INDEX_VIEW_PATH << endl;
-    cout << "  WALLETCPP_YEAR_VIEW_PATH: " << WALLETCPP_YEAR_VIEW_PATH << endl;
-    cout << "  WALLETCPP_MONTH_VIEW_PATH: " << WALLETCPP_MONTH_VIEW_PATH << endl;
+    std::cout << "  WALLETCPP_INDEX_VIEW_PATH: " << WALLETCPP_INDEX_VIEW_PATH << std::endl;
+    std::cout << "  WALLETCPP_YEAR_VIEW_PATH: " << WALLETCPP_YEAR_VIEW_PATH << std::endl;
+    std::cout << "  WALLETCPP_MONTH_VIEW_PATH: " << WALLETCPP_MONTH_VIEW_PATH << std::endl;
+    std::cout << "  WALLETCPP_TOTAL_GNUPLOT_PATH: " << WALLETCPP_TOTAL_GNUPLOT_PATH << std::endl;
+    std::cout << "  WALLETCPP_YEAR_GNUPLOT_PATH: " << WALLETCPP_YEAR_GNUPLOT_PATH << std::endl;
 
     return 3;
   }
 
   // Command Options
-  CommandOptions cmdOpts = {};
+  Wallet::CommandOptions cmdOpts = {};
 
   if (vm.count("wallet")) {
-    cmdOpts.walletPath = vm["wallet"].as<string>();
+    cmdOpts.walletPath = vm["wallet"].as<std::string>();
   }
   if (vm.count("id")) {
-    cmdOpts.id = vm["id"].as<string>();
+    cmdOpts.id = vm["id"].as<std::string>();
   }
   if (vm.count("title")) {
-    cmdOpts.title = vm["title"].as<string>();
+    cmdOpts.title = vm["title"].as<std::string>();
   }
   if (vm.count("message")) {
-    cmdOpts.title = vm["message"].as<string>();
+    cmdOpts.title = vm["message"].as<std::string>();
   }
   if (vm.count("date")) {
-    cmdOpts.date = vm["date"].as<string>();
+    cmdOpts.date = vm["date"].as<std::string>();
   }
   if (vm.count("revenue")) {
-    const string _tmpStr = vm["revenue"].as<string>();
+    const auto _tmpStr = vm["revenue"].as<std::string>();
 
     cmdOpts.revenue = Wallet::Components::stof(_tmpStr);
   }
   if (vm.count("expense")) {
-    const string _tmpStr = vm["expense"].as<string>();
+    const auto _tmpStr = vm["expense"].as<std::string>();
 
     cmdOpts.expense = Wallet::Components::stof(_tmpStr);
   }
   if (vm.count("category")) {
-    cmdOpts.category = vm["category"].as<string>();
+    cmdOpts.category = vm["category"].as<std::string>();
   }
   if (vm.count("comment")) {
-    cmdOpts.comment = vm["comment"].as<string>();
+    cmdOpts.comment = vm["comment"].as<std::string>();
   }
   if (vm.count("interactive")) {
     cmdOpts.isInteractively = true;
@@ -184,23 +177,23 @@ int main(int argc, char* const argv[])
     cmdOpts.isForced = false;
   }
   if (vm.count("path")) {
-    cmdOpts.path = vm["path"].as<string>();
+    cmdOpts.path = vm["path"].as<std::string>();
   }
 
   // Command Factory
-  CommandFactory::setup();
-  CommandFactory factory;
+  Wallet::CommandFactory::setup();
+  Wallet::CommandFactory factory{};
 
   try {
     auto command = factory.makeCommand(commandName);
     command->options = cmdOpts;
     return command->execute();
   }
-  catch (const string& e) {
+  catch (const std::string& e) {
 #ifdef TERMCOLOR_HPP_
-    cerr << termcolor::on_red << termcolor::white << "ERROR: " << e << termcolor::reset << endl;
+    std::cerr << termcolor::on_red << termcolor::white << "ERROR: " << e << termcolor::reset << std::endl;
 #else
-    cerr << "ERROR: " << e << endl;
+    std::cerr << "ERROR: " << e << endl;
 #endif
     return 1;
   }

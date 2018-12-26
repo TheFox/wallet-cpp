@@ -5,9 +5,10 @@
 namespace Wallet::Mustache
 {
   YearMustache::YearMustache(std::string _rel, mstch::array _entries, mstch::map _total,
-                                         std::string _year, Container::CategoryArray _categoryNames) :
-    BaseMustache(std::move(_rel), std::move(_entries), std::move(_total)), year(std::move(_year)),
-    categoryNames(std::move(_categoryNames))
+                             std::string _year, Container::CategoryArray _categoryNames,
+                             std::string _pngFileName) :
+    BaseMustache{std::move(_rel), std::move(_entries), std::move(_total)}, year{std::move(_year)},
+    categoryNames{std::move(_categoryNames)}, pngFileName{std::move(_pngFileName)}
   {
     //DLog(" -> YearMustache::YearMustache('%s', '%s', %lu)\n",
     //  _rel.c_str(), this->year.c_str(), _categoryNames.size());
@@ -16,6 +17,7 @@ namespace Wallet::Mustache
       {"year",           &YearMustache::getYear},
       {"category_count", &YearMustache::getCategoryCount},
       {"categories",     &YearMustache::getCategories},
+      {"png_file_name",  &YearMustache::getPngFileName},
     });
   }
 
@@ -50,5 +52,11 @@ namespace Wallet::Mustache
     });
 
     return names;
+  }
+
+  mstch::node YearMustache::getPngFileName() noexcept
+  {
+    //DLog(" -> YearMustache::getPngFileName()\n");
+    return this->pngFileName;
   }
 } // Wallet::Mustache Namespace

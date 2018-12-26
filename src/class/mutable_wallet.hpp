@@ -38,8 +38,8 @@ namespace Wallet
     // Functions
     virtual void setup();
     void setup(bool);
-    virtual bool add(Entry, bool);
-    Container::EntryContainer getEntries(Components::Date) const;
+    virtual bool add(const Entry&, bool);
+    Container::EntryContainer getEntries(const Components::Date&) const;
     void htmlOutput(const std::string&) const;
 
   protected:

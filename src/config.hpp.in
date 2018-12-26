@@ -25,6 +25,7 @@
 #define WALLETCPP_MONTH_VIEW_PATH WALLETCPP_BASE_DIR_PATH "/resources/views/month.mustache"
 
 #define WALLETCPP_TOTAL_GNUPLOT_PATH WALLETCPP_BASE_DIR_PATH "/resources/gnuplot/total.mustache"
+#define WALLETCPP_YEAR_GNUPLOT_PATH WALLETCPP_BASE_DIR_PATH "/resources/gnuplot/year.mustache"
 #else
 #undef WALLETCPP_BASE_DIR_PATH
 #define WALLETCPP_INDEX_VIEW_PATH PROJECT_SHARE_RESOURCES_DIR "/views/index.mustache"
@@ -32,6 +33,7 @@
 #define WALLETCPP_MONTH_VIEW_PATH PROJECT_SHARE_RESOURCES_DIR "/views/month.mustache"
 
 #define WALLETCPP_TOTAL_GNUPLOT_PATH PROJECT_SHARE_RESOURCES_DIR "/gnuplot/total.mustache"
+#define WALLETCPP_YEAR_GNUPLOT_PATH PROJECT_SHARE_RESOURCES_DIR "/gnuplot/year.mustache"
 #endif
 
 #endif // WALLET_CONFIG_HPP_

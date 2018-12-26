@@ -1,12 +1,9 @@
 
-#ifdef DEBUG
-#include <cstdio>
-#endif
-
 #include <iostream>
+#include <istream> // getline
 
-#include "add_command.hpp"
 #include "debug.hpp"
+#include "add_command.hpp"
 #include "components.hpp"
 #include "class/mutable_wallet.hpp"
 #include "class/entry.hpp"
@@ -15,10 +12,6 @@ namespace Wallet
 {
   int AddCommand::execute()
   {
-    using std::cout;
-    using std::cin;
-    using std::endl;
-
     DLog(" -> options %p\n", &this->options);
 
     Entry entry = this->options;
@@ -26,38 +19,38 @@ namespace Wallet
     if (this->options.isInteractively) {
       std::string _tmpStr{};
 
-      cout << "Title: [" << entry.title << "] ";
-      getline(cin, _tmpStr);
+      std::cout << "Title: [" << entry.title << "] ";
+      std::getline(std::cin, _tmpStr);
       if (!_tmpStr.empty()) {
         entry.title = _tmpStr;
       }
 
-      cout << "Date: [" << entry.getDateStr() << "] ";
-      getline(cin, _tmpStr);
+      std::cout << "Date: [" << entry.getDateStr() << "] ";
+      std::getline(std::cin, _tmpStr);
       if (!_tmpStr.empty()) {
         entry.setDate(_tmpStr);
       }
 
-      cout << "Revenue: [" << entry.revenue << "] ";
-      getline(cin, _tmpStr);
+      std::cout << "Revenue: [" << entry.revenue << "] ";
+      std::getline(std::cin, _tmpStr);
       if (!_tmpStr.empty()) {
         entry.setRevenue(Components::stof(_tmpStr));
       }
 
-      cout << "Expense: [" << entry.expense << "] ";
-      getline(cin, _tmpStr);
+      std::cout << "Expense: [" << entry.expense << "] ";
+      std::getline(std::cin, _tmpStr);
       if (!_tmpStr.empty()) {
         entry.setExpense(Components::stof(_tmpStr));
       }
 
-      cout << "Category: [" << entry.category << "] ";
-      getline(cin, _tmpStr);
+      std::cout << "Category: [" << entry.category << "] ";
+      std::getline(std::cin, _tmpStr);
       if (!_tmpStr.empty()) {
         entry.category = _tmpStr;
       }
 
-      cout << "Comment: [" << entry.comment << "] ";
-      getline(cin, _tmpStr);
+      std::cout << "Comment: [" << entry.comment << "] ";
+      std::getline(std::cin, _tmpStr);
       if (!_tmpStr.empty()) {
         entry.comment = _tmpStr;
       }
@@ -70,23 +63,23 @@ namespace Wallet
     const bool isUnique = !this->options.isForced && !this->options.id.empty();
 
     // Inform User
-    cout << "---------------" << endl;
-    cout << "Wallet: " << this->options.walletPath << endl;
-    cout << "File name: " << entry.getFileName() << endl;
-    cout << "Is Unique: " << (isUnique ? "YES" : "NO") << endl;
-    cout << "ID: " << entry.id << endl;
-    cout << "---------------" << endl;
-    cout << "Title: '" << entry.title << "'" << endl;
-    cout << "Date: '" << entry.getDateStr() << "'" << endl;
-    cout << "Revenue: " << entry.revenue << endl;
-    cout << "Expense: " << entry.expense << endl;
-    cout << "Balance: " << entry.balance << endl;
-    cout << "Category: '" << entry.category << "'" << endl;
-    cout << "Comment: '" << entry.comment << "'" << endl;
-    cout << "---------------" << endl;
+    std::cout << "---------------" << std::endl;
+    std::cout << "Wallet: " << this->options.walletPath << std::endl;
+    std::cout << "File name: " << entry.getFileName() << std::endl;
+    std::cout << "Is Unique: " << (isUnique ? "YES" : "NO") << std::endl;
+    std::cout << "ID: " << entry.id << std::endl;
+    std::cout << "---------------" << std::endl;
+    std::cout << "Title: '" << entry.title << "'" << std::endl;
+    std::cout << "Date: '" << entry.getDateStr() << "'" << std::endl;
+    std::cout << "Revenue: " << entry.revenue << std::endl;
+    std::cout << "Expense: " << entry.expense << std::endl;
+    std::cout << "Balance: " << entry.balance << std::endl;
+    std::cout << "Category: '" << entry.category << "'" << std::endl;
+    std::cout << "Comment: '" << entry.comment << "'" << std::endl;
+    std::cout << "---------------" << std::endl;
 
     if (this->options.isInteractively) {
-      cout << "OK? [Y/n] ";
+      std::cout << "OK? [Y/n] ";
 
       // Set terminal to raw mode.
       system("stty raw");
@@ -99,19 +92,19 @@ namespace Wallet
 
       //printf("input: %d %d\n", input, '\r');
 
-      cout << endl;
+      std::cout << std::endl;
       if (input != 'Y' && input != 'y' && input != 13) {
-        cout << "Aborted. Nothing done." << endl;
+        std::cout << "Aborted. Nothing done." << std::endl;
         return 0;
       }
-      cout << "OK" << endl;
+      std::cout << "OK" << std::endl;
     }
 
     MutableWallet wallet{this->options.walletPath};
     wallet.setup();
-    cout << "Try to add entry: " << entry.id << endl;
+    std::cout << "Try to add entry: " << entry.id << std::endl;
     const bool added = wallet.add(entry, isUnique);
-    cout << "Added: " << (added ? "YES" : "NO") << endl;
+    std::cout << "Added: " << (added ? "YES" : "NO") << std::endl;
 
     return Command::execute();
   }

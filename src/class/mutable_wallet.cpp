@@ -22,7 +22,7 @@
 
 namespace Wallet
 {
-  MutableWallet::MutableWallet(const std::string path) noexcept : path(path)
+  MutableWallet::MutableWallet(std::string _path) noexcept : path{std::move(_path)}
   {
     DLog(" -> MutableWallet::MutableWallet\n");
   }
@@ -49,12 +49,8 @@ namespace Wallet
     this->setupDirectories(explicitInit);
   }
 
-  bool MutableWallet::add(const Entry entry, const bool isUnique)
+  bool MutableWallet::add(const Entry& entry, const bool isUnique)
   {
-    using YAML::Node;
-    using YAML::NodeType;
-    using fs::exists;
-
     DLog(" -> MutableWallet::add(%p, u=%c)\n", &entry, isUnique ? 'Y' : 'N');
 
     const bool entryExists = this->entryExists(entry);
@@ -68,13 +64,13 @@ namespace Wallet
     // Month File
     const auto monthFile = entry.getFileName();
     const auto monthFilePath = this->dataPath / monthFile;
-    auto& monthFilePathStr = monthFilePath.string();
+    const auto monthFilePathStr = monthFilePath.string();
 
     // For 'updated_at' field.
     const auto now = Components::getNowStr();
 
-    Node month{};
-    if (exists(monthFilePathStr)) {
+    YAML::Node month{};
+    if (fs::exists(monthFilePathStr)) {
       DLog(" -> load month file: %s\n", monthFilePathStr.c_str());
 
       // Load YAML file.
@@ -92,7 +88,7 @@ namespace Wallet
       DLog(" -> create month file: %s\n", monthFilePathStr.c_str());
 
       // Create new meta data.
-      Node meta(NodeType::Map);
+      YAML::Node meta{YAML::NodeType::Map};
       meta["version"] = WALLET_MONTH_FILE_VERSION;
       meta["created_at"] = now;
       meta["updated_at"] = now;
@@ -101,21 +97,21 @@ namespace Wallet
       month["meta"] = meta;
 
       // Create new days map.
-      Node days(NodeType::Map);
+      YAML::Node days{YAML::NodeType::Map};
       month["days"] = days;
     }
 
     // Create day sequence.
-    const std::string dayStr = entry.getDateStr();
+    const auto dayStr = entry.getDateStr();
     if (!month["days"][dayStr]) {
       DLog(" -> create new day: %s\n", entry.getDateStr().c_str());
 
-      Node day(NodeType::Sequence);
+      YAML::Node day{YAML::NodeType::Sequence};
       month["days"][dayStr] = day;
     }
 
     // Convert Entry to Node.
-    const auto node = entry.as<Node>();
+    const auto node = entry.as<YAML::Node>();
     month["days"][dayStr].push_back(node);
 
     // Save Month file.
@@ -126,15 +122,13 @@ namespace Wallet
     return true;
   }
 
-  Container::EntryContainer MutableWallet::getEntries(const Components::Date date) const
+  Container::EntryContainer MutableWallet::getEntries(const Components::Date& date) const
   {
-    using fs::exists;
-
     DLog(" -> MutableWallet::getEntries(%d, %d, %d)\n", date.year, date.month, date.day);
 
     Container::EntryContainer container{};
 
-    if (!exists(this->dataPath)) {
+    if (!fs::exists(this->dataPath)) {
       throw std::string{"Wallet does not exists."};
     }
 
@@ -157,7 +151,8 @@ namespace Wallet
 
       // Filter Year.
       if (hasYear) {
-        const auto filePathYearInt = static_cast<decltype(date.year)>(std::stoi(fileNameStr.substr(6, 4)));
+        const auto fileYear = fileNameStr.substr(6, 4);
+        const auto filePathYearInt = static_cast<decltype(date.year)>(std::stoi(fileYear));
         if (filePathYearInt != date.year) {
           continue;
         }
@@ -165,7 +160,8 @@ namespace Wallet
 
       // Filter Month.
       if (hasMonth) {
-        const auto filePathMonthInt = static_cast<decltype(date.month)>(std::stoi(fileNameStr.substr(11, 2)));
+        const auto fileMonth = fileNameStr.substr(11, 2);
+        const auto filePathMonthInt = static_cast<decltype(date.month)>(std::stoi(fileMonth));
         if (filePathMonthInt != date.month) {
           continue;
         }
@@ -205,11 +201,11 @@ namespace Wallet
         if (monthMap.year == 0) {
           monthMap.year = year;
         }
-        //if (monthMap.month == 0) {
-        //  monthMap.month = month;
-        //}
         if (monthMap.fileName.empty()) {
           monthMap.fileName = fileNameStr;
+        }
+        if (monthMap.yearMonth.empty()) {
+          monthMap.yearMonth = dayStr.substr(0, 4) + "-" + dayStr.substr(5, 2);
         }
 
         // Day
@@ -298,64 +294,55 @@ namespace Wallet
 
   void MutableWallet::setupDirectories(const bool explicitInit) noexcept
   {
-    using std::cout;
-    using std::endl;
-    using std::ofstream;
-    using std::ifstream;
-    using fs::exists;
-    using fs::path;
-    using fs::create_directories;
-    using fs::remove;
-
     // Make main directory.
-    if (exists(this->path)) {
+    if (fs::exists(this->path)) {
       if (explicitInit) {
-        cout << "Wallet already exists at " << this->path << '.' << endl;
+        std::cout << "Wallet already exists at " << this->path << '.' << std::endl;
       }
     } else {
       if (explicitInit) {
-        cout << "Create wallet at " << this->path << '.' << endl;
+        std::cout << "Create wallet at " << this->path << '.' << std::endl;
       }
-      create_directories(this->path);
+      fs::create_directories(this->path);
     }
 
     // Make data/ directory.
-    if (!exists(this->dataPath)) {
-      create_directories(this->dataPath);
+    if (!fs::exists(this->dataPath)) {
+      fs::create_directories(this->dataPath);
     }
 
     // Make tmp/ directory.
-    if (!exists(this->tmpPath)) {
-      create_directories(this->tmpPath);
+    if (!fs::exists(this->tmpPath)) {
+      fs::create_directories(this->tmpPath);
     }
 
-    const path versionFile = this->path / "version";
+    const auto versionFile = this->path / "version";
     decltype(this->version) oldVersion{0};
-    if (exists(versionFile)) {
-      ifstream iVersionFh{versionFile.string()};
+    if (fs::exists(versionFile)) {
+      std::ifstream iVersionFh{versionFile.string()};
       iVersionFh >> oldVersion;
       iVersionFh.close();
     }
 
     if (this->version > oldVersion) {
-      ofstream oVersionFh{versionFile.string()};
+      std::ofstream oVersionFh{versionFile.string()};
       oVersionFh << this->version;
       oVersionFh.close();
     }
 
     // Create main .gitignore file.
-    const path gitignoreFile = this->path / ".gitignore";
-    if (!exists(gitignoreFile)) {
-      ofstream gitignoreFh{gitignoreFile.string()};
+    const auto gitignoreFile = this->path / ".gitignore";
+    if (!fs::exists(gitignoreFile)) {
+      std::ofstream gitignoreFh{gitignoreFile.string()};
       gitignoreFh << "/tmp/" << '\n';
       gitignoreFh << "/html/" << '\n';
       gitignoreFh.close();
     }
 
     // Remove old tmp/.gitignore file.
-    const path oldGitignoreFile = this->tmpPath / ".gitignore";
-    if (exists(oldGitignoreFile)) {
-      remove(oldGitignoreFile);
+    const auto oldGitignoreFile = this->tmpPath / ".gitignore";
+    if (fs::exists(oldGitignoreFile)) {
+      fs::remove(oldGitignoreFile);
     }
   }
 
@@ -368,7 +355,7 @@ namespace Wallet
       return;
     }
 
-    if (exists(this->lockPath)) {
+    if (fs::exists(this->lockPath)) {
       throw std::string{"Wallet is locked."};
     }
 
@@ -382,9 +369,6 @@ namespace Wallet
 
   void MutableWallet::removeLock() noexcept
   {
-    using fs::exists;
-    using fs::remove;
-
     DLog(" -> MutableWallet::removeLock\n");
 
     if (!this->isLocked) {
@@ -393,8 +377,8 @@ namespace Wallet
 
     // Remove lock file.
     const auto _lockPath = this->lockPath.string();
-    if (exists(_lockPath)) {
-      remove(_lockPath);
+    if (fs::exists(_lockPath)) {
+      fs::remove(_lockPath);
     }
 
     this->isLocked = false;
@@ -402,7 +386,7 @@ namespace Wallet
 
   void MutableWallet::loadIndex() noexcept
   {
-    DLog(" -> MutableWallet::loadIndex\n");
+    DLog(" -> MutableWallet::loadIndex()\n");
 
     if (this->isIndexLoaded) {
       return;
@@ -417,12 +401,12 @@ namespace Wallet
       this->isIndexModified = true;
     }
 
-    auto idx = this->index["index"];
+    const auto idx = this->index["index"];
     if (!idx || !idx.IsDefined()) {
       this->isIndexModified = true;
 
       // Create new 'index' sequence.
-      YAML::Node _idx(YAML::NodeType::Sequence);
+      YAML::Node _idx{YAML::NodeType::Sequence};
       _idx.push_back("hello_world");
       this->index["index"] = _idx;
     }
@@ -451,17 +435,17 @@ namespace Wallet
    */
   bool MutableWallet::entryExists(const Entry& entry) noexcept
   {
-    DLog(" -> MutableWallet::entryExists\n");
+    DLog(" -> MutableWallet::entryExists()\n");
 
     this->loadIndex();
 
-    const auto _b = this->index["index"].begin();
-    const auto _e = this->index["index"].end();
+    const auto _begin = this->index["index"].begin();
+    const auto _end = this->index["index"].end();
 
-    auto it = std::find_if(_b, _e, [&](const auto& item) {
+    auto it = std::find_if(_begin, _end, [&entry](const auto& item) {
       return item.template as<std::string>() == entry.id;
     });
 
-    return it != _e;
+    return it != _end;
   }
 } // Wallet Namespace

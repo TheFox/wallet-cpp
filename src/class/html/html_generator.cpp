@@ -12,7 +12,7 @@
 namespace Wallet::Html
 {
   HtmlGenerator::HtmlGenerator(fs::path _basePath, fs::path _tmpPath, Wallet::Container::EntryContainer _container) :
-    yearPath(_basePath / "year"), basePath(std::move(_basePath)), tmpPath(std::move(_tmpPath)), container(std::move(_container))
+    yearPath{_basePath / "year"}, basePath{std::move(_basePath)}, tmpPath{std::move(_tmpPath)}, container{std::move(_container)}
   {
     //DLog(" -> HtmlGenerator::HtmlGenerator(%s, %p)\n", this->basePath.c_str(), &this->container);
   }
@@ -42,7 +42,7 @@ namespace Wallet::Html
         fs::create_directories(yearDirPath);
       }
 
-      YearHtml yearHtml{yearDirPath, yearPair.second};
+      YearHtml yearHtml{yearDirPath, this->tmpPath, yearPair.second};
       yearHtml.generate();
 
       // Balance Sum
@@ -77,13 +77,10 @@ namespace Wallet::Html
 
   void HtmlGenerator::setup() const noexcept
   {
-    using fs::exists;
-    using fs::create_directory;
-
-    if (!exists(this->basePath)) {
+    if (!fs::exists(this->basePath)) {
       fs::create_directory(this->basePath);
     }
-    if (!exists(this->yearPath)) {
+    if (!fs::exists(this->yearPath)) {
       fs::create_directory(this->yearPath);
     }
 

@@ -29,6 +29,7 @@ namespace Wallet::Mustache
     mstch::node getGeneratedAt() noexcept;
     mstch::node getRelativePath() noexcept;
     mstch::node getCssRelativePath() noexcept;
+    mstch::node hasGnuplotSupport() noexcept;
 
     mstch::node getEntries() noexcept;
     mstch::node getTotal() noexcept;

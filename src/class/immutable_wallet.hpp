@@ -17,7 +17,7 @@ namespace Wallet
 
     // Functions
     void setup() override;
-    bool add(Entry, bool) override;
+    bool add(const Entry&, bool) override;
   };
 } // Wallet Namespace
 

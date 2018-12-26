@@ -5,7 +5,7 @@
 
 #include <sstream>
 #include <iomanip> // setprecision
-#include <ios> // fixed
+#include <ios> // fixed, left, right
 #include <cstddef>
 
 #include "list_command.hpp"
@@ -28,19 +28,12 @@ namespace Wallet
 
   void listEntries(const Container::EntryContainer& container)
   {
-    using std::string;
-    using std::cout;
-    using std::endl;
-    using std::setw;
-    using std::right;
-    using std::left;
-
 #ifdef DEBUG
     printf(" -> listEntries() c=%lu\n", container.entryCount);
 #endif
 
     if (container.entryCount == 0) {
-      cout << "No entries found." << endl;
+      std::cout << "No entries found." << std::endl;
       return;
     }
 
@@ -49,10 +42,10 @@ namespace Wallet
     auto countLenInt = static_cast<const int>(countLenSize);
 
     // Header
-    cout
-      << string(countLenSize, '#')
+    std::cout
+      << std::string(countLenSize, '#')
       << " Date          Revenue    Expense    Balance   Title"
-      << endl;
+      << std::endl;
 
     // Entries
     std::size_t count{0};
@@ -63,26 +56,26 @@ namespace Wallet
         ++count;
 
         // Print Entry
-        cout
-          << setw(countLenInt) << left << count
+        std::cout
+          << std::setw(countLenInt) << std::left << count
           << ' ' << entry.getDateStr()
-          << ' ' << setw(10) << right << entry.getRevenueStr()
-          << ' ' << setw(10) << right << entry.getExpenseStr()
-          << ' ' << setw(10) << right << entry.getBalanceStr()
+          << ' ' << std::setw(10) << std::right << entry.getRevenueStr()
+          << ' ' << std::setw(10) << std::right << entry.getExpenseStr()
+          << ' ' << std::setw(10) << std::right << entry.getBalanceStr()
           << "   " << entry.title
-          << endl;
+          << std::endl;
       }
     }
 
     // Total
-    cout
-      << endl
-      << string(countLenSize, ' ')
+    std::cout
+      << std::endl
+      << std::string(countLenSize, ' ')
       << "           "
-      << ' ' << setw(10) << right << std::fixed << std::setprecision(2) << container.revenue
-      << ' ' << setw(10) << right << std::fixed << std::setprecision(2) << container.expense
-      << ' ' << setw(10) << right << std::fixed << std::setprecision(2) << container.balance
+      << ' ' << std::setw(10) << std::right << std::fixed << std::setprecision(2) << container.revenue
+      << ' ' << std::setw(10) << std::right << std::fixed << std::setprecision(2) << container.expense
+      << ' ' << std::setw(10) << std::right << std::fixed << std::setprecision(2) << container.balance
       << "   TOTAL"
-      << endl;
+      << std::endl;
   }
 } // Wallet Namespace

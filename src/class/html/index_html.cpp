@@ -68,7 +68,7 @@ namespace Wallet::Html
       {"balance_class", totalRow.balanceClass},
     };
 
-    const std::string tpl = Components::readFileIntoString(WALLETCPP_INDEX_VIEW_PATH);
+    const auto tpl = Components::readFileIntoString(WALLETCPP_INDEX_VIEW_PATH);
     const auto context = std::make_shared<Mustache::IndexMustache>(_entries, total);
 
     // Output: index.html
@@ -77,11 +77,6 @@ namespace Wallet::Html
     indexFh.close();
 
 #ifdef WALLETCPP_GNUPLOT_SUPPORT
-    const auto pngFilePath = (this->basePath / "total.png").string();
-    const auto datFilePath = (this->tmpPath / "total.dat").string();
-
-    DLog(" -> png: '%s'\n", pngFilePath.c_str());
-    DLog(" -> dat: '%s'\n", datFilePath.c_str());
     DLog(" -> len: %lu\n", this->entries.size());
 
     const auto maxLen = this->entries.size() >= 10 ? this->entries.size() - 10 : 0;
@@ -89,7 +84,7 @@ namespace Wallet::Html
     const auto entriesEnd = this->entries.cend();
 
     std::vector<std::string> datRows{};
-    std::transform(entriesBegin, entriesEnd, std::back_inserter(datRows), [](const auto entry) {
+    std::transform(entriesBegin, entriesEnd, std::back_inserter(datRows), [](const auto& entry) {
       std::string row{entry.year};
       row += " " + (entry.revenue.empty() ? "0" : entry.revenue);
       row += " " + (entry.expense.empty() ? "0" : entry.expense);
@@ -100,21 +95,31 @@ namespace Wallet::Html
     });
 
     // Write data file for GNUPlot.
+    const auto datFilePath = (this->tmpPath / "total.dat").string();
+    DLog(" -> dat: '%s'\n", datFilePath.c_str());
     std::ofstream datFh{datFilePath};
     std::copy(datRows.cbegin(), datRows.cend(), std::ostream_iterator<std::string>(datFh, "\n"));
     datFh.close();
 
-    const std::string gnuplotTpl = Components::readFileIntoString(WALLETCPP_TOTAL_GNUPLOT_PATH);
+    // PNG file
+    const auto pngFilePath = (this->basePath / "total.png").string();
+    DLog(" -> png: '%s'\n", pngFilePath.c_str());
+
+    // Mustache Template file
+    const auto gnuplotTpl = Components::readFileIntoString(WALLETCPP_TOTAL_GNUPLOT_PATH);
+
+    // Mustache Context
     const auto gnuplotContext = std::make_shared<Mustache::TotalGnuplot>(pngFilePath, datFilePath);
 
-    // Output: total.gp
+    // Total Gnuplot File
     const auto gnuplotFilePath = (this->tmpPath / "total.gp").string();
     DLog(" -> gp: '%s'\n", gnuplotFilePath.c_str());
     std::ofstream totalFh{gnuplotFilePath};
     totalFh << mstch::render(gnuplotTpl, gnuplotContext);
     totalFh.close();
 
-    const auto gnuplotCmd = std::string{"gnuplot "} + gnuplotFilePath;
+    // Run GNUPlot
+    const auto gnuplotCmd = std::string{"gnuplot "} + gnuplotFilePath + " &> /dev/null < /dev/null";
     DLog(" -> exec gnuplot: '%s'\n", gnuplotCmd.c_str());
     const auto execrv = system(gnuplotCmd.c_str());
     DLog(" -> exec gnuplot: %d\n", execrv);

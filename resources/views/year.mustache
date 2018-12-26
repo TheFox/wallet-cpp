@@ -60,5 +60,13 @@
     {{/total}}
     </tfoot>
 </table>
+
+{{#has_gnuplot_support}}
+    <p><img src="{{{png_file_name}}}"></p>
+{{/has_gnuplot_support}}
+{{^has_gnuplot_support}}
+    <!-- NO GNUPLOT SUPPORT //-->
+{{/has_gnuplot_support}}
+
 </body>
 </html>

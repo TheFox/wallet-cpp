@@ -58,9 +58,9 @@ namespace Wallet::Container
   {
     // Properties
     ContainerYear year{};
-    //ContainerMonth month{};
     DayMap days{};
     std::string fileName{};
+    std::string yearMonth{};
   };
 
   using MonthMap = std::map<ContainerMonth, MonthEntryContainer>;

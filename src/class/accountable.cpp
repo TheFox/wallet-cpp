@@ -65,6 +65,20 @@ namespace Wallet
     return this->balanceStr;
   }
 
+  //std::string Accountable::getBalanceSumStr() const noexcept
+  //{
+  //  if (this->balanceSumCache) {
+  //    return this->balanceSumStr;
+  //  }
+  //
+  //  std::ostringstream ss{};
+  //  if (this->balanceSum != 0.0) {
+  //    ss << std::fixed << std::setprecision(2) << this->balanceSum;
+  //  }
+  //  this->balanceSumStr = ss.str();
+  //  return this->balanceSumStr;
+  //}
+
   void Accountable::calcBalance() noexcept
   {
     this->balanceCache = false;

@@ -13,7 +13,7 @@ namespace Wallet::Html
   class YearHtml final : public BaseHtml
   {
   public:
-    YearHtml(fs::path, Container::YearEntryContainer);
+    YearHtml(fs::path, fs::path, Container::YearEntryContainer);
     void generate() const;
 
   private:

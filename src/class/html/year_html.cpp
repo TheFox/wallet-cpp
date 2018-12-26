@@ -11,14 +11,15 @@
 #include "month_html.hpp"
 #include "class/mustache/year_mustache.hpp"
 #ifdef WALLETCPP_GNUPLOT_SUPPORT
-//#include "class/mustache/"
+#include "class/mustache/year_gnuplot.hpp"
 #endif
 
 namespace Wallet::Html
 {
-  YearHtml::YearHtml(fs::path _basePath, Container::YearEntryContainer _container) :
-    BaseHtml{std::move(_basePath), fs::path{}, fs::path{"index.html"}, "Year " + std::to_string(_container.year)},
-    container(std::move(_container))
+  YearHtml::YearHtml(fs::path _basePath, fs::path _tmpPath, Container::YearEntryContainer _container) :
+    BaseHtml{std::move(_basePath), std::move(_tmpPath), fs::path{"index.html"},
+      "Year " + std::to_string(_container.year)},
+    container{std::move(_container)}
   {
     //DLog(" -> YearHtml::YearHtml('%s', '%s')\n", this->basePath.c_str(), this->getFileName().c_str());
   }
@@ -32,22 +33,20 @@ namespace Wallet::Html
       throw std::string{"Year template file does not exists: "} + WALLETCPP_YEAR_VIEW_PATH;
     }
 
+    // Categories Iterators
+    const auto cib = this->container.categories.cbegin();
+    const auto cie = this->container.categories.cend();
+
     // Category Names
     Container::CategoryArray categoryNames{};
 
     // https://thispointer.com/how-to-copy-all-values-from-a-map-to-a-vector-in-c/
-    std::transform(this->container.categories.cbegin(), this->container.categories.cend(),
-      std::back_inserter(categoryNames),
-      [](const auto& pair) {
-        return pair.first;
-      });
+    std::transform(cib, cie, std::back_inserter(categoryNames), [](const auto& pair) {
+      return pair.first;
+    });
 
     // Table Body
     mstch::array entries{};
-
-    // Categories Iterators
-    const auto cib = this->container.categories.cbegin();
-    const auto cie = this->container.categories.cend();
 
     for (const auto& monthPair : this->container.months) {
       MonthHtml monthHtml{this->basePath, monthPair};
@@ -90,7 +89,7 @@ namespace Wallet::Html
 
     // Match common categories to total month categories.
     mstch::array monthCategories{};
-    std::transform(cib, cie, std::back_inserter(monthCategories), [&](const auto& pair) {
+    std::transform(cib, cie, std::back_inserter(monthCategories), [](const auto& pair) {
       //DLog(" -> category: '%s'\n", pair.first.c_str());
 
       return mstch::map{
@@ -100,6 +99,8 @@ namespace Wallet::Html
     });
 
     const auto yearStr = std::to_string(this->container.year);
+    const auto yearFileStr = "year_" + yearStr;
+    const auto yearPngFileStr = yearFileStr + ".png";
 
     const mstch::map total{
       {"label",            std::string{"TOTAL"}},
@@ -110,8 +111,9 @@ namespace Wallet::Html
       {"month_categories", std::move(monthCategories)},
     };
 
-    const std::string tpl = Components::readFileIntoString(WALLETCPP_YEAR_VIEW_PATH);
-    const auto context = std::make_shared<Mustache::YearMustache>("../..", entries, total, yearStr, categoryNames);
+    const auto tpl = Components::readFileIntoString(WALLETCPP_YEAR_VIEW_PATH);
+    const auto context = std::make_shared<Mustache::YearMustache>("../..", entries, total, yearStr, categoryNames,
+      yearPngFileStr);
 
     // Year File Output
     std::ofstream indexFh{this->getFullPath()};
@@ -119,8 +121,62 @@ namespace Wallet::Html
     indexFh.close();
 
 #ifdef WALLETCPP_GNUPLOT_SUPPORT
-    // TODO
+    const auto monthsBegin = this->container.months.cbegin();
+    const auto monthsEnd = this->container.months.cend();
 
+    // Balance Sum
+    Accountable::Number balanceSum{0.0};
+
+    std::vector<std::string> datRows{};
+    std::transform(monthsBegin, monthsEnd, std::back_inserter(datRows), [&balanceSum](const auto& pair) {
+      const auto& monthEntryContainer = pair.second;
+      const auto revenue = monthEntryContainer.getRevenueStr();
+      const auto expense = monthEntryContainer.getExpenseStr();
+      const auto balance = monthEntryContainer.getBalanceStr();
+
+      // Balance Sum
+      balanceSum += monthEntryContainer.balance;
+
+      std::string row{monthEntryContainer.yearMonth};
+      row += " " + (revenue.empty() ? "0" : revenue);
+      row += " " + (expense.empty() ? "0" : expense);
+      row += " " + (balance.empty() ? "0" : balance);
+      row += " " + std::to_string(balanceSum);
+
+      return row;
+    });
+
+    const auto yearDatFileStr = yearFileStr + ".dat";
+
+    const auto pngFilePath = (this->basePath / yearPngFileStr).string();
+    const auto datFilePath = (this->tmpPath / yearDatFileStr).string();
+
+    DLog(" -> png: '%s'\n", pngFilePath.c_str());
+    DLog(" -> dat: '%s'\n", datFilePath.c_str());
+
+    // Write data file for GNUPlot.
+    std::ofstream datFh{datFilePath};
+    std::copy(datRows.cbegin(), datRows.cend(), std::ostream_iterator<std::string>(datFh, "\n"));
+    datFh.close();
+
+    // Mustache Template file
+    const auto gnuplotTpl = Components::readFileIntoString(WALLETCPP_YEAR_GNUPLOT_PATH);
+
+    // Mustache Context
+    const auto gnuplotContext = std::make_shared<Mustache::YearGnuplot>(yearStr, pngFilePath, datFilePath);
+
+    // Year Gnuplot File
+    const auto gnuplotFilePath = (this->tmpPath / (yearFileStr + ".gp")).string();
+    DLog(" -> gp: '%s'\n", gnuplotFilePath.c_str());
+    std::ofstream totalFh{gnuplotFilePath};
+    totalFh << mstch::render(gnuplotTpl, gnuplotContext);
+    totalFh.close();
+
+    // Run GNUPlot
+    const auto gnuplotCmd = std::string{"gnuplot "} + gnuplotFilePath + " &> /dev/null < /dev/null";
+    DLog(" -> exec gnuplot: '%s'\n", gnuplotCmd.c_str());
+    const auto execrv = system(gnuplotCmd.c_str());
+    DLog(" -> exec gnuplot: %d\n", execrv);
 #endif
   }
 } // Wallet::Html Namespace

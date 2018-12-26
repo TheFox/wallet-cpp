@@ -70,9 +70,9 @@ namespace Wallet::Components
     using Tokenz = std::vector<std::uint16_t>;
 
     // String Items
-    Tokenz tokens;
-    std::string token;
-    std::istringstream tokenStream(_s);
+    Tokenz tokens{};
+    std::string token{};
+    std::istringstream tokenStream{_s};
     while (std::getline(tokenStream, token, '-')) {
       tokens.push_back(static_cast<Tokenz::value_type>(std::stoi(token)));
     }

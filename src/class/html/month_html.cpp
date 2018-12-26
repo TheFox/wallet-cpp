@@ -27,7 +27,7 @@ namespace Wallet::Html
   MonthHtml::MonthHtml(fs::path _basePath, Container::MonthPair _map) :
     BaseHtml{std::move(_basePath), fs::path{}, fs::path{getMonthFile(_map.first)},
       getMonthName(_map.first) + " " + std::to_string(_map.second.year)},
-    name(getMonthName(_map.first)), container(std::move(_map.second)), year(std::to_string(_map.second.year))
+    name{getMonthName(_map.first)}, container{std::move(_map.second)}, year{std::to_string(_map.second.year)}
   {
     //DLog(" -> MonthHtml::MonthHtml(bp'%s') -> p'%s' n'%s'\n", this->basePath.c_str(),
     //  this->getFileName().c_str(), this->name.c_str());
@@ -80,7 +80,7 @@ namespace Wallet::Html
 
     const auto yearStr = std::to_string(this->container.year);
 
-    const std::string tpl = Components::readFileIntoString(WALLETCPP_MONTH_VIEW_PATH);
+    const auto tpl = Components::readFileIntoString(WALLETCPP_MONTH_VIEW_PATH);
     const auto context = std::make_shared<Mustache::MonthMustache>("../..", entries, total, yearStr, this->name,
       this->container.fileName);
 
@@ -90,11 +90,11 @@ namespace Wallet::Html
     indexFh.close();
   }
 
-  std::string MonthHtml::getMonthFile(const Container::ContainerMonth month) noexcept
+  std::string MonthHtml::getMonthFile(const Container::ContainerMonth _month) noexcept
   {
     std::ostringstream ss{};
     ss << "month_";
-    ss << std::setfill('0') << std::setw(2) << std::to_string(month);
+    ss << std::setfill('0') << std::setw(2) << std::to_string(_month);
     ss << ".html";
     return ss.str();
   }

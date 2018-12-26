@@ -28,10 +28,7 @@ namespace Wallet
   {
     //DLog(" -> Entry::Entry(%p)\n", this);
 
-    using calendar::date;
-    using calendar::day_clock;
-
-    this->date = day_clock::local_day();
+    this->date = calendar::day_clock::local_day();
   }
 
   Entry::Entry(const CommandOptions& options) noexcept : Entry()
@@ -102,32 +99,28 @@ namespace Wallet
     }
   }
 
-  void Entry::setDate(const std::string _dateStr)
+  void Entry::setDate(const std::string& _dateStr)
   {
     //DLog(" -> Entry::setDate(%s)\n", _dateStr.c_str());
 
-    using std::string_view;
-    using calendar::date;
-    using calendar::days;
-    using calendar::day_clock;
     using std::string_view_literals::operator ""sv;
 
     // Yesterday
-    constexpr string_view yesterdayStr = "yesterday"sv;
+    constexpr auto yesterdayStr = "yesterday"sv;
     bool isYesterday = false;
     if (_dateStr.length() <= yesterdayStr.length()) {
       isYesterday = yesterdayStr.substr(0, _dateStr.length()) == _dateStr;
     }
 
     // Now
-    constexpr string_view nowStr = "now"sv;
+    constexpr auto nowStr = "now"sv;
     bool isNow = false;
     if (_dateStr.length() <= nowStr.length()) {
       isNow = nowStr.substr(0, _dateStr.length()) == _dateStr;
     }
 
     // Tomorrow
-    constexpr string_view tomorrowStr = "tomorrow"sv;
+    constexpr auto tomorrowStr = "tomorrow"sv;
     bool isTomorrow = false;
     if (!isYesterday && _dateStr.length() <= tomorrowStr.length()) {
       isTomorrow = tomorrowStr.substr(0, _dateStr.length()) == _dateStr;
@@ -135,19 +128,19 @@ namespace Wallet
 
     if (isYesterday) {
       // Today
-      const date today = day_clock::local_day();
+      const auto today = calendar::day_clock::local_day();
 
-      this->date = today - days(1);
+      this->date = today - calendar::days(1);
     } else if (isNow) {
       // Today
-      const date today = day_clock::local_day();
+      const auto today = calendar::day_clock::local_day();
 
       this->date = today;
     } else if (isTomorrow) {
       // Today
-      const date today = day_clock::local_day();
+      const auto today = calendar::day_clock::local_day();
 
-      this->date = today + days(1);
+      this->date = today + calendar::days(1);
     } else {
       // Parse date string.
       try {
@@ -183,20 +176,18 @@ namespace Wallet
 
   std::string Entry::getCategoryHtml() const noexcept
   {
-    if (this->category == "default")
-      return std::string{" "};
+    if (this->category == "default") {
+      return " ";
+    }
 
     return this->category;
   }
 
   void Entry::generateRandomId() noexcept
   {
-    using uuid::random_generator;
-    using uuid::uuid;
-
     // Random UUID
-    random_generator gen;
-    uuid _id = gen();
+    uuid::random_generator gen;
+    uuid::uuid _id = gen();
 
     // Convert UUID to String.
     std::ostringstream uuidStream{};
@@ -228,7 +219,7 @@ namespace Wallet
   YAML::Node Entry::as() const noexcept
   {
     // Create node.
-    YAML::Node node(YAML::NodeType::Map);
+    YAML::Node node{YAML::NodeType::Map};
 
     // Set parameters.
     node["id"] = this->id;
