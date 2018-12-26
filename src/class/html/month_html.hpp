@@ -9,24 +9,6 @@
 
 namespace Wallet::Html
 {
-  class MonthMustacheObject final : public BaseMustacheObject
-  {
-  public:
-    // Constructor
-    MonthMustacheObject(std::string, mstch::array, mstch::map, std::string, std::string, std::string);
-
-  private:
-    // Properties
-    const std::string year{};
-    const std::string month{};
-    const std::string fileName{};
-
-    // Functions
-    mstch::node getYear() noexcept;
-    mstch::node getMonth() noexcept;
-    mstch::node getFileName() noexcept;
-  };
-
   /**
    * Generates one month html file.
    */

@@ -9,58 +9,14 @@
 #include "components.hpp"
 #include "year_html.hpp"
 #include "month_html.hpp"
+#include "class/mustache/year_mustache.hpp"
+#ifdef WALLETCPP_GNUPLOT_SUPPORT
+//#include "class/mustache/"
+#endif
 
 namespace Wallet::Html
 {
-  YearMustacheObject::YearMustacheObject(std::string _rel, mstch::array _entries, mstch::map _total,
-                                         std::string _year, Container::CategoryArray _categoryNames) :
-    BaseMustacheObject(std::move(_rel), std::move(_entries), std::move(_total)), year(std::move(_year)),
-    categoryNames(std::move(_categoryNames))
-  {
-    //DLog(" -> YearMustacheObject::YearMustacheObject('%s', '%s', %lu)\n",
-    //  _rel.c_str(), this->year.c_str(), _categoryNames.size());
-
-    this->register_methods(this, {
-      {"year",           &YearMustacheObject::getYear},
-      {"category_count", &YearMustacheObject::getCategoryCount},
-      {"categories",     &YearMustacheObject::getCategories},
-    });
-  }
-
-  mstch::node YearMustacheObject::getYear() noexcept
-  {
-    //DLog(" -> YearMustacheObject::getYear()\n");
-    return this->year;
-  }
-
-  mstch::node YearMustacheObject::getCategoryCount() noexcept
-  {
-    //DLog(" -> YearMustacheObject::getCategoryCount() -> %lu\n", this->categoryNames.size());
-    return std::to_string(this->categoryNames.size());
-  }
-
-  mstch::node YearMustacheObject::getCategories() noexcept
-  {
-    //DLog(" -> YearMustacheObject::getCategories() -> %lu\n", this->categoryNames.size());
-
-    // Iterators
-    const auto cnb = this->categoryNames.cbegin();
-    const auto cne = this->categoryNames.cend();
-
-    mstch::array names{};
-
-    // Transform vector of names to map with 'name' property.
-    std::transform(cnb, cne, std::back_inserter(names), [](std::string name) {
-      //DLog(" -> transform: '%s'\n", name.c_str());
-      return mstch::map{
-        {"name", std::move(name)},
-      };
-    });
-
-    return names;
-  }
-
-  YearHtml::YearHtml(fs::path _basePath, Wallet::Container::YearEntryContainer _container) :
+  YearHtml::YearHtml(fs::path _basePath, Container::YearEntryContainer _container) :
     BaseHtml{std::move(_basePath), fs::path{}, fs::path{"index.html"}, "Year " + std::to_string(_container.year)},
     container(std::move(_container))
   {
@@ -69,7 +25,7 @@ namespace Wallet::Html
 
   void YearHtml::generate() const
   {
-    DLog(" -> YearHtml::generate() -> %d\n", this->container.year);
+    //DLog(" -> YearHtml::generate() -> %d\n", this->container.year);
 
     if (!fs::exists(WALLETCPP_YEAR_VIEW_PATH)) {
       DLog("ERROR: Year template file does not exists: '%s'\n", WALLETCPP_YEAR_VIEW_PATH);
@@ -155,7 +111,7 @@ namespace Wallet::Html
     };
 
     const std::string tpl = Components::readFileIntoString(WALLETCPP_YEAR_VIEW_PATH);
-    const auto context = std::make_shared<YearMustacheObject>("../..", entries, total, yearStr, categoryNames);
+    const auto context = std::make_shared<Mustache::YearMustache>("../..", entries, total, yearStr, categoryNames);
 
     // Year File Output
     std::ofstream indexFh{this->getFullPath()};
@@ -163,7 +119,7 @@ namespace Wallet::Html
     indexFh.close();
 
 #ifdef WALLETCPP_GNUPLOT_SUPPORT
-    DLog(" -> YearHtml::generate() -> GNUPlot support\n");
+    //DLog(" -> YearHtml::generate() -> GNUPlot support\n");
     // TODO
 #endif
   }

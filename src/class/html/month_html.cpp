@@ -13,45 +13,16 @@ namespace calendar = boost::gregorian;
 #  endif
 #endif // __has_include
 
+#include <mstch/mstch.hpp>
+
 #include "debug.hpp"
 #include "config.hpp"
 #include "month_html.hpp"
 #include "components.hpp"
+#include "class/mustache/month_mustache.hpp"
 
 namespace Wallet::Html
 {
-  MonthMustacheObject::MonthMustacheObject(std::string _rel, mstch::array _entries, mstch::map _total,
-                                           std::string _year, std::string _month, std::string _fileName) :
-    BaseMustacheObject(std::move(_rel), std::move(_entries), std::move(_total)), year(std::move(_year)),
-    month(std::move(_month)), fileName(std::move(_fileName))
-  {
-    //DLog(" -> MonthMustacheObject::MonthMustacheObject()\n");
-
-    this->register_methods(this, {
-      {"year",      &MonthMustacheObject::getYear},
-      {"month",     &MonthMustacheObject::getMonth},
-      {"file_name", &MonthMustacheObject::getFileName},
-    });
-  }
-
-  mstch::node MonthMustacheObject::getYear() noexcept
-  {
-    //DLog(" -> MonthMustacheObject::getYear()\n");
-    return this->year;
-  }
-
-  mstch::node MonthMustacheObject::getMonth() noexcept
-  {
-    //DLog(" -> MonthMustacheObject::getMonth()\n");
-    return this->month;
-  }
-
-  mstch::node MonthMustacheObject::getFileName() noexcept
-  {
-    //DLog(" -> MonthMustacheObject::getFileName()\n");
-    return this->fileName;
-  }
-
   MonthHtml::MonthHtml(fs::path _basePath, Container::MonthPair _map) :
     BaseHtml{std::move(_basePath), fs::path{}, fs::path{getMonthFile(_map.first)},
       getMonthName(_map.first) + " " + std::to_string(_map.second.year)},
@@ -109,7 +80,7 @@ namespace Wallet::Html
     const auto yearStr = std::to_string(this->container.year);
 
     const std::string tpl = Components::readFileIntoString(WALLETCPP_MONTH_VIEW_PATH);
-    const auto context = std::make_shared<MonthMustacheObject>("../..", entries, total, yearStr, this->name,
+    const auto context = std::make_shared<Mustache::MonthMustache>("../..", entries, total, yearStr, this->name,
       this->container.fileName);
 
     // Month File Output

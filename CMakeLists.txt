@@ -11,10 +11,10 @@ set(PROJECT_SHARE_RESOURCES_DIR "${PROJECT_SHARE_BASE_DIR}/resources")
 #-DWALLETCPP_GNUPLOT_SUPPORT:BOOL=OFF
 set(WALLETCPP_GNUPLOT_SUPPORT ON CACHE BOOL "Turn on/off building with Gnuplot support.")
 
-set(CMAKE_CXX_FLAGS "-Wall -Wshadow -std=c++17")
-set(CMAKE_CXX_FLAGS_DEBUG "-g -O0 -DDEBUG -Wno-unused-variable -fsanitize=address")
+set(CMAKE_CXX_FLAGS "-Wall -Wshadow")
+set(CMAKE_CXX_FLAGS_DEBUG "-g -O0 -DDEBUG -fsanitize=address -fstandalone-debug")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG -Wunused-variable")
-set(CMAKE_CXX_FLAGS_TEST "-g -O0 -DDEBUG -Wno-unused-variable")
+set(CMAKE_CXX_FLAGS_TEST "-g -O0 -DDEBUG -fstandalone-debug")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
 
 # Set minimum C++ to 2017 standards.
@@ -74,6 +74,12 @@ add_executable(wallet
     src/class/html/index_html.cpp src/class/html/index_html.hpp
     src/class/html/year_html.cpp src/class/html/year_html.hpp
     src/class/html/month_html.cpp src/class/html/month_html.hpp
+    src/class/mustache/base_mustache.cpp src/class/mustache/base_mustache.hpp
+    src/class/mustache/index_mustache.cpp src/class/mustache/index_mustache.hpp
+    src/class/mustache/year_mustache.cpp src/class/mustache/year_mustache.hpp
+    src/class/mustache/month_mustache.cpp src/class/mustache/month_mustache.hpp
+    src/class/mustache/base_gnuplot.cpp src/class/mustache/base_gnuplot.hpp
+    src/class/mustache/total_gnuplot.cpp src/class/mustache/total_gnuplot.hpp
     resources/css/style.css
     resources/views/index.mustache
     resources/views/year.mustache

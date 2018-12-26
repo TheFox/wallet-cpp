@@ -5,55 +5,13 @@
 #include "config.hpp"
 #include "index_html.hpp"
 #include "components.hpp"
+#include "class/mustache/index_mustache.hpp"
+#ifdef WALLETCPP_GNUPLOT_SUPPORT
+#  include "class/mustache/total_gnuplot.hpp"
+#endif
 
 namespace Wallet::Html
 {
-  IndexMustacheObject::IndexMustacheObject(mstch::array _entries, mstch::map _total) :
-    BaseMustacheObject(std::move(_entries), std::move(_total))
-  {
-    //DLog(" -> IndexMustacheObject::IndexMustacheObject()\n");
-
-    this->register_methods(this, {
-      {"hasGnuplotSupport", &IndexMustacheObject::hasGnuplotSupport},
-    });
-  }
-
-  mstch::node IndexMustacheObject::hasGnuplotSupport() noexcept
-  {
-    DLog(" -> IndexMustacheObject::hasGnuplotSupport()\n");
-
-#ifdef WALLETCPP_GNUPLOT_SUPPORT
-    return true;
-#else
-    return false;
-#endif
-  }
-
-  TotalGnuplotObject::TotalGnuplotObject(std::string _pngFilePath, std::string _datFilePath) :
-    pngFilePath(std::move(_pngFilePath)), datFilePath(std::move(_datFilePath))
-  {
-    DLog(" -> TotalGnuplotObject::TotalGnuplotObject('%s', '%s')\n", _pngFilePath.c_str(), _datFilePath.c_str());
-
-    this->register_methods(this, {
-      {"png_file_path", &TotalGnuplotObject::getPngFilePath},
-      {"dat_file_path", &TotalGnuplotObject::getDatFilePath},
-    });
-  }
-
-  mstch::node TotalGnuplotObject::getPngFilePath() noexcept
-  {
-    DLog(" -> TotalGnuplotObject::getPngFilePath()\n");
-
-    return this->pngFilePath;
-  }
-
-  mstch::node TotalGnuplotObject::getDatFilePath() noexcept
-  {
-    DLog(" -> TotalGnuplotObject::getDatFilePath()\n");
-
-    return this->datFilePath;
-  }
-
   IndexHtml::IndexHtml(fs::path _basePath, fs::path _tmpPath) :
     BaseHtml{std::move(_basePath), std::move(_tmpPath), fs::path{"index.html"}, "Index"}
   {
@@ -78,7 +36,7 @@ namespace Wallet::Html
 
   void IndexHtml::generate(const IndexHtmlRow totalRow) const
   {
-    DLog(" -> IndexHtml::generate('%s')\n", totalRow.year.c_str());
+    //DLog(" -> IndexHtml::generate('%s')\n", totalRow.year.c_str());
 
     if (!fs::exists(WALLETCPP_INDEX_VIEW_PATH)) {
       DLog("ERROR: Index template file does not exists: '%s'\n", WALLETCPP_INDEX_VIEW_PATH);
@@ -101,7 +59,7 @@ namespace Wallet::Html
     };
 
     const std::string tpl = Components::readFileIntoString(WALLETCPP_INDEX_VIEW_PATH);
-    const auto context = std::make_shared<IndexMustacheObject>(this->entries, total);
+    const auto context = std::make_shared<Mustache::IndexMustache>(this->entries, total);
 
     // Output: index.html
     std::ofstream indexFh{this->getFullPath()};
@@ -115,13 +73,16 @@ namespace Wallet::Html
     const auto datFilePath = (this->tmpPath / "total.dat").string();
 
     const std::string gnuplotTpl = Components::readFileIntoString(WALLETCPP_TOTAL_GNUPLOT_PATH);
-    const auto gnuplotContext = std::make_shared<TotalGnuplotObject>(pngFilePath, datFilePath);
+    const auto gnuplotContext = std::make_shared<Mustache::TotalGnuplot>(pngFilePath, datFilePath);
 
     // Output: total.gp
     const auto gnuplotFilePath = (this->tmpPath / "total.gp").string();
     std::ofstream totalFh{gnuplotFilePath};
     totalFh << mstch::render(gnuplotTpl, gnuplotContext);
     totalFh.close();
+
+    const auto gnuplotCmd = std::string{"x"} + "y";
+    DLog(" -> exec gnuplot: '%s'\n", gnuplotCmd.c_str());
 #endif
   }
 } // Wallet::Html Namespace

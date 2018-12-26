@@ -17,40 +17,8 @@ namespace fs = boost::filesystem;
 #  endif
 #endif // __has_include
 
-#include <mstch/mstch.hpp>
-
 namespace Wallet::Html
 {
-  class BaseMustacheObject : public mstch::object
-  {
-  public:
-    BaseMustacheObject();
-    BaseMustacheObject(mstch::array, mstch::map);
-    BaseMustacheObject(std::string, mstch::array, mstch::map);
-
-  private:
-    // Properties
-    const std::string relativePath{"."};
-    const mstch::array entries{};
-    const mstch::map total{};
-
-    // Functions
-    void setup() noexcept;
-    mstch::node getProjectName() noexcept;
-    mstch::node getProjectHomepageUrl() noexcept;
-    mstch::node getProjectVersion() noexcept;
-    mstch::node getGeneratedAt() noexcept;
-    mstch::node getRelativePath() noexcept;
-    mstch::node getCssRelativePath() noexcept;
-
-    mstch::node getEntries() noexcept;
-    mstch::node getTotal() noexcept;
-  };
-
-  class BaseGnuplotObject : public mstch::object
-  {
-  };
-
   class BaseHtml
   {
   public:

@@ -270,10 +270,10 @@ namespace Wallet
   {
     DLog(" -> MutableWallet::htmlOutput()\n");
 
-    const auto& container = this->getEntries({0, 0, 0});
+    const auto& container = this->getEntries({0, 0, 0}); // TODO
     DLog(" -> MutableWallet::htmlOutput() -> container %p\n", &container);
 
-    fs::path htmlPath;
+    fs::path htmlPath{};
     if (_path.empty()) {
       htmlPath = this->path / "html";
     } else {

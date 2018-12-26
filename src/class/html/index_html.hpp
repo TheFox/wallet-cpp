@@ -4,6 +4,8 @@
 
 #include <string>
 
+#include <mstch/mstch.hpp>
+
 #include "base_html.hpp"
 
 namespace Wallet::Html
@@ -17,32 +19,6 @@ namespace Wallet::Html
     const std::string balanceClass{};
     const std::string balanceSum{};
     const std::string balanceSumClass{};
-  };
-
-  class IndexMustacheObject final : public BaseMustacheObject
-  {
-  public:
-    // Constructor
-    IndexMustacheObject(mstch::array, mstch::map);
-
-    // Functions
-    mstch::node hasGnuplotSupport() noexcept;
-  };
-
-  class TotalGnuplotObject final : public BaseGnuplotObject
-  {
-  public:
-    // Constructor
-    TotalGnuplotObject(std::string, std::string);
-
-  private:
-    // Functions
-    mstch::node getPngFilePath() noexcept;
-    mstch::node getDatFilePath() noexcept;
-
-    // Properties
-    const std::string pngFilePath{};
-    const std::string datFilePath{};
   };
 
   /**
