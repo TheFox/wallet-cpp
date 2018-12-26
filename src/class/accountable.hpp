@@ -7,8 +7,9 @@
 
 namespace Wallet
 {
-  struct Accountable
+  class Accountable
   {
+  public:
     // Types
     using Number = std::float_t;
 
@@ -23,7 +24,7 @@ namespace Wallet
     // Parameter: Balance
     std::string getBalanceStr() const noexcept;
 
-    // Variables
+    // Properties
     Number revenue{};
     Number expense{};
     Number balance{};
@@ -31,6 +32,15 @@ namespace Wallet
     // Functions
     void calcBalance() noexcept;
     std::string getBalanceHtmlClass() const noexcept;
+
+  private:
+    // Properties
+    mutable bool revenueCache{};
+    mutable std::string revenueStr{};
+    mutable bool expenseCache{};
+    mutable std::string expenseStr{};
+    mutable bool balanceCache{};
+    mutable std::string balanceStr{};
   };
 } // Wallet Namespace
 

@@ -28,7 +28,6 @@ namespace Wallet
 
       cout << "Title: [" << entry.title << "] ";
       getline(cin, _tmpStr);
-      cout << "Title: '" << _tmpStr << "'" << endl;
       if (!_tmpStr.empty()) {
         entry.title = _tmpStr;
       }

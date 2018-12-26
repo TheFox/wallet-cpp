@@ -1,6 +1,7 @@
 
 #include <iomanip> // setprecision
 #include <ios> // fixed
+#include <sstream> // ostringstream
 
 #include "debug.hpp"
 #include "config.hpp"
@@ -48,7 +49,7 @@ namespace Wallet::Html
       balanceSum += yearPair.second.balance;
 
       // Balance Sum String
-      std::stringstream balanceSumSs;
+      std::ostringstream balanceSumSs{};
       balanceSumSs << std::fixed << std::setprecision(2) << balanceSum;
 
       // Add row to HTML file.

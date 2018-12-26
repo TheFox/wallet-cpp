@@ -3,6 +3,7 @@
 #include <iomanip> // setprecision, setfill, setw
 #include <iterator> // back_inserter
 #include <algorithm> // transform
+#include <sstream> // ostringstream
 
 #ifdef __has_include
 #  if __has_include(<boost/date_time/gregorian/gregorian.hpp>)
@@ -91,7 +92,7 @@ namespace Wallet::Html
 
   std::string MonthHtml::getMonthFile(const Container::ContainerMonth month) noexcept
   {
-    std::stringstream ss{};
+    std::ostringstream ss{};
     ss << "month_";
     ss << std::setfill('0') << std::setw(2) << std::to_string(month);
     ss << ".html";

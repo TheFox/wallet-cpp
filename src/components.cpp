@@ -1,6 +1,6 @@
 
 #include <locale>
-#include <sstream>
+#include <sstream> // ostringstream, istringstream
 #include <string>
 #include <iomanip> // setprecision
 #include <ios> // fixed
@@ -31,7 +31,7 @@ namespace Wallet::Components
 
     const auto now = boost::posix_time::second_clock::universal_time();
 
-    std::stringstream ss;
+    std::ostringstream ss{};
     ss.imbue(loc);
     ss << now;
 
@@ -45,7 +45,7 @@ namespace Wallet::Components
 
   std::string ftos(const std::float_t& _f, const int _p) noexcept
   {
-    std::stringstream ss;
+    std::ostringstream ss{};
     ss << std::fixed << std::setprecision(_p) << _f;
 
 #ifdef DEBUG

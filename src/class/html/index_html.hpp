@@ -3,9 +3,11 @@
 #define WALLETCPP_HTML_INDEX_HTML_HPP_
 
 #include <string>
+#include <vector>
 
 #include <mstch/mstch.hpp>
 
+#include "config.hpp"
 #include "base_html.hpp"
 
 namespace Wallet::Html
@@ -20,6 +22,8 @@ namespace Wallet::Html
     const std::string balanceSum{};
     const std::string balanceSumClass{};
   };
+
+  using IndexHtmlRows = std::vector<IndexHtmlRow>;
 
   /**
    * Generates the main index.html file.
@@ -36,7 +40,11 @@ namespace Wallet::Html
 
   private:
     // Properties
-    mstch::array entries{};
+    IndexHtmlRows entries{};
+
+#ifdef WALLETCPP_GNUPLOT_SUPPORT
+    //IndexHtmlRows gnuplotEntries{};
+#endif
   };
 } // Wallet::Html Namespace
 

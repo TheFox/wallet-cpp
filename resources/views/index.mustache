@@ -48,8 +48,10 @@
 </table>
 
 {{#hasGnuplotSupport}}
-    <h1>GNUPLOT</h1>
     <p><img src="total.png"></p>
+{{/hasGnuplotSupport}}
+{{^hasGnuplotSupport}}
+    <!-- NO GNUPLOT SUPPORT //-->
 {{/hasGnuplotSupport}}
 </body>
 </html>

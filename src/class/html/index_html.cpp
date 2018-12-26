@@ -1,5 +1,8 @@
 
 #include <memory> // make_shared
+#include <algorithm> // transform, accumulate
+#include <iterator> // back_inserter, ostream_iterator
+#include <sstream> // ostringstream
 
 #include "debug.hpp"
 #include "config.hpp"
@@ -18,25 +21,16 @@ namespace Wallet::Html
     //DLog(" -> IndexHtml::IndexHtml('%s')\n", this->basePath.c_str());
   }
 
-  void IndexHtml::addRow(const IndexHtmlRow row) noexcept
+  void IndexHtml::addRow(IndexHtmlRow row) noexcept
   {
     //DLog(" -> IndexHtml::addRow(%s)\n", row.year.c_str());
 
-    const mstch::map rowMap{
-      {"year",              row.year},
-      {"revenue",           row.revenue},
-      {"expense",           row.expense},
-      {"balance",           row.balance},
-      {"balance_class",     row.balanceClass},
-      {"balance_sum",       row.balanceSum},
-      {"balance_sum_class", row.balanceSumClass},
-    };
-    this->entries.push_back(rowMap);
+    this->entries.push_back(std::move(row));
   }
 
   void IndexHtml::generate(const IndexHtmlRow totalRow) const
   {
-    //DLog(" -> IndexHtml::generate('%s')\n", totalRow.year.c_str());
+    DLog(" -> IndexHtml::generate('%s')\n", totalRow.year.c_str());
 
     if (!fs::exists(WALLETCPP_INDEX_VIEW_PATH)) {
       DLog("ERROR: Index template file does not exists: '%s'\n", WALLETCPP_INDEX_VIEW_PATH);
@@ -49,6 +43,22 @@ namespace Wallet::Html
     }
 #endif
 
+    // Transform IndexHtmlRow entries to mstch::array<mstch::map>.
+    mstch::array _entries{};
+    std::transform(this->entries.cbegin(), this->entries.cend(), std::back_inserter(_entries), [](auto row) {
+      //DLog(" -> transform\n");
+
+      return mstch::map{
+        {"year",              std::move(row.year)},
+        {"revenue",           std::move(row.revenue)},
+        {"expense",           std::move(row.expense)},
+        {"balance",           std::move(row.balance)},
+        {"balance_class",     std::move(row.balanceClass)},
+        {"balance_sum",       std::move(row.balanceSum)},
+        {"balance_sum_class", std::move(row.balanceSumClass)},
+      };
+    });
+
     // Total
     const mstch::map total{
       {"label",         totalRow.year},
@@ -59,7 +69,7 @@ namespace Wallet::Html
     };
 
     const std::string tpl = Components::readFileIntoString(WALLETCPP_INDEX_VIEW_PATH);
-    const auto context = std::make_shared<Mustache::IndexMustache>(this->entries, total);
+    const auto context = std::make_shared<Mustache::IndexMustache>(_entries, total);
 
     // Output: index.html
     std::ofstream indexFh{this->getFullPath()};
@@ -67,22 +77,47 @@ namespace Wallet::Html
     indexFh.close();
 
 #ifdef WALLETCPP_GNUPLOT_SUPPORT
-    DLog(" -> YearHtml::generate() -> GNUPlot support\n");
-
     const auto pngFilePath = (this->basePath / "total.png").string();
     const auto datFilePath = (this->tmpPath / "total.dat").string();
+
+    DLog(" -> png: '%s'\n", pngFilePath.c_str());
+    DLog(" -> dat: '%s'\n", datFilePath.c_str());
+    DLog(" -> len: %lu\n", this->entries.size());
+
+    const auto maxLen = this->entries.size() >= 10 ? this->entries.size() - 10 : 0;
+    const auto entriesBegin = this->entries.cbegin() + maxLen;
+    const auto entriesEnd = this->entries.cend();
+
+    std::vector<std::string> datRows{};
+    std::transform(entriesBegin, entriesEnd, std::back_inserter(datRows), [](const auto entry) {
+      std::string row{entry.year};
+      row += " " + (entry.revenue.empty() ? "0" : entry.revenue);
+      row += " " + (entry.expense.empty() ? "0" : entry.expense);
+      row += " " + (entry.balance.empty() ? "0" : entry.balance);
+      row += " " + (entry.balanceSum.empty() ? "0" : entry.balanceSum);
+
+      return row;
+    });
+
+    // Write data file for GNUPlot.
+    std::ofstream datFh{datFilePath};
+    std::copy(datRows.cbegin(), datRows.cend(), std::ostream_iterator<std::string>(datFh, "\n"));
+    datFh.close();
 
     const std::string gnuplotTpl = Components::readFileIntoString(WALLETCPP_TOTAL_GNUPLOT_PATH);
     const auto gnuplotContext = std::make_shared<Mustache::TotalGnuplot>(pngFilePath, datFilePath);
 
     // Output: total.gp
     const auto gnuplotFilePath = (this->tmpPath / "total.gp").string();
+    DLog(" -> gp: '%s'\n", gnuplotFilePath.c_str());
     std::ofstream totalFh{gnuplotFilePath};
     totalFh << mstch::render(gnuplotTpl, gnuplotContext);
     totalFh.close();
 
-    const auto gnuplotCmd = std::string{"x"} + "y";
+    const auto gnuplotCmd = std::string{"gnuplot "} + gnuplotFilePath;
     DLog(" -> exec gnuplot: '%s'\n", gnuplotCmd.c_str());
+    const auto execrv = system(gnuplotCmd.c_str());
+    DLog(" -> exec gnuplot: %d\n", execrv);
 #endif
   }
 } // Wallet::Html Namespace

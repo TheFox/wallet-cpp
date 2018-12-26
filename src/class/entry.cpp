@@ -1,5 +1,6 @@
 
 #include <string_view>
+#include <sstream> // ostringstream
 
 #ifdef __has_include
 #  if __has_include(<yaml-cpp/yaml.h>)
@@ -192,14 +193,13 @@ namespace Wallet
   {
     using uuid::random_generator;
     using uuid::uuid;
-    using std::stringstream;
 
     // Random UUID
     random_generator gen;
     uuid _id = gen();
 
     // Convert UUID to String.
-    stringstream uuidStream;
+    std::ostringstream uuidStream{};
     uuidStream << _id;
 
     // Set ID from String Stream.
@@ -208,7 +208,7 @@ namespace Wallet
 
   std::string Entry::getFileName() const noexcept
   {
-    std::ostringstream out;
+    std::ostringstream out{};
     out << "month_";
     if (this->date.is_not_a_date()) {
       out << "undefined";

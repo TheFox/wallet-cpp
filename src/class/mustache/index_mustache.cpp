@@ -1,5 +1,6 @@
 
 #include "debug.hpp"
+#include "config.hpp"
 #include "index_mustache.hpp"
 
 namespace Wallet::Mustache
@@ -16,11 +17,11 @@ namespace Wallet::Mustache
 
   mstch::node IndexMustache::hasGnuplotSupport() noexcept
   {
-    //DLog(" -> IndexMustache::hasGnuplotSupport()\n");
-
 #ifdef WALLETCPP_GNUPLOT_SUPPORT
+    DLog(" -> IndexMustache::hasGnuplotSupport() YES\n");
     return true;
 #else
+    DLog(" -> IndexMustache::hasGnuplotSupport() NO\n");
     return false;
 #endif
   }

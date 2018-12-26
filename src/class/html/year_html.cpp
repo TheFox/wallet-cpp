@@ -119,8 +119,8 @@ namespace Wallet::Html
     indexFh.close();
 
 #ifdef WALLETCPP_GNUPLOT_SUPPORT
-    //DLog(" -> YearHtml::generate() -> GNUPlot support\n");
     // TODO
+
 #endif
   }
 } // Wallet::Html Namespace
