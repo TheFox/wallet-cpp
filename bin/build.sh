@@ -14,4 +14,4 @@ cd build_${BUILD_TYPE}
 set -x
 
 cmake -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DWALLETCPP_BASE_DIR_PATH="${project_dir}" ..
-make VERBOSE=1 -j 4 wallet
+make -j 4 wallet

@@ -11,6 +11,7 @@
 
 - [termcolor](https://github.com/ikalnytskyi/termcolor) (Color in Terminal)
 - [Catch2](https://github.com/catchorg/Catch2) (Unit tests)
+- gnuplot
 
 ### Install dependencies on macOS
 
