@@ -13,5 +13,10 @@ cd build_${BUILD_TYPE}
 
 set -x
 
-cmake -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DWALLETCPP_BASE_DIR_PATH="${project_dir}" ..
+if [[ "${BUILD_TYPE}" = "release" ]]; then
+    cmake -DCMAKE_BUILD_TYPE=${BUILD_TYPE} ..
+else
+    cmake -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DWALLETCPP_BASE_DIR_PATH="${project_dir}" ..
+fi
+
 make -j 4 wallet

@@ -8,8 +8,8 @@ set(PROJECT_INSTALL_BASE_DIR "/usr/local")
 set(PROJECT_SHARE_BASE_DIR "${PROJECT_INSTALL_BASE_DIR}/share/wallet_cpp")
 set(PROJECT_SHARE_RESOURCES_DIR "${PROJECT_SHARE_BASE_DIR}/resources")
 
-#-DWALLETCPP_GNUPLOT_SUPPORT:BOOL=OFF
-set(WALLETCPP_GNUPLOT_SUPPORT ON CACHE BOOL "Turn on/off building with Gnuplot support.")
+#-DWALLETCPP_GNUPLOT_SUPPORT=OFF
+option(WALLETCPP_GNUPLOT_SUPPORT "Turn on/off building with Gnuplot support." OFF)
 
 set(CMAKE_CXX_FLAGS "-Wall -Wshadow")
 set(CMAKE_CXX_FLAGS_DEBUG "-g -O0 -DDEBUG -fsanitize=address -fstandalone-debug")
