@@ -11,10 +11,10 @@
 #  endif
 #endif // __has_include
 
-#include "../class/entry.hpp"
+#include "class/entry.hpp"
 
 TEST_CASE("Test Entry", "[entry]"){
-  Wallet::Entry entry;
+  Wallet::Entry entry{};
 
   // Optional
   SECTION("setDate()") {

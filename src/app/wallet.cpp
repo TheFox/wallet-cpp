@@ -193,7 +193,7 @@ int main(int argc, char* const argv[])
 #ifdef TERMCOLOR_HPP_
     std::cerr << termcolor::on_red << termcolor::white << "ERROR: " << e << termcolor::reset << std::endl;
 #else
-    std::cerr << "ERROR: " << e << endl;
+    std::cerr << "ERROR: " << e << std::endl;
 #endif
     return 1;
   }
