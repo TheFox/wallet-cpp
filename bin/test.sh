@@ -16,5 +16,10 @@ make -j 4 test
 cd bin
 
 ./test --libidentify
-./test --list-tests
+echo $?
+
+./test --list-tests || true
+echo $?
+
 ./test --abort --durations yes
+echo $?
