@@ -1,8 +1,16 @@
 
-#include <string_view>
 #include <sstream> // ostringstream
 
 #ifdef __has_include
+#  if __has_include(<string_view>)
+#    include <string_view>
+namespace stdsvl = std::string_view_literals;
+#  elif __has_include(<experimental/string_view>)
+#    include <experimental/string_view>
+namespace stdsvl = std::experimental::string_view_literals;
+#  else
+#    error "Missing <string_view>"
+#  endif
 #  if __has_include(<yaml-cpp/yaml.h>)
 #    include <yaml-cpp/yaml.h>
 #  else

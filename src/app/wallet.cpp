@@ -115,6 +115,23 @@ int main(int argc, char* const argv[])
 
     std::cout << std::endl;
     std::cout << "Build settings:" << std::endl;
+
+#ifdef __linux__
+    std::cout << "  Build for Linux (__linux__)" << std::endl;
+#endif
+#ifdef __APPLE__
+    std::cout << "  Build for Apple (__APPLE__)" << std::endl;
+#endif
+#ifdef __GNUC__
+    std::cout << "  Build with: GCC " << __VERSION__ << std::endl;
+#ifdef __llvm__
+    std::cout << "              LLVM " << __clang_version__ << std::endl;
+    std::cout << "              LLVM " << __clang_major__ << '.' << __clang_minor__ << '.' << __clang_patchlevel__ << std::endl;
+#endif
+#else
+    std::cout << "  Unknown build info. (Not implemented.) " << std::endl;
+#endif
+
     std::cout << "  PROJECT_INSTALL_BASE_DIR: " << PROJECT_INSTALL_BASE_DIR << std::endl;
     std::cout << "  PROJECT_SHARE_BASE_DIR: " << PROJECT_SHARE_BASE_DIR << std::endl;
 

@@ -3,6 +3,7 @@
 #include <algorithm> // transform, accumulate
 #include <iterator> // back_inserter, ostream_iterator
 #include <sstream> // ostringstream
+#include <fstream> // ofstream
 
 #include "debug.hpp"
 #include "config.hpp"

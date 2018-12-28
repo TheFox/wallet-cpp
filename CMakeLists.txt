@@ -55,6 +55,7 @@ endif ()
 add_executable(wallet
     src/app/wallet.cpp
     src/debug.hpp
+    src/fs.hpp
     src/components.cpp src/components.hpp
     src/class/mutable_wallet.cpp src/class/mutable_wallet.hpp
     src/class/immutable_wallet.cpp src/class/immutable_wallet.cpp
@@ -129,9 +130,7 @@ install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/resources
     DESTINATION ${PROJECT_SHARE_BASE_DIR})
 
 message(STATUS "CXX_STANDARD wallet ${wallet_std}")
-message(STATUS "CXX_STANDARD test ${test_std}")
 message(STATUS "CMAKE_CXX_COMPILER ${CMAKE_CXX_COMPILER}")
-message(STATUS "CMAKE_CXX_COMPILER_LAUNCHER ${CMAKE_CXX_COMPILER_LAUNCHER}")
 message(STATUS "CMAKE_CURRENT_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}")
 message(STATUS "CMAKE_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX}")
 message(STATUS "CMAKE_CURRENT_LIST_DIR ${CMAKE_CURRENT_LIST_DIR}")
@@ -139,8 +138,6 @@ message(STATUS "PROJECT_SOURCE_DIR ${PROJECT_SOURCE_DIR}")
 message(STATUS "PROJECT_INSTALL_BASE_DIR ${PROJECT_INSTALL_BASE_DIR}")
 message(STATUS "PROJECT_SHARE_BASE_DIR ${PROJECT_SHARE_BASE_DIR}")
 message(STATUS "PROJECT_SHARE_RESOURCES_DIR ${PROJECT_SHARE_RESOURCES_DIR}")
-message(STATUS "INSTALL_PATH ${INSTALL_PATH}")
-message(STATUS "RESOURCE_FILES ${RESOURCE_FILES}")
 
 message(STATUS "YAML_CPP_INCLUDE_DIR ${YAML_CPP_INCLUDE_DIR}")
 message(STATUS "YAML_CPP_LIBRARIES ${YAML_CPP_LIBRARIES}")

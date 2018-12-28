@@ -2,8 +2,7 @@
 #include <fstream> // ofstream, ifstream
 #include <iostream>
 #include <cstdint>
-//#include <iomanip> // setprecision, setfill, setw
-//#include <ios> // fixed
+#include <cstdio> // remove
 
 #ifdef __has_include
 #  if __has_include(<yaml-cpp/yaml.h>)
@@ -22,7 +21,7 @@
 
 namespace Wallet
 {
-  MutableWallet::MutableWallet(std::string _path) noexcept : path{std::move(_path)}
+  MutableWallet::MutableWallet(std::string _path) noexcept : path{_path}
   {
     DLog(" -> MutableWallet::MutableWallet\n");
   }
@@ -217,8 +216,13 @@ namespace Wallet
 
         // Iterate Day entries.
         for (const auto& entryNode : node) {
+#if defined(__APPLE__) && defined(__llvm__) && (__clang_major__ >= 10)
           // emplace_back() is Nice!!
           const auto& entry = dayMap.entries.emplace_back(entryNode);
+#else
+          const Entry entry = entryNode;
+          dayMap.entries.push_back(entry);
+#endif
 
           // Container
           container.entryCount++;
@@ -378,7 +382,11 @@ namespace Wallet
     // Remove lock file.
     const auto _lockPath = this->lockPath.string();
     if (fs::exists(_lockPath)) {
+#ifdef __linux__
+      std::remove(_lockPath.c_str());
+#else
       fs::remove(_lockPath);
+#endif
     }
 
     this->isLocked = false;

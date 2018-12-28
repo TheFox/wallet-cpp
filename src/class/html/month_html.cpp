@@ -12,9 +12,12 @@ namespace calendar = boost::gregorian;
 #  else
 #    error "Missing <boost/date_time/gregorian/gregorian.hpp>"
 #  endif
+#  if __has_include(<mstch/mstch.hpp>)
+#    include <mstch/mstch.hpp>
+#  else
+#    error "Missing <mstch/mstch.hpp>"
+#  endif
 #endif // __has_include
-
-#include <mstch/mstch.hpp>
 
 #include "debug.hpp"
 #include "config.hpp"

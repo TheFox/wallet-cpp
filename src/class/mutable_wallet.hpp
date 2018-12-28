@@ -5,19 +5,7 @@
 #include <string>
 #include <vector>
 
-#ifdef __has_include
-#  if __has_include(<filesystem>)
-#    include <filesystem>
-#  elif __has_include(<experimental/filesystem>)
-#    include <experimental/filesystem>
-#  elif __has_include(<boost/filesystem.hpp>)
-#    include <boost/filesystem.hpp>
-namespace fs = boost::filesystem;
-#  else
-#    error "Missing <filesystem>"
-#  endif
-#endif // __has_include
-
+#include "fs.hpp"
 #include "components.hpp"
 #include "entry.hpp"
 #include "container/entry_container.hpp"
@@ -56,7 +44,7 @@ namespace Wallet
 
   private:
     // Variables
-    u_int8_t version{1};
+    std::uint8_t version{1};
     bool isLocked{};
     bool isIndexLoaded{};
     bool isIndexModified{};
