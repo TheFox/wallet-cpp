@@ -12,9 +12,9 @@ namespace Wallet
 {
   int AddCommand::execute()
   {
-    DLog(" -> options %p\n", &this->options);
+    //DLog(" -> options %p\n", &this->options);
 
-    Entry entry = this->options;
+    Entry entry{this->options};
 
     if (this->options.isInteractively) {
       std::string _tmpStr{};

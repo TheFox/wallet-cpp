@@ -141,20 +141,20 @@ namespace Wallet
       try {
         this->date = calendar::from_simple_string(_dateStr);
       }
-      catch (std::exception& e) {
+      catch (std::exception& exception1) {
         try {
           this->date = calendar::from_undelimited_string(_dateStr);
         }
-        catch (std::exception& e) {
+        catch (std::exception& exception2) {
           try {
             this->date = calendar::from_us_string(_dateStr);
           }
-          catch (std::exception& e) {
+          catch (std::exception& exception3) {
             try {
               this->date = calendar::from_uk_string(_dateStr);
             }
-            catch (std::exception& e) {
-              throw std::string{e.what()};
+            catch (std::exception& exception4) {
+              throw std::string{exception4.what()};
             }
           }
         }

@@ -52,8 +52,7 @@ namespace Wallet
   {
     DLog(" -> MutableWallet::add(%p, u=%c)\n", &entry, isUnique ? 'Y' : 'N');
 
-    const bool entryExists = this->entryExists(entry);
-    if (isUnique && entryExists) {
+    if (isUnique && this->entryExists(entry)) {
       return false;
     }
 
@@ -63,7 +62,7 @@ namespace Wallet
     // Month File
     const auto monthFile = entry.getFileName();
     const auto monthFilePath = this->dataPath / monthFile;
-    const auto monthFilePathStr = monthFilePath.string();
+    const auto& monthFilePathStr = monthFilePath.string();
 
     // For 'updated_at' field.
     const auto now = Components::getNowStr();

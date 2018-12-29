@@ -41,3 +41,9 @@ If you want to install Wallet, run:
 
 - macOS 10.13 High Sierra
 - macOS 10.14 Mojave
+
+## Builded with
+
+- GCC 6.3.0
+- GCC 4.2.1 Compatible Clang 6.0.0
+- GCC 4.2.1 Compatible Apple LLVM 10.0.0

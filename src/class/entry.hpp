@@ -30,8 +30,8 @@ namespace Wallet
     Entry() noexcept;
 
     // Copy Contructor
-    Entry(const CommandOptions&);
-    Entry(const YAML::Node&) noexcept;
+    explicit Entry(const CommandOptions&);
+    explicit Entry(const YAML::Node&) noexcept;
 
     // Parameter: ID
     std::string id{};
