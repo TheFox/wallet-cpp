@@ -111,7 +111,7 @@ namespace Wallet
   {
     //DLog(" -> Entry::setDate(%s)\n", _dateStr.c_str());
 
-    using std::string_view_literals::operator ""sv;
+    using stdsvl::operator ""sv;
 
     // Yesterday
     constexpr auto yesterdayStr = "yesterday"sv;
