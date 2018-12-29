@@ -219,7 +219,7 @@ namespace Wallet
           // emplace_back() is Nice!!
           const auto& entry = dayMap.entries.emplace_back(entryNode);
 #else
-          const Entry entry = entryNode;
+          const Entry entry{entryNode};
           dayMap.entries.push_back(entry);
 #endif
 
