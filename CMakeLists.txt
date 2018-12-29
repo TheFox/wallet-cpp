@@ -12,9 +12,9 @@ set(PROJECT_SHARE_RESOURCES_DIR "${PROJECT_SHARE_BASE_DIR}/resources")
 option(WALLETCPP_GNUPLOT_SUPPORT "Turn on/off building with Gnuplot support." OFF)
 
 set(CMAKE_CXX_FLAGS "-Wall -Wshadow")
-set(CMAKE_CXX_FLAGS_DEBUG "-g -O0 -DDEBUG -fsanitize=address -fstandalone-debug")
+set(CMAKE_CXX_FLAGS_DEBUG "-g -O0 -DDEBUG -fsanitize=address")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG -Wunused-variable")
-set(CMAKE_CXX_FLAGS_TEST "-g -O0 -DDEBUG -fstandalone-debug")
+set(CMAKE_CXX_FLAGS_TEST "-g -O0 -DDEBUG")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
 
 # Set minimum C++ to 2017 standards.
