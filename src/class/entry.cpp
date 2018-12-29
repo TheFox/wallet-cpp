@@ -2,15 +2,6 @@
 #include <sstream> // ostringstream
 
 #ifdef __has_include
-#  if __has_include(<string_view>)
-#    include <string_view>
-namespace stdsvl = std::string_view_literals;
-#  elif __has_include(<experimental/string_view>)
-#    include <experimental/string_view>
-namespace stdsvl = std::experimental::string_view_literals;
-#  else
-#    error "Missing <string_view>"
-#  endif
 #  if __has_include(<yaml-cpp/yaml.h>)
 #    include <yaml-cpp/yaml.h>
 #  else
@@ -39,7 +30,7 @@ namespace Wallet
     this->date = calendar::day_clock::local_day();
   }
 
-  Entry::Entry(const CommandOptions& options) noexcept : Entry()
+  Entry::Entry(const CommandOptions& options) : Entry()
   {
     //DLog(" -> Entry::Entry(%p, CommandOptions %p)\n", this, &options);
 
@@ -110,28 +101,24 @@ namespace Wallet
   void Entry::setDate(const std::string& _dateStr)
   {
     //DLog(" -> Entry::setDate(%s)\n", _dateStr.c_str());
-
-    using stdsvl::operator ""sv;
-
-    // Yesterday
-    constexpr auto yesterdayStr = "yesterday"sv;
-    bool isYesterday = false;
-    if (_dateStr.length() <= yesterdayStr.length()) {
-      isYesterday = yesterdayStr.substr(0, _dateStr.length()) == _dateStr;
-    }
+    const auto _dateStrLen = _dateStr.length();
 
     // Now
-    constexpr auto nowStr = "now"sv;
     bool isNow = false;
-    if (_dateStr.length() <= nowStr.length()) {
-      isNow = nowStr.substr(0, _dateStr.length()) == _dateStr;
+    if (_dateStrLen <= 3) {
+      isNow = std::string{"now"}.substr(0, _dateStrLen) == _dateStr;
     }
 
     // Tomorrow
-    constexpr auto tomorrowStr = "tomorrow"sv;
     bool isTomorrow = false;
-    if (!isYesterday && _dateStr.length() <= tomorrowStr.length()) {
-      isTomorrow = tomorrowStr.substr(0, _dateStr.length()) == _dateStr;
+    if (!isNow && _dateStrLen <= 8) {
+      isTomorrow = std::string{"tomorrow"}.substr(0, _dateStrLen) == _dateStr;
+    }
+
+    // Yesterday
+    bool isYesterday = false;
+    if (!isNow && !isTomorrow && _dateStrLen <= 9) {
+      isYesterday = std::string{"yesterday"}.substr(0, _dateStrLen) == _dateStr;
     }
 
     if (isYesterday) {
