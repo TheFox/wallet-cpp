@@ -33,6 +33,12 @@ While conventionally programs like Microsoft Excel or [LibreOffice](https://www.
 brew install boost yaml-cpp mstch gnuplot
 ```
 
+### Install dependencies on Debian 9
+
+```bash
+sudo apt-get install --no-install-recommends libboost-filesystem-dev libboost-program-options-dev libboost-date-time-dev
+```
+
 ## Build from Source
 
 You need a modern C++ compiler that supports C++17 and CMake 3.8 or later.
@@ -49,6 +55,49 @@ If you want to install Wallet, run:
 
 ```bash
 ./bin/install.sh
+```
+
+## Install via Debian repository
+
+Only Debian 9 (stretch) is supported.
+
+Add the public GPG key to the apt sources keyring:
+
+```bash
+wget -qO - https://fox21.at/christian_mayer.asc | sudo apt-key add -
+```
+
+Verify key on the keyring. This should print out informations about the key:
+
+```bash
+apt-key list 2814B4288C4594FF0BA75571F96ED997C9382D47
+```
+
+Add apt source file and update:
+
+```bash
+echo 'deb https://debian.fox21.at/ stretch main' > /etc/apt/sources.list.d/fox21at.list
+apt-get update
+```
+
+Install the package:
+
+```bash
+sudo apt-get install wallet-cpp
+```
+
+Now you can run the program:
+
+```bash
+wallet --help
+```
+
+## Install under Debian via .deb file
+
+Go to the [GitHub releases page](https://github.com/TheFox/wallet-cpp/releases) and download the desired version file. Then run:
+
+```bash
+sudo dpkg --install wallet-cpp.deb
 ```
 
 ## Tested under
