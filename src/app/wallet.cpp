@@ -132,8 +132,8 @@ int main(int argc, char* const argv[])
     std::cout << "  Unknown build info. (Not implemented.) " << std::endl;
 #endif
 
-    std::cout << "  PROJECT_INSTALL_BASE_DIR: " << PROJECT_INSTALL_BASE_DIR << std::endl;
-    std::cout << "  PROJECT_SHARE_BASE_DIR: " << PROJECT_SHARE_BASE_DIR << std::endl;
+    std::cout << "  PROJECT_INSTALL_PREFIX: " << PROJECT_INSTALL_PREFIX << std::endl;
+    std::cout << "  PROJECT_SHARE_PREFIX: " << PROJECT_SHARE_PREFIX << std::endl;
 
 #ifdef WALLETCPP_GNUPLOT_SUPPORT
     std::cout << "  WALLETCPP_GNUPLOT_SUPPORT: YES" << std::endl;

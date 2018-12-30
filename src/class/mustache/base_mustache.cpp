@@ -65,7 +65,7 @@ namespace Wallet::Mustache
 
   mstch::node BaseMustache::getGeneratedAt() noexcept
   {
-    return Components::getNowStr(HUMAN_DATETIME_FORMAT);
+    return Components::getNowStr(WALLETCPP_HUMAN_DATETIME_FORMAT);
   }
 
   mstch::node BaseMustache::getRelativePath() noexcept

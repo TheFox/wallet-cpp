@@ -1,0 +1,8 @@
+*.ex
+*.EX
+*.log
+*.substvars
+debhelper-build-stamp
+files
+/.debhelper/
+/wallet-cpp/

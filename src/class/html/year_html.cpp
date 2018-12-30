@@ -3,6 +3,7 @@
 #include <string>
 #include <iterator> // back_inserter
 #include <algorithm> // transform
+#include <cstdlib> // system
 
 #include "debug.hpp"
 #include "config.hpp"
@@ -174,9 +175,14 @@ namespace Wallet::Html
 
     // Run GNUPlot
     const auto gnuplotCmd = std::string{"gnuplot "} + gnuplotFilePath + " &> /dev/null < /dev/null";
+
+#ifdef DEBUG
     DLog(" -> exec gnuplot: '%s'\n", gnuplotCmd.c_str());
-    const auto execrv = system(gnuplotCmd.c_str());
+    const auto execrv = std::system(gnuplotCmd.c_str());
     DLog(" -> exec gnuplot: %d\n", execrv);
+#else
+    std::system(gnuplotCmd.c_str());
+#endif
 #endif
   }
 } // Wallet::Html Namespace
