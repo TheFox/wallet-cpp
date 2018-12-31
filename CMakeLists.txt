@@ -1,10 +1,10 @@
 cmake_minimum_required(VERSION 3.8.0)
 
 project(WalletCpp VERSION 0.6.0 LANGUAGES CXX)
-set(PROJECT_VERSION_APPENDIX "-dev.2")
+set(PROJECT_VERSION_APPENDIX "-dev.3")
 set(PROJECT_COPYRIGHT "Copyright (C) 2018 Christian Mayer <https://fox21.at>")
 set(PROJECT_HOMEPAGE_URL "https://github.com/TheFox/wallet-cpp")
-set(PROJECT_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX})
+set(PROJECT_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}" CACHE STRING "Install prefix path." )
 set(PROJECT_SHARE_PREFIX "${PROJECT_INSTALL_PREFIX}/share/wallet_cpp")
 set(PROJECT_SHARE_RESOURCES_DIR "${PROJECT_SHARE_PREFIX}/resources")
 

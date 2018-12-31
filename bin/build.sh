@@ -14,9 +14,9 @@ cd build_${BUILD_TYPE}
 set -x
 
 if [[ "${BUILD_TYPE}" = "release" ]]; then
-    cmake -DCMAKE_BUILD_TYPE=${BUILD_TYPE} ..
+    cmake -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DWALLETCPP_GNUPLOT_SUPPORT=ON ..
 else
-    cmake -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DWALLETCPP_BASE_DIR_PATH="${project_dir}" ..
+    cmake -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DWALLETCPP_GNUPLOT_SUPPORT=ON -DPROJECT_INSTALL_PREFIX="${project_dir}" ..
 fi
 
 make -j 4 wallet
