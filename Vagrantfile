@@ -19,7 +19,6 @@ Vagrant.configure('2') do |config|
       'DEBIAN_FRONTEND' => 'noninteractive',
       'WORKING_DIR' => '/app/walletcpp',
       'BASHRC_FILE' => '/home/vagrant/.bashrc',
-      #'TESTING_SOURCES_LIST' => '/etc/apt/sources.list.d/testing.list',
       'BACKPORTS_SOURCES_LIST' => '/etc/apt/sources.list.d/backports.list',
     }
     s.inline = <<-SHELL

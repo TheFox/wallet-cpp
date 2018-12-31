@@ -102,10 +102,11 @@ int main(int argc, char* const argv[])
 
     std::cout << "Usage: " << argv[0] << " <command> [options]" << std::endl << std::endl;
     std::cout << "Commands:" << std::endl;
-    std::cout << "  init   Initialize a new wallet" << std::endl;
-    std::cout << "  add    Add a new entry" << std::endl;
-    std::cout << "  list   List entries" << std::endl;
-    std::cout << "  html   Generate HTML output" << std::endl;
+    std::cout << "  init      Initialize a new wallet" << std::endl;
+    std::cout << "  add       Add a new entry" << std::endl;
+    std::cout << "  list      List entries" << std::endl;
+    std::cout << "  html      Generate HTML output" << std::endl;
+    std::cout << "  version   Print version" << std::endl;
     std::cout << std::endl;
 
     std::cout << genericOpts << std::endl;

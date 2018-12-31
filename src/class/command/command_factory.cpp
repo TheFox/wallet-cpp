@@ -7,6 +7,7 @@
 #include "init_command.hpp"
 #include "list_command.hpp"
 #include "html_command.hpp"
+#include "version_command.hpp"
 
 namespace Wallet
 {
@@ -34,6 +35,9 @@ namespace Wallet
     };
     creators["html"] = []()->std::unique_ptr<Command> {
       return std::make_unique<HtmlCommand>();
+    };
+    creators["version"] = []()->std::unique_ptr<Command> {
+      return std::make_unique<VersionCommand>();
     };
   }
 
