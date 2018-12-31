@@ -59,14 +59,14 @@ int main(int argc, char* const argv[])
               ("expense,e", bpo::value<std::string>()->value_name("number"), "Set an Expense.")
 
               ("comment,o", bpo::value<std::string>()->value_name("string"), "Set a Comment.")
-              ("interactive,i", "Use some commands interactively.")
+              ("interactive,i", "Add entry interactively.")
               ("force,f", "Force add command. Even if ID is set and already exists.")
               ("no-force", "Do not force add command.");
 
   // HTML Command options
   bpo::options_description htmlCmdOpts{"HTML Command options"};
   htmlCmdOpts.add_options()
-               ("path,p", bpo::value<std::string>()->value_name("string"), "Output path. Default: <wallet>/html");
+               ("path,p", bpo::value<std::string>()->value_name("string"), "Output directory path. Default: <wallet>/html");
 
   bpo::options_description opts{};
   opts

@@ -1,6 +1,6 @@
 # WalletCpp
 
-A spreadsheet likewise C++17 library to track your finances.
+A spreadsheet likewise C++17 program to track your finances.
 
 ## Why this project?
 
@@ -25,7 +25,7 @@ While conventionally programs like Microsoft Excel or [LibreOffice](https://www.
 
 - [termcolor](https://github.com/ikalnytskyi/termcolor) (Color in Terminal)
 - [Catch2](https://github.com/catchorg/Catch2) (Unit tests)
-- gnuplot
+- [gnuplot](http://www.gnuplot.info/)
 
 ### Install dependencies on macOS
 
@@ -36,7 +36,7 @@ brew install boost yaml-cpp mstch gnuplot
 ### Install dependencies on Debian 9
 
 ```bash
-sudo apt-get install --no-install-recommends libboost-filesystem-dev libboost-program-options-dev libboost-date-time-dev
+sudo apt-get install --no-install-recommends gnuplot5 libboost-filesystem-dev libboost-program-options-dev libboost-date-time-dev
 ```
 
 ## Build from Source
@@ -99,6 +99,10 @@ Go to the [GitHub releases page](https://github.com/TheFox/wallet-cpp/releases) 
 ```bash
 sudo dpkg --install wallet-cpp.deb
 ```
+
+## Documentation
+
+Read more documentation in the [Wiki](wiki).
 
 ## Tested under
 
