@@ -1,6 +1,7 @@
 
 #include <iostream>
 #include <istream> // getline
+#include <cstdlib> // system
 
 #include "debug.hpp"
 #include "add_command.hpp"
@@ -82,13 +83,13 @@ namespace Wallet
       std::cout << "OK? [Y/n] ";
 
       // Set terminal to raw mode.
-      system("stty raw");
+      std::system("stty raw");
 
       // Read char.
       int input = getchar();
 
       // Reset terminal to normal "cooked" mode
-      system("stty cooked");
+      std::system("stty cooked");
 
       //printf("input: %d %d\n", input, '\r');
 

@@ -77,6 +77,11 @@ namespace Wallet::Html
 
   void HtmlGenerator::setup() const noexcept
   {
+    // Make tmp/ directory.
+    if (!fs::exists(this->tmpPath)) {
+      fs::create_directories(this->tmpPath);
+    }
+
     if (!fs::exists(this->basePath)) {
       fs::create_directory(this->basePath);
     }
