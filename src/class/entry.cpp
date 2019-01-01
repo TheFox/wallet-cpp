@@ -1,5 +1,6 @@
 
 #include <sstream> // ostringstream
+#include <cmath> // abs
 
 #ifdef __has_include
 #  if __has_include(<yaml-cpp/yaml.h>)
@@ -55,7 +56,7 @@ namespace Wallet
     this->revenue = options.revenue;
 
     // Expense
-    this->expense = options.expense;
+    this->expense = -std::abs(options.expense);
 
     // Balance
     this->calcBalance();

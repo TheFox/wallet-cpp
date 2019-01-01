@@ -1,7 +1,9 @@
 
+#include <cstdlib> // system
 #include <iostream>
 #include <istream> // getline
-#include <cstdlib> // system
+#include <iomanip> // setprecision
+#include <ios> // fixed
 
 #include "debug.hpp"
 #include "add_command.hpp"
@@ -32,13 +34,13 @@ namespace Wallet
         entry.setDate(_tmpStr);
       }
 
-      std::cout << "Revenue: [" << entry.revenue << "] ";
+      std::cout << "Revenue: [" << std::fixed << std::setprecision(2) << entry.revenue << "] ";
       std::getline(std::cin, _tmpStr);
       if (!_tmpStr.empty()) {
         entry.setRevenue(Components::stof(_tmpStr));
       }
 
-      std::cout << "Expense: [" << entry.expense << "] ";
+      std::cout << "Expense: [" << std::fixed << std::setprecision(2) << entry.expense << "] ";
       std::getline(std::cin, _tmpStr);
       if (!_tmpStr.empty()) {
         entry.setExpense(Components::stof(_tmpStr));
@@ -72,9 +74,9 @@ namespace Wallet
     std::cout << "---------------" << std::endl;
     std::cout << "Title: '" << entry.title << "'" << std::endl;
     std::cout << "Date: '" << entry.getDateStr() << "'" << std::endl;
-    std::cout << "Revenue: " << entry.revenue << std::endl;
-    std::cout << "Expense: " << entry.expense << std::endl;
-    std::cout << "Balance: " << entry.balance << std::endl;
+    std::cout << "Revenue: " << std::fixed << std::setprecision(2) << entry.revenue << std::endl;
+    std::cout << "Expense: " << std::fixed << std::setprecision(2) << entry.expense << std::endl;
+    std::cout << "Balance: " << std::fixed << std::setprecision(2) << entry.balance << std::endl;
     std::cout << "Category: '" << entry.category << "'" << std::endl;
     std::cout << "Comment: '" << entry.comment << "'" << std::endl;
     std::cout << "---------------" << std::endl;
