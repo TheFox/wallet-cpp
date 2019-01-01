@@ -28,6 +28,8 @@ namespace Wallet::Html
   void YearHtml::generate() const
   {
     //DLog(" -> YearHtml::generate() -> %d\n", this->container.year);
+    const auto yearStr = std::to_string(this->container.year);
+    this->log("[year_html] generate: " + yearStr);
 
     if (!fs::exists(WALLETCPP_YEAR_VIEW_PATH)) {
       DLog("ERROR: Year template file does not exists: '%s'\n", WALLETCPP_YEAR_VIEW_PATH);
@@ -50,7 +52,8 @@ namespace Wallet::Html
     mstch::array entries{};
 
     for (const auto& monthPair : this->container.months) {
-      MonthHtml monthHtml{this->basePath, monthPair};
+      const MonthHtml monthHtml{this->basePath, monthPair};
+      monthHtml.logLevel = this->logLevel;
       monthHtml.generate();
 
       // Match common categories to month categories.
@@ -99,7 +102,6 @@ namespace Wallet::Html
       };
     });
 
-    const auto yearStr = std::to_string(this->container.year);
     const auto yearFileStr = "year_" + yearStr;
     const auto yearPngFileStr = yearFileStr + ".png";
 

@@ -26,6 +26,7 @@ namespace Wallet::Html
   void IndexHtml::addRow(IndexHtmlRow row) noexcept
   {
     //DLog(" -> IndexHtml::addRow(%s)\n", row.year.c_str());
+    this->log("[index_html] add row: " + row.year);
 
     this->entries.push_back(std::move(row));
   }
@@ -33,6 +34,7 @@ namespace Wallet::Html
   void IndexHtml::generate(const IndexHtmlRow totalRow) const
   {
     DLog(" -> IndexHtml::generate('%s')\n", totalRow.year.c_str());
+    this->log("[index_html] generate");
 
     if (!fs::exists(WALLETCPP_INDEX_VIEW_PATH)) {
       DLog("ERROR: Index template file does not exists: '%s'\n", WALLETCPP_INDEX_VIEW_PATH);

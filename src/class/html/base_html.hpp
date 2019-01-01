@@ -5,10 +5,11 @@
 #include <string>
 
 #include "fs.hpp"
+#include "class/logable.hpp"
 
 namespace Wallet::Html
 {
-  class BaseHtml
+  class BaseHtml : public Logable
   {
   public:
     explicit BaseHtml(fs::path, fs::path, fs::path, std::string);

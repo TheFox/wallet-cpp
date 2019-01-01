@@ -39,6 +39,9 @@ namespace Wallet::Html
   void MonthHtml::generate() const
   {
     //DLog(" -> MonthHtml::generate()\n");
+    const auto yearStr = std::to_string(this->container.year);
+
+    this->log("[month_html] generate: " + yearStr);
 
     if (!fs::exists(WALLETCPP_MONTH_VIEW_PATH)) {
       DLog("ERROR: Month template file does not exists: '%s'\n", WALLETCPP_MONTH_VIEW_PATH);
@@ -80,8 +83,6 @@ namespace Wallet::Html
       {"balance",       this->container.getBalanceStr()},
       {"balance_class", this->container.getBalanceHtmlClass()},
     };
-
-    const auto yearStr = std::to_string(this->container.year);
 
     const auto tpl = Components::readFileIntoString(WALLETCPP_MONTH_VIEW_PATH);
     const auto context = std::make_shared<Mustache::MonthMustache>("../..", entries, total, yearStr, this->name,

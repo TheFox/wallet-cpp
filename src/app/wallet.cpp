@@ -41,6 +41,7 @@ int main(int argc, char* const argv[])
   bpo::options_description genericOpts{"Generic options"};
   genericOpts.add_options()
                ("help,h", "This message")
+               ("verbose,v", "Verbose output.")
                ("wallet,w", bpo::value<std::string>()->value_name("path"), "Path to the wallet directory.");
 
   // Common options
@@ -66,7 +67,8 @@ int main(int argc, char* const argv[])
   // HTML Command options
   bpo::options_description htmlCmdOpts{"HTML Command options"};
   htmlCmdOpts.add_options()
-               ("path,p", bpo::value<std::string>()->value_name("string"), "Output directory path. Default: <wallet>/html");
+               ("path,p", bpo::value<std::string>()->value_name("string"),
+                 "Output directory path. Default: <wallet>/html");
 
   bpo::options_description opts{};
   opts
@@ -127,7 +129,8 @@ int main(int argc, char* const argv[])
     std::cout << "  Build with: GCC " << __VERSION__ << std::endl;
 #ifdef __llvm__
     std::cout << "              LLVM " << __clang_version__ << std::endl;
-    std::cout << "              LLVM " << __clang_major__ << '.' << __clang_minor__ << '.' << __clang_patchlevel__ << std::endl;
+    std::cout << "              LLVM " << __clang_major__ << '.' << __clang_minor__ << '.' << __clang_patchlevel__
+              << std::endl;
 #endif
 #else
     std::cout << "  Unknown build info. (Not implemented.) " << std::endl;
@@ -154,6 +157,9 @@ int main(int argc, char* const argv[])
   // Command Options
   Wallet::CommandOptions cmdOpts = {};
 
+  if (vm.count("verbose")) {
+    cmdOpts.verbose = 1;
+  }
   if (vm.count("wallet")) {
     cmdOpts.walletPath = vm["wallet"].as<std::string>();
   }

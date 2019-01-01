@@ -21,6 +21,7 @@ namespace Wallet
 #endif
 
     ImmutableWallet wallet{this->options.walletPath};
+    wallet.logLevel = this->options.verbose;
     wallet.setup();
 
     wallet.htmlOutput(this->options.path);

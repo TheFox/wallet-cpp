@@ -5,11 +5,12 @@
 #include <string>
 
 #include "fs.hpp"
+#include "class/logable.hpp"
 #include "class/container/entry_container.hpp"
 
 namespace Wallet::Html
 {
-  class HtmlGenerator final
+  class HtmlGenerator final : public Logable
   {
   public:
     HtmlGenerator(fs::path, fs::path, Wallet::Container::EntryContainer);

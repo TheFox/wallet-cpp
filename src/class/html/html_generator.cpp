@@ -12,7 +12,8 @@
 namespace Wallet::Html
 {
   HtmlGenerator::HtmlGenerator(fs::path _basePath, fs::path _tmpPath, Wallet::Container::EntryContainer _container) :
-    yearPath{_basePath / "year"}, basePath{std::move(_basePath)}, tmpPath{std::move(_tmpPath)}, container{std::move(_container)}
+    yearPath{_basePath / "year"}, basePath{std::move(_basePath)}, tmpPath{std::move(_tmpPath)}, container{std::move(
+    _container)}
   {
     //DLog(" -> HtmlGenerator::HtmlGenerator(%s, %p)\n", this->basePath.c_str(), &this->container);
   }
@@ -29,12 +30,14 @@ namespace Wallet::Html
 
     // Index HTML
     IndexHtml indexHtml{this->basePath, this->tmpPath};
+    indexHtml.logLevel = this->logLevel;
 
     // Iterate Years.
     for (const auto& yearPair : container.years) {
       //DLog(" -> year: %d\n", yearPair.first);
 
       const auto yearStr = std::to_string(yearPair.first);
+      this->log("[html_generator] year: " + yearStr);
 
       // Create Directory
       const auto yearDirPath = this->yearPath / yearStr;
@@ -42,7 +45,7 @@ namespace Wallet::Html
         fs::create_directories(yearDirPath);
       }
 
-      YearHtml yearHtml{yearDirPath, this->tmpPath, yearPair.second};
+      const YearHtml yearHtml{yearDirPath, this->tmpPath, yearPair.second};
       yearHtml.generate();
 
       // Balance Sum
@@ -77,6 +80,8 @@ namespace Wallet::Html
 
   void HtmlGenerator::setup() const noexcept
   {
+    this->log("[html_generator] setup");
+
     // Make tmp/ directory.
     if (!fs::exists(this->tmpPath)) {
       fs::create_directories(this->tmpPath);

@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.8.0)
 
 project(WalletCpp VERSION 0.7.0 LANGUAGES CXX)
-set(PROJECT_VERSION_APPENDIX "-dev.")
+set(PROJECT_VERSION_APPENDIX "-dev.1")
 set(PROJECT_COPYRIGHT "Copyright (C) 2018 Christian Mayer <https://fox21.at>")
 set(PROJECT_HOMEPAGE_URL "https://github.com/TheFox/wallet-cpp")
 set(PROJECT_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}" CACHE STRING "Install prefix path." )
@@ -70,6 +70,7 @@ add_executable(wallet
     src/class/entry.cpp src/class/entry.hpp
     src/class/container/entry_container.cpp src/class/container/entry_container.hpp
     src/class/accountable.cpp src/class/accountable.hpp
+    src/class/logable.cpp src/class/logable.hpp
     src/class/html/html_generator.cpp src/class/html/html_generator.hpp
     src/class/html/base_html.cpp src/class/html/base_html.hpp
     src/class/html/index_html.cpp src/class/html/index_html.hpp

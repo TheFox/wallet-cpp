@@ -124,6 +124,9 @@ namespace Wallet
   {
     DLog(" -> MutableWallet::getEntries(%d, %d, %d)\n", date.year, date.month, date.day);
 
+    // Log
+    this->log("[wallet] get entries");
+
     Container::EntryContainer container{};
 
     if (!fs::exists(this->dataPath)) {
@@ -268,6 +271,7 @@ namespace Wallet
   void MutableWallet::htmlOutput(const std::string& _path) const
   {
     DLog(" -> MutableWallet::htmlOutput()\n");
+    this->log("[wallet] generate html files");
 
     const auto& container = this->getEntries({0, 0, 0}); // TODO
     DLog(" -> MutableWallet::htmlOutput() -> container %p\n", &container);
@@ -280,6 +284,7 @@ namespace Wallet
     }
 
     const Wallet::Html::HtmlGenerator htmlGenerator{htmlPath, this->tmpPath, container};
+    htmlGenerator.logLevel = this->logLevel;
     htmlGenerator.generate();
   }
 

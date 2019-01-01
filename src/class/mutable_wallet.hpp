@@ -4,8 +4,10 @@
 
 #include <string>
 #include <vector>
+#include <cstdint> // uint8_t
 
 #include "fs.hpp"
+#include "logable.hpp"
 #include "components.hpp"
 #include "entry.hpp"
 #include "container/entry_container.hpp"
@@ -14,7 +16,7 @@
 
 namespace Wallet
 {
-  class MutableWallet
+  class MutableWallet : public Logable
   {
   public:
     // Constructor

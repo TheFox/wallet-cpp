@@ -9,7 +9,8 @@ namespace Wallet
   /**
    * Immutable Wallet will not touch the data directory.
    */
-  class ImmutableWallet : public MutableWallet
+   // TODO: remove ImmutableWallet and rename MutableWallet
+  class [[deprecated("Use const MutableWallet instead")]] ImmutableWallet : public MutableWallet
   {
   public:
     // Constructor

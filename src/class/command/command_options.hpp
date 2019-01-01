@@ -13,6 +13,9 @@ namespace Wallet
     // Wallet
     std::string walletPath = ".wallet";
 
+    // Int to have different levels. Only two levels used so far.
+    std::uint8_t verbose{0};
+
     // Entry
     std::string id{};
     std::string title{};
