@@ -12,7 +12,14 @@ While conventionally programs like Microsoft Excel or [LibreOffice](https://www.
 
 - Save revenues/expenses entries monthly.
 - List saved entries.
-- Generate HTML summary.
+- Generate HTML summary: overall, yearly, monthly.
+- Graphs using gnuplot.
+
+## Planned Features
+
+- CSV Import
+- CSV Export
+- Invoices
 
 ## Dependencies
 
@@ -109,7 +116,7 @@ Read more documentation in the [Wiki](wiki).
 - macOS 10.13 High Sierra
 - macOS 10.14 Mojave
 
-## Builded with
+## Built with
 
 - GCC 6.3.0
 - GCC 4.2.1 Compatible Clang 6.0.0
