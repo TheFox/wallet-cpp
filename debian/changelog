@@ -1,8 +1,14 @@
+wallet-cpp (0.7.0) unstable; urgency=medium
+
+  * GCC fix.
+
+ -- Christian Mayer <christian@fox21.at>  Tue, 01 Jan 2019 10:44:38 -0800
+
 wallet-cpp (0.6.0) unstable; urgency=medium
 
   * Gnuplot fix.
 
- -- vagrant <vagrant@wallet>  Mon, 31 Dec 2018 07:34:26 -0800
+ -- Christian Mayer <christian@fox21.at>  Mon, 31 Dec 2018 07:34:26 -0800
 
 wallet-cpp (0.5.0) unstable; urgency=medium
 
