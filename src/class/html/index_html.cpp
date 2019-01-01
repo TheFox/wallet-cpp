@@ -6,6 +6,10 @@
 #include <fstream> // ofstream
 #include <cstdlib> // system
 
+#ifdef DEBUG
+#include <iostream>
+#endif
+
 #include "debug.hpp"
 #include "config.hpp"
 #include "index_html.hpp"
@@ -25,10 +29,13 @@ namespace Wallet::Html
 
   void IndexHtml::addRow(IndexHtmlRow row) noexcept
   {
-    //DLog(" -> IndexHtml::addRow(%s)\n", row.year.c_str());
+    DLog(" -> IndexHtml::addRow(%s)\n", row.year.c_str());
     this->log("[index_html] add row: " + row.year);
 
-    this->entries.push_back(std::move(row));
+    //this->entries.push_back(std::move(row));
+    this->entries.push_back(row);
+
+    DLog(" -> IndexHtml::addRow(%s) -> size %lu\n", row.year.c_str(), this->entries.size());
   }
 
   void IndexHtml::generate(const IndexHtmlRow totalRow) const
@@ -50,7 +57,7 @@ namespace Wallet::Html
     // Transform IndexHtmlRow entries to mstch::array<mstch::map>.
     mstch::array _entries{};
     std::transform(this->entries.cbegin(), this->entries.cend(), std::back_inserter(_entries), [](auto row) {
-      //DLog(" -> transform\n");
+      DLog(" -> transform %s\n", row.year.c_str());
 
       return mstch::map{
         {"year",              std::move(row.year)},
@@ -72,8 +79,23 @@ namespace Wallet::Html
       {"balance_class", totalRow.balanceClass},
     };
 
+    DLog(" -> IndexHtml::generate('%s') -> %lu entries, %lu totals\n", totalRow.year.c_str(), _entries.size(), total.size());
+
     const auto tpl = Components::readFileIntoString(WALLETCPP_INDEX_VIEW_PATH);
     const auto context = std::make_shared<Mustache::IndexMustache>(_entries, total);
+
+//#ifdef DEBUG
+//    // Template debug
+//    //const auto indexDebugFilePath = (this->tmpPath / "index_debug.html").string();
+//    //DLog(" -> tpl debug: '%s'\n", indexDebugFilePath.c_str());
+//    std::cout << "--------------- TPL ---------------" << std::endl;
+//    std::cout << tpl << std::endl;
+//    std::cout << "--------------- --- ---------------" << std::endl;
+//
+//    std::cout << "--------------- RENDER ---------------" << std::endl;
+//    std::cout << mstch::render(tpl, context) << std::endl;
+//    std::cout << "--------------- ------ ---------------" << std::endl;
+//#endif
 
     // Output: index.html
     std::ofstream indexFh{this->getFullPath()};
@@ -81,7 +103,7 @@ namespace Wallet::Html
     indexFh.close();
 
 #ifdef WALLETCPP_GNUPLOT_SUPPORT
-    DLog(" -> len: %lu\n", this->entries.size());
+    DLog(" -> index_html: %lu entries\n", this->entries.size());
 
     const auto maxLen = this->entries.size() >= 10 ? this->entries.size() - 10 : 0;
     const auto entriesBegin = this->entries.cbegin() + maxLen;

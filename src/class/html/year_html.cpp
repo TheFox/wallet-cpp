@@ -20,7 +20,7 @@ namespace Wallet::Html
   YearHtml::YearHtml(fs::path _basePath, fs::path _tmpPath, Container::YearEntryContainer _container) :
     BaseHtml{std::move(_basePath), std::move(_tmpPath), fs::path{"index.html"},
       "Year " + std::to_string(_container.year)},
-    container{std::move(_container)}
+    container(std::move(_container))
   {
     //DLog(" -> YearHtml::YearHtml('%s', '%s')\n", this->basePath.c_str(), this->getFileName().c_str());
   }

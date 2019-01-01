@@ -12,8 +12,8 @@
 namespace Wallet::Html
 {
   HtmlGenerator::HtmlGenerator(fs::path _basePath, fs::path _tmpPath, Wallet::Container::EntryContainer _container) :
-    yearPath{_basePath / "year"}, basePath{std::move(_basePath)}, tmpPath{std::move(_tmpPath)}, container{std::move(
-    _container)}
+    yearPath(_basePath / "year"), basePath(std::move(_basePath)), tmpPath(std::move(_tmpPath)),
+    container(std::move(_container))
   {
     //DLog(" -> HtmlGenerator::HtmlGenerator(%s, %p)\n", this->basePath.c_str(), &this->container);
   }

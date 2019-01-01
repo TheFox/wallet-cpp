@@ -4,7 +4,7 @@
 
 namespace Wallet
 {
-  Command::Command() noexcept : options{}
+  Command::Command() noexcept
   {
     DLog(" -> Command::Command(%p)\n", this);
   }

@@ -21,9 +21,9 @@
 
 namespace Wallet
 {
-  MutableWallet::MutableWallet(std::string _path) noexcept : path{_path}
+  MutableWallet::MutableWallet(std::string _path) noexcept : path(std::move(_path))
   {
-    DLog(" -> MutableWallet::MutableWallet\n");
+    DLog(" -> MutableWallet::MutableWallet('%s')\n", this->path.c_str());
   }
 
   MutableWallet::~MutableWallet() noexcept

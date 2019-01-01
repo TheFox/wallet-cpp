@@ -30,7 +30,7 @@ namespace Wallet::Html
   MonthHtml::MonthHtml(fs::path _basePath, Container::MonthPair _map) :
     BaseHtml{std::move(_basePath), fs::path{}, fs::path{getMonthFile(_map.first)},
       getMonthName(_map.first) + " " + std::to_string(_map.second.year)},
-    name{getMonthName(_map.first)}, container{std::move(_map.second)}, year{std::to_string(_map.second.year)}
+    name(getMonthName(_map.first)), container(std::move(_map.second)), year(std::to_string(_map.second.year))
   {
     //DLog(" -> MonthHtml::MonthHtml(bp'%s') -> p'%s' n'%s'\n", this->basePath.c_str(),
     //  this->getFileName().c_str(), this->name.c_str());

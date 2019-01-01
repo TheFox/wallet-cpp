@@ -5,7 +5,7 @@
 namespace Wallet::Mustache
 {
   TotalGnuplot::TotalGnuplot(std::string _pngFilePath, std::string _datFilePath) :
-    pngFilePath{std::move(_pngFilePath)}, datFilePath{std::move(_datFilePath)}
+    pngFilePath(std::move(_pngFilePath)), datFilePath(std::move(_datFilePath))
   {
     //DLog(" -> TotalGnuplot::TotalGnuplot('%s', '%s')\n", _pngFilePath.c_str(), _datFilePath.c_str());
 

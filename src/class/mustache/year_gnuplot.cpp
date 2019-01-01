@@ -4,8 +4,8 @@
 
 namespace Wallet::Mustache
 {
-  YearGnuplot::YearGnuplot(std::string _year, std::string _pngFilePath, std::string _dat) :
-    year{std::move(_year)}, pngFilePath{std::move(_pngFilePath)}, datFilePath{std::move(_dat)}
+  YearGnuplot::YearGnuplot(std::string _year, std::string _pngFilePath, std::string _datFilePath) :
+    year(std::move(_year)), pngFilePath(std::move(_pngFilePath)), datFilePath(std::move(_datFilePath))
   {
     DLog(" -> YearGnuplot::YearGnuplot()\n");
 

@@ -7,8 +7,8 @@ namespace Wallet::Mustache
   YearMustache::YearMustache(std::string _rel, mstch::array _entries, mstch::map _total,
                              std::string _year, Container::CategoryArray _categoryNames,
                              std::string _pngFileName) :
-    BaseMustache{std::move(_rel), std::move(_entries), std::move(_total)}, year{std::move(_year)},
-    categoryNames{std::move(_categoryNames)}, pngFileName{std::move(_pngFileName)}
+    BaseMustache{std::move(_rel), std::move(_entries), std::move(_total)},
+    year(std::move(_year)), categoryNames(std::move(_categoryNames)), pngFileName(std::move(_pngFileName))
   {
     //DLog(" -> YearMustache::YearMustache('%s', '%s', %lu)\n",
     //  _rel.c_str(), this->year.c_str(), _categoryNames.size());
