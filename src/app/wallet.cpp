@@ -99,7 +99,7 @@ int main(int argc, char* const argv[])
   // Help
   if (vm.count("help") || commandName.empty()) {
     std::cout << PROJECT_NAME << ' ' << PROJECT_VERSION << std::endl;
-    std::cout << "Build: " << __DATE__ << ' ' << __TIME__ << std::endl;
+    std::cout << "Built: " << __DATE__ << ' ' << __TIME__ << std::endl;
     std::cout << PROJECT_COPYRIGHT << std::endl << std::endl;
 
     std::cout << "Usage: " << argv[0] << " <command> [options]" << std::endl << std::endl;
@@ -120,13 +120,13 @@ int main(int argc, char* const argv[])
     std::cout << "Build settings:" << std::endl;
 
 #ifdef __linux__
-    std::cout << "  Build for Linux (__linux__)" << std::endl;
+    std::cout << "  Built for Linux (__linux__)" << std::endl;
 #endif
 #ifdef __APPLE__
-    std::cout << "  Build for Apple (__APPLE__)" << std::endl;
+    std::cout << "  Built for Apple (__APPLE__)" << std::endl;
 #endif
 #ifdef __GNUC__
-    std::cout << "  Build with: GCC " << __VERSION__ << std::endl;
+    std::cout << "  Built with: GCC " << __VERSION__ << std::endl;
 #ifdef __llvm__
     std::cout << "              LLVM " << __clang_version__ << std::endl;
     std::cout << "              LLVM " << __clang_major__ << '.' << __clang_minor__ << '.' << __clang_patchlevel__
