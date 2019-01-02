@@ -27,6 +27,12 @@ Vagrant.configure('2') do |config|
       echo "cd ${WORKING_DIR}" >> ${BASHRC_FILE}
       echo "alias ll='ls -la'" >> ${BASHRC_FILE}
       echo "alias l='ls -l'" >> ${BASHRC_FILE}
+      echo "export DEBFULLNAME='Christian Mayer'" >> ${BASHRC_FILE}
+      echo "export DEBEMAIL='christian@fox21.at'" >> ${BASHRC_FILE}
+
+      ln -s -f /usr/share/zoneinfo/Europe/Vienna /etc/localtime
+      echo "Europe/Vienna" > /etc/timezone
+      dpkg-reconfigure -f ${DEBIAN_FRONTEND} tzdata
 
       apt-get update -yqq
       apt-get install -y --no-install-recommends coreutils htop vim ack-grep lsof net-tools rsync libdistro-info-perl devscripts dh-make libyaml-cpp-dev libboost-filesystem-dev libboost-program-options-dev libboost-date-time-dev

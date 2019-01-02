@@ -1,3 +1,9 @@
+wallet-cpp (0.7.1) unstable; urgency=medium
+
+  * Expense fix.
+
+ -- Christian Mayer <christian@fox21.at>  Wed, 02 Jan 2019 19:27:07 +0100
+
 wallet-cpp (0.7.0) unstable; urgency=medium
 
   * GCC fix.
