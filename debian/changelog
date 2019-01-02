@@ -1,3 +1,9 @@
+wallet-cpp (0.7.2) unstable; urgency=medium
+
+  * Share-prefix fix.
+
+ -- Christian Mayer <christian@fox21.at>  Wed, 02 Jan 2019 21:15:59 +0100
+
 wallet-cpp (0.7.1) unstable; urgency=medium
 
   * Expense fix.
