@@ -21,109 +21,20 @@ While conventionally programs like Microsoft Excel or [LibreOffice](https://www.
 - CSV Export
 - Invoices
 
-## Dependencies
-
-- [CMake](https://cmake.org/) (For building)
-- [Boost](https://www.boost.org/) (Filesystem / DateTime / Program Options)
-- [yaml-cpp](https://github.com/jbeder/yaml-cpp) (Data source)
-- [mstch](https://github.com/no1msd/mstch) (Mustache for C++: generate HTML files)
-
-### Optional
-
-- [termcolor](https://github.com/ikalnytskyi/termcolor) (Color in Terminal)
-- [Catch2](https://github.com/catchorg/Catch2) (Unit tests)
-- [gnuplot](http://www.gnuplot.info/)
-
-### Install dependencies on macOS
-
-```
-brew install boost yaml-cpp mstch gnuplot
-```
-
-### Install dependencies on Debian 9
-
-```bash
-sudo apt-get install --no-install-recommends gnuplot5 libboost-filesystem-dev libboost-program-options-dev libboost-date-time-dev
-```
-
-## Build from Source
-
-You need a modern C++ compiler that supports C++17 and CMake 3.8 or later.
-
-This will only build the binary.
-
-```bash
-./bin/build.sh
-```
-
-Then the binary is available in `build_release/bin`.
-
-If you want to install Wallet, run:
-
-```bash
-./bin/install.sh
-```
-
-## Install via Debian repository
-
-Only Debian 9 (stretch) is supported.
-
-Add the public GPG key to the apt sources keyring:
-
-```bash
-wget -qO - https://fox21.at/christian_mayer.asc | sudo apt-key add -
-```
-
-Verify key on the keyring. This should print out informations about the key:
-
-```bash
-apt-key list 2814B4288C4594FF0BA75571F96ED997C9382D47
-```
-
-Add apt source file and update:
-
-```bash
-echo 'deb https://debian.fox21.at/ stretch main' > /etc/apt/sources.list.d/fox21at.list
-apt-get update
-```
-
-Install the package:
-
-```bash
-sudo apt-get install wallet-cpp
-```
-
-Now you can run the program:
-
-```bash
-wallet --help
-```
-
-## Install under Debian via .deb file
-
-Go to the [GitHub releases page](https://github.com/TheFox/wallet-cpp/releases) and download the desired version file. Then run:
-
-```bash
-sudo dpkg --install wallet-cpp.deb
-```
-
 ## Documentation
 
-Read more documentation in the [Wiki](wiki).
+Read more documentation in the [Wiki](wiki) about
 
-## Tested under
+- [**INSTALLATION**](wiki/Install)
+- [**BUILDING**](wiki/Building)
 
-- macOS 10.13 High Sierra
-- macOS 10.14 Mojave
+Further readings:
 
-## Built with
-
-- GCC 6.3.0
-- GCC 4.2.1 Compatible Clang 6.0.0
-- GCC 4.2.1 Compatible Apple LLVM 10.0.0
+- [**COMMANDS**](wiki/Commands)
 
 ## Project Links
 
+- [Initial WalletCpp blog post](https://blog.fox21.at/2018/11/02/cpp-smart-pointers.html)
 - [Blog Post about Wallet written in Ruby](http://blog.fox21.at/2015/07/09/wallet.html)
 
 ## Similar Projects
