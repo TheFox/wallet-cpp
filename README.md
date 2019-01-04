@@ -23,14 +23,14 @@ While conventionally programs like Microsoft Excel or [LibreOffice](https://www.
 
 ## Documentation
 
-Read more documentation in the [Wiki](wiki) about
+Read more documentation in the [Wiki](https://github.com/TheFox/wallet-cpp/wiki) about
 
-- [**INSTALLATION**](wiki/Install)
-- [**BUILDING**](wiki/Building)
+- [**INSTALLATION**](https://github.com/TheFox/wallet-cpp/wiki/Install)
+- [**BUILDING**](https://github.com/TheFox/wallet-cpp/wiki/Building)
 
 Further readings:
 
-- [**COMMANDS**](wiki/Commands)
+- [**COMMANDS**](https://github.com/TheFox/wallet-cpp/wiki/Commands)
 
 ## Project Links
 
