@@ -9,9 +9,18 @@ Homepage: https://github.com/TheFox/wallet-cpp
 Package: wallet-cpp
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, gnuplot5 (>= 5)
+Replaces: wallet-cpp-debug
 Description: A C++ program to track your finances.
  A spreadsheet likewise C++17 program to track your finances.
  While conventionally programs like Microsoft Excel or LibreOffice use proprietary
  file formats and binary files to store your data, this program use YAML. YAML is a
  human-readable data serialization format. This means you can edit the YAML files
  on any operating system with any text editor.
+
+Package: wallet-cpp-debug
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, gnuplot5 (>= 5)
+Replaces: wallet-cpp
+Description: Debug version of wallet-cpp.
+ Built with source-level debug information (-g).
+ See wallet-cpp for more details.
