@@ -4,6 +4,7 @@
 /build_test/
 /build_linux/
 /build_debian/
+/obj-x86*
 /.idea/
 /.vagrant/
 /.vscode/
