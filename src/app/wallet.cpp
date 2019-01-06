@@ -143,13 +143,18 @@ int main(int argc, char* const argv[])
     std::cout << "  WALLETCPP_GNUPLOT_SUPPORT: YES" << std::endl;
 #else
     std::cout << "  WALLETCPP_GNUPLOT_SUPPORT: NO" << std::endl;
-#endif
+#endif // WALLETCPP_GNUPLOT_SUPPORT
 
     std::cout << "  WALLETCPP_INDEX_VIEW_PATH: " << WALLETCPP_INDEX_VIEW_PATH << std::endl;
     std::cout << "  WALLETCPP_YEAR_VIEW_PATH: " << WALLETCPP_YEAR_VIEW_PATH << std::endl;
     std::cout << "  WALLETCPP_MONTH_VIEW_PATH: " << WALLETCPP_MONTH_VIEW_PATH << std::endl;
     std::cout << "  WALLETCPP_TOTAL_GNUPLOT_PATH: " << WALLETCPP_TOTAL_GNUPLOT_PATH << std::endl;
     std::cout << "  WALLETCPP_YEAR_GNUPLOT_PATH: " << WALLETCPP_YEAR_GNUPLOT_PATH << std::endl;
+//#ifdef WALLETCPP_IS_DEBIAN
+//    std::cout << "  WALLETCPP_IS_DEBIAN: OK" << std::endl;
+//#else
+//    std::cout << "  WALLETCPP_IS_DEBIAN: UNDEFINED" << std::endl;
+//#endif
 
     return 3;
   }

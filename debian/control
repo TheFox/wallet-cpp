@@ -22,5 +22,5 @@ Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, gnuplot5 (>= 5)
 Replaces: wallet-cpp
 Description: Debug version of wallet-cpp.
- Built with source-level debug information (-g).
+ Built with source-level debug information (-g) and -DDEBUG flag.
  See wallet-cpp for more details.

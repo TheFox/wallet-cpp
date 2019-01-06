@@ -1,0 +1,4 @@
+#!/usr/bin/dh-exec
+
+usr/bin/wallet-debug => usr/bin/wallet
+usr/share
