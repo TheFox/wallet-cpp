@@ -1,3 +1,10 @@
+wallet-cpp (0.7.4) unstable; urgency=medium
+
+  * Debian package fix.
+  * Shared Paths fix.
+
+ -- Christian Mayer <christian@fox21.at>  Sun, 06 Jan 2019 19:29:35 +0100
+
 wallet-cpp (0.7.3) unstable; urgency=medium
 
   * Debug Debian package.
