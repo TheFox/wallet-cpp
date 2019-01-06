@@ -136,8 +136,10 @@ int main(int argc, char* const argv[])
     std::cout << "  Unknown build info. (Not implemented.) " << std::endl;
 #endif
 
-    std::cout << "  PROJECT_INSTALL_PREFIX: " << PROJECT_INSTALL_PREFIX << std::endl;
+    std::cout << "  CMAKE_INSTALL_PREFIX: " << CMAKE_INSTALL_PREFIX << std::endl;
+    std::cout << "  PROJECT_SHARE_PATH: " << PROJECT_SHARE_PATH << std::endl;
     std::cout << "  PROJECT_SHARE_PREFIX: " << PROJECT_SHARE_PREFIX << std::endl;
+    std::cout << "  PROJECT_SHARE_RESOURCES_PREFIX: " << PROJECT_SHARE_RESOURCES_PREFIX << std::endl;
 
 #ifdef WALLETCPP_GNUPLOT_SUPPORT
     std::cout << "  WALLETCPP_GNUPLOT_SUPPORT: YES" << std::endl;

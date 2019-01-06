@@ -14,9 +14,17 @@ cd build_${BUILD_TYPE}
 set -x
 
 if [[ "${BUILD_TYPE}" = "debug" ]]; then
-    cmake -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DWALLETCPP_GNUPLOT_SUPPORT=ON -DPROJECT_INSTALL_PREFIX="${project_dir}" ..
+    cmake \
+        -DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
+        -DWALLETCPP_GNUPLOT_SUPPORT=ON \
+        -DCMAKE_INSTALL_PREFIX="${project_dir}/tmp/fakeroot" \
+        -DPROJECT_SHARE_RESOURCES_PREFIX="${project_dir}/resources" \
+        ..
 else
-    cmake -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DWALLETCPP_GNUPLOT_SUPPORT=ON ..
+    cmake \
+        -DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
+        -DWALLETCPP_GNUPLOT_SUPPORT=ON \
+        ..
 fi
 
 make -j 4

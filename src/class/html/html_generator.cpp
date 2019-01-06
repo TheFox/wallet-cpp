@@ -95,7 +95,7 @@ namespace Wallet::Html
     }
 
 #ifdef NDEBUG
-    fs::copy_file(fs::path{PROJECT_SHARE_RESOURCES_DIR} / "css/style.css",
+    fs::copy_file(fs::path{PROJECT_SHARE_RESOURCES_PREFIX} / "css/style.css",
       this->basePath / "style.css", fs::copy_option::overwrite_if_exists);
 #endif
   }

@@ -1,21 +1,20 @@
 cmake_minimum_required(VERSION 3.8.0)
 
-project(WalletCpp VERSION 0.7.3 LANGUAGES CXX)
-set(PROJECT_VERSION_APPENDIX "")
+project(WalletCpp VERSION 0.7.4 LANGUAGES CXX)
+set(PROJECT_VERSION_APPENDIX "-dev.1")
 set(PROJECT_COPYRIGHT "Copyright (C) 2018 Christian Mayer <https://fox21.at>")
 set(PROJECT_HOMEPAGE_URL "https://github.com/TheFox/wallet-cpp")
-set(PROJECT_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}" CACHE STRING "Install prefix path.")
 set(PROJECT_SHARE_PATH "share/wallet_cpp")
-set(PROJECT_SHARE_PREFIX "${PROJECT_INSTALL_PREFIX}/${PROJECT_SHARE_PATH}" CACHE STRING "Share prefix path.")
-set(PROJECT_SHARE_RESOURCES_DIR "${PROJECT_SHARE_PREFIX}/resources")
+set(PROJECT_SHARE_PREFIX "${CMAKE_INSTALL_PREFIX}/${PROJECT_SHARE_PATH}" CACHE STRING "Share prefix path.")
+set(PROJECT_SHARE_RESOURCES_PREFIX "${PROJECT_SHARE_PREFIX}/resources" CACHE STRING "Resources prefix path.")
 
 option(WALLETCPP_GNUPLOT_SUPPORT "Turn on/off building with Gnuplot support." OFF)
 
 set(CMAKE_CXX_FLAGS "-Wall -Wshadow")
 set(CMAKE_CXX_FLAGS_DEBUG "-g -O0 -DDEBUG -fsanitize=address")
-set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG -Wunused-variable")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3 -Wunused-variable -DNDEBUG")
 set(CMAKE_CXX_FLAGS_TEST "-g -O0 -DDEBUG")
-set(CMAKE_CXX_FLAGS_DEBIAN "${CMAKE_CXX_FLAGS_RELEASE}")
+set(CMAKE_CXX_FLAGS_DEBIAN "-O3 -Wunused-variable")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
 
 # Set minimum C++ to 2017 standards.
@@ -111,6 +110,7 @@ if (CMAKE_BUILD_TYPE_LOWER STREQUAL "release"
     target_link_libraries(wallet ${Boost_LIBRARIES} ${YAML_CPP_LIBRARIES})
     target_link_libraries(wallet mstch::mstch)
     target_compile_features(wallet PRIVATE ${TARGET_WALLET_COMPILE_FEATURES})
+    target_compile_definitions(wallet PRIVATE "-DNDEBUG")
     get_target_property(wallet_std wallet CXX_STANDARD)
 
     # Install Wallet
@@ -124,6 +124,7 @@ if (CMAKE_BUILD_TYPE_LOWER STREQUAL "release"
         target_link_libraries(wallet-debug ${Boost_LIBRARIES} ${YAML_CPP_LIBRARIES})
         target_link_libraries(wallet-debug mstch::mstch)
         target_compile_features(wallet-debug PRIVATE ${TARGET_WALLET_COMPILE_FEATURES})
+        target_compile_definitions(wallet-debug PRIVATE "-DDEBUG")
 
         # Install Debug Wallet
         install(TARGETS wallet-debug RUNTIME DESTINATION bin)
@@ -161,11 +162,10 @@ message(STATUS "CMAKE_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX}")
 message(STATUS "CMAKE_INSTALL_LOCALSTATEDIR ${CMAKE_INSTALL_LOCALSTATEDIR}")
 message(STATUS "CMAKE_INSTALL_SYSCONFDIR ${CMAKE_INSTALL_SYSCONFDIR}")
 
-message(STATUS "PROJECT_INSTALL_PREFIX ${PROJECT_INSTALL_PREFIX}")
 message(STATUS "PROJECT_SOURCE_DIR ${PROJECT_SOURCE_DIR}")
 message(STATUS "PROJECT_SHARE_PATH ${PROJECT_SHARE_PATH}")
 message(STATUS "PROJECT_SHARE_PREFIX ${PROJECT_SHARE_PREFIX}")
-message(STATUS "PROJECT_SHARE_RESOURCES_DIR ${PROJECT_SHARE_RESOURCES_DIR}")
+message(STATUS "PROJECT_SHARE_RESOURCES_PREFIX ${PROJECT_SHARE_RESOURCES_PREFIX}")
 
 message(STATUS "YAML_CPP_INCLUDE_DIR ${YAML_CPP_INCLUDE_DIR}")
 message(STATUS "YAML_CPP_LIBRARIES ${YAML_CPP_LIBRARIES}")
