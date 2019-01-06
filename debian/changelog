@@ -1,3 +1,9 @@
+wallet-cpp (0.7.3) unstable; urgency=medium
+
+  * Debug Debian package.
+
+ -- Christian Mayer <christian@fox21.at>  Sun, 06 Jan 2019 19:05:39 +0100
+
 wallet-cpp (0.7.2) unstable; urgency=medium
 
   * Share-prefix fix.
