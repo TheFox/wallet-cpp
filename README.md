@@ -31,6 +31,7 @@ Read more documentation in the [Wiki](https://github.com/TheFox/wallet-cpp/wiki)
 Further readings:
 
 - [**COMMANDS**](https://github.com/TheFox/wallet-cpp/wiki/Commands)
+- [**COOKBOOK**](https://github.com/TheFox/wallet-cpp/wiki/Cookbook)
 
 ## Project Links
 
