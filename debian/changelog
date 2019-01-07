@@ -1,3 +1,9 @@
+wallet-cpp (0.7.5) unstable; urgency=medium
+
+  * Debian package Conflicts with each other.
+
+ -- Christian Mayer <christian@fox21.at>  Mon, 07 Jan 2019 20:27:35 +0100
+
 wallet-cpp (0.7.4) unstable; urgency=medium
 
   * Debian package fix.
