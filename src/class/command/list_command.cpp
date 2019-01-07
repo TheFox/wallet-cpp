@@ -1,13 +1,10 @@
 
-#ifdef DEBUG
-#include <cstdio>
-#endif
-
 #include <sstream>
 #include <iomanip> // setprecision
 #include <ios> // fixed, left, right
 #include <cstddef>
 
+#include "debug.hpp"
 #include "list_command.hpp"
 #include "components.hpp"
 #include "class/immutable_wallet.hpp"
@@ -28,9 +25,7 @@ namespace Wallet
 
   void listEntries(const Container::EntryContainer& container)
   {
-#ifdef DEBUG
-    printf(" -> listEntries() c=%lu\n", container.entryCount);
-#endif
+    DLog(" -> listEntries() c=%lu\n", container.entryCount);
 
     if (container.entryCount == 0) {
       std::cout << "No entries found." << std::endl;

@@ -7,7 +7,7 @@
 #include <cstdlib> // system
 
 #ifdef DEBUG
-#include <iostream>
+#include <iostream> // cout
 #endif
 
 #include "debug.hpp"
@@ -154,6 +154,6 @@ namespace Wallet::Html
 #else
     std::system(gnuplotCmd.c_str());
 #endif
-#endif
+#endif // WALLETCPP_GNUPLOT_SUPPORT
   }
 } // Wallet::Html Namespace

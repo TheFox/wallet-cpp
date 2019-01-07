@@ -9,6 +9,7 @@ Homepage: https://github.com/TheFox/wallet-cpp
 Package: wallet-cpp
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, gnuplot5 (>= 5)
+Conflicts: wallet-cpp-debug
 Replaces: wallet-cpp-debug
 Description: A C++ program to track your finances.
  A spreadsheet likewise C++17 program to track your finances.
@@ -20,6 +21,7 @@ Description: A C++ program to track your finances.
 Package: wallet-cpp-debug
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, gnuplot5 (>= 5)
+Conflicts: wallet-cpp
 Replaces: wallet-cpp
 Description: Debug version of wallet-cpp.
  Built with source-level debug information (-g) and -DDEBUG flag.

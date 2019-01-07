@@ -1,8 +1,4 @@
 
-#ifdef DEBUG
-#include <cstdio>
-#endif
-
 #include "debug.hpp"
 #include "immutable_wallet.hpp"
 #include "entry.hpp"
