@@ -24,6 +24,8 @@ namespace Wallet
     wallet.logLevel = this->options.verbose;
     wallet.setup();
 
+    // TODO: date
+    // TODO: category
     wallet.htmlOutput(this->options.path);
 
     return Command::execute();

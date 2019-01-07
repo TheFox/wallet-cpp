@@ -120,6 +120,7 @@ namespace Wallet
     return true;
   }
 
+  // TODO: select category
   Container::EntryContainer MutableWallet::getEntries(const Components::Date& date) const
   {
     DLog(" -> MutableWallet::getEntries(%d, %d, %d)\n", date.year, date.month, date.day);
@@ -268,6 +269,8 @@ namespace Wallet
     return container;
   }
 
+  // TODO: date
+  // TODO: category
   void MutableWallet::htmlOutput(const std::string& _path) const
   {
     DLog(" -> MutableWallet::htmlOutput()\n");
