@@ -22,6 +22,7 @@ namespace bpo = boost::program_options;
 #include "class/command/command_options.hpp"
 #include "class/command/command_factory.hpp"
 #include "class/command/command.hpp"
+#include "class/command/version_command.hpp"
 
 int main(int argc, char* const argv[])
 {
@@ -41,6 +42,7 @@ int main(int argc, char* const argv[])
   bpo::options_description genericOpts{"Generic options"};
   genericOpts.add_options()
                ("help,h", "This message")
+               ("version", "Prints version.")
                ("verbose,v", "Verbose output.")
                ("wallet,w", bpo::value<std::string>()->value_name("path"), "Path to the wallet directory.");
 
@@ -96,6 +98,13 @@ int main(int argc, char* const argv[])
     }
   }
 
+  // Version
+  printf("version: %lu\n", vm.count("version"));
+  if (vm.count("version")) {
+    Wallet::VersionCommand versionCommand{};
+    return versionCommand.execute();
+  }
+
   // Help
   if (vm.count("help") || commandName.empty()) {
     std::cout << PROJECT_NAME << ' ' << PROJECT_VERSION << std::endl;
@@ -108,7 +117,6 @@ int main(int argc, char* const argv[])
     std::cout << "  add       Add a new entry" << std::endl;
     std::cout << "  list      List entries" << std::endl;
     std::cout << "  html      Generate HTML output" << std::endl;
-    std::cout << "  version   Print version" << std::endl;
     std::cout << std::endl;
 
     std::cout << genericOpts << std::endl;

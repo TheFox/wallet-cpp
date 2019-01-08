@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.8.0)
 
 project(WalletCpp VERSION 0.8.0 LANGUAGES CXX)
-set(PROJECT_VERSION_APPENDIX "-dev")
+set(PROJECT_VERSION_APPENDIX "-dev.1")
 set(PROJECT_COPYRIGHT "Copyright (C) 2018 Christian Mayer <https://fox21.at>")
 set(PROJECT_HOMEPAGE_URL "https://github.com/TheFox/wallet-cpp")
 set(PROJECT_SHARE_PATH "share/wallet_cpp")
@@ -67,6 +67,7 @@ set(TARGET_WALLET_FILES
     src/class/command/html_command.cpp src/class/command/html_command.hpp
     src/class/command/list_command.cpp src/class/command/list_command.hpp
     src/class/command/version_command.cpp src/class/command/version_command.hpp
+    src/class/command/fake_version_command.cpp src/class/command/fake_version_command.hpp
     src/class/entry.cpp src/class/entry.hpp
     src/class/container/entry_container.cpp src/class/container/entry_container.hpp
     src/class/accountable.cpp src/class/accountable.hpp
