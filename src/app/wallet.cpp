@@ -107,7 +107,9 @@ int main(int argc, char* const argv[])
   // Help
   if (vm.count("help") || commandName.empty()) {
     std::cout << PROJECT_NAME << ' ' << PROJECT_VERSION << std::endl;
-    std::cout << "Built: " << __DATE__ << ' ' << __TIME__ << std::endl;
+    std::cout << "Built at: " << __DATE__ << ' ' << __TIME__ << std::endl;
+    std::cout << "Build Tag: " << PROJECT_VERSION_TAG << std::endl;
+    std::cout << "Build Commit: " << PROJECT_VERSION_COMMIT << std::endl;
     std::cout << PROJECT_COPYRIGHT << std::endl << std::endl;
 
     std::cout << "Usage: " << argv[0] << " <command> [options]" << std::endl << std::endl;
@@ -144,8 +146,6 @@ int main(int argc, char* const argv[])
 #endif
 
     std::cout << "  CMAKE_INSTALL_PREFIX: " << CMAKE_INSTALL_PREFIX << std::endl;
-    std::cout << "  PROJECT_VERSION_TAG: " << PROJECT_VERSION_TAG << std::endl;
-    std::cout << "  PROJECT_VERSION_COMMIT: " << PROJECT_VERSION_COMMIT << std::endl;
     std::cout << "  PROJECT_SHARE_PATH: " << PROJECT_SHARE_PATH << std::endl;
     std::cout << "  PROJECT_SHARE_PREFIX: " << PROJECT_SHARE_PREFIX << std::endl;
     std::cout << "  PROJECT_SHARE_RESOURCES_PREFIX: " << PROJECT_SHARE_RESOURCES_PREFIX << std::endl;
@@ -161,11 +161,6 @@ int main(int argc, char* const argv[])
     std::cout << "  WALLETCPP_MONTH_VIEW_PATH: " << WALLETCPP_MONTH_VIEW_PATH << std::endl;
     std::cout << "  WALLETCPP_TOTAL_GNUPLOT_PATH: " << WALLETCPP_TOTAL_GNUPLOT_PATH << std::endl;
     std::cout << "  WALLETCPP_YEAR_GNUPLOT_PATH: " << WALLETCPP_YEAR_GNUPLOT_PATH << std::endl;
-//#ifdef WALLETCPP_IS_DEBIAN
-//    std::cout << "  WALLETCPP_IS_DEBIAN: OK" << std::endl;
-//#else
-//    std::cout << "  WALLETCPP_IS_DEBIAN: UNDEFINED" << std::endl;
-//#endif
 
     return 3;
   }
