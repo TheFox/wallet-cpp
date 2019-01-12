@@ -99,7 +99,6 @@ int main(int argc, char* const argv[])
   }
 
   // Version
-  printf("version: %lu\n", vm.count("version"));
   if (vm.count("version")) {
     Wallet::VersionCommand versionCommand{};
     return versionCommand.execute();
@@ -145,6 +144,8 @@ int main(int argc, char* const argv[])
 #endif
 
     std::cout << "  CMAKE_INSTALL_PREFIX: " << CMAKE_INSTALL_PREFIX << std::endl;
+    std::cout << "  PROJECT_VERSION_TAG: " << PROJECT_VERSION_TAG << std::endl;
+    std::cout << "  PROJECT_VERSION_COMMIT: " << PROJECT_VERSION_COMMIT << std::endl;
     std::cout << "  PROJECT_SHARE_PATH: " << PROJECT_SHARE_PATH << std::endl;
     std::cout << "  PROJECT_SHARE_PREFIX: " << PROJECT_SHARE_PREFIX << std::endl;
     std::cout << "  PROJECT_SHARE_RESOURCES_PREFIX: " << PROJECT_SHARE_RESOURCES_PREFIX << std::endl;

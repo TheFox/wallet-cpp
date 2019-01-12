@@ -1,0 +1,22 @@
+before_script:
+  - apt-get update -y
+  - apt-get install -y --no-install-recommends apt-transport-https ca-certificates lsb-release libdistro-info-perl devscripts dh-make build-essential
+  - echo "deb http://ftp.debian.org/debian stretch-backports main" > /etc/apt/sources.list.d/backports.list
+  - apt-get update -y
+  - apt-get -t stretch-backports install -y --no-install-recommends cmake
+  - 'curl -fL https://getcli.jfrog.io | sh'
+  - ./jfrog bt c --user "${JFROG_USER}" --key "${JFROG_KEY}" --licenses "${JFROG_LICENSES}"
+  - lsb_release -a
+
+stages:
+  - deploy
+
+deploy:
+  stage: deploy
+  environment: bintray
+  only:
+    - tags
+  script:
+    - ./jfrog bt vc thefox/jar/${PACKAGE_NAME}/${CI_COMMIT_TAG}
+    - dpkg-buildpackage -b
+    - ./jfrog bt u --publish=true --deb=stretch/main/amd64 ../${PACKAGE_NAME}_*_amd64.deb thefox/jar/${PACKAGE_NAME}/${CI_COMMIT_TAG} ${POOL_PREFIX}/${PACKAGE_NAME}/
