@@ -49,11 +49,15 @@ namespace Wallet
       std::cout << "Create wallet at " << this->path << '.' << std::endl;
       fs::create_directories(this->path);
     }
+
+    this->setup();
   }
 
   bool MutableWallet::add(const Entry& entry, const bool isUnique)
   {
     DLog(" -> MutableWallet::add(%p, u=%c)\n", &entry, isUnique ? 'Y' : 'N');
+
+    this->setup();
 
     if (isUnique && this->entryExists(entry)) {
       return false;
@@ -134,7 +138,7 @@ namespace Wallet
     Container::EntryContainer container{};
 
     if (!fs::exists(this->dataPath)) {
-      throw std::string{"Wallet does not exists."};
+      throw std::string{"Wallet does not exists or is corrupt."};
     }
 
     const bool hasYear = date.year != 0;
@@ -308,13 +312,6 @@ namespace Wallet
     this->setupDirectories();
   }
 
-  void MutableWallet::setup() const
-  {
-    DLog(" -> MutableWallet::setup() const\n");
-
-    // TODO
-  }
-
   void MutableWallet::setupDirectories() noexcept
   {
     // Make main directory.
@@ -364,7 +361,7 @@ namespace Wallet
 
   void MutableWallet::createLock()
   {
-    DLog(" -> MutableWallet::createLock\n");
+    DLog(" -> MutableWallet::createLock()\n");
 
     // Already locked.
     if (this->isLocked) {
@@ -373,6 +370,11 @@ namespace Wallet
 
     if (fs::exists(this->lockPath)) {
       throw std::string{"Wallet is locked."};
+    }
+
+    // Make tmp/ directory.
+    if (!fs::exists(this->tmpPath)) {
+      fs::create_directories(this->tmpPath);
     }
 
     // Create lock file.
@@ -385,7 +387,7 @@ namespace Wallet
 
   void MutableWallet::removeLock() noexcept
   {
-    DLog(" -> MutableWallet::removeLock\n");
+    DLog(" -> MutableWallet::removeLock()\n");
 
     if (!this->isLocked) {
       return;
@@ -437,7 +439,7 @@ namespace Wallet
    */
   void MutableWallet::saveIndex() noexcept
   {
-    DLog(" -> MutableWallet::saveIndex\n");
+    DLog(" -> MutableWallet::saveIndex()\n");
 
     // Skip function when nothing has been changed.
     if (!this->isIndexModified) {

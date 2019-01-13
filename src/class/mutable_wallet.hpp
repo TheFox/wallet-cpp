@@ -50,7 +50,6 @@ namespace Wallet
 
     // Functions
     void setup();
-    void setup() const;
     void setupDirectories() noexcept;
     void createLock();
     void removeLock() noexcept;
