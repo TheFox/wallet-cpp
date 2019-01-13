@@ -7,7 +7,7 @@ namespace Wallet
   int InitCommand::execute()
   {
     MutableWallet wallet{this->options.walletPath};
-    wallet.setup(true);
+    wallet.init();
 
     return Command::execute();
   }

@@ -17,6 +17,6 @@ deploy:
   only:
     - tags
   script:
-    - ./jfrog bt vc thefox/jar/${PACKAGE_NAME}/${CI_COMMIT_TAG}
+    - ./jfrog bt vc ${BINTRAY_REPOSITORY}/${PACKAGE_NAME}/${CI_COMMIT_TAG}
     - dpkg-buildpackage -b
-    - ./jfrog bt u --publish=true --deb=stretch/main/amd64 ../${PACKAGE_NAME}_*_amd64.deb thefox/jar/${PACKAGE_NAME}/${CI_COMMIT_TAG} ${POOL_PREFIX}/${PACKAGE_NAME}/
+    - ./jfrog bt u --publish=true --deb=stretch/main/amd64 ../${PACKAGE_NAME}_*_amd64.deb ${BINTRAY_REPOSITORY}/${PACKAGE_NAME}/${CI_COMMIT_TAG} ${POOL_PREFIX}/${PACKAGE_NAME}/

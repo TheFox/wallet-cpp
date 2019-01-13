@@ -2,20 +2,19 @@
 #include <sstream>
 #include <iomanip> // setprecision
 #include <ios> // fixed, left, right
-#include <cstddef>
+#include <cstddef> // size_t
 
 #include "debug.hpp"
 #include "list_command.hpp"
 #include "components.hpp"
-#include "class/immutable_wallet.hpp"
+#include "class/mutable_wallet.hpp"
 #include "class/entry.hpp"
 
 namespace Wallet
 {
   int ListCommand::execute()
   {
-    ImmutableWallet wallet{this->options.walletPath};
-    wallet.setup();
+    const MutableWallet wallet{this->options.walletPath};
 
     const auto date = Components::parseDate(this->options.date);
     listEntries(wallet.getEntries(date));

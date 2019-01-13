@@ -104,7 +104,6 @@ namespace Wallet
     }
 
     MutableWallet wallet{this->options.walletPath};
-    wallet.setup();
     std::cout << "Try to add entry: " << entry.id << std::endl;
     const bool added = wallet.add(entry, isUnique);
     std::cout << "Added: " << (added ? "YES" : "NO") << std::endl;

@@ -5,7 +5,7 @@
 #include "debug.hpp"
 #include "config.hpp"
 #include "html_command.hpp"
-#include "class/immutable_wallet.hpp"
+#include "class/mutable_wallet.hpp"
 
 namespace Wallet
 {
@@ -20,9 +20,8 @@ namespace Wallet
     }
 #endif
 
-    ImmutableWallet wallet{this->options.walletPath};
+    const MutableWallet wallet{this->options.walletPath};
     wallet.logLevel = this->options.verbose;
-    wallet.setup();
 
     // TODO: date
     // TODO: category

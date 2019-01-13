@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.8.0)
 
 project(WalletCpp VERSION 0.8.0 LANGUAGES CXX)
-set(PROJECT_VERSION_APPENDIX "-dev.2")
+set(PROJECT_VERSION_APPENDIX "-dev.3")
 set(PROJECT_VERSION_TAG "N/A" CACHE STRING "Git tag string.")
 set(PROJECT_VERSION_COMMIT "N/A" CACHE STRING "Git commit string.")
 set(PROJECT_COPYRIGHT "Copyright (C) 2018 Christian Mayer <https://fox21.at>")
@@ -59,7 +59,6 @@ set(TARGET_WALLET_FILES
     src/fs.hpp
     src/components.cpp src/components.hpp
     src/class/mutable_wallet.cpp src/class/mutable_wallet.hpp
-    src/class/immutable_wallet.cpp src/class/immutable_wallet.cpp
     src/class/command/command_options.cpp src/class/command/command_options.hpp
     src/class/command/command_factory.cpp src/class/command/command_factory.hpp
     src/class/command/command.cpp src/class/command/command.hpp

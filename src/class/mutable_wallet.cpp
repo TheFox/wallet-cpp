@@ -21,31 +21,34 @@
 
 namespace Wallet
 {
-  MutableWallet::MutableWallet(std::string _path) noexcept : path(std::move(_path))
+  MutableWallet::MutableWallet(std::string _path) noexcept :
+    path(_path),
+    dataPath(this->path / "data"),
+    indexPath(this->dataPath / "index.yml"),
+    tmpPath(this->path / "tmp"),
+    lockPath(this->tmpPath / "lock")
   {
     DLog(" -> MutableWallet::MutableWallet('%s')\n", this->path.c_str());
   }
 
   MutableWallet::~MutableWallet() noexcept
   {
-    DLog(" -> MutableWallet::~MutableWallet\n");
+    DLog(" -> MutableWallet::~MutableWallet()\n");
 
     this->saveIndex();
     this->removeLock();
   }
 
-  void MutableWallet::setup()
-  {
-    this->setup(false);
-  }
+  void MutableWallet::init() noexcept{
+    DLog(" -> MutableWallet::init()\n");
 
-  void MutableWallet::setup(const bool explicitInit)
-  {
-    this->setupVariables();
-#ifdef NDEBUG
-    this->createLock();
-#endif
-    this->setupDirectories(explicitInit);
+    // Make main directory.
+    if (fs::exists(this->path)) {
+      std::cout << "Wallet already exists at " << this->path << '.' << std::endl;
+    } else {
+      std::cout << "Create wallet at " << this->path << '.' << std::endl;
+      fs::create_directories(this->path);
+    }
   }
 
   bool MutableWallet::add(const Entry& entry, const bool isUnique)
@@ -291,29 +294,31 @@ namespace Wallet
     htmlGenerator.generate();
   }
 
-  void MutableWallet::setupVariables() noexcept
+  void MutableWallet::setup()
   {
-    this->dataPath = this->path / "data";
-    this->indexPath = this->dataPath / "index.yml";
-    this->tmpPath = this->path / "tmp";
-    this->lockPath = this->tmpPath / "lock";
+    DLog(" -> MutableWallet::setup()\n");
 
-    this->isLocked = false;
-    this->isIndexLoaded = false;
-    this->isIndexModified = false;
+    if (this->hasSetup)
+      return;
+    this->hasSetup = true;
+
+//#ifdef NDEBUG
+    this->createLock();
+//#endif
+    this->setupDirectories();
   }
 
-  void MutableWallet::setupDirectories(const bool explicitInit) noexcept
+  void MutableWallet::setup() const
+  {
+    DLog(" -> MutableWallet::setup() const\n");
+
+    // TODO
+  }
+
+  void MutableWallet::setupDirectories() noexcept
   {
     // Make main directory.
-    if (fs::exists(this->path)) {
-      if (explicitInit) {
-        std::cout << "Wallet already exists at " << this->path << '.' << std::endl;
-      }
-    } else {
-      if (explicitInit) {
-        std::cout << "Create wallet at " << this->path << '.' << std::endl;
-      }
+    if (!fs::exists(this->path)) {
       fs::create_directories(this->path);
     }
 
@@ -328,7 +333,7 @@ namespace Wallet
     }
 
     const auto versionFile = this->path / "version";
-    decltype(this->version) oldVersion{0};
+    std::uint8_t oldVersion{0}; // should use same type as this->version
     if (fs::exists(versionFile)) {
       std::ifstream iVersionFh{versionFile.string()};
       iVersionFh >> oldVersion;
@@ -422,7 +427,7 @@ namespace Wallet
 
       // Create new 'index' sequence.
       YAML::Node _idx{YAML::NodeType::Sequence};
-      _idx.push_back("hello_world");
+      //_idx.push_back("hello_world");
       this->index["index"] = _idx;
     }
   }

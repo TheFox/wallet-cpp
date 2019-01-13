@@ -16,7 +16,7 @@
 
 namespace Wallet
 {
-  class MutableWallet : public Logable
+  class MutableWallet final : public Logable
   {
   public:
     // Constructor
@@ -25,34 +25,33 @@ namespace Wallet
     // Destructor
     ~MutableWallet() noexcept;
 
-    // Functions
-    virtual void setup();
-    void setup(bool);
-    virtual bool add(const Entry&, bool);
-    Container::EntryContainer getEntries(const Components::Date&) const;
+    // Public Commands
+    void init() noexcept;
+    bool add(const Entry&, bool);
     void htmlOutput(const std::string&) const;
 
-  protected:
-    // Variables
-    const fs::path path{};
-    fs::path dataPath{};
-    fs::path indexPath{};
-    fs::path tmpPath{};
-    fs::path lockPath{};
-
-    // Functions
-    void setupVariables() noexcept;
-    void setupDirectories(bool) noexcept;
+    // Public Functions
+    Container::EntryContainer getEntries(const Components::Date&) const;
 
   private:
     // Variables
-    std::uint8_t version{1};
+    const fs::path path{};
+    const fs::path dataPath{};
+    const fs::path indexPath{};
+    const fs::path tmpPath{};
+    const fs::path lockPath{};
+
+    const std::uint8_t version{1};
+    bool hasSetup{};
     bool isLocked{};
     bool isIndexLoaded{};
     bool isIndexModified{};
     YAML::Node index{};
 
     // Functions
+    void setup();
+    void setup() const;
+    void setupDirectories() noexcept;
     void createLock();
     void removeLock() noexcept;
     void loadIndex() noexcept;
