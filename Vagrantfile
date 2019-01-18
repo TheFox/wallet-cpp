@@ -35,7 +35,7 @@ Vagrant.configure('2') do |config|
       dpkg-reconfigure -f ${DEBIAN_FRONTEND} tzdata
 
       apt-get update -yqq
-      apt-get install -y --no-install-recommends coreutils htop vim ack-grep lsof net-tools rsync libdistro-info-perl devscripts dh-make libyaml-cpp-dev libboost-filesystem-dev libboost-program-options-dev libboost-date-time-dev
+      apt-get install -y --no-install-recommends coreutils htop vim ack-grep lsof net-tools rsync libdistro-info-perl devscripts dh-make dh-exec libyaml-cpp-dev libboost-filesystem-dev libboost-program-options-dev libboost-date-time-dev
 
       echo "deb http://ftp.debian.org/debian stretch-backports main" > ${BACKPORTS_SOURCES_LIST}
       apt-get update -yqq
