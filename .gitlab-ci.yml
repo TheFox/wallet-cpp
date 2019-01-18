@@ -9,17 +9,7 @@ before_script:
   - lsb_release -a
 
 stages:
-  - test
   - deploy
-
-test:
-  stage: test
-  environment: test
-  only:
-    - develop
-  script:
-    - 'echo "CI_PROJECT_ID: ${CI_PROJECT_ID}"'
-    - 'echo "CI_PROJECT_NAME: ${CI_PROJECT_NAME}"'
 
 deploy:
   stage: deploy
