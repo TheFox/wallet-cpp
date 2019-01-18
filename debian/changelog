@@ -1,3 +1,11 @@
+wallet-cpp (0.8.0) unstable; urgency=medium
+
+  * Removed deprecated ImmutableWallet.
+  * Deprecated version command.
+  * Use Bintray for Debian packages.
+
+ -- Christian Mayer <christian@fox21.at>  Fri, 18 Jan 2019 23:01:14 +0100
+
 wallet-cpp (0.7.5) unstable; urgency=medium
 
   * Debian package Conflicts with each other.
