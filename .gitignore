@@ -11,6 +11,7 @@
 /.wallet/
 *.code-workspace
 Makefile
+.env
 /tmp/
 /lib/
 CHANGELOG*.txt
