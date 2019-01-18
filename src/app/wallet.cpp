@@ -106,11 +106,10 @@ int main(int argc, char* const argv[])
 
   // Help
   if (vm.count("help") || commandName.empty()) {
-    std::cout << PROJECT_NAME << ' ' << PROJECT_VERSION << std::endl;
+    std::cout << PROJECT_NAME << ' ' << PROJECT_VERSION_FULL << " (" << PROJECT_VERSION_HASH << ')' << std::endl;
     std::cout << "Built at: " << __DATE__ << ' ' << __TIME__ << std::endl;
-    std::cout << "Build Tag: " << PROJECT_VERSION_TAG << std::endl;
-    std::cout << "Build Commit: " << PROJECT_VERSION_COMMIT << std::endl;
-    std::cout << PROJECT_COPYRIGHT << std::endl << std::endl;
+    std::cout << PROJECT_COPYRIGHT << std::endl;
+    std::cout << PROJECT_HOMEPAGE_URL << std::endl << std::endl;
 
     std::cout << "Usage: " << argv[0] << " <command> [options]" << std::endl << std::endl;
     std::cout << "Commands:" << std::endl;

@@ -31,7 +31,7 @@ namespace Wallet::Mustache
     void setup() noexcept;
     mstch::node getProjectName() noexcept;
     mstch::node getProjectHomepageUrl() noexcept;
-    mstch::node getProjectVersion() noexcept;
+    mstch::node getProjectVersionFull() noexcept;
     mstch::node getGeneratedAt() noexcept;
     mstch::node getRelativePath() noexcept;
     mstch::node getCssRelativePath() noexcept;

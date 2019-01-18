@@ -36,7 +36,7 @@ namespace Wallet::Mustache
     this->register_methods(this, {
       {"PROJECT_NAME",         &BaseMustache::getProjectName},
       {"PROJECT_HOMEPAGE_URL", &BaseMustache::getProjectHomepageUrl},
-      {"PROJECT_VERSION",      &BaseMustache::getProjectVersion},
+      {"PROJECT_VERSION_FULL", &BaseMustache::getProjectVersionFull},
 
       {"generated_at",         &BaseMustache::getGeneratedAt},
       {"relative_path",        &BaseMustache::getRelativePath},
@@ -58,9 +58,9 @@ namespace Wallet::Mustache
     return std::string{PROJECT_HOMEPAGE_URL};
   }
 
-  mstch::node BaseMustache::getProjectVersion() noexcept
+  mstch::node BaseMustache::getProjectVersionFull() noexcept
   {
-    return std::string{PROJECT_VERSION};
+    return std::string{PROJECT_VERSION_FULL};
   }
 
   mstch::node BaseMustache::getGeneratedAt() noexcept

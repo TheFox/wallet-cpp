@@ -1,17 +1,19 @@
 cmake_minimum_required(VERSION 3.8.0)
 
-project(WalletCpp VERSION 0.8.0 LANGUAGES CXX)
-set(PROJECT_VERSION_APPENDIX "-dev.3")
-set(PROJECT_VERSION_TAG "N/A" CACHE STRING "Git tag string.")
-set(PROJECT_VERSION_COMMIT "N/A" CACHE STRING "Git commit string.")
+project(WalletCpp LANGUAGES CXX)
+set(PROJECT_VERSION_APPENDIX "-dev")
 set(PROJECT_COPYRIGHT "Copyright (C) 2018 Christian Mayer <https://fox21.at>")
 set(PROJECT_HOMEPAGE_URL "https://github.com/TheFox/wallet-cpp")
 set(PROJECT_SHARE_PATH "share/wallet_cpp")
+
+# Options
+message(STATUS "Set options")
 set(PROJECT_SHARE_PREFIX "${CMAKE_INSTALL_PREFIX}/${PROJECT_SHARE_PATH}" CACHE STRING "Share prefix path.")
 set(PROJECT_SHARE_RESOURCES_PREFIX "${PROJECT_SHARE_PREFIX}/resources" CACHE STRING "Resources prefix path.")
-
 option(WALLETCPP_GNUPLOT_SUPPORT "Turn on/off building with Gnuplot support." OFF)
 
+# Flags
+message(STATUS "Set flags")
 set(CMAKE_CXX_FLAGS "-Wall -Wshadow")
 set(CMAKE_CXX_FLAGS_DEBUG "-g -O0 -DDEBUG -fsanitize=address")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -Wunused-variable -DNDEBUG")
@@ -23,26 +25,24 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Config File
-configure_file(
-    "${PROJECT_SOURCE_DIR}/src/config.hpp.in"
-    "${CMAKE_CURRENT_BINARY_DIR}/src/config.hpp"
-    NEWLINE_STYLE LF)
-include_directories("${CMAKE_CURRENT_BINARY_DIR}/src")
-
 # yaml-cpp
+message(STATUS "Check yaml-cpp")
 find_package(yaml-cpp REQUIRED)
 
 # mstch
+message(STATUS "Check mstch")
 find_package(mstch REQUIRED)
 
 # Term Color
+message(STATUS "Check termcolor")
 find_package(termcolor QUIET)
 
 # Catch2
+message(STATUS "Check catch2")
 find_package(catch2 QUIET)
 
 # Boost
+message(STATUS "Check Boost")
 set(Boost_USE_STATIC_LIBS ON)
 set(Boost_USE_STATIC_RUNTIME ON)
 set(Boost_USE_MULTITHREADED OFF)
@@ -52,6 +52,65 @@ if (Boost_FOUND)
     message(STATUS "Boost INCL ${Boost_INCLUDE_DIRS}")
     message(STATUS "Boost LIBS ${Boost_LIBRARIES}")
 endif ()
+
+# Modules
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules")
+
+# Git
+include(GetGitVersion)
+get_git_version(GIT_VERSION)
+get_git_hash(GIT_HASH)
+
+# C++ Includes
+include(CheckIncludeFileCXX)
+check_include_file_cxx("algorithm" HAVE_ALGORITHM_FILE)
+check_include_file_cxx("cmath" HAVE_CMATH_FILE)
+check_include_file_cxx("cstddef" HAVE_CSTDDEF_FILE)
+check_include_file_cxx("cstdint" HAVE_CSTDINT_FILE)
+check_include_file_cxx("cstdio" HAVE_CSTDIO_FILE)
+check_include_file_cxx("cstdlib" HAVE_CSTDLIB_FILE)
+check_include_file_cxx("fstream" HAVE_FSTREAM_FILE)
+check_include_file_cxx("functional" HAVE_FUNCTIONAL_FILE)
+check_include_file_cxx("iomanip" HAVE_IOMANIP_FILE)
+check_include_file_cxx("ios" HAVE_IOS_FILE)
+check_include_file_cxx("iostream" HAVE_IOSTREAM_FILE)
+check_include_file_cxx("istream" HAVE_ISTREAM_FILE)
+check_include_file_cxx("iterator" HAVE_ITERATOR_FILE)
+check_include_file_cxx("locale" HAVE_LOCALE_FILE)
+check_include_file_cxx("map" HAVE_MAP_FILE)
+check_include_file_cxx("sstream" HAVE_SSTREAM_FILE)
+check_include_file_cxx("string" HAVE_STRING_FILE)
+check_include_file_cxx("unistd.h" HAVE_unistd.H_FILE)
+check_include_file_cxx("unordered_map" HAVE_UNORDERED_MAP_FILE)
+check_include_file_cxx("utility" HAVE_UTILITY_FILE)
+check_include_file_cxx("vector" HAVE_VECTOR_FILE)
+
+# Other Includes
+include(CheckIncludeFiles)
+check_include_files("boost/date_time/gregorian/gregorian.hpp" HAVE_BOOST_DATETIME_GREGORIAN_FILE)
+check_include_files("boost/date_time/local_time/local_time.hpp" HAVE_BOOST_DATETIME_LOCALTIME_FILE)
+check_include_files("boost/date_time/time_facet.hpp" HAVE_BOOST_DATETIME_TIMEFACET_FILE)
+check_include_files("boost/date_time/year_month_day.hpp" HAVE_BOOST_DATETIME_YMD_FILE)
+check_include_files("boost/filesystem.hpp" HAVE_BOOST_FILESYSTEM_FILE)
+check_include_files("boost/program_options.hpp" HAVE_BOOST_PROGRAM_OPTIONS_FILE)
+check_include_files("boost/uuid/random_generator.hpp" HAVE_BOOST_UUID_RND_FILE)
+check_include_files("boost/uuid/uuid.hpp" HAVE_BOOST_UUID_FILE)
+check_include_files("boost/uuid/uuid_io.hpp" HAVE_BOOST_UUID_IO_FILE)
+check_include_files("mstch/mstch.hpp" HAVE_MSTCH_FILE)
+check_include_files("yaml-cpp/yaml.h" HAVE_YAML_FILE)
+
+# Check Functions
+include(CheckFunctionExists)
+check_function_exists("getline" HAVE_GETLINE_FUNCTION)
+check_function_exists("system" HAVE_SYSTEM_FUNCTION)
+
+# Config File
+message(STATUS "Make config file")
+configure_file(
+    "${PROJECT_SOURCE_DIR}/src/config.hpp.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/src/config.hpp"
+    NEWLINE_STYLE LF)
+include_directories("${CMAKE_CURRENT_BINARY_DIR}/src")
 
 set(TARGET_WALLET_FILES
     src/app/wallet.cpp
@@ -106,6 +165,7 @@ if (CMAKE_BUILD_TYPE_LOWER STREQUAL "release"
     OR CMAKE_BUILD_TYPE_LOWER STREQUAL "debug"
     OR CMAKE_BUILD_TYPE_LOWER STREQUAL "debian")
     # Wallet Target
+    message(STATUS "Setup wallet target")
     add_executable(wallet ${TARGET_WALLET_FILES})
     target_include_directories(wallet PRIVATE ${PROJECT_SOURCE_DIR}/src)
     target_include_directories(wallet PRIVATE ${Boost_INCLUDE_DIRS})
@@ -113,13 +173,13 @@ if (CMAKE_BUILD_TYPE_LOWER STREQUAL "release"
     target_link_libraries(wallet mstch::mstch)
     target_compile_features(wallet PRIVATE ${TARGET_WALLET_COMPILE_FEATURES})
     target_compile_definitions(wallet PRIVATE "-DNDEBUG")
-    get_target_property(wallet_std wallet CXX_STANDARD)
 
     # Install Wallet
     install(TARGETS wallet RUNTIME DESTINATION bin)
 
     if (CMAKE_BUILD_TYPE_LOWER STREQUAL "debian")
         # Wallet Debug Target
+        message(STATUS "Setup wallet-debug target")
         add_executable(wallet-debug ${TARGET_WALLET_FILES})
         target_include_directories(wallet-debug PRIVATE ${PROJECT_SOURCE_DIR}/src)
         target_include_directories(wallet-debug PRIVATE ${Boost_INCLUDE_DIRS})
@@ -137,6 +197,7 @@ if (CMAKE_BUILD_TYPE_LOWER STREQUAL "release"
         DESTINATION ${PROJECT_SHARE_PATH})
 elseif (CMAKE_BUILD_TYPE_LOWER STREQUAL "test")
     # Test Target
+    message(STATUS "Setup test target")
     add_executable(test
         src/app/test.cpp
         src/test/entry_test.hpp
@@ -150,20 +211,23 @@ elseif (CMAKE_BUILD_TYPE_LOWER STREQUAL "test")
     target_compile_features(test PRIVATE ${TARGET_WALLET_COMPILE_FEATURES})
 endif ()
 
-message(STATUS "CXX_STANDARD wallet ${wallet_std}")
-
+message(STATUS "-------- DEBUG --------")
 message(STATUS "CMAKE_BUILD_TYPE ${CMAKE_BUILD_TYPE}")
 message(STATUS "CMAKE_BUILD_TYPE_LOWER ${CMAKE_BUILD_TYPE_LOWER}")
 message(STATUS "CMAKE_CXX_COMPILER ${CMAKE_CXX_COMPILER}")
+message(STATUS "CMAKE_CXX_COMPILER_ID ${CMAKE_CXX_COMPILER_ID}")
 message(STATUS "CMAKE_CURRENT_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}")
 message(STATUS "CMAKE_CURRENT_LIST_DIR ${CMAKE_CURRENT_LIST_DIR}")
-message(STATUS "CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH}")
-message(STATUS "CMAKE_SYSTEM_PREFIX_PATH ${CMAKE_SYSTEM_PREFIX_PATH}")
-message(STATUS "CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH}")
-message(STATUS "CMAKE_PROGRAM_PATH ${CMAKE_PROGRAM_PATH}")
+#message(STATUS "CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH}")
 message(STATUS "CMAKE_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX}")
-message(STATUS "CMAKE_INSTALL_LOCALSTATEDIR ${CMAKE_INSTALL_LOCALSTATEDIR}")
-message(STATUS "CMAKE_INSTALL_SYSCONFDIR ${CMAKE_INSTALL_SYSCONFDIR}")
+message(STATUS "CMAKE_SYSTEM_PREFIX_PATH ${CMAKE_SYSTEM_PREFIX_PATH}")
+#message(STATUS "CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH}")
+#message(STATUS "CMAKE_PROGRAM_PATH ${CMAKE_PROGRAM_PATH}")
+#message(STATUS "CMAKE_INSTALL_LOCALSTATEDIR ${CMAKE_INSTALL_LOCALSTATEDIR}")
+#message(STATUS "CMAKE_INSTALL_SYSCONFDIR ${CMAKE_INSTALL_SYSCONFDIR}")
+message(STATUS "CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH}")
+message(STATUS "CMAKE_SYSTEM_NAME ${CMAKE_SYSTEM_NAME}")
+message(STATUS "CMAKE_REQUIRED_INCLUDES ${CMAKE_REQUIRED_INCLUDES}")
 
 message(STATUS "PROJECT_SOURCE_DIR ${PROJECT_SOURCE_DIR}")
 message(STATUS "PROJECT_SHARE_PATH ${PROJECT_SHARE_PATH}")
@@ -173,8 +237,7 @@ message(STATUS "PROJECT_SHARE_RESOURCES_PREFIX ${PROJECT_SHARE_RESOURCES_PREFIX}
 message(STATUS "YAML_CPP_INCLUDE_DIR ${YAML_CPP_INCLUDE_DIR}")
 message(STATUS "YAML_CPP_LIBRARIES ${YAML_CPP_LIBRARIES}")
 
-message(STATUS "Catch2_HEADER_DIR ${Catch2_HEADER_DIR}")
-
 message(STATUS "Boost_INCLUDE_DIRS ${Boost_INCLUDE_DIRS}")
 
 message(STATUS "WALLETCPP_GNUPLOT_SUPPORT ${WALLETCPP_GNUPLOT_SUPPORT}")
+message(STATUS "-------- ----- --------")
