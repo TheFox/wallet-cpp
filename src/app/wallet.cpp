@@ -147,7 +147,7 @@ int main(int argc, char* const argv[])
     std::cout << "  CMAKE_INSTALL_PREFIX: " << CMAKE_INSTALL_PREFIX << std::endl;
     std::cout << "  PROJECT_SHARE_PATH: " << PROJECT_SHARE_PATH << std::endl;
     std::cout << "  PROJECT_SHARE_PREFIX: " << PROJECT_SHARE_PREFIX << std::endl;
-    std::cout << "  PROJECT_SHARE_RESOURCES_PREFIX: " << PROJECT_SHARE_RESOURCES_PREFIX << std::endl;
+    std::cout << "  PROJECT_RESOURCES_PREFIX: " << PROJECT_RESOURCES_PREFIX << std::endl;
 
 #ifdef WALLETCPP_GNUPLOT_SUPPORT
     std::cout << "  WALLETCPP_GNUPLOT_SUPPORT: YES" << std::endl;

@@ -18,7 +18,7 @@ if [[ "${BUILD_TYPE}" = "debug" ]]; then
         -DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
         -DWALLETCPP_GNUPLOT_SUPPORT=ON \
         -DCMAKE_INSTALL_PREFIX="${project_dir}/tmp/fakeroot" \
-        -DPROJECT_SHARE_RESOURCES_PREFIX="${project_dir}/resources" \
+        -DPROJECT_RESOURCES_PREFIX="${project_dir}/resources" \
         ..
 else
     cmake \

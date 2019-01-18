@@ -9,7 +9,17 @@ before_script:
   - lsb_release -a
 
 stages:
+  - test
   - deploy
+
+test:
+  stage: test
+  environment: test
+  only:
+    - develop
+  script:
+    - 'echo "CI_PROJECT_ID: ${CI_PROJECT_ID}"'
+    - 'echo "CI_PROJECT_NAME: ${CI_PROJECT_NAME}"'
 
 deploy:
   stage: deploy
@@ -17,6 +27,8 @@ deploy:
   only:
     - tags
   script:
-    - ./jfrog bt vc ${BINTRAY_REPOSITORY}/${PACKAGE_NAME}/${CI_COMMIT_TAG}
+    - 'echo "CI_PROJECT_ID: ${CI_PROJECT_ID}"'
+    - 'echo "CI_PROJECT_NAME: ${CI_PROJECT_NAME}"'
+    - ./jfrog bt vc ${BINTRAY_REPOSITORY}/${CI_PROJECT_NAME}/${CI_COMMIT_TAG}
     - dpkg-buildpackage -b
-    - ./jfrog bt u --publish=true --deb=stretch/main/amd64 ../${PACKAGE_NAME}_*_amd64.deb ${BINTRAY_REPOSITORY}/${PACKAGE_NAME}/${CI_COMMIT_TAG} ${POOL_PREFIX}/${PACKAGE_NAME}/
+    - ./jfrog bt u --publish=true --deb=stretch/main/amd64 ../${CI_PROJECT_NAME}_*_amd64.deb ${BINTRAY_REPOSITORY}/${CI_PROJECT_NAME}/${CI_COMMIT_TAG} ${POOL_PREFIX}/${CI_PROJECT_NAME}/
