@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.8.0)
 
 project(WalletCpp LANGUAGES CXX)
-set(PROJECT_VERSION_APPENDIX "")
+set(PROJECT_VERSION_APPENDIX "-dev.1")
 set(PROJECT_COPYRIGHT "Copyright (C) 2018 Christian Mayer <https://fox21.at>")
 set(PROJECT_HOMEPAGE_URL "https://github.com/TheFox/wallet-cpp")
 set(PROJECT_SHARE_PATH "share/wallet_cpp")
@@ -32,14 +32,17 @@ find_package(yaml-cpp REQUIRED)
 # mstch
 message(STATUS "Check mstch")
 find_package(mstch REQUIRED)
+message(STATUS "mstch config: ${mstch_CONFIG}")
 
 # Term Color
 message(STATUS "Check termcolor")
 find_package(termcolor QUIET)
+message(STATUS "termcolor config: ${termcolor_CONFIG}")
 
 # Catch2
 message(STATUS "Check catch2")
 find_package(catch2 QUIET)
+message(STATUS "catch2 config: ${catch2_CONFIG}")
 
 # Boost
 message(STATUS "Check Boost")
