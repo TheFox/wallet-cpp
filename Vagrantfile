@@ -41,18 +41,6 @@ Vagrant.configure('2') do |config|
       apt-get update -yqq
       apt-get -t stretch-backports install -y --no-install-recommends cmake
 
-      push /tmp
-      git clone https://github.com/no1msd/mstch.git
-      push mstch
-      mkdir build
-      push build
-      cmake ..
-      make
-      make install
-      popd
-      popd
-      popd
-
       cd ${WORKING_DIR}
       mkdir -p build_debian
       cd build_debian

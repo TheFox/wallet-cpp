@@ -95,6 +95,7 @@ namespace Wallet::Html
     }
 
 #ifdef NDEBUG
+    this->log("[html_generator] copy file: " PROJECT_RESOURCES_PREFIX);
     fs::copy_file(fs::path{PROJECT_RESOURCES_PREFIX} / "css/style.css",
       this->basePath / "style.css", fs::copy_option::overwrite_if_exists);
 #endif

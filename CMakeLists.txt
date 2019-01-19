@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.8.0)
 
 project(WalletCpp LANGUAGES CXX)
-set(PROJECT_VERSION_APPENDIX "-dev.1")
+set(PROJECT_VERSION_APPENDIX "-dev.2")
 set(PROJECT_COPYRIGHT "Copyright (C) 2018 Christian Mayer <https://fox21.at>")
 set(PROJECT_HOMEPAGE_URL "https://github.com/TheFox/wallet-cpp")
 set(PROJECT_SHARE_PATH "share/wallet_cpp")
@@ -11,10 +11,11 @@ message(STATUS "Set options")
 set(PROJECT_SHARE_PREFIX "${CMAKE_INSTALL_PREFIX}/${PROJECT_SHARE_PATH}" CACHE STRING "Share prefix path.")
 set(PROJECT_RESOURCES_PREFIX "${PROJECT_SHARE_PREFIX}/resources" CACHE STRING "Resources prefix path.")
 option(WALLETCPP_GNUPLOT_SUPPORT "Turn on/off building with Gnuplot support." OFF)
+message(STATUS "Gnuplot support - ${WALLETCPP_GNUPLOT_SUPPORT}")
 
 # Flags
 message(STATUS "Set flags")
-set(CMAKE_CXX_FLAGS "-Wall -Wshadow")
+set(CMAKE_CXX_FLAGS "-Wall -Wshadow -Wfatal-errors")
 set(CMAKE_CXX_FLAGS_DEBUG "-g -O0 -DDEBUG -fsanitize=address")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -Wunused-variable -DNDEBUG")
 set(CMAKE_CXX_FLAGS_TEST "-g -O0 -DDEBUG")
@@ -25,14 +26,20 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+if (NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE "release")
+endif ()
+
+# Modules
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules")
+
+# Mustache
+include(FindMustache)
+
 # yaml-cpp
 message(STATUS "Check yaml-cpp")
 find_package(yaml-cpp REQUIRED)
-
-# mstch
-message(STATUS "Check mstch")
-find_package(mstch REQUIRED)
-message(STATUS "mstch config: ${mstch_CONFIG}")
+message(STATUS "yaml-cpp config: ${yaml-cpp_CONFIG}")
 
 # Term Color
 message(STATUS "Check termcolor")
@@ -55,9 +62,6 @@ if (Boost_FOUND)
     message(STATUS "Boost INCL ${Boost_INCLUDE_DIRS}")
     message(STATUS "Boost LIBS ${Boost_LIBRARIES}")
 endif ()
-
-# Modules
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules")
 
 # Git
 include(GetGitVersion)
@@ -167,32 +171,37 @@ string(TOLOWER "${CMAKE_BUILD_TYPE}" CMAKE_BUILD_TYPE_LOWER)
 if (CMAKE_BUILD_TYPE_LOWER STREQUAL "release"
     OR CMAKE_BUILD_TYPE_LOWER STREQUAL "debug"
     OR CMAKE_BUILD_TYPE_LOWER STREQUAL "debian")
+
     # Wallet Target
-    message(STATUS "Setup wallet target")
-    add_executable(wallet ${TARGET_WALLET_FILES})
-    target_include_directories(wallet PRIVATE ${PROJECT_SOURCE_DIR}/src)
-    target_include_directories(wallet PRIVATE ${Boost_INCLUDE_DIRS})
-    target_link_libraries(wallet ${Boost_LIBRARIES} ${YAML_CPP_LIBRARIES})
-    target_link_libraries(wallet mstch::mstch)
-    target_compile_features(wallet PRIVATE ${TARGET_WALLET_COMPILE_FEATURES})
-    target_compile_definitions(wallet PRIVATE "-DNDEBUG")
+    set(TARGET_WALLET_NAME "wallet")
+    message(STATUS "Setup ${TARGET_WALLET_NAME} target")
+    add_executable(${TARGET_WALLET_NAME} ${TARGET_WALLET_FILES})
+    add_dependencies(${TARGET_WALLET_NAME} mstch_project)
+    target_include_directories(${TARGET_WALLET_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/src)
+    target_include_directories(${TARGET_WALLET_NAME} PRIVATE ${Boost_INCLUDE_DIRS})
+    target_link_libraries(${TARGET_WALLET_NAME} ${Boost_LIBRARIES} ${YAML_CPP_LIBRARIES})
+    target_link_libraries(${TARGET_WALLET_NAME} mstch)
+    target_compile_features(${TARGET_WALLET_NAME} PRIVATE ${TARGET_WALLET_COMPILE_FEATURES})
+    target_compile_definitions(${TARGET_WALLET_NAME} PRIVATE "-DNDEBUG")
 
     # Install Wallet
     install(TARGETS wallet RUNTIME DESTINATION bin)
 
     if (CMAKE_BUILD_TYPE_LOWER STREQUAL "debian")
         # Wallet Debug Target
-        message(STATUS "Setup wallet-debug target")
-        add_executable(wallet-debug ${TARGET_WALLET_FILES})
-        target_include_directories(wallet-debug PRIVATE ${PROJECT_SOURCE_DIR}/src)
-        target_include_directories(wallet-debug PRIVATE ${Boost_INCLUDE_DIRS})
-        target_link_libraries(wallet-debug ${Boost_LIBRARIES} ${YAML_CPP_LIBRARIES})
-        target_link_libraries(wallet-debug mstch::mstch)
-        target_compile_features(wallet-debug PRIVATE ${TARGET_WALLET_COMPILE_FEATURES})
-        target_compile_definitions(wallet-debug PRIVATE "-DDEBUG")
+        set(TARGET_WALLET_DEBUG_NAME "wallet-debug")
+        message(STATUS "Setup ${TARGET_WALLET_DEBUG_NAME} target")
+        add_executable(${TARGET_WALLET_DEBUG_NAME} ${TARGET_WALLET_FILES})
+        add_dependencies(${TARGET_WALLET_DEBUG_NAME} mstch_project)
+        target_include_directories(${TARGET_WALLET_DEBUG_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/src)
+        target_include_directories(${TARGET_WALLET_DEBUG_NAME} PRIVATE ${Boost_INCLUDE_DIRS})
+        target_link_libraries(${TARGET_WALLET_DEBUG_NAME} ${Boost_LIBRARIES} ${YAML_CPP_LIBRARIES})
+        target_link_libraries(${TARGET_WALLET_DEBUG_NAME} mstch)
+        target_compile_features(${TARGET_WALLET_DEBUG_NAME} PRIVATE ${TARGET_WALLET_COMPILE_FEATURES})
+        target_compile_definitions(${TARGET_WALLET_DEBUG_NAME} PRIVATE "-DDEBUG")
 
         # Install Debug Wallet
-        install(TARGETS wallet-debug RUNTIME DESTINATION bin)
+        install(TARGETS ${TARGET_WALLET_DEBUG_NAME} RUNTIME DESTINATION bin)
     endif ()
 
     # Install Resources
@@ -212,6 +221,8 @@ elseif (CMAKE_BUILD_TYPE_LOWER STREQUAL "test")
     target_link_libraries(test Catch2::Catch2)
     target_link_libraries(test ${Boost_LIBRARIES} ${YAML_CPP_LIBRARIES})
     target_compile_features(test PRIVATE ${TARGET_WALLET_COMPILE_FEATURES})
+else ()
+    message(FATAL_ERROR "No build type selected: release, debian, debug, test")
 endif ()
 
 message(STATUS "-------- DEBUG --------")
@@ -222,15 +233,15 @@ message(STATUS "CMAKE_CXX_COMPILER_ID ${CMAKE_CXX_COMPILER_ID}")
 message(STATUS "CMAKE_CURRENT_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}")
 message(STATUS "CMAKE_CURRENT_LIST_DIR ${CMAKE_CURRENT_LIST_DIR}")
 #message(STATUS "CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH}")
+#message(STATUS "CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH}")
 message(STATUS "CMAKE_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX}")
 message(STATUS "CMAKE_SYSTEM_PREFIX_PATH ${CMAKE_SYSTEM_PREFIX_PATH}")
 #message(STATUS "CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH}")
 #message(STATUS "CMAKE_PROGRAM_PATH ${CMAKE_PROGRAM_PATH}")
 #message(STATUS "CMAKE_INSTALL_LOCALSTATEDIR ${CMAKE_INSTALL_LOCALSTATEDIR}")
 #message(STATUS "CMAKE_INSTALL_SYSCONFDIR ${CMAKE_INSTALL_SYSCONFDIR}")
-message(STATUS "CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH}")
-message(STATUS "CMAKE_SYSTEM_NAME ${CMAKE_SYSTEM_NAME}")
-message(STATUS "CMAKE_REQUIRED_INCLUDES ${CMAKE_REQUIRED_INCLUDES}")
+#message(STATUS "CMAKE_SYSTEM_NAME ${CMAKE_SYSTEM_NAME}")
+#message(STATUS "CMAKE_REQUIRED_INCLUDES ${CMAKE_REQUIRED_INCLUDES}")
 
 message(STATUS "PROJECT_SOURCE_DIR ${PROJECT_SOURCE_DIR}")
 message(STATUS "PROJECT_SHARE_PATH ${PROJECT_SHARE_PATH}")
@@ -242,5 +253,4 @@ message(STATUS "YAML_CPP_LIBRARIES ${YAML_CPP_LIBRARIES}")
 
 message(STATUS "Boost_INCLUDE_DIRS ${Boost_INCLUDE_DIRS}")
 
-message(STATUS "WALLETCPP_GNUPLOT_SUPPORT ${WALLETCPP_GNUPLOT_SUPPORT}")
 message(STATUS "-------- ----- --------")
