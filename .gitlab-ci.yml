@@ -1,7 +1,7 @@
 before_script:
-  - lsb_release -a
   - apt-get update -y
   - apt-get install -y --no-install-recommends apt-transport-https ca-certificates lsb-release libdistro-info-perl devscripts dh-make dh-exec build-essential libyaml-cpp-dev libboost-filesystem-dev libboost-program-options-dev libboost-date-time-dev
+  - lsb_release -a
   - echo "deb http://ftp.debian.org/debian stretch-backports main" > /etc/apt/sources.list.d/backports.list
   - apt-get update -y
   - apt-get -t stretch-backports install -y --no-install-recommends cmake
