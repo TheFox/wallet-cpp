@@ -32,33 +32,9 @@ ExternalProject_Add(mstch_project
     GIT_SUBMODULES ""
 
     UPDATE_COMMAND ""
-#    INSTALL_COMMAND ""
     CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${MSTCH_INSTALL_DIR}"
     )
 
 include_directories(${MSTCH_SOURCE_DIR}/include)
 link_directories(${MSTCH_INSTALL_DIR}/lib)
 add_library(libmstch INTERFACE IMPORTED GLOBAL)
-
-#include_directories(${MSTCH_ROOT})
-#add_subdirectory(${MSTCH_INSTALL_DIR}/lib/cmake)
-
-#message(STATUS "CMAKE_PREFIX_PATH: ${CMAKE_PREFIX_PATH}")
-#message(STATUS "CMAKE_MODULE_PATH: ${CMAKE_MODULE_PATH}")
-#list(APPEND CMAKE_PREFIX_PATH "${MSTCH_INSTALL_DIR}/lib/cmake")
-#list(APPEND CMAKE_PREFIX_PATH "${MSTCH_INSTALL_DIR}/lib/cmake/mstch")
-#list(APPEND CMAKE_MODULE_PATH "${MSTCH_INSTALL_DIR}/lib/cmake")
-#list(APPEND CMAKE_MODULE_PATH "${MSTCH_INSTALL_DIR}/lib/cmake/mstch")
-#message(STATUS "CMAKE_PREFIX_PATH: ${CMAKE_PREFIX_PATH}")
-#message(STATUS "CMAKE_MODULE_PATH: ${CMAKE_MODULE_PATH}")
-
-#set(mstch_DIR "${MSTCH_SOURCE_DIR}/cmake")
-#set(mstch_DIR "${BINARY_DIR}/src/mstch")
-#message(STATUS "mstch_DIR ${mstch_DIR}")
-
-#find_package(mstch QUIET)
-#find_package(mstch REQUIRED)
-#message(STATUS "mstch found: ${mstch_FOUND}")
-#message(STATUS "mstch config: ${mstch_CONFIG}")
-
-#message(STATUS "CMAKE_BUILD_TYPE ${CMAKE_BUILD_TYPE}")

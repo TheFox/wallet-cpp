@@ -103,7 +103,6 @@ check_include_files("boost/program_options.hpp" HAVE_BOOST_PROGRAM_OPTIONS_FILE)
 check_include_files("boost/uuid/random_generator.hpp" HAVE_BOOST_UUID_RND_FILE)
 check_include_files("boost/uuid/uuid.hpp" HAVE_BOOST_UUID_FILE)
 check_include_files("boost/uuid/uuid_io.hpp" HAVE_BOOST_UUID_IO_FILE)
-check_include_files("mstch/mstch.hpp" HAVE_MSTCH_FILE)
 check_include_files("yaml-cpp/yaml.h" HAVE_YAML_FILE)
 
 # Check Functions
