@@ -1,3 +1,9 @@
+wallet-cpp (0.8.2) unstable; urgency=medium
+
+  * Find Mustache & install from source.
+
+ -- Christian Mayer <christian@fox21.at>  Sun, 20 Jan 2019 14:19:52 +0100
+
 wallet-cpp (0.8.1) unstable; urgency=medium
 
   * .env file
