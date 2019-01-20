@@ -1,13 +1,15 @@
 cmake_minimum_required(VERSION 3.8.0)
 
 project(WalletCpp LANGUAGES CXX)
-set(PROJECT_VERSION_APPENDIX "")
+set(PROJECT_VERSION_APPENDIX "-dev")
 set(PROJECT_COPYRIGHT "Copyright (C) 2018 Christian Mayer <https://fox21.at>")
 set(PROJECT_HOMEPAGE_URL "https://github.com/TheFox/wallet-cpp")
 set(PROJECT_SHARE_PATH "share/wallet_cpp")
 
 # Options
 message(STATUS "Set options")
+set(PROJECT_VERSION_FULL "N/A" CACHE STRING "Version Full")
+set(PROJECT_VERSION_HASH "N/A" CACHE STRING "Version Hash")
 set(PROJECT_SHARE_PREFIX "${CMAKE_INSTALL_PREFIX}/${PROJECT_SHARE_PATH}" CACHE STRING "Share prefix path.")
 set(PROJECT_RESOURCES_PREFIX "${PROJECT_SHARE_PREFIX}/resources" CACHE STRING "Resources prefix path.")
 option(WALLETCPP_GNUPLOT_SUPPORT "Turn on/off building with Gnuplot support." OFF)
@@ -63,10 +65,20 @@ if (Boost_FOUND)
     message(STATUS "Boost LIBS ${Boost_LIBRARIES}")
 endif ()
 
-# Git
+# Git/Version
 include(GetGitVersion)
 get_git_version(GIT_VERSION)
 get_git_hash(GIT_HASH)
+if (${PROJECT_VERSION_FULL} STREQUAL "N/A" AND GIT_VERSION)
+    set(PROJECT_VERSION_FULL "${GIT_VERSION}")
+endif ()
+string(CONCAT PROJECT_VERSION_FULL ${PROJECT_VERSION_FULL} ${PROJECT_VERSION_APPENDIX})
+if (${PROJECT_VERSION_HASH} STREQUAL "N/A" AND GIT_HASH)
+    set(PROJECT_VERSION_HASH "${GIT_HASH}")
+endif ()
+
+message(STATUS "Project Version Full: ${PROJECT_VERSION_FULL}")
+message(STATUS "Project Version Hash: ${PROJECT_VERSION_HASH}")
 
 # C++ Includes
 include(CheckIncludeFileCXX)

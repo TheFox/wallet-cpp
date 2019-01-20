@@ -25,7 +25,7 @@ function(get_git_hash var)
     endif ()
 endfunction()
 
-function (get_git_version var)
+function(get_git_version var)
     if (GIT_EXECUTABLE)
         execute_process(
             COMMAND ${GIT_EXECUTABLE} --git-dir ./.git describe --match "v[0-9]*.[0-9]*.[0-9]*" --abbrev=8
@@ -40,7 +40,7 @@ function (get_git_version var)
             string(REGEX REPLACE "-g.*$" "" GIT_VERSION "${GIT_VERSION}")
 
             message(STATUS "Git Version: ${GIT_VERSION}")
-            set (${var} "${GIT_VERSION}" PARENT_SCOPE)
+            set(${var} "${GIT_VERSION}" PARENT_SCOPE)
         endif ()
     endif ()
-endfunction ()
+endfunction()
