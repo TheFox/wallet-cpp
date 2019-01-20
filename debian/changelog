@@ -1,3 +1,9 @@
+wallet-cpp (0.8.4) unstable; urgency=medium
+
+  * Determine correct version for Homebrew build.
+
+ -- Christian Mayer <christian@fox21.at>  Sun, 20 Jan 2019 17:22:45 +0100
+
 wallet-cpp (0.8.3) unstable; urgency=medium
 
   * Debug
