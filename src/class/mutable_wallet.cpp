@@ -121,7 +121,7 @@ namespace Wallet
 
     // Save Month file.
     std::ofstream fout{monthFilePathStr};
-    fout << month;
+    fout << month << std::endl;
     fout.close();
 
     return true;
@@ -448,7 +448,7 @@ namespace Wallet
     this->isIndexModified = false;
 
     std::ofstream fout{this->indexPath.string()};
-    fout << this->index;
+    fout << this->index << std::endl;
     fout.close();
   }
 
