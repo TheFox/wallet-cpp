@@ -118,9 +118,9 @@ namespace Wallet::Html
     const auto context = std::make_shared<Mustache::YearMustache>("../..", entries, total, yearStr, categoryNames,
       yearPngFileStr);
 
-    // Year File Output
+    // Year HTML File Output
     std::ofstream indexFh{this->getFullPath()};
-    indexFh << mstch::render(tpl, context);
+    indexFh << mstch::render(tpl, context) << '\n';
     indexFh.close();
 
 #ifdef WALLETCPP_GNUPLOT_SUPPORT
@@ -172,7 +172,7 @@ namespace Wallet::Html
     const auto gnuplotFilePath = (this->tmpPath / (yearFileStr + ".gp")).string();
     DLog(" -> gp: '%s'\n", gnuplotFilePath.c_str());
     std::ofstream totalFh{gnuplotFilePath};
-    totalFh << mstch::render(gnuplotTpl, gnuplotContext);
+    totalFh << mstch::render(gnuplotTpl, gnuplotContext) << '\n';
     totalFh.close();
 
     // Run GNUPlot

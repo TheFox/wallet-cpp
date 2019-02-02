@@ -88,9 +88,9 @@ namespace Wallet::Html
     const auto context = std::make_shared<Mustache::MonthMustache>("../..", entries, total, yearStr, this->name,
       this->container.fileName);
 
-    // Month File Output
+    // Month HTML File Output
     std::ofstream indexFh{this->getFullPath()};
-    indexFh << mstch::render(tpl, context);
+    indexFh << mstch::render(tpl, context) << '\n';
     indexFh.close();
   }
 

@@ -121,7 +121,7 @@ namespace Wallet
 
     // Save Month file.
     std::ofstream fout{monthFilePathStr};
-    fout << month << std::endl;
+    fout << month << '\n';
     fout.close();
 
     return true;
@@ -379,7 +379,7 @@ namespace Wallet
 
     // Create lock file.
     std::ofstream lockFh{this->lockPath.string()};
-    lockFh << "locked";
+    lockFh << "locked\n";
     lockFh.close();
 
     this->isLocked = true;
@@ -448,7 +448,7 @@ namespace Wallet
     this->isIndexModified = false;
 
     std::ofstream fout{this->indexPath.string()};
-    fout << this->index << std::endl;
+    fout << this->index << '\n';
     fout.close();
   }
 

@@ -99,7 +99,7 @@ namespace Wallet::Html
 
     // Output: index.html
     std::ofstream indexFh{this->getFullPath()};
-    indexFh << mstch::render(tpl, context);
+    indexFh << mstch::render(tpl, context) << '\n';
     indexFh.close();
 
 #ifdef WALLETCPP_GNUPLOT_SUPPORT
@@ -141,7 +141,7 @@ namespace Wallet::Html
     const auto gnuplotFilePath = (this->tmpPath / "total.gp").string();
     DLog(" -> gp: '%s'\n", gnuplotFilePath.c_str());
     std::ofstream totalFh{gnuplotFilePath};
-    totalFh << mstch::render(gnuplotTpl, gnuplotContext);
+    totalFh << mstch::render(gnuplotTpl, gnuplotContext) << '\n';
     totalFh.close();
 
     // Run GNUPlot
