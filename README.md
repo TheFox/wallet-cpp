@@ -4,9 +4,9 @@ A spreadsheet likewise C++17 program to track your finances.
 
 ## Why this project?
 
-_The original idea is from my [Ruby Wallet project](https://github.com/TheFox/wallet). This project is rewritten in C++._
-
 While conventionally programs like Microsoft Excel or [LibreOffice](https://www.libreoffice.org/) use [proprietary file formats](https://en.wikipedia.org/wiki/Proprietary_format) and [binary files](https://en.wikipedia.org/wiki/Binary_file) to store your data, this program uses [YAML](https://en.wikipedia.org/wiki/YAML). YAML is a human-readable data serialization format. This means you can edit YAML files on any [operating system](https://en.wikipedia.org/wiki/Operating_system), using any text editor.
+
+The original idea is from my [Ruby Wallet project](https://github.com/TheFox/wallet). This project is rewritten in C++.
 
 ## Project Outlines
 
