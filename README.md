@@ -8,6 +8,15 @@ _The original idea is from my [Ruby Wallet project](https://github.com/TheFox/wa
 
 While conventionally programs like Microsoft Excel or [LibreOffice](https://www.libreoffice.org/) use [proprietary file formats](https://en.wikipedia.org/wiki/Proprietary_format) and [binary files](https://en.wikipedia.org/wiki/Binary_file) to store your data, this program uses [YAML](https://en.wikipedia.org/wiki/YAML). YAML is a human-readable data serialization format. This means you can edit YAML files on any [operating system](https://en.wikipedia.org/wiki/Operating_system), using any text editor.
 
+## Project Outlines
+
+The project outlines as described in my blog post about [Open Source Software Collaboration](https://blog.fox21.at/2019/02/21/open-source-software-collaboration.html).
+
+- The main purpose of this software is to track revenues and expenses, to have a monthly overview.
+- Use YAML file format to be able to commit to Git.
+- This software *could* be an invoice generator in the future.
+- This list is open. Feel free to request features.
+
 ## Features
 
 - Save revenues/expenses entries monthly.
@@ -20,6 +29,7 @@ While conventionally programs like Microsoft Excel or [LibreOffice](https://www.
 - CSV Import
 - CSV Export
 - Invoices
+- Epics
 
 ## Documentation
 
