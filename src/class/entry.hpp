@@ -54,7 +54,6 @@ namespace Wallet
     std::string epic{};
 
     // Functions
-    void generateRandomId() noexcept;
     std::string getFileName() const noexcept;
 
     // Conversion
@@ -62,6 +61,9 @@ namespace Wallet
     T as() const noexcept;
 
   private:
+    // Functions
+    void generateRandomId() noexcept;
+
     // Variables
     calendar::date date{};
   };

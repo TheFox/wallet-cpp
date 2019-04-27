@@ -186,20 +186,6 @@ namespace Wallet
     return this->category;
   }
 
-  void Entry::generateRandomId() noexcept
-  {
-    // Random UUID
-    uuid::random_generator gen;
-    uuid::uuid _id = gen();
-
-    // Convert UUID to String.
-    std::ostringstream uuidStream{};
-    uuidStream << _id;
-
-    // Set ID from String Stream.
-    this->id = uuidStream.str();
-  }
-
   std::string Entry::getFileName() const noexcept
   {
     std::ostringstream out{};
@@ -236,5 +222,22 @@ namespace Wallet
     node["epic"] = this->epic; // Epic Handle
 
     return node;
+  }
+
+  /**
+   * Generate a random ID for this Entry.
+   */
+  void Entry::generateRandomId() noexcept
+  {
+    // Random UUID
+    uuid::random_generator gen{};
+    uuid::uuid _id = gen();
+
+    // Convert UUID to String.
+    std::ostringstream uuidStream{};
+    uuidStream << _id;
+
+    // Set ID from String Stream.
+    this->id = uuidStream.str();
   }
 } // Wallet Namespace
