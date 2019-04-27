@@ -3,6 +3,7 @@
 ## Unreleased (v0.9)
 
 - New line at the end of a YAML file.
+- Epics
 
 ## v0.8.4
 

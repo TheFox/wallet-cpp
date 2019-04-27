@@ -24,6 +24,9 @@ namespace Wallet::Container
   {
   };
 
+  /**
+   * Compare Categories by name.
+   */
   class CategoryComparator
   {
   public:

@@ -1,5 +1,6 @@
 
 #include <cstdio>
+#include <cstdlib>
 #include <string>
 #include <iostream>
 #include <unistd.h>
@@ -62,6 +63,8 @@ int main(int argc, char* const argv[])
               ("expense,e", bpo::value<std::string>()->value_name("number"), "Set an Expense.")
 
               ("comment,o", bpo::value<std::string>()->value_name("string"), "Set a Comment.")
+              ("epic,x", bpo::value<std::string>()->value_name("string"), "Set a Epic handle.")
+
               ("interactive,i", "Add entry interactively.")
               ("force,f", "Force add command. Even if ID is set and already exists.")
               ("no-force", "Do not force add command.");
@@ -201,6 +204,9 @@ int main(int argc, char* const argv[])
   if (vm.count("comment")) {
     cmdOpts.comment = vm["comment"].as<std::string>();
   }
+  if (vm.count("epic")) {
+    cmdOpts.epic = vm["epic"].as<std::string>();
+  }
   if (vm.count("interactive")) {
     cmdOpts.isInteractively = true;
   }
@@ -229,6 +235,6 @@ int main(int argc, char* const argv[])
 #else
     std::cerr << "ERROR: " << e << std::endl;
 #endif
-    return 1;
+    return EXIT_FAILURE;
   }
 }

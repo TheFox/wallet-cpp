@@ -50,6 +50,9 @@ namespace Wallet
     // Parameter: Comment
     std::string comment{};
 
+    // Parameter: Epic Handle
+    std::string epic{};
+
     // Functions
     void generateRandomId() noexcept;
     std::string getFileName() const noexcept;

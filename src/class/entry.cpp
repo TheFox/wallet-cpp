@@ -67,6 +67,9 @@ namespace Wallet
 
     // Comment
     this->comment = options.comment;
+
+    // Epic Handle
+    this->epic = options.epic;
   }
 
   Entry::Entry(const YAML::Node& node) noexcept
@@ -97,8 +100,12 @@ namespace Wallet
     if (node["comment"].IsDefined()) {
       this->comment = node["comment"].as<decltype(this->comment)>();
     }
+    if (node["epic"].IsDefined()) {
+      this->epic = node["epic"].as<decltype(this->epic)>();
+    }
   }
 
+  // TODO: move function to Components to be reused.
   void Entry::setDate(const std::string& _dateStr)
   {
     //DLog(" -> Entry::setDate(%s)\n", _dateStr.c_str());
@@ -226,6 +233,7 @@ namespace Wallet
     node["balance"] = Components::ftos(this->balance);
     node["category"] = this->category;
     node["comment"] = this->comment;
+    node["epic"] = this->epic; // Epic Handle
 
     return node;
   }

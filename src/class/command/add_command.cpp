@@ -57,6 +57,12 @@ namespace Wallet
       if (!_tmpStr.empty()) {
         entry.comment = _tmpStr;
       }
+
+      std::cout << "Epic Handle: [" << entry.epic << "] ";
+      std::getline(std::cin, _tmpStr);
+      if (!_tmpStr.empty()) {
+        entry.epic = _tmpStr;
+      }
     }
 
     if (entry.title.empty()) {
@@ -79,6 +85,7 @@ namespace Wallet
     std::cout << "Balance: " << std::fixed << std::setprecision(2) << entry.balance << std::endl;
     std::cout << "Category: '" << entry.category << "'" << std::endl;
     std::cout << "Comment: '" << entry.comment << "'" << std::endl;
+    std::cout << "Epic Handle: '" << entry.epic << "'" << std::endl;
     std::cout << "---------------" << std::endl;
 
     if (this->options.isInteractively) {

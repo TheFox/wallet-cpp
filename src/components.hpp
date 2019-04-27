@@ -24,7 +24,7 @@ namespace Wallet::Components
   using Date = datetime::year_month_day_base<std::uint16_t, std::uint16_t, std::uint16_t>;
 
   // Functions
-  std::string getNowStr(std::string = std::string{WALLETCPP_DATETIME_FORMAT}) noexcept;
+  std::string getNowStr(const std::string& = std::string{WALLETCPP_DATETIME_FORMAT}) noexcept;
   std::string ftos(const std::float_t&, int = 2) noexcept;
   std::float_t stof(std::string) noexcept;
   Date parseDate(const std::string&) noexcept;
