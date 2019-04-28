@@ -21,7 +21,7 @@ The project outlines as described in my blog post about [Open Source Software Co
 
 - Save revenues/expenses entries monthly.
 - List saved entries.
-- Generate HTML summary: overall, yearly, monthly.
+- Generate HTML summary: overall, yearly, monthly, per epic.
 - Graphs using gnuplot.
 
 ## Planned Features
@@ -29,7 +29,6 @@ The project outlines as described in my blog post about [Open Source Software Co
 - CSV Import
 - CSV Export
 - Invoices
-- Epics
 
 ## Documentation
 

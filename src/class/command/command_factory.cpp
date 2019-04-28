@@ -7,6 +7,7 @@
 #include "init_command.hpp"
 #include "list_command.hpp"
 #include "html_command.hpp"
+#include "epic_command.hpp"
 #include "fake_version_command.hpp"
 
 namespace Wallet
@@ -35,6 +36,9 @@ namespace Wallet
     };
     creators["html"] = []()->std::unique_ptr<Command> {
       return std::make_unique<HtmlCommand>();
+    };
+    creators["epic"] = []()->std::unique_ptr<Command> {
+      return std::make_unique<EpicCommand>();
     };
     creators["version"] = []()->std::unique_ptr<Command> {
       return std::make_unique<FakeVersionCommand>();

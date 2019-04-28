@@ -75,13 +75,18 @@ int main(int argc, char* const argv[])
                ("path,p", bpo::value<std::string>()->value_name("string"),
                  "Output directory path. Default: <wallet>/html");
 
+  // Epic Command options
+  bpo::options_description epicCmdOpts{"Epic Command options"};
+  //epicCmdOpts.add_options();
+
   bpo::options_description opts{};
   opts
     .add(commandOpts)
     .add(genericOpts)
     .add(commonOpts)
     .add(addCmdOpts)
-    .add(htmlCmdOpts);
+    .add(htmlCmdOpts)
+    .add(epicCmdOpts);
 
   auto parsedOptions = bpo::command_line_parser(argc, argv)
     .options(opts)
@@ -120,6 +125,7 @@ int main(int argc, char* const argv[])
     std::cout << "  add       Add a new entry" << std::endl;
     std::cout << "  list      List entries" << std::endl;
     std::cout << "  html      Generate HTML output" << std::endl;
+    std::cout << "  epic      Manage epics" << std::endl;
     std::cout << std::endl;
 
     std::cout << genericOpts << std::endl;

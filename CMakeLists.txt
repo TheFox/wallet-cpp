@@ -146,6 +146,7 @@ set(TARGET_WALLET_FILES
     src/class/command/list_command.cpp src/class/command/list_command.hpp
     src/class/command/version_command.cpp src/class/command/version_command.hpp
     src/class/command/fake_version_command.cpp src/class/command/fake_version_command.hpp
+    src/class/command/epic_command.cpp src/class/command/epic_command.hpp
     src/class/entry.cpp src/class/entry.hpp
     src/class/container/entry_container.cpp src/class/container/entry_container.hpp
     src/class/accountable.cpp src/class/accountable.hpp
