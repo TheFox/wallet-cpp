@@ -15,7 +15,7 @@ namespace Wallet
   void CommandFactory::setup() noexcept
   {
     if (isSetup) {
-      // Run setup only one.
+      // Run setup only once.
       return;
     }
     isSetup = true;
