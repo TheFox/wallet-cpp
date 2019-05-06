@@ -76,7 +76,8 @@ namespace Wallet::Mustache
   mstch::node BaseMustache::getCssRelativePath() noexcept
   {
 #ifdef DEBUG
-    return this->relativePath + "/../../resources/css";
+    // tmp/wallet/html relative
+    return this->relativePath + "/../../../resources/css";
 #else
     return this->getRelativePath();
 #endif

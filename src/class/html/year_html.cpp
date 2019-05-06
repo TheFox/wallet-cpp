@@ -79,6 +79,7 @@ namespace Wallet::Html
         };
       });
 
+      // Month Map
       mstch::map monthMap{
         {"file_name",        monthHtml.getFileName()},
         {"month_name",       monthHtml.name},
@@ -105,6 +106,7 @@ namespace Wallet::Html
     const auto yearFileStr = "year_" + yearStr;
     const auto yearPngFileStr = yearFileStr + ".png";
 
+    // Total Map
     const mstch::map total{
       {"label",            std::string{"TOTAL"}},
       {"revenue",          this->container.getRevenueStr()},

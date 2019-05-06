@@ -207,11 +207,11 @@ int main(int argc, char* const argv[])
   if (vm.count("category")) {
     cmdOpts.category = vm["category"].as<std::string>();
   }
-  if (vm.count("comment")) {
-    cmdOpts.comment = vm["comment"].as<std::string>();
-  }
   if (vm.count("epic")) {
     cmdOpts.epic = vm["epic"].as<std::string>();
+  }
+  if (vm.count("comment")) {
+    cmdOpts.comment = vm["comment"].as<std::string>();
   }
   if (vm.count("interactive")) {
     cmdOpts.isInteractively = true;

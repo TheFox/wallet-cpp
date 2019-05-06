@@ -97,11 +97,11 @@ namespace Wallet
     if (node["category"].IsDefined()) {
       this->category = node["category"].as<decltype(this->category)>();
     }
-    if (node["comment"].IsDefined()) {
-      this->comment = node["comment"].as<decltype(this->comment)>();
-    }
     if (node["epic"].IsDefined()) {
       this->epic = node["epic"].as<decltype(this->epic)>();
+    }
+    if (node["comment"].IsDefined()) {
+      this->comment = node["comment"].as<decltype(this->comment)>();
     }
   }
 
@@ -218,8 +218,8 @@ namespace Wallet
     node["expense"] = Components::ftos(this->expense);
     node["balance"] = Components::ftos(this->balance);
     node["category"] = this->category;
-    node["comment"] = this->comment;
     node["epic"] = this->epic; // Epic Handle
+    node["comment"] = this->comment;
 
     return node;
   }

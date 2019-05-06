@@ -47,11 +47,11 @@ namespace Wallet
     std::string category{};
     std::string getCategoryHtml() const noexcept;
 
-    // Parameter: Comment
-    std::string comment{};
-
     // Parameter: Epic Handle
     std::string epic{};
+
+    // Parameter: Comment
+    std::string comment{};
 
     // Functions
     std::string getFileName() const noexcept;

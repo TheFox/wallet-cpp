@@ -14,6 +14,8 @@ cd build_${BUILD_TYPE}
 set -x
 
 if [[ "${BUILD_TYPE}" = "debug" ]]; then
+    mkdir -p "${project_dir}/tmp/fakeroot"
+
     cmake \
         -DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
         -DWALLETCPP_GNUPLOT_SUPPORT=ON \

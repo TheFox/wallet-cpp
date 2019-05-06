@@ -45,6 +45,7 @@ namespace Wallet::Html
         fs::create_directories(yearDirPath);
       }
 
+      // Generate Year HTML file.
       const YearHtml yearHtml{yearDirPath, this->tmpPath, yearPair.second};
       yearHtml.generate();
 
