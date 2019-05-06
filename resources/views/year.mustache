@@ -21,15 +21,16 @@
         <th class="right">Expense</th>
         <th class="right">Balance</th>
         <th colspan="{{{category_count}}}">{{{category_count}}} Categories</th>
-        <th colspan="1">x Epics</th>
+        <th colspan="{{{epic_count}}}">{{{epic_count}}} Epics</th>
     </tr>
     <tr>
         <th colspan="4">&nbsp;</th>
         {{#categories}}
             <th class="right">{{name}}</th>
         {{/categories}}
-        <th class="right">Epic XYZ</th>
+
         {{#epics}}
+            <th class="right">{{name}}</th>
         {{/epics}}
     </tr>
     </thead>
@@ -46,7 +47,9 @@
                     <td class="right {{balance_class}}">{{{balance}}}</td>
                 {{/month_categories}}
 
-                <th class="right">Epic XYZ</th>
+                {{#month_epics}}
+                    <th class="right">Epic {{name}}</th>
+                {{/month_epics}}
             </tr>
         {{/entries}}
     </tbody>
@@ -64,6 +67,9 @@
             {{/month_categories}}
 
             <th class="right">Epic XYZ</th>
+            {{#month_epics}}
+                <th class="right">Epic {{name}}</th>
+            {{/month_epics}}
         </tr>
     {{/total}}
     </tfoot>

@@ -145,7 +145,7 @@ namespace Wallet
     const bool hasMonth = date.month != 0;
     const bool hasDay = date.day != 0;
 
-    // Iterate files.
+    // Iterate files (= months).
     for (auto& directoryItem : fs::directory_iterator(this->dataPath)) {
       const auto& filePath = directoryItem.path();
       const auto& fileStr = filePath.string();
@@ -251,6 +251,12 @@ namespace Wallet
           ycategory.revenue += entry.revenue;
           ycategory.expense += entry.expense;
           ycategory.balance += entry.balance;
+
+          // Year Epic
+          auto& yepic = yearMap.epics[entry.epic];
+          yepic.revenue += entry.revenue;
+          yepic.expense += entry.expense;
+          yepic.balance += entry.balance;
 
           // Month
           monthMap.entryCount++;

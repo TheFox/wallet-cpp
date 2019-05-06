@@ -5,10 +5,10 @@
 namespace Wallet::Mustache
 {
   YearMustache::YearMustache(std::string _rel, mstch::array _entries, mstch::map _total,
-                             std::string _year, Container::CategoryArray _categoryNames,
+                             std::string _year, Container::CategoryArray _categoryNames, Container::EpicArray _epicNames,
                              std::string _pngFileName) :
     BaseMustache{std::move(_rel), std::move(_entries), std::move(_total)},
-    year(std::move(_year)), categoryNames(std::move(_categoryNames)), pngFileName(std::move(_pngFileName))
+    year(std::move(_year)), categoryNames(std::move(_categoryNames)), epicNames(std::move(_epicNames)), pngFileName(std::move(_pngFileName))
   {
     //DLog(" -> YearMustache::YearMustache('%s', '%s', %lu)\n",
     //  _rel.c_str(), this->year.c_str(), _categoryNames.size());
@@ -17,6 +17,8 @@ namespace Wallet::Mustache
       {"year",           &YearMustache::getYear},
       {"category_count", &YearMustache::getCategoryCount},
       {"categories",     &YearMustache::getCategories},
+      {"epic_count",    &YearMustache::getEpicCount},
+      {"epics",          &YearMustache::getEpics},
       {"png_file_name",  &YearMustache::getPngFileName},
     });
   }
@@ -45,6 +47,33 @@ namespace Wallet::Mustache
 
     // Transform vector of names to map with 'name' property.
     std::transform(cnb, cne, std::back_inserter(names), [](std::string name) {
+      //DLog(" -> transform: '%s'\n", name.c_str());
+      return mstch::map{
+        {"name", std::move(name)},
+      };
+    });
+
+    return names;
+  }
+
+  mstch::node YearMustache::getEpicCount() noexcept
+  {
+    DLog(" -> YearMustache::getEpicCount() -> %lu\n", this->epicNames.size());
+    return std::to_string(this->epicNames.size());
+  }
+
+  mstch::node YearMustache::getEpics() noexcept
+  {
+    DLog(" -> YearMustache::getEpics() -> %lu\n", this->epicNames.size());
+
+    // Iterators
+    const auto enb = this->epicNames.cbegin(); // Epic Names Begin
+    const auto ene = this->epicNames.cend();   // Epic Names End
+
+    mstch::array names{};
+
+    // Transform vector of names to map with 'name' property.
+    std::transform(enb, ene, std::back_inserter(names), [](std::string name) {
       //DLog(" -> transform: '%s'\n", name.c_str());
       return mstch::map{
         {"name", std::move(name)},

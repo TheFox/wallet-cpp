@@ -48,6 +48,19 @@ namespace Wallet::Html
       return pair.first;
     });
 
+    // Epic Iterators
+    const auto eib = this->container.epics.cbegin();
+    const auto eie = this->container.epics.cend();
+
+    // Epic Names
+    Container::EpicArray epicNames{};
+
+    // https://thispointer.com/how-to-copy-all-values-from-a-map-to-a-vector-in-c/
+    std::transform(eib, eie, std::back_inserter(epicNames), [](const auto& pair) {
+      return pair.first;
+    });
+    DLog(" -> YearHtml::generate() -> epics: %lu\n", epicNames.size());
+
     // Table Body
     mstch::array entries{};
 
@@ -79,6 +92,10 @@ namespace Wallet::Html
         };
       });
 
+      // Month Epics
+      //mstch::array monthEpics{};
+      //monthEpics.push_back( mstch::map{{"name", "hello"}} );
+
       // Month Map
       mstch::map monthMap{
         {"file_name",        monthHtml.getFileName()},
@@ -88,13 +105,14 @@ namespace Wallet::Html
         {"balance",          monthPair.second.getBalanceStr()},
         {"balance_class",    monthPair.second.getBalanceHtmlClass()},
         {"month_categories", std::move(monthCategories)},
+        //{"month_epics",      std::move(monthEpics)},
       };
       entries.push_back(monthMap);
     } // this->container.months
 
     // Match common categories to total month categories.
-    mstch::array monthCategories{};
-    std::transform(cib, cie, std::back_inserter(monthCategories), [](const auto& pair) {
+    mstch::array totalCategories{};
+    std::transform(cib, cie, std::back_inserter(totalCategories), [](const auto& pair) {
       //DLog(" -> category: '%s'\n", pair.first.c_str());
 
       return mstch::map{
@@ -102,6 +120,10 @@ namespace Wallet::Html
         {"balance_class", pair.second.getBalanceHtmlClass()},
       };
     });
+
+    // Totoal Epics
+    mstch::array totalEpics{};
+    totalEpics.push_back( mstch::map{{"name", "hello total"}} );
 
     const auto yearFileStr = "year_" + yearStr;
     const auto yearPngFileStr = yearFileStr + ".png";
@@ -113,11 +135,12 @@ namespace Wallet::Html
       {"expense",          this->container.getExpenseStr()},
       {"balance",          this->container.getBalanceStr()},
       {"balance_class",    this->container.getBalanceHtmlClass()},
-      {"month_categories", std::move(monthCategories)},
+      {"month_categories", std::move(totalCategories)},
+      {"month_epics",      std::move(totalEpics)},
     };
 
     const auto tpl = Components::readFileIntoString(WALLETCPP_YEAR_VIEW_PATH);
-    const auto context = std::make_shared<Mustache::YearMustache>("../..", entries, total, yearStr, categoryNames,
+    const auto context = std::make_shared<Mustache::YearMustache>("../..", entries, total, yearStr, categoryNames, epicNames,
       yearPngFileStr);
 
     // Year HTML File Output

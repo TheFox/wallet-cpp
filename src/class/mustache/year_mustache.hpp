@@ -14,18 +14,21 @@ namespace Wallet::Mustache
   {
   public:
     // Constructor
-    YearMustache(std::string, mstch::array, mstch::map, std::string, Container::CategoryArray, std::string);
+    YearMustache(std::string, mstch::array, mstch::map, std::string, Container::CategoryArray, Container::EpicArray, std::string);
 
   private:
     // Properties
     const std::string year{};
     const Container::CategoryArray categoryNames{};
+    const Container::EpicArray epicNames{};
     const std::string pngFileName{};
 
     // Functions
     mstch::node getYear() noexcept;
     mstch::node getCategoryCount() noexcept;
     mstch::node getCategories() noexcept;
+    mstch::node getEpicCount() noexcept;
+    mstch::node getEpics() noexcept;
     mstch::node getPngFileName() noexcept;
   };
 } // Wallet::Mustache Namespace

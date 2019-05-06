@@ -10,6 +10,7 @@
 
 #include "class/entry.hpp"
 #include "class/accountable.hpp"
+#include "epic_container.hpp"
 
 namespace Wallet::Container
 {
@@ -48,6 +49,7 @@ namespace Wallet::Container
     // Properties
     std::size_t dayCount{};
     std::size_t entryCount{};
+    //std::size_t epicCount{};
   };
 
   struct DayEntryContainer final : public BaseEntryContainer
@@ -57,7 +59,7 @@ namespace Wallet::Container
   };
 
   using DayMap = std::map<ContainerDay, DayEntryContainer>;
-  struct MonthEntryContainer final : public BaseEntryContainer, public BaseCategoryContainer
+  struct MonthEntryContainer final : public BaseEntryContainer, public BaseCategoryContainer, public BaseEpicContainer
   {
     // Properties
     ContainerYear year{};
@@ -68,7 +70,7 @@ namespace Wallet::Container
 
   using MonthMap = std::map<ContainerMonth, MonthEntryContainer>;
   using MonthPair = std::pair<ContainerMonth, MonthEntryContainer>;
-  struct YearEntryContainer final : public BaseEntryContainer, public BaseCategoryContainer
+  struct YearEntryContainer final : public BaseEntryContainer, public BaseCategoryContainer, public BaseEpicContainer
   {
     // Properties
     ContainerYear year{};
