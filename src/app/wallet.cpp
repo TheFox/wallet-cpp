@@ -51,7 +51,8 @@ int main(int argc, char* const argv[])
   bpo::options_description commonOpts{"Common options"};
   commonOpts.add_options()
               ("date,d", bpo::value<std::string>()->value_name("string"), "Set or filter by Date. (Format: YYYY-MM-DD)")
-              ("category,c", bpo::value<std::string>()->value_name("string"), "Set or filter by Category.");
+              ("category,c", bpo::value<std::string>()->value_name("string"), "Set or filter by Category.")
+              ("epic,x", bpo::value<std::string>()->value_name("string"), "Set an Epic handle.");
 
   // Add Command options
   bpo::options_description addCmdOpts{"Add Command options"};
@@ -63,7 +64,6 @@ int main(int argc, char* const argv[])
               ("expense,e", bpo::value<std::string>()->value_name("number"), "Set an Expense.")
 
               ("comment,o", bpo::value<std::string>()->value_name("string"), "Set a Comment.")
-              ("epic,x", bpo::value<std::string>()->value_name("string"), "Set a Epic handle.")
 
               ("interactive,i", "Add entry interactively.")
               ("force,f", "Force add command. Even if ID is set and already exists.")
@@ -86,7 +86,8 @@ int main(int argc, char* const argv[])
     .add(commonOpts)
     .add(addCmdOpts)
     .add(htmlCmdOpts)
-    .add(epicCmdOpts);
+    .add(epicCmdOpts)
+  ;
 
   auto parsedOptions = bpo::command_line_parser(argc, argv)
     .options(opts)
@@ -132,6 +133,7 @@ int main(int argc, char* const argv[])
     std::cout << commonOpts << std::endl;
     std::cout << addCmdOpts << std::endl;
     std::cout << htmlCmdOpts << std::endl;
+    std::cout << epicCmdOpts << std::endl;
 
     std::cout << std::endl;
     std::cout << "Build settings:" << std::endl;
