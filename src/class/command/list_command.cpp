@@ -17,7 +17,7 @@ namespace Wallet
     const MutableWallet wallet{this->options.walletPath};
 
     const auto date = Components::parseDate(this->options.date);
-    listEntries(wallet.getEntries(date));
+    listEntries(wallet.getEntries(date, this->options.epic));
 
     return Command::execute();
   }

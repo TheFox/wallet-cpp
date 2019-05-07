@@ -22,9 +22,9 @@ namespace Wallet
     std::string date{};
     Accountable::Number revenue{};
     Accountable::Number expense{};
-    std::string category{"default"};
+    std::string category{};
     std::string comment{};
-    std::string epic{"default"};
+    std::string epic{};
 
     // HTML Command
     std::string path{};

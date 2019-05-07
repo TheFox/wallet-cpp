@@ -17,6 +17,12 @@ namespace Wallet
   {
     //DLog(" -> options %p\n", &this->options);
 
+    if (this->options.category.empty())
+      this->options.category = "default";
+
+    if (this->options.epic.empty())
+      this->options.epic = "default";
+
     Entry entry{this->options};
 
     if (this->options.isInteractively) {

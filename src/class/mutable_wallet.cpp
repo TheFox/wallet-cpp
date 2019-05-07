@@ -128,9 +128,9 @@ namespace Wallet
   }
 
   // TODO: select category
-  Container::EntryContainer MutableWallet::getEntries(const Components::Date& date) const
+  Container::EntryContainer MutableWallet::getEntries(const Components::Date& date, const std::string& epic) const
   {
-    DLog(" -> MutableWallet::getEntries(%d, %d, %d)\n", date.year, date.month, date.day);
+    DLog(" -> MutableWallet::getEntries(%d, %d, %d, %s)\n", date.year, date.month, date.day, epic.c_str());
 
     // Log
     this->log("[wallet] get entries");
@@ -144,6 +144,9 @@ namespace Wallet
     const bool hasYear = date.year != 0;
     const bool hasMonth = date.month != 0;
     const bool hasDay = date.day != 0;
+    const bool hasEpic = !epic.empty();
+
+    DLog(" -> MutableWallet::getEntries() -> has epic: %d\n", hasEpic);
 
     // Iterate files (= months).
     for (auto& directoryItem : fs::directory_iterator(this->dataPath)) {
@@ -187,6 +190,7 @@ namespace Wallet
         const auto day = static_cast<Container::ContainerDay>(std::stoi(dayStr.substr(8)));
         const auto node = dayNode.second;
 
+        // Filter Day
         if (hasDay) {
           const auto parsedDay = Components::parseDate(dayStr);
           if (parsedDay.day != date.day) {
@@ -234,10 +238,19 @@ namespace Wallet
           dayMap.entries.push_back(entry);
 #endif
 
+          // Filter Epic.
+          if (hasEpic) {
+            DLog(" -> MutableWallet::getEntries() -> compare epic: %d\n", entry.epic.compare(epic));
+            if (entry.epic.compare(epic) != 0) {
+              DLog(" -> MutableWallet::getEntries() -> skip, epic not equal\n");
+              continue;
+            }
+          }
+
           // Epic
-          std::string epic{"default"};
-          if (entry.epic.size() > 0) {
-            epic = entry.epic;
+          std::string entityEpic{"default"};
+          if (!entry.epic.empty()) {
+            entityEpic = entry.epic;
           }
 
           // Container
@@ -259,7 +272,7 @@ namespace Wallet
           ycategory.balance += entry.balance;
 
           // Year Epic
-          auto& yepic = yearMap.epics[epic];
+          auto& yepic = yearMap.epics[entityEpic];
           yepic.revenue += entry.revenue;
           yepic.expense += entry.expense;
           yepic.balance += entry.balance;
@@ -277,7 +290,7 @@ namespace Wallet
           mcategory.balance += entry.balance;
 
           // Month Epic
-          auto& mepic = monthMap.epics[epic];
+          auto& mepic = monthMap.epics[entityEpic];
           mepic.revenue += entry.revenue;
           mepic.expense += entry.expense;
           mepic.balance += entry.balance;
