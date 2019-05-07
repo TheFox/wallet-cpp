@@ -39,16 +39,16 @@
         {{#entries}}
             <tr>
                 <td class="left"><a href="{{file_name}}">{{month_name}}</a></td>
-                <td class="right">{{revenue}}</td>
-                <td class="right red">{{expense}}</td>
-                <td class="right {{{balance_class}}}">{{balance}}</td>
+                <td class="right">{{{revenue}}}</td>
+                <td class="right red">{{{expense}}}</td>
+                <td class="right {{{balance_class}}}">{{{balance}}}</td>
 
                 {{#month_categories}}
-                    <td class="right {{balance_class}}">{{{balance}}}</td>
+                    <td class="right {{{balance_class}}}">{{{balance}}}</td>
                 {{/month_categories}}
 
                 {{#month_epics}}
-                    <th class="right">Epic {{name}}</th>
+                    <th class="right {{{balance_class}}}">{{{balance}}}</th>
                 {{/month_epics}}
             </tr>
         {{/entries}}
@@ -58,17 +58,16 @@
     {{#total}}
         <tr>
             <td class="left">{{label}}</td>
-            <td class="right">{{revenue}}</td>
-            <td class="right red">{{expense}}</td>
-            <td class="right {{{balance_class}}}">{{balance}}</td>
+            <td class="right">{{{revenue}}}</td>
+            <td class="right red">{{{expense}}}</td>
+            <td class="right {{{balance_class}}}">{{{balance}}}</td>
 
             {{#month_categories}}
-                <td class="right {{balance_class}}">{{balance}}</td>
+                <td class="right {{{balance_class}}}">{{{balance}}}</td>
             {{/month_categories}}
 
-            <th class="right">Epic XYZ</th>
             {{#month_epics}}
-                <th class="right">Epic {{name}}</th>
+                <th class="right {{{balance_class}}}">{{{balance}}}</th>
             {{/month_epics}}
         </tr>
     {{/total}}

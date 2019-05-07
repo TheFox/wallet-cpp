@@ -24,7 +24,7 @@ namespace Wallet
     Accountable::Number expense{};
     std::string category{"default"};
     std::string comment{};
-    std::string epic{};
+    std::string epic{"default"};
 
     // HTML Command
     std::string path{};

@@ -49,8 +49,8 @@ namespace Wallet::Html
     });
 
     // Epic Iterators
-    const auto eib = this->container.epics.cbegin();
-    const auto eie = this->container.epics.cend();
+    const auto eib = this->container.epics.cbegin(); // Epic Iterator Begin
+    const auto eie = this->container.epics.cend();   // Epic Iterator End
 
     // Epic Names
     Container::EpicArray epicNames{};
@@ -69,6 +69,7 @@ namespace Wallet::Html
       monthHtml.logLevel = this->logLevel;
       monthHtml.generate();
 
+      // Month Categories
       // Match common categories to month categories.
       mstch::array monthCategories{};
       std::transform(cib, cie, std::back_inserter(monthCategories), [&monthPair](const auto& pair) {
@@ -93,8 +94,32 @@ namespace Wallet::Html
       });
 
       // Month Epics
-      //mstch::array monthEpics{};
-      //monthEpics.push_back( mstch::map{{"name", "hello"}} );
+      // Match common epics to month epics.
+      mstch::array monthEpics{};
+      std::transform(eib, eie, std::back_inserter(monthEpics), [&monthPair](const auto& pair) {
+        DLog(" -> month epic: '%s'\n", pair.first.c_str());
+
+        std::string balance{"&nbsp;"};
+        std::string balanceClass{};
+
+        try {
+          // Search by key (Name).
+          //DLog(" -> search epic: '%s'\n", pair.first.c_str());
+          const auto& epic = monthPair.second.epics.at(pair.first);
+          //DLog(" -> epic found: '%s'\n", pair.first.c_str());
+
+          balance = epic.getBalanceStr();
+          balanceClass = epic.getBalanceHtmlClass();
+        } catch (const std::out_of_range& exception) {
+          //DLog(" -> nothing found for epic '%s'\n", pair.first.c_str());
+        }
+
+        return mstch::map{
+          //{"name",    pair.first},
+          {"balance", std::move(balance)},
+          {"balance_class", std::move(balanceClass)},
+        };
+      });
 
       // Month Map
       mstch::map monthMap{
@@ -105,7 +130,7 @@ namespace Wallet::Html
         {"balance",          monthPair.second.getBalanceStr()},
         {"balance_class",    monthPair.second.getBalanceHtmlClass()},
         {"month_categories", std::move(monthCategories)},
-        //{"month_epics",      std::move(monthEpics)},
+        {"month_epics",      std::move(monthEpics)},
       };
       entries.push_back(monthMap);
     } // this->container.months
@@ -123,7 +148,14 @@ namespace Wallet::Html
 
     // Totoal Epics
     mstch::array totalEpics{};
-    totalEpics.push_back( mstch::map{{"name", "hello total"}} );
+    std::transform(eib, eie, std::back_inserter(totalEpics), [](const auto& pair) {
+      DLog(" -> epic: '%s'\n", pair.first.c_str());
+
+      return mstch::map{
+        {"name",    pair.first},
+        {"balance", pair.second.getBalanceStr()},
+      };
+    });
 
     const auto yearFileStr = "year_" + yearStr;
     const auto yearPngFileStr = yearFileStr + ".png";
