@@ -64,7 +64,7 @@ namespace Wallet::Mustache
 
   mstch::node YearMustache::getEpics() noexcept
   {
-    DLog(" -> YearMustache::getEpics() -> %lu\n", this->epicNames.size());
+    //DLog(" -> YearMustache::getEpics() -> %lu\n", this->epicNames.size());
 
     // Iterators
     const auto enb = this->epicNames.cbegin(); // Epic Names Begin

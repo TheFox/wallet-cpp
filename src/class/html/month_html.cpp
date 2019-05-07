@@ -51,6 +51,9 @@ namespace Wallet::Html
     // Table Body
     mstch::array entries{};
 
+    // Columns
+    bool showEpics = false;
+
     std::uint64_t entryCount{};
     for (const auto& dayPair : this->container.days) {
       //DLog("     -> day pair\n");
@@ -59,8 +62,11 @@ namespace Wallet::Html
       const auto eie = dayPair.second.entries.cend();
 
       // Add Day entries to month entry list.
-      std::transform(eib, eie, std::back_inserter(entries), [&entryCount](const auto& entry) {
+      std::transform(eib, eie, std::back_inserter(entries), [&entryCount, &showEpics](const auto& entry) {
         ++entryCount;
+
+        if (!showEpics && !entry.hasDefaultEpic())
+          showEpics = true;
 
         return mstch::map{
           {"no",            std::to_string(entryCount)},
@@ -71,7 +77,7 @@ namespace Wallet::Html
           {"balance",       entry.getBalanceStr()},
           {"balance_class", entry.getBalanceHtmlClass()},
           {"category",      entry.getCategoryHtml()},
-          {"epic",          entry.epic},
+          {"epic",          entry.getEpicHtml()},
           {"comment",       entry.comment},
         };
       });
@@ -87,7 +93,7 @@ namespace Wallet::Html
 
     const auto tpl = Components::readFileIntoString(WALLETCPP_MONTH_VIEW_PATH);
     const auto context = std::make_shared<Mustache::MonthMustache>("../..", entries, total, yearStr, this->name,
-      this->container.fileName);
+      this->container.fileName, showEpics);
 
     // Month HTML File Output
     std::ofstream indexFh{this->getFullPath()};

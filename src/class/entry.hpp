@@ -49,6 +49,8 @@ namespace Wallet
 
     // Parameter: Epic Handle
     std::string epic{};
+    std::string getEpicHtml() const noexcept;
+    bool hasDefaultEpic() const noexcept;
 
     // Parameter: Comment
     std::string comment{};

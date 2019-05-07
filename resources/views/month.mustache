@@ -23,7 +23,9 @@
         <th class="right">Expense</th>
         <th class="right">Balance</th>
         <th class="right">Category</th>
-        <th class="right">Epic</th>
+        {{#show_epics}}
+            <th class="right">Epic</th>
+        {{/show_epics}}
         <th class="left">Comment</th>
     </tr>
     </thead>
@@ -38,7 +40,9 @@
             <td valign="top" class="right red">{{expense}}</td>
             <td valign="top" class="right {{balance_class}}">{{balance}}</td>
             <td valign="top" class="right">{{category}}</td>
-            <td valign="top" class="right">{{epic}}</td>
+            {{#show_epics}}
+                <td valign="top" class="right">{{epic}}</td>
+            {{/show_epics}}
             <td valign="top" class="left">{{comment}}</td>
         </tr>
     {{/entries}}
@@ -52,7 +56,12 @@
             <th class="right">{{revenue}}</th>
             <th class="right red">{{expense}}</th>
             <th class="right {{balance_class}}">{{balance}}</th>
-            <th colspan="3">&nbsp;</th>
+            {{#show_epics}}
+                <th colspan="3">&nbsp;</th>
+            {{/show_epics}}
+            {{^show_epics}}
+                <th colspan="2">&nbsp;</th>
+            {{/show_epics}}
         </tr>
     {{/total}}
     </tfoot>

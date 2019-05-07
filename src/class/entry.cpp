@@ -186,6 +186,20 @@ namespace Wallet
     return this->category;
   }
 
+  std::string Entry::getEpicHtml() const noexcept
+  {
+    if (this->hasDefaultEpic()) {
+      return " ";
+    }
+
+    return this->epic;
+  }
+
+  bool Entry::hasDefaultEpic() const noexcept
+  {
+    return this->epic == "default";
+  }
+
   std::string Entry::getFileName() const noexcept
   {
     std::ostringstream out{};

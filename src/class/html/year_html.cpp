@@ -104,9 +104,9 @@ namespace Wallet::Html
 
         try {
           // Search by key (Name).
-          //DLog(" -> search epic: '%s'\n", pair.first.c_str());
+          DLog(" -> search epic: '%s'\n", pair.first.c_str());
           const auto& epic = monthPair.second.epics.at(pair.first);
-          //DLog(" -> epic found: '%s'\n", pair.first.c_str());
+          DLog(" -> epic found: '%s'\n", pair.first.c_str());
 
           balance = epic.getBalanceStr();
           balanceClass = epic.getBalanceHtmlClass();
