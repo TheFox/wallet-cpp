@@ -398,8 +398,9 @@ namespace Wallet
 
     DLog(" -> MutableWallet::epicExists() -> found: %c\n", it != _end ? 'Y' : 'N');
 
-    Epic e{};
-    return e;
+    // TODO
+    Epic epic{};
+    return epic;
   }
 
   void MutableWallet::setup()
