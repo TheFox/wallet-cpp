@@ -119,6 +119,8 @@ namespace Wallet
 
     // Convert Entry to Node.
     const auto node = entry.as<YAML::Node>();
+
+    // Add Entry Node to array.
     month["days"][dayStr].push_back(node);
 
     // Save Month file.
@@ -344,9 +346,21 @@ namespace Wallet
   {
     DLog(" -> MutableWallet::addEpic()\n");
 
+    this->loadEpics();
     this->areEpicsModified = true;
 
-    this->epics["epics"].push_back(epic);
+    // Convert Epic to Node.
+    const auto node = epic.as<YAML::Node>();
+
+    // Add Epic Node to array.
+    this->epics["epics"].push_back(node);
+  }
+
+  void removeEpic(const Epic&) noexcept
+  {
+    this->loadEpics();
+
+    // TODO
   }
 
   void MutableWallet::setup()
@@ -524,6 +538,8 @@ namespace Wallet
 
   void MutableWallet::loadEpics() noexcept
   {
+    DLog(" -> MutableWallet::loadEpics()\n");
+
     if (this->areEpicsLoaded) {
       return;
     }
@@ -533,6 +549,8 @@ namespace Wallet
     if (fs::exists(this->epicsPath)) {
       // Load YAML file.
       this->epics = YAML::LoadFile(this->epicsPath.string());
+
+      DLog(" -> MutableWallet::loadEpics() -> yaml loaded: %lu\n", this->epics.size());
     } else {
       // Create new epics file.
       this->areEpicsModified = true;
@@ -566,11 +584,11 @@ namespace Wallet
   }
 
   /**
-   * Check Epic exists.
+   * Check Epic exists by Handle.
    */
   bool MutableWallet::epicExists(const std::string& epic) noexcept
   {
-    DLog(" -> MutableWallet::epicExists()\n");
+    DLog(" -> MutableWallet::epicExists('%s')\n", epic.c_str());
 
     this->loadEpics();
 
@@ -578,10 +596,22 @@ namespace Wallet
     const auto _end = this->epics["epics"].end();
 
     auto it = std::find_if(_begin, _end, [&epic](const auto& item) {
-      return item.template as<std::string>() == epic;
+      const Epic obj{item};
+
+      return obj.handle == epic;
     });
 
     DLog(" -> MutableWallet::epicExists() -> found: %c\n", it != _end ? 'Y' : 'N');
     return it != _end;
+  }
+
+  /**
+   * Check Epic exists by Epic Object.
+   */
+  bool MutableWallet::epicExists(const Epic& epic) noexcept
+  {
+    DLog(" -> MutableWallet::epicExists(Epic)\n");
+
+    return this->epicExists(epic.handle);
   }
 } // Wallet Namespace

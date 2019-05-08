@@ -4,6 +4,14 @@
 
 #include <string>
 
+#ifdef __has_include
+#  if __has_include(<yaml-cpp/yaml.h>)
+#    include <yaml-cpp/yaml.h>
+#  else
+#    error "Missing <yaml-cpp/yaml.h>"
+#  endif
+#endif // __has_include
+
 #include "accountable.hpp"
 
 namespace Wallet
@@ -13,6 +21,7 @@ namespace Wallet
   public:
     // Constructor
     Epic() noexcept;
+    explicit Epic(const YAML::Node&) noexcept;
 
     // Parameter
     std::string id{};
