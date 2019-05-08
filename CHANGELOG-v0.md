@@ -4,6 +4,7 @@
 
 - New line at the end of a YAML file.
 - Epics
+- Filter Category on List command.
 
 ## v0.8.4
 

@@ -31,7 +31,9 @@ namespace Wallet
     void htmlOutput(const std::string&) const;
 
     // Public Functions
-    Container::EntryContainer getEntries(const Components::Date&, const std::string& = "") const;
+    Container::EntryContainer getEntries(const Components::Date&,
+      const std::string& = "",
+      const std::string& = "") const;
 
   private:
     // Variables

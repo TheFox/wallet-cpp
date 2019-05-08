@@ -52,7 +52,7 @@ int main(int argc, char* const argv[])
   commonOpts.add_options()
               ("date,d", bpo::value<std::string>()->value_name("string"), "Set or filter by Date. (Format: YYYY-MM-DD)")
               ("category,c", bpo::value<std::string>()->value_name("string"), "Set or filter by Category.")
-              ("epic,x", bpo::value<std::string>()->value_name("string"), "Set an Epic handle.");
+              ("epic,x", bpo::value<std::string>()->value_name("string"), "Set or filter by Epic handle.");
 
   // Add Command options
   bpo::options_description addCmdOpts{"Add Command options"};

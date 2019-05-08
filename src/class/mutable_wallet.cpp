@@ -127,10 +127,9 @@ namespace Wallet
     return true;
   }
 
-  // TODO: select category
-  Container::EntryContainer MutableWallet::getEntries(const Components::Date& date, const std::string& epic) const
+  Container::EntryContainer MutableWallet::getEntries(const Components::Date& date, const std::string& category, const std::string& epic) const
   {
-    DLog(" -> MutableWallet::getEntries(%d, %d, %d, %s)\n", date.year, date.month, date.day, epic.c_str());
+    DLog(" -> MutableWallet::getEntries(%d, %d, %d, '%s', '%s')\n", date.year, date.month, date.day, category.c_str(), epic.c_str());
 
     // Log
     this->log("[wallet] get entries");
@@ -144,8 +143,10 @@ namespace Wallet
     const bool hasYear = date.year != 0;
     const bool hasMonth = date.month != 0;
     const bool hasDay = date.day != 0;
+    const bool hasCategory = !category.empty();
     const bool hasEpic = !epic.empty();
 
+    DLog(" -> MutableWallet::getEntries() -> has category: %c\n", hasCategory ? 'Y' : 'N');
     DLog(" -> MutableWallet::getEntries() -> has epic: %c\n", hasEpic ? 'Y' : 'N');
 
     // Iterate files (= months).
@@ -231,6 +232,15 @@ namespace Wallet
         // Iterate Day entries.
         for (const auto& entryNode : node) {
           const Entry entry{entryNode};
+
+          // Filter Category.
+          if (hasCategory) {
+            DLog(" -> MutableWallet::getEntries() -> compare category: %d '%s' '%s'\n", entry.category.compare(category), entry.category.c_str(), category.c_str());
+            if (entry.category.compare(category) != 0) {
+              DLog(" -> MutableWallet::getEntries() -> skip, category not equal\n");
+              continue;
+            }
+          }
 
           // Filter Epic.
           if (hasEpic) {
