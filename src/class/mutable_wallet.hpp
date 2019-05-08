@@ -10,6 +10,7 @@
 #include "logable.hpp"
 #include "components.hpp"
 #include "entry.hpp"
+#include "epic.hpp"
 #include "container/entry_container.hpp"
 
 #define WALLET_MONTH_FILE_VERSION 2
@@ -29,17 +30,20 @@ namespace Wallet
     void init() noexcept;
     bool add(const Entry&, bool);
     void htmlOutput(const std::string&, const std::string& = "", const std::string& = "") const;
+    void addEpic(const Epic&) noexcept;
 
     // Public Functions
     Container::EntryContainer getEntries(const Components::Date&,
       const std::string& = "",
       const std::string& = "") const;
+    //Container::EntryContainer epicExist();
 
   private:
     // Variables
     const fs::path path{};
     const fs::path dataPath{};
     const fs::path indexPath{};
+    const fs::path epicsPath{};
     const fs::path tmpPath{};
     const fs::path lockPath{};
 
@@ -49,6 +53,9 @@ namespace Wallet
     bool isIndexLoaded{};
     bool isIndexModified{};
     YAML::Node index{};
+    bool areEpicsLoaded{};
+    bool areEpicsModified{};
+    YAML::Node epics{};
 
     // Functions
     void setup();
@@ -58,6 +65,11 @@ namespace Wallet
     void loadIndex() noexcept;
     void saveIndex() noexcept;
     bool entryExists(const Entry&) noexcept;
+    void loadEpics() noexcept;
+    void saveEpics() noexcept;
+
+  public:
+    bool epicExists(const std::string&) noexcept;
   };
 } // Wallet Namespace
 

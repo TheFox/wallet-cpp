@@ -25,6 +25,7 @@ namespace Wallet
     path(_path),
     dataPath(this->path / "data"),
     indexPath(this->dataPath / "index.yml"),
+    epicsPath(this->dataPath / "epics.yml"),
     tmpPath(this->path / "tmp"),
     lockPath(this->tmpPath / "lock")
   {
@@ -36,6 +37,7 @@ namespace Wallet
     DLog(" -> MutableWallet::~MutableWallet()\n");
 
     this->saveIndex();
+    this->saveEpics();
     this->removeLock();
   }
 
@@ -338,6 +340,15 @@ namespace Wallet
     htmlGenerator.generate();
   }
 
+  void MutableWallet::addEpic(const Epic& epic) noexcept
+  {
+    DLog(" -> MutableWallet::addEpic()\n");
+
+    this->areEpicsModified = true;
+
+    this->epics["epics"].push_back(epic);
+  }
+
   void MutableWallet::setup()
   {
     DLog(" -> MutableWallet::setup()\n");
@@ -455,7 +466,7 @@ namespace Wallet
     }
     this->isIndexLoaded = true;
 
-    if (exists(this->indexPath)) {
+    if (fs::exists(this->indexPath)) {
       // Load YAML file.
       this->index = YAML::LoadFile(this->indexPath.string());
     } else {
@@ -508,6 +519,69 @@ namespace Wallet
       return item.template as<std::string>() == entry.id;
     });
 
+    return it != _end;
+  }
+
+  void MutableWallet::loadEpics() noexcept
+  {
+    if (this->areEpicsLoaded) {
+      return;
+    }
+
+    this->areEpicsLoaded = true;
+
+    if (fs::exists(this->epicsPath)) {
+      // Load YAML file.
+      this->epics = YAML::LoadFile(this->epicsPath.string());
+    } else {
+      // Create new epics file.
+      this->areEpicsModified = true;
+    }
+
+    const auto idx = this->epics["epics"];
+    if (!idx || !idx.IsDefined()) {
+      this->areEpicsModified = true;
+
+      // Create new 'epics' sequence.
+      YAML::Node _idx{YAML::NodeType::Sequence};
+      this->epics["epics"] = _idx;
+    }
+  }
+
+  void MutableWallet::saveEpics() noexcept
+  {
+    DLog(" -> MutableWallet::saveEpics()\n");
+
+    // Skip function when nothing has been changed.
+    if (!this->areEpicsModified) {
+      return;
+    }
+    this->areEpicsModified = false;
+
+    std::ofstream fout{this->epicsPath.string()};
+    fout << this->epics << '\n';
+    fout.close();
+
+    DLog(" -> MutableWallet::saveEpics() END\n");
+  }
+
+  /**
+   * Check Epic exists.
+   */
+  bool MutableWallet::epicExists(const std::string& epic) noexcept
+  {
+    DLog(" -> MutableWallet::epicExists()\n");
+
+    this->loadEpics();
+
+    const auto _begin = this->epics["epics"].begin();
+    const auto _end = this->epics["epics"].end();
+
+    auto it = std::find_if(_begin, _end, [&epic](const auto& item) {
+      return item.template as<std::string>() == epic;
+    });
+
+    DLog(" -> MutableWallet::epicExists() -> found: %c\n", it != _end ? 'Y' : 'N');
     return it != _end;
   }
 } // Wallet Namespace
