@@ -15,10 +15,10 @@ namespace Wallet
 
     Epic e1{};
     e1.id = "id1";
-    e1.handle = "e2";
+    e1.handle = "e3";
     e1.name = "My Epic1";
-
-    wallet.addEpic(e1);
+    //wallet.addEpic(e1);
+    wallet.removeEpic(e1);
 
     return Command::execute();
   }

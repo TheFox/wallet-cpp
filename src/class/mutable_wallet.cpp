@@ -347,20 +347,40 @@ namespace Wallet
     DLog(" -> MutableWallet::addEpic()\n");
 
     this->loadEpics();
-    this->areEpicsModified = true;
 
     // Convert Epic to Node.
     const auto node = epic.as<YAML::Node>();
 
     // Add Epic Node to array.
     this->epics["epics"].push_back(node);
+
+    this->areEpicsModified = true;
   }
 
-  void removeEpic(const Epic&) noexcept
+  void MutableWallet::removeEpic(const Epic& epic) noexcept
   {
+    DLog(" -> MutableWallet::removeEpic()\n");
+
     this->loadEpics();
 
     // TODO
+
+    const auto epicsOriginal = std::move(this->epics["epics"]);
+    YAML::Node epicsNew{YAML::NodeType::Sequence};
+
+    // TODO use std lib here instead of loop
+    for (const auto& node : epicsOriginal) {
+      DLog(" -> MutableWallet::removeEpic() -> node '%s'\n", node["handle"].as<std::string>().c_str());
+
+      if (node["handle"].as<std::string>() != epic.handle) {
+        DLog(" -> MutableWallet::removeEpic() -> keep node\n");
+        epicsNew.push_back(node);
+      }
+    }
+
+    this->epics["epics"] = std::move(epicsNew);
+    this->areEpicsModified = true;
+    DLog(" -> MutableWallet::removeEpic() END\n");
   }
 
   void MutableWallet::setup()
