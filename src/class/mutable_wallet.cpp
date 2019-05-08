@@ -381,7 +381,7 @@ namespace Wallet
     DLog(" -> MutableWallet::removeEpic() END\n");
   }
 
-  Epic MutableWallet::getEpicByHandle(const std::string& handle) noexcept
+  Epic MutableWallet::getEpicByHandle(const std::string& handle)
   {
     DLog(" -> MutableWallet::getEpicByHandle() -> handle '%s'\n", handle.c_str());
 
@@ -398,8 +398,11 @@ namespace Wallet
 
     DLog(" -> MutableWallet::epicExists() -> found: %c\n", it != _end ? 'Y' : 'N');
 
-    // TODO
-    Epic epic{};
+    if (it == _end) {
+      throw std::string{"No Epic found: "} + handle;
+    }
+
+    Epic epic{*it};
     return epic;
   }
 

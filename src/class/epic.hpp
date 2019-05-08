@@ -21,7 +21,13 @@ namespace Wallet
   public:
     // Constructor
     Epic() noexcept;
+
+    // Copy Constructor
     explicit Epic(const YAML::Node&) noexcept;
+    explicit Epic(const Epic&) noexcept;
+
+    // Move Constructor
+    Epic(Epic&& epic) noexcept;
 
     // Parameter
     std::string id{};

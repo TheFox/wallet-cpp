@@ -11,7 +11,7 @@ namespace Wallet
 
   Epic::Epic(const YAML::Node& node) noexcept
   {
-    DLog(" -> Epic::Epic(YAML::Node)\n", this);
+    DLog(" -> Epic::Epic(YAML::Node)\n");
 
     if (node["id"].IsDefined()) {
       this->id = node["id"].as<decltype(this->id)>();
@@ -25,6 +25,28 @@ namespace Wallet
     if (node["color"].IsDefined()) {
       this->color = node["color"].as<decltype(this->color)>();
     }
+  }
+
+  // Copy Contructor
+  Epic::Epic(const Epic& epic) noexcept
+  {
+    DLog(" -> Epic::Epic(%p, %p) [COPY]\n", this, &epic);
+
+    this->id = epic.id;
+    this->handle = epic.handle;
+    this->name = epic.name;
+    this->color = epic.color;
+  }
+
+  // Move Constructor
+  Epic::Epic(Epic&& epic) noexcept
+  {
+    DLog(" -> Epic::Epic(%p, %p) [MOVE]\n", this, &epic);
+
+    this->id = std::move(epic.id);
+    this->handle = std::move(epic.handle);
+    this->name = std::move(epic.name);
+    this->color = std::move(epic.color);
   }
 
   /**

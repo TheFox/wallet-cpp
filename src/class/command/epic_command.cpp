@@ -8,20 +8,18 @@ namespace Wallet
 {
   int EpicCommand::execute()
   {
-    DLog(" -> EpicCommand::execute()");
+    DLog(" -> EpicCommand::execute()\n");
 
     MutableWallet wallet{this->options.walletPath};
     wallet.logLevel = this->options.verbose;
 
-    Epic e1{};
-    e1.id = "id1";
-    e1.handle = "e3";
-    e1.name = "My Epic1";
-    //wallet.addEpic(e1);
-    //wallet.removeEpic(e1);
-
-    const auto epic = wallet.getEpicByHandle("e1");
-    DLog(" -> EpicCommand::execute() -> found epic: '%s'\n", epic.handle.c_str());
+    try {
+      const auto epic = wallet.getEpicByHandle("e1");
+      DLog(" -> EpicCommand::execute() -> found epic: '%s'\n", epic.handle.c_str());
+    }
+    catch (const std::string& e) {
+      DLog(" -> EpicCommand::execute() -> not found: %s\n", e.c_str());
+    }
 
     return Command::execute();
   }
