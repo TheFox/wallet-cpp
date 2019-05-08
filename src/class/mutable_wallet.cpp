@@ -127,6 +127,7 @@ namespace Wallet
     return true;
   }
 
+  // TODO: filter empty days, months, years
   Container::EntryContainer MutableWallet::getEntries(const Components::Date& date, const std::string& category, const std::string& epic) const
   {
     DLog(" -> MutableWallet::getEntries(%d, %d, %d, '%s', '%s')\n", date.year, date.month, date.day, category.c_str(), epic.c_str());
@@ -315,13 +316,14 @@ namespace Wallet
   }
 
   // TODO: date
-  // TODO: category
-  void MutableWallet::htmlOutput(const std::string& _path) const
+  void MutableWallet::htmlOutput(const std::string& _path,
+    const std::string& category, const std::string& epic) const
   {
-    DLog(" -> MutableWallet::htmlOutput()\n");
+    DLog(" -> MutableWallet::htmlOutput('%s', '%s', '%s')\n",
+      _path.c_str(), category.c_str(), epic.c_str());
     this->log("[wallet] generate html files");
 
-    const auto& container = this->getEntries({0, 0, 0}); // TODO
+    const auto& container = this->getEntries({0, 0, 0}, category, epic);
     DLog(" -> MutableWallet::htmlOutput() -> container %p\n", &container);
 
     fs::path htmlPath{};

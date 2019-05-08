@@ -28,7 +28,7 @@ namespace Wallet
     // Public Commands
     void init() noexcept;
     bool add(const Entry&, bool);
-    void htmlOutput(const std::string&) const;
+    void htmlOutput(const std::string&, const std::string& = "", const std::string& = "") const;
 
     // Public Functions
     Container::EntryContainer getEntries(const Components::Date&,
