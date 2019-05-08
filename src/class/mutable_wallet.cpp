@@ -146,7 +146,7 @@ namespace Wallet
     const bool hasDay = date.day != 0;
     const bool hasEpic = !epic.empty();
 
-    DLog(" -> MutableWallet::getEntries() -> has epic: %d\n", hasEpic);
+    DLog(" -> MutableWallet::getEntries() -> has epic: %c\n", hasEpic ? 'Y' : 'N');
 
     // Iterate files (= months).
     for (auto& directoryItem : fs::directory_iterator(this->dataPath)) {
@@ -230,24 +230,21 @@ namespace Wallet
 
         // Iterate Day entries.
         for (const auto& entryNode : node) {
-#if defined(__APPLE__) && defined(__llvm__) && (__clang_major__ >= 10)
-          // emplace_back() is Nice!!
-          const auto& entry = dayMap.entries.emplace_back(entryNode);
-#else
           const Entry entry{entryNode};
-          dayMap.entries.push_back(entry);
-#endif
 
           // Filter Epic.
           if (hasEpic) {
-            DLog(" -> MutableWallet::getEntries() -> compare epic: %d\n", entry.epic.compare(epic));
+            DLog(" -> MutableWallet::getEntries() -> compare epic: %d '%s' '%s'\n", entry.epic.compare(epic), entry.epic.c_str(), epic.c_str());
             if (entry.epic.compare(epic) != 0) {
               DLog(" -> MutableWallet::getEntries() -> skip, epic not equal\n");
               continue;
             }
           }
 
-          // Epic
+          // Add entry to array.
+          dayMap.entries.push_back(entry);
+
+          // Default Epic
           std::string entityEpic{"default"};
           if (!entry.epic.empty()) {
             entityEpic = entry.epic;
