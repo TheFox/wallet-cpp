@@ -32,6 +32,7 @@ namespace Wallet
     void htmlOutput(const std::string&, const std::string& = "", const std::string& = "") const;
     void addEpic(const Epic&) noexcept;
     void removeEpic(const Epic&) noexcept;
+    Epic getEpicByHandle(const std::string&) noexcept;
 
     // Public Functions
     Container::EntryContainer getEntries(const Components::Date&,

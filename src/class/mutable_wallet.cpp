@@ -363,8 +363,6 @@ namespace Wallet
 
     this->loadEpics();
 
-    // TODO
-
     const auto epicsOriginal = std::move(this->epics["epics"]);
     YAML::Node epicsNew{YAML::NodeType::Sequence};
 
@@ -381,6 +379,27 @@ namespace Wallet
     this->epics["epics"] = std::move(epicsNew);
     this->areEpicsModified = true;
     DLog(" -> MutableWallet::removeEpic() END\n");
+  }
+
+  Epic MutableWallet::getEpicByHandle(const std::string& handle) noexcept
+  {
+    DLog(" -> MutableWallet::getEpicByHandle() -> handle '%s'\n", handle.c_str());
+
+    this->loadEpics();
+
+    const auto _begin = this->epics["epics"].begin();
+    const auto _end = this->epics["epics"].end();
+
+    const auto it = std::find_if(_begin, _end, [&handle](const auto& item) {
+      DLog(" -> MutableWallet::getEpicByHandle() -> find '%s'\n", handle.c_str());
+      //DLog(" -> MutableWallet::getEpicByHandle() -> find '%s'\n", item["handle"].as<std::string>().c_str());
+      return item["handle"].template as<std::string>() == handle;
+    });
+
+    DLog(" -> MutableWallet::epicExists() -> found: %c\n", it != _end ? 'Y' : 'N');
+
+    Epic e{};
+    return e;
   }
 
   void MutableWallet::setup()
@@ -549,7 +568,7 @@ namespace Wallet
     const auto _begin = this->index["index"].begin();
     const auto _end = this->index["index"].end();
 
-    auto it = std::find_if(_begin, _end, [&entry](const auto& item) {
+    const auto it = std::find_if(_begin, _end, [&entry](const auto& item) {
       return item.template as<std::string>() == entry.id;
     });
 
@@ -606,19 +625,17 @@ namespace Wallet
   /**
    * Check Epic exists by Handle.
    */
-  bool MutableWallet::epicExists(const std::string& epic) noexcept
+  bool MutableWallet::epicExists(const std::string& handle) noexcept
   {
-    DLog(" -> MutableWallet::epicExists('%s')\n", epic.c_str());
+    DLog(" -> MutableWallet::epicExists('%s')\n", handle.c_str());
 
     this->loadEpics();
 
     const auto _begin = this->epics["epics"].begin();
     const auto _end = this->epics["epics"].end();
 
-    auto it = std::find_if(_begin, _end, [&epic](const auto& item) {
-      const Epic obj{item};
-
-      return obj.handle == epic;
+    const auto it = std::find_if(_begin, _end, [&handle](const auto& item) {
+      return item["handle"].template as<std::string>() == handle;
     });
 
     DLog(" -> MutableWallet::epicExists() -> found: %c\n", it != _end ? 'Y' : 'N');

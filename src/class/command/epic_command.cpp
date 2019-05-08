@@ -18,7 +18,10 @@ namespace Wallet
     e1.handle = "e3";
     e1.name = "My Epic1";
     //wallet.addEpic(e1);
-    wallet.removeEpic(e1);
+    //wallet.removeEpic(e1);
+
+    const auto epic = wallet.getEpicByHandle("e1");
+    DLog(" -> EpicCommand::execute() -> found epic: '%s'\n", epic.handle.c_str());
 
     return Command::execute();
   }
