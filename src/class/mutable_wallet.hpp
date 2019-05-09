@@ -32,8 +32,12 @@ namespace Wallet
     bool addEntry(const Entry&);
     void htmlOutput(const std::string&, const std::string& = "", const std::string& = "") const;
     void addEpic(const Epic&) noexcept;
-    void removeEpic(const Epic&) noexcept;
+    void removeEpic(const std::string&) noexcept;
+    // void removeEpic(const Epic&) noexcept;
+    void updateEpic(const Epic&) noexcept;
     Epic getEpicByHandle(const std::string&);
+    bool epicExists(const std::string&) noexcept;
+    bool epicExists(const Epic&) noexcept;
     Container::EntryContainer getEntries(const Components::Date&,
       const std::string& = "",
       const std::string& = "") const;
@@ -67,10 +71,6 @@ namespace Wallet
     bool entryExists(const Entry&) noexcept;
     void loadEpics() noexcept;
     void saveEpics() noexcept;
-
-  public:
-    bool epicExists(const std::string&) noexcept;
-    bool epicExists(const Epic&) noexcept;
   };
 } // Wallet Namespace
 

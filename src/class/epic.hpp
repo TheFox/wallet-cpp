@@ -12,17 +12,20 @@
 #  endif
 #endif // __has_include
 
+#include "command/command_options.hpp"
 #include "trait/accountable.hpp"
+#include "trait/idable.hpp"
 
 namespace Wallet
 {
-  class Epic final : public Trait::Accountable
+  class Epic final : public Trait::Accountable, public Trait::Idable
   {
   public:
     // Constructor
     Epic() noexcept;
 
     // Copy Constructor
+    explicit Epic(const CommandOptions& options) noexcept;
     explicit Epic(const YAML::Node&) noexcept;
     explicit Epic(const Epic&) noexcept;
 
@@ -32,7 +35,7 @@ namespace Wallet
     // Parameter
     std::string id{};
     std::string handle{};
-    std::string name{};
+    std::string title{};
     std::string bgColor{};
 
     // Conversion

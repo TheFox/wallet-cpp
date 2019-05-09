@@ -16,22 +16,29 @@ namespace Wallet
     // Int to have different levels. Only two levels used so far.
     std::uint8_t verbose{0};
 
+    // Common
+    std::string date{};
+    std::string category{};
+    std::string epic{};
+
     // Entry
     std::string id{};
     std::string title{};
-    std::string date{};
     Trait::Accountable::Number revenue{};
     Trait::Accountable::Number expense{};
-    std::string category{};
     std::string comment{};
-    std::string epic{};
 
     // HTML Command
     std::string path{};
 
+    // Epic Command
+    std::string handle{};
+    std::string bgColor{};
+
     // Status
-    bool isInteractively{};
-    bool isForced{};
+    bool isInteractively{}; // Add Command
+    bool isForced{}; // Add Command
+    bool isRemove{}; // Epic Command
   };
 } // Wallet Namespace
 

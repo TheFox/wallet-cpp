@@ -50,6 +50,7 @@ int main(int argc, char* const argv[])
   // Common options
   bpo::options_description commonOpts{"Common options"};
   commonOpts.add_options()
+              ("title,t", bpo::value<std::string>()->value_name("string"), "Set a Title for Entry or Epic.")
               ("date,d", bpo::value<std::string>()->value_name("string"), "Set or filter by Date. (Format: YYYY-MM-DD)")
               ("category,c", bpo::value<std::string>()->value_name("string"), "Set or filter by Category.")
               ("epic,x", bpo::value<std::string>()->value_name("string"), "Set or filter by Epic handle.");
@@ -58,7 +59,6 @@ int main(int argc, char* const argv[])
   bpo::options_description addCmdOpts{"Add Command options"};
   addCmdOpts.add_options()
               ("id", bpo::value<std::string>()->value_name("string"), "Set a unique ID.")
-              ("title,t", bpo::value<std::string>()->value_name("string"), "Set a Title.")
               ("message,m", bpo::value<std::string>()->value_name("string"), "Alias for --title.")
               ("revenue,r", bpo::value<std::string>()->value_name("number"), "Set a  Revenue.")
               ("expense,e", bpo::value<std::string>()->value_name("number"), "Set an Expense.")
@@ -77,7 +77,11 @@ int main(int argc, char* const argv[])
 
   // Epic Command options
   bpo::options_description epicCmdOpts{"Epic Command options"};
-  //epicCmdOpts.add_options();
+  epicCmdOpts.add_options()
+              ("handle", bpo::value<std::string>()->value_name("string"),
+                "Handle (For example 'myepic')")
+              ("bgcolor", bpo::value<std::string>()->value_name("string"), "Background Color (HTML)")
+              ("remove,R", "Remove Epic by handle.");
 
   bpo::options_description opts{};
   opts
@@ -215,6 +219,12 @@ int main(int argc, char* const argv[])
   if (vm.count("comment")) {
     cmdOpts.comment = vm["comment"].as<std::string>();
   }
+  if (vm.count("handle")) {
+    cmdOpts.handle = vm["handle"].as<std::string>();
+  }
+  if (vm.count("bgcolor")) {
+    cmdOpts.bgColor = vm["bgcolor"].as<std::string>();
+  }
   if (vm.count("interactive")) {
     cmdOpts.isInteractively = true;
   }
@@ -223,6 +233,9 @@ int main(int argc, char* const argv[])
   }
   if (vm.count("no-force")) {
     cmdOpts.isForced = false;
+  }
+  if (vm.count("remove")) {
+    cmdOpts.isRemove = true;
   }
   if (vm.count("path")) {
     cmdOpts.path = vm["path"].as<std::string>();
