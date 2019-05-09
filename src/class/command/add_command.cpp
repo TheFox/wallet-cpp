@@ -106,8 +106,6 @@ namespace Wallet
       // Reset terminal to normal "cooked" mode
       std::system("stty cooked");
 
-      //printf("input: %d %d\n", input, '\r');
-
       std::cout << std::endl;
       if (input != 'Y' && input != 'y' && input != 13) {
         std::cout << "Aborted. Nothing done." << std::endl;

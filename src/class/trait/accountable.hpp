@@ -24,14 +24,10 @@ namespace Wallet::Trait
     // Parameter: Balance
     std::string getBalanceStr() const noexcept;
 
-    // Parameter: Balance
-    //std::string getBalanceSumStr() const noexcept;
-
     // Properties
     Number revenue{};
     Number expense{};
     Number balance{};
-    //Number balanceSum{};
 
     // Functions
     void calcBalance() noexcept;
@@ -45,8 +41,6 @@ namespace Wallet::Trait
     mutable std::string expenseStr{};
     mutable bool balanceCache{};
     mutable std::string balanceStr{};
-    //mutable bool balanceSumCache{};
-    //mutable std::string balanceSumStr{};
   };
 } // Wallet::Trait Namespace
 
