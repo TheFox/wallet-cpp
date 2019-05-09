@@ -4,7 +4,7 @@
 
 #include <string>
 
-#include "class/accountable.hpp"
+#include "class/trait/accountable.hpp"
 
 namespace Wallet
 {
@@ -20,8 +20,8 @@ namespace Wallet
     std::string id{};
     std::string title{};
     std::string date{};
-    Accountable::Number revenue{};
-    Accountable::Number expense{};
+    Trait::Accountable::Number revenue{};
+    Trait::Accountable::Number expense{};
     std::string category{};
     std::string comment{};
     std::string epic{};

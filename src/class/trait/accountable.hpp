@@ -1,11 +1,11 @@
 
-#ifndef WALLETCPP_ACCOUNT_ABLE_HPP_
-#define WALLETCPP_ACCOUNT_ABLE_HPP_
+#ifndef WALLETCPP_TRAIT_ACCOUNTABLE_HPP_
+#define WALLETCPP_TRAIT_ACCOUNTABLE_HPP_
 
 #include <string>
 #include <cmath> // float_t
 
-namespace Wallet
+namespace Wallet::Trait
 {
   class Accountable
   {
@@ -48,6 +48,6 @@ namespace Wallet
     //mutable bool balanceSumCache{};
     //mutable std::string balanceSumStr{};
   };
-} // Wallet Namespace
+} // Wallet::Trait Namespace
 
-#endif // WALLETCPP_ACCOUNT_ABLE_HPP_
+#endif // WALLETCPP_TRAIT_ACCOUNTABLE_HPP_

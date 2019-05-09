@@ -5,7 +5,7 @@
 
 #include "accountable.hpp"
 
-namespace Wallet
+namespace Wallet::Trait
 {
   void Accountable::setRevenue(Accountable::Number _revenue) noexcept
   {
@@ -96,4 +96,4 @@ namespace Wallet
 
     return "";
   }
-} // Wallet Namespace
+} // Wallet::Trait Namespace

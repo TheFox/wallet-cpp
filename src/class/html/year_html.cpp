@@ -185,7 +185,7 @@ namespace Wallet::Html
     const auto monthsEnd = this->container.months.cend();
 
     // Balance Sum
-    Accountable::Number balanceSum{0.0};
+    Trait::Accountable::Number balanceSum{0.0};
 
     std::vector<std::string> datRows{};
     std::transform(monthsBegin, monthsEnd, std::back_inserter(datRows), [&balanceSum](const auto& pair) {

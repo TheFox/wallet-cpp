@@ -151,7 +151,7 @@ set(TARGET_WALLET_FILES
     src/class/epic.cpp src/class/epic.hpp
     src/class/container/entry_container.cpp src/class/container/entry_container.hpp
     src/class/container/epic_container.cpp src/class/container/epic_container.hpp
-    src/class/accountable.cpp src/class/accountable.hpp
+    src/class/trait/accountable.cpp src/class/trait/accountable.hpp
     src/class/trait/logable.cpp src/class/trait/logable.hpp
     src/class/trait/idable.cpp src/class/trait/idable.hpp
     src/class/html/html_generator.cpp src/class/html/html_generator.hpp
@@ -230,7 +230,7 @@ elseif (CMAKE_BUILD_TYPE_LOWER STREQUAL "test")
         src/test/entry_test.hpp
         src/components.cpp src/components.hpp
         src/class/entry.cpp src/class/entry.hpp
-        src/class/accountable.cpp src/class/accountable.hpp)
+        src/class/trait/accountable.cpp src/class/trait/accountable.hpp)
     target_include_directories(test PRIVATE ${PROJECT_SOURCE_DIR}/src)
     target_include_directories(test PRIVATE ${Boost_INCLUDE_DIRS})
     target_link_libraries(test Catch2::Catch2)

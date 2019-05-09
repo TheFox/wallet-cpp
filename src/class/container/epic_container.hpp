@@ -9,14 +9,14 @@
 #include <functional> // function
 
 //#include "class/entry.hpp"
-#include "class/accountable.hpp"
+#include "class/trait/accountable.hpp"
 
 namespace Wallet::Container
 {
   // Types
   //using EpicArray = std::vector<Epic>;
 
-  struct EpicContainer final : public Accountable
+  struct EpicContainer final : public Wallet::Trait::Accountable
   {
   };
 

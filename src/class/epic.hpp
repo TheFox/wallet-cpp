@@ -12,11 +12,11 @@
 #  endif
 #endif // __has_include
 
-#include "accountable.hpp"
+#include "trait/accountable.hpp"
 
 namespace Wallet
 {
-  class Epic final : public Accountable
+  class Epic final : public Trait::Accountable
   {
   public:
     // Constructor

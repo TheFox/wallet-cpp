@@ -9,7 +9,7 @@
 #include <functional> // function
 
 #include "class/entry.hpp"
-#include "class/accountable.hpp"
+#include "class/trait/accountable.hpp"
 #include "epic_container.hpp"
 
 namespace Wallet::Container
@@ -21,7 +21,7 @@ namespace Wallet::Container
   using ContainerMonth = std::uint8_t;
   using ContainerYear = std::uint16_t;
 
-  struct CategoryContainer final : public Accountable
+  struct CategoryContainer final : public Wallet::Trait::Accountable
   {
   };
 
@@ -44,7 +44,7 @@ namespace Wallet::Container
     CategoryMap categories{};
   };
 
-  struct BaseEntryContainer : public Accountable
+  struct BaseEntryContainer : public Wallet::Trait::Accountable
   {
     // Properties
     std::size_t dayCount{};
