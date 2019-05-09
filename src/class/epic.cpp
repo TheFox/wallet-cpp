@@ -22,8 +22,8 @@ namespace Wallet
     if (node["name"].IsDefined()) {
       this->name = node["name"].as<decltype(this->name)>();
     }
-    if (node["color"].IsDefined()) {
-      this->color = node["color"].as<decltype(this->color)>();
+    if (node["bg_color"].IsDefined()) {
+      this->bgColor = node["bg_color"].as<decltype(this->bgColor)>();
     }
   }
 
@@ -35,7 +35,7 @@ namespace Wallet
     this->id = epic.id;
     this->handle = epic.handle;
     this->name = epic.name;
-    this->color = epic.color;
+    this->bgColor = epic.bgColor;
   }
 
   // Move Constructor
@@ -46,7 +46,7 @@ namespace Wallet
     this->id = std::move(epic.id);
     this->handle = std::move(epic.handle);
     this->name = std::move(epic.name);
-    this->color = std::move(epic.color);
+    this->bgColor = std::move(epic.bgColor);
   }
 
   /**
@@ -62,7 +62,7 @@ namespace Wallet
     node["id"]     = this->id;
     node["handle"] = this->handle;
     node["name"]   = this->name;
-    node["color"]  = this->color;
+    node["bg_color"]  = this->bgColor;
 
     return node;
   }

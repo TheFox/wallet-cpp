@@ -55,16 +55,22 @@ namespace Wallet
     this->setup();
   }
 
-  bool MutableWallet::add(const Entry& entry, const bool isUnique)
+  bool MutableWallet::addUniqueEntry(const Entry& entry)
   {
-    DLog(" -> MutableWallet::add(%p, u=%c)\n", &entry, isUnique ? 'Y' : 'N');
+    DLog(" -> MutableWallet::addUniqueEntry(%p)\n", &entry);
+
+    if (this->entryExists(entry))
+      return false;
+
+    return this->addEntry(entry);
+  }
+
+  bool MutableWallet::addEntry(const Entry& entry)
+  {
+    DLog(" -> MutableWallet::addEntry(%p)\n", &entry);
 
     this->setup();
     this->loadIndex();
-
-    if (isUnique && this->entryExists(entry)) {
-      return false;
-    }
 
     this->isIndexModified = true;
     this->index["index"].push_back(entry.id);

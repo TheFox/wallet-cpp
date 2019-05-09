@@ -116,8 +116,25 @@ namespace Wallet
 
     MutableWallet wallet{this->options.walletPath};
     std::cout << "Try to add entry: " << entry.id << std::endl;
-    const bool added = wallet.add(entry, isUnique);
+    bool added{};
+    if (isUnique)
+      added = wallet.addUniqueEntry(entry);
+    else
+      added = wallet.addEntry(entry);
     std::cout << "Added: " << (added ? "YES" : "NO") << std::endl;
+
+    if (added) {
+      std::cout << "Check Epic '" << entry.epic << "'" << std::endl;
+
+      if (!wallet.epicExists(entry.epic)) {
+        std::cout << "Create new Epic '" << entry.epic << "'" << std::endl;
+
+        Epic epic{};
+        epic.handle = entry.epic;
+
+        wallet.addEpic(epic);
+      }
+    }
 
     return Command::execute();
   }

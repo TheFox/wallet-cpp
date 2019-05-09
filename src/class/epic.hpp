@@ -33,7 +33,7 @@ namespace Wallet
     std::string id{};
     std::string handle{};
     std::string name{};
-    std::string color{};
+    std::string bgColor{};
 
     // Conversion
     template<typename T>

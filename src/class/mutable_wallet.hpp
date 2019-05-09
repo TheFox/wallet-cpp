@@ -26,15 +26,14 @@ namespace Wallet
     // Destructor
     ~MutableWallet() noexcept;
 
-    // Public Commands
+    // Public Functions
     void init() noexcept;
-    bool add(const Entry&, bool);
+    bool addUniqueEntry(const Entry&);
+    bool addEntry(const Entry&);
     void htmlOutput(const std::string&, const std::string& = "", const std::string& = "") const;
     void addEpic(const Epic&) noexcept;
     void removeEpic(const Epic&) noexcept;
     Epic getEpicByHandle(const std::string&);
-
-    // Public Functions
     Container::EntryContainer getEntries(const Components::Date&,
       const std::string& = "",
       const std::string& = "") const;
