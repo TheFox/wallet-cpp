@@ -237,21 +237,4 @@ namespace Wallet
 
     return node;
   }
-
-  /**
-   * Generate a random ID for this Entry.
-   */
-  void Entry::generateRandomId() noexcept
-  {
-    // Random UUID
-    uuid::random_generator gen{};
-    uuid::uuid _id = gen();
-
-    // Convert UUID to String.
-    std::ostringstream uuidStream{};
-    uuidStream << _id;
-
-    // Set ID from String Stream.
-    this->id = uuidStream.str();
-  }
 } // Wallet Namespace

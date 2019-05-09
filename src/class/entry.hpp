@@ -20,10 +20,11 @@ namespace calendar = boost::gregorian;
 
 #include "accountable.hpp"
 #include "command/command_options.hpp"
+#include "trait/idable.hpp"
 
 namespace Wallet
 {
-  class Entry final : public Accountable
+  class Entry final : public Accountable, public Trait::Idable
   {
   public:
     // Constructor
@@ -32,9 +33,6 @@ namespace Wallet
     // Copy Contructor
     explicit Entry(const CommandOptions&);
     explicit Entry(const YAML::Node&) noexcept;
-
-    // Parameter: ID
-    std::string id{};
 
     // Parameter: Title
     std::string title{};
@@ -63,9 +61,6 @@ namespace Wallet
     T as() const noexcept;
 
   private:
-    // Functions
-    void generateRandomId() noexcept;
-
     // Variables
     calendar::date date{};
   };

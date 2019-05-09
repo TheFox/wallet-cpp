@@ -60,6 +60,7 @@ namespace Wallet
     DLog(" -> MutableWallet::add(%p, u=%c)\n", &entry, isUnique ? 'Y' : 'N');
 
     this->setup();
+    this->loadIndex();
 
     if (isUnique && this->entryExists(entry)) {
       return false;
@@ -346,6 +347,7 @@ namespace Wallet
   {
     DLog(" -> MutableWallet::addEpic()\n");
 
+    this->setup();
     this->loadEpics();
 
     // Convert Epic to Node.

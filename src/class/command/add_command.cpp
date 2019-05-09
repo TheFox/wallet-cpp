@@ -58,16 +58,16 @@ namespace Wallet
         entry.category = _tmpStr;
       }
 
+      std::cout << "Epic: [" << entry.epic << "] ";
+      std::getline(std::cin, _tmpStr);
+      if (!_tmpStr.empty()) {
+        entry.epic = _tmpStr;
+      }
+
       std::cout << "Comment: [" << entry.comment << "] ";
       std::getline(std::cin, _tmpStr);
       if (!_tmpStr.empty()) {
         entry.comment = _tmpStr;
-      }
-
-      std::cout << "Epic Handle: [" << entry.epic << "] ";
-      std::getline(std::cin, _tmpStr);
-      if (!_tmpStr.empty()) {
-        entry.epic = _tmpStr;
       }
     }
 
