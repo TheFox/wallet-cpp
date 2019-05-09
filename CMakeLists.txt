@@ -152,7 +152,7 @@ set(TARGET_WALLET_FILES
     src/class/container/entry_container.cpp src/class/container/entry_container.hpp
     src/class/container/epic_container.cpp src/class/container/epic_container.hpp
     src/class/accountable.cpp src/class/accountable.hpp
-    src/class/logable.cpp src/class/logable.hpp
+    src/class/trait/logable.cpp src/class/trait/logable.hpp
     src/class/html/html_generator.cpp src/class/html/html_generator.hpp
     src/class/html/base_html.cpp src/class/html/base_html.hpp
     src/class/html/index_html.cpp src/class/html/index_html.hpp

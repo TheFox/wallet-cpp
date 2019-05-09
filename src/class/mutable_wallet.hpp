@@ -7,7 +7,7 @@
 #include <cstdint> // uint8_t
 
 #include "fs.hpp"
-#include "logable.hpp"
+#include "trait/logable.hpp"
 #include "components.hpp"
 #include "entry.hpp"
 #include "epic.hpp"
@@ -17,7 +17,7 @@
 
 namespace Wallet
 {
-  class MutableWallet final : public Logable
+  class MutableWallet final : public Trait::Logable
   {
   public:
     // Constructor

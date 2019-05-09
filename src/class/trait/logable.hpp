@@ -1,10 +1,10 @@
 
-#ifndef WALLETCPP_LOGABLE_HPP_
-#define WALLETCPP_LOGABLE_HPP_
+#ifndef WALLETCPP_TRAIT_LOGABLE_HPP_
+#define WALLETCPP_TRAIT_LOGABLE_HPP_
 
 #include <string>
 
-namespace Wallet
+namespace Wallet::Trait
 {
   class Logable
   {
@@ -16,6 +16,6 @@ namespace Wallet
     // Functions
     void log(const std::string&) const noexcept;
   };
-} // Wallet Namespace
+} // Wallet::Trait Namespace
 
-#endif // WALLETCPP_LOGABLE_HPP_
+#endif // WALLETCPP_TRAIT_LOGABLE_HPP_

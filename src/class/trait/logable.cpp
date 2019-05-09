@@ -3,7 +3,7 @@
 
 #include "logable.hpp"
 
-namespace Wallet
+namespace Wallet::Trait
 {
   void Logable::log(const std::string& message) const noexcept
   {
@@ -13,4 +13,4 @@ namespace Wallet
 
     std::cout << message << std::endl;
   }
-} // Wallet Namespace
+} // Wallet::Trait Namespace
