@@ -10,6 +10,10 @@ namespace Wallet
   {
     DLog(" -> EpicCommand::execute()\n");
 
+    if (this->options.handle.empty()) {
+      throw std::string{"--handle option is needed."};
+    }
+
     MutableWallet wallet{this->options.walletPath};
     wallet.logLevel = this->options.verbose;
 
@@ -17,7 +21,7 @@ namespace Wallet
       DLog(" -> EpicCommand::execute() -> remove\n");
       wallet.removeEpic(this->options.handle);
     } else {
-      if (!this->options.handle.empty() || !this->options.title.empty()) {
+      if (!this->options.title.empty() || !this->options.bgColor.empty()) {
         // Create Epic from Options.
         Epic epic{this->options};
 
@@ -35,14 +39,6 @@ namespace Wallet
       } else
         DLog(" -> EpicCommand::execute() -> do nothing\n");
     }
-
-    // try {
-    //   const auto epic = wallet.getEpicByHandle("e1");
-    //   DLog(" -> EpicCommand::execute() -> found epic: '%s'\n", epic.handle.c_str());
-    // }
-    // catch (const std::string& e) {
-    //   DLog(" -> EpicCommand::execute() -> not found: %s\n", e.c_str());
-    // }
 
     return Command::execute();
   }

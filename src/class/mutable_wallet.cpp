@@ -419,28 +419,33 @@ namespace Wallet
   //   DLog(" -> MutableWallet::removeEpic() END\n");
   // }
 
+  /**
+   * Update Epic.
+   * 
+   * TODO: use std lib here instead of loop
+   */
   void MutableWallet::updateEpic(const Epic& epic) noexcept
   {
     DLog(" -> MutableWallet::updateEpic()\n");
-    DLog(" -> MutableWallet::updateEpic() -> sequence? %c\n", this->epics["epics"].IsSequence() ? 'Y' : 'N');
+    //DLog(" -> MutableWallet::updateEpic() -> sequence? %c\n", this->epics["epics"].IsSequence() ? 'Y' : 'N');
 
-    const auto eib = this->epics["epics"].begin();
-    const auto eie = this->epics["epics"].end();
+    for (auto node : this->epics["epics"]) {
+      DLog(" -> MutableWallet::updateEpic() -> node '%s'\n", node["handle"].as<std::string>().c_str());
 
-    for (YAML::iterator it = eib; it != eie; it++) {
-      const auto& nepic = *it; // YAML::Node
+      // Catch Epic by handle.
+      if (node["handle"].as<std::string>() == epic.handle) {
+        DLog(" -> MutableWallet::updateEpic() -> update\n");
 
-      DLog(" -> MutableWallet::updateEpic() -> node '%s'\n",
-        nepic["handle"].as<std::string>().c_str());
+        if (!epic.title.empty()) {
+          node["title"] = epic.title;
+          this->areEpicsModified = true;
+        }
 
-      if (nepic["handle"].as<std::string>() == epic.handle) {
-        DLog(" -> MutableWallet::updateEpic() -> found\n");
-        // TODO
-        // if (!epic.title.empty())
-        //   *it["title"] = epic.title;
-        // if (!epic.bgColor.empty())
-        //   *it["bg_color"] = epic.bgColor;
-        this->areEpicsModified = true;
+        if (!epic.bgColor.empty()) {
+          node["bg_color"] = epic.bgColor;
+          this->areEpicsModified = true;
+        }
+
         break;
       }
     }
