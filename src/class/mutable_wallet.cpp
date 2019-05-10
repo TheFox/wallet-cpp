@@ -422,15 +422,28 @@ namespace Wallet
   void MutableWallet::updateEpic(const Epic& epic) noexcept
   {
     DLog(" -> MutableWallet::updateEpic()\n");
+    DLog(" -> MutableWallet::updateEpic() -> sequence? %c\n", this->epics["epics"].IsSequence() ? 'Y' : 'N');
 
-    //std::cout << "type: " << typeid(this->epics["epics"]).name() << '\n';
+    const auto eib = this->epics["epics"].begin();
+    const auto eie = this->epics["epics"].end();
 
-    /*for (const auto& node : this->epics["epics"]) {
+    for (YAML::iterator it = eib; it != eie; it++) {
+      const auto& nepic = *it; // YAML::Node
+
       DLog(" -> MutableWallet::updateEpic() -> node '%s'\n",
-        node["handle"].as<std::string>().c_str());
+        nepic["handle"].as<std::string>().c_str());
 
-        this->epics["epics"][node];
-    }*/
+      if (nepic["handle"].as<std::string>() == epic.handle) {
+        DLog(" -> MutableWallet::updateEpic() -> found\n");
+        // TODO
+        // if (!epic.title.empty())
+        //   *it["title"] = epic.title;
+        // if (!epic.bgColor.empty())
+        //   *it["bg_color"] = epic.bgColor;
+        this->areEpicsModified = true;
+        break;
+      }
+    }
   }
 
   Epic MutableWallet::getEpicByHandle(const std::string& handle)

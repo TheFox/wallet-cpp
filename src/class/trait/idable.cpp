@@ -11,6 +11,7 @@
 #  endif
 #endif // __has_include
 
+#include "debug.hpp"
 #include "idable.hpp"
 
 namespace Wallet::Trait
@@ -20,6 +21,8 @@ namespace Wallet::Trait
    */
   void Idable::generateRandomId() noexcept
   {
+    DLog(" -> Idable::generateRandomId()\n");
+
     // Random UUID
     boost::uuids::random_generator gen{};
     boost::uuids::uuid _id = gen();
@@ -30,5 +33,7 @@ namespace Wallet::Trait
 
     // Set ID from String Stream.
     this->id = uuidStream.str();
+
+    DLog(" -> Idable::generateRandomId() -> ID '%s'\n", this->id.c_str());
   }
 } // Wallet::Trait Namespace

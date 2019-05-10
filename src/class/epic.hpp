@@ -33,10 +33,9 @@ namespace Wallet
     Epic(Epic&& epic) noexcept;
 
     // Parameter
-    std::string id{};
     std::string handle{};
     std::string title{};
-    std::string bgColor{};
+    std::string bgColor{"#ffffff"}; // Default white
 
     // Conversion
     template<typename T>
