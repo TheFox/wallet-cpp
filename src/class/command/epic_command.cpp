@@ -10,7 +10,7 @@ namespace Wallet
   {
     DLog(" -> EpicCommand::execute()\n");
 
-    if (this->options.handle.empty()) {
+    if (this->options.epicHandle.empty()) {
       throw std::string{"--handle option is needed."};
     }
 
@@ -19,13 +19,13 @@ namespace Wallet
 
     if (this->options.isRemove) {
       DLog(" -> EpicCommand::execute() -> remove\n");
-      wallet.removeEpic(this->options.handle);
+      wallet.removeEpic(this->options.epicHandle);
     } else {
       if (!this->options.title.empty() || !this->options.bgColor.empty()) {
         // Create Epic from Options.
         Epic epic{this->options};
 
-        if (wallet.epicExists(this->options.handle)) {
+        if (wallet.epicExists(this->options.epicHandle)) {
           DLog(" -> EpicCommand::execute() -> update\n");
 
           // Update Epic

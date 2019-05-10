@@ -20,8 +20,8 @@ namespace Wallet
     if (this->options.category.empty())
       this->options.category = "default";
 
-    if (this->options.epic.empty())
-      this->options.epic = "default";
+    if (this->options.epicHandle.empty())
+      this->options.epicHandle = "default";
 
     Entry entry{this->options};
 
@@ -58,10 +58,10 @@ namespace Wallet
         entry.category = _tmpStr;
       }
 
-      std::cout << "Epic: [" << entry.epic << "] ";
+      std::cout << "Epic: [" << entry.epicHandle << "] ";
       std::getline(std::cin, _tmpStr);
       if (!_tmpStr.empty()) {
-        entry.epic = _tmpStr;
+        entry.epicHandle = _tmpStr;
       }
 
       std::cout << "Comment: [" << entry.comment << "] ";
@@ -91,7 +91,7 @@ namespace Wallet
     std::cout << "Balance: " << std::fixed << std::setprecision(2) << entry.balance << std::endl;
     std::cout << "Category: '" << entry.category << "'" << std::endl;
     std::cout << "Comment: '" << entry.comment << "'" << std::endl;
-    std::cout << "Epic Handle: '" << entry.epic << "'" << std::endl;
+    std::cout << "Epic: '" << entry.epicHandle << "'" << std::endl;
     std::cout << "---------------" << std::endl;
 
     if (this->options.isInteractively) {
@@ -124,13 +124,13 @@ namespace Wallet
     std::cout << "Added: " << (added ? "YES" : "NO") << std::endl;
 
     if (added) {
-      std::cout << "Check Epic '" << entry.epic << "'" << std::endl;
+      std::cout << "Check Epic '" << entry.epicHandle << "'" << std::endl;
 
-      if (!wallet.epicExists(entry.epic)) {
-        std::cout << "Create new Epic '" << entry.epic << "'" << std::endl;
+      if (!wallet.epicExists(entry.epicHandle)) {
+        std::cout << "Create new Epic '" << entry.epicHandle << "'" << std::endl;
 
         Epic epic{};
-        epic.handle = entry.epic;
+        epic.handle = entry.epicHandle;
 
         wallet.addEpic(epic);
       }

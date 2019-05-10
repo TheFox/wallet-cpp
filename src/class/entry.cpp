@@ -69,7 +69,7 @@ namespace Wallet
     this->comment = options.comment;
 
     // Epic Handle
-    this->epic = options.epic;
+    this->epicHandle = options.epicHandle;
   }
 
   Entry::Entry(const YAML::Node& node) noexcept
@@ -98,7 +98,7 @@ namespace Wallet
       this->category = node["category"].as<decltype(this->category)>();
     }
     if (node["epic"].IsDefined()) {
-      this->epic = node["epic"].as<decltype(this->epic)>();
+      this->epicHandle = node["epic"].as<decltype(this->epicHandle)>();
     }
     if (node["comment"].IsDefined()) {
       this->comment = node["comment"].as<decltype(this->comment)>();
@@ -186,18 +186,18 @@ namespace Wallet
     return this->category;
   }
 
-  std::string Entry::getEpicHtml() const noexcept
+  std::string Entry::getEpicHandleHtml() const noexcept
   {
     if (this->hasDefaultEpic()) {
       return " ";
     }
 
-    return this->epic;
+    return this->epicHandle;
   }
 
   bool Entry::hasDefaultEpic() const noexcept
   {
-    return this->epic == "default";
+    return this->epicHandle == "default";
   }
 
   std::string Entry::getFileName() const noexcept
@@ -232,7 +232,7 @@ namespace Wallet
     node["expense"] = Components::ftos(this->expense);
     node["balance"] = Components::ftos(this->balance);
     node["category"] = this->category;
-    node["epic"] = this->epic; // Epic Handle
+    node["epic"] = this->epicHandle; // Epic Handle
     node["comment"] = this->comment;
 
     return node;

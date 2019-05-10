@@ -24,7 +24,7 @@ namespace Wallet
     wallet.logLevel = this->options.verbose;
 
     // TODO: date
-    wallet.htmlOutput(this->options.path, this->options.category, this->options.epic);
+    wallet.htmlOutput(this->options.path, this->options.category, this->options.epicHandle);
 
     return Command::execute();
   }

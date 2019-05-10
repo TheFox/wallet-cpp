@@ -19,7 +19,7 @@ namespace Wallet
     // Common
     std::string date{};
     std::string category{};
-    std::string epic{};
+    std::string epicHandle{};
 
     // Entry
     std::string id{};
@@ -32,7 +32,6 @@ namespace Wallet
     std::string path{};
 
     // Epic Command
-    std::string handle{};
     std::string bgColor{};
 
     // Status

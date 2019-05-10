@@ -214,13 +214,13 @@ int main(int argc, char* const argv[])
     cmdOpts.category = vm["category"].as<std::string>();
   }
   if (vm.count("epic")) {
-    cmdOpts.epic = vm["epic"].as<std::string>();
+    cmdOpts.epicHandle = vm["epic"].as<std::string>();
   }
   if (vm.count("comment")) {
     cmdOpts.comment = vm["comment"].as<std::string>();
   }
   if (vm.count("handle")) {
-    cmdOpts.handle = vm["handle"].as<std::string>();
+    cmdOpts.epicHandle = vm["handle"].as<std::string>();
   }
   if (vm.count("bgcolor")) {
     cmdOpts.bgColor = vm["bgcolor"].as<std::string>();

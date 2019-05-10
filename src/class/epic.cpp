@@ -28,7 +28,7 @@ namespace Wallet
 
     DLog(" -> Epic::Epic(CommandOptions) -> ID '%s'\n", this->id.c_str());
 
-    this->handle  = options.handle;
+    this->handle  = options.epicHandle;
     this->title   = options.title;
     this->bgColor = options.bgColor;
   }

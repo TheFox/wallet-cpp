@@ -139,9 +139,9 @@ namespace Wallet
   }
 
   // TODO: filter empty days, months, years
-  Container::EntryContainer MutableWallet::getEntries(const Components::Date& date, const std::string& category, const std::string& epic) const
+  Container::EntryContainer MutableWallet::getEntries(const Components::Date& date, const std::string& category, const std::string& epicHandle) const
   {
-    DLog(" -> MutableWallet::getEntries(%d, %d, %d, '%s', '%s')\n", date.year, date.month, date.day, category.c_str(), epic.c_str());
+    DLog(" -> MutableWallet::getEntries(%d, %d, %d, '%s', '%s')\n", date.year, date.month, date.day, category.c_str(), epicHandle.c_str());
 
     // Log
     this->log("[wallet] get entries");
@@ -156,7 +156,7 @@ namespace Wallet
     const bool hasMonth = date.month != 0;
     const bool hasDay = date.day != 0;
     const bool hasCategory = !category.empty();
-    const bool hasEpic = !epic.empty();
+    const bool hasEpic = !epicHandle.empty();
 
     DLog(" -> MutableWallet::getEntries() -> has category: %c\n", hasCategory ? 'Y' : 'N');
     DLog(" -> MutableWallet::getEntries() -> has epic: %c\n", hasEpic ? 'Y' : 'N');
@@ -247,8 +247,11 @@ namespace Wallet
 
           // Filter Category.
           if (hasCategory) {
-            DLog(" -> MutableWallet::getEntries() -> compare category: %d '%s' '%s'\n", entry.category.compare(category), entry.category.c_str(), category.c_str());
-            if (entry.category.compare(category) != 0) {
+            DLog(" -> MutableWallet::getEntries() -> compare category: %d '%s' '%s'\n",
+              entry.category.compare(category),
+              entry.category.c_str(), category.c_str());
+
+            if (entry.category != category) {
               DLog(" -> MutableWallet::getEntries() -> skip, category not equal\n");
               continue;
             }
@@ -256,8 +259,8 @@ namespace Wallet
 
           // Filter Epic.
           if (hasEpic) {
-            DLog(" -> MutableWallet::getEntries() -> compare epic: %d '%s' '%s'\n", entry.epic.compare(epic), entry.epic.c_str(), epic.c_str());
-            if (entry.epic.compare(epic) != 0) {
+            DLog(" -> MutableWallet::getEntries() -> compare epic: %d '%s' '%s'\n", entry.epicHandle.compare(epicHandle), entry.epicHandle.c_str(), epicHandle.c_str());
+            if (entry.epicHandle != epicHandle) {
               DLog(" -> MutableWallet::getEntries() -> skip, epic not equal\n");
               continue;
             }
@@ -268,8 +271,8 @@ namespace Wallet
 
           // Default Epic
           std::string entityEpic{"default"};
-          if (!entry.epic.empty()) {
-            entityEpic = entry.epic;
+          if (!entry.epicHandle.empty()) {
+            entityEpic = entry.epicHandle;
           }
 
           // Container
@@ -442,14 +445,14 @@ namespace Wallet
       // Found
 
       if (!epic.title.empty()) {
-          (*it)["title"] = epic.title;
-          this->areEpicsModified = true;
-        }
+        (*it)["title"] = epic.title;
+        this->areEpicsModified = true;
+      }
 
-        if (!epic.bgColor.empty()) {
-          (*it)["bg_color"] = epic.bgColor;
-          this->areEpicsModified = true;
-        }
+      if (!epic.bgColor.empty()) {
+        (*it)["bg_color"] = epic.bgColor;
+        this->areEpicsModified = true;
+      }
     }
   }
 

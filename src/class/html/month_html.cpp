@@ -77,7 +77,7 @@ namespace Wallet::Html
           {"balance",       entry.getBalanceStr()},
           {"balance_class", entry.getBalanceHtmlClass()},
           {"category",      entry.getCategoryHtml()},
-          {"epic",          entry.getEpicHtml()},
+          {"epic_handle",   entry.getEpicHandleHtml()},
           {"comment",       entry.comment},
         };
       });

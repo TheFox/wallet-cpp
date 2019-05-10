@@ -18,6 +18,7 @@ namespace calendar = boost::gregorian;
 #  endif
 #endif // __has_include
 
+#include "epic.hpp"
 #include "trait/accountable.hpp"
 #include "command/command_options.hpp"
 #include "trait/idable.hpp"
@@ -46,8 +47,9 @@ namespace Wallet
     std::string getCategoryHtml() const noexcept;
 
     // Parameter: Epic Handle
-    std::string epic{};
-    std::string getEpicHtml() const noexcept;
+    //Epic epic{};
+    std::string epicHandle{};
+    std::string getEpicHandleHtml() const noexcept;
     bool hasDefaultEpic() const noexcept;
 
     // Parameter: Comment
