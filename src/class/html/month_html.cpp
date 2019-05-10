@@ -58,11 +58,11 @@ namespace Wallet::Html
     for (const auto& dayPair : this->container.days) {
       //DLog("     -> day pair\n");
 
-      const auto eib = dayPair.second.entries.cbegin();
-      const auto eie = dayPair.second.entries.cend();
+      const auto _begin = dayPair.second.entries.cbegin();
+      const auto _end = dayPair.second.entries.cend();
 
       // Add Day entries to month entry list.
-      std::transform(eib, eie, std::back_inserter(entries), [&entryCount, &showEpics](const auto& entry) {
+      std::transform(_begin, _end, std::back_inserter(entries), [&entryCount, &showEpics](const auto& entry) {
         ++entryCount;
 
         if (!showEpics && !entry.hasDefaultEpic())

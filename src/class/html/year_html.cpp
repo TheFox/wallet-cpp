@@ -37,26 +37,26 @@ namespace Wallet::Html
     }
 
     // Categories Iterators
-    const auto cib = this->container.categories.cbegin();
-    const auto cie = this->container.categories.cend();
+    const auto _categories_begin = this->container.categories.cbegin();
+    const auto _categories_end = this->container.categories.cend();
 
     // Category Names
     Container::CategoryArray categoryNames{};
 
     // https://thispointer.com/how-to-copy-all-values-from-a-map-to-a-vector-in-c/
-    std::transform(cib, cie, std::back_inserter(categoryNames), [](const auto& pair) {
+    std::transform(_categories_begin, _categories_end, std::back_inserter(categoryNames), [](const auto& pair) {
       return pair.first;
     });
 
     // Epic Iterators
-    const auto eib = this->container.epics.cbegin(); // Epic Iterator Begin
-    const auto eie = this->container.epics.cend();   // Epic Iterator End
+    const auto _epics_begin = this->container.epics.cbegin(); // Epic Iterator Begin
+    const auto _epics_end = this->container.epics.cend();   // Epic Iterator End
 
     // Epic Names
     Container::EpicArray epicNames{};
 
     // https://thispointer.com/how-to-copy-all-values-from-a-map-to-a-vector-in-c/
-    std::transform(eib, eie, std::back_inserter(epicNames), [](const auto& pair) {
+    std::transform(_epics_begin, _epics_end, std::back_inserter(epicNames), [](const auto& pair) {
       return pair.first;
     });
     DLog(" -> YearHtml::generate() -> epics: %lu\n", epicNames.size());
@@ -72,7 +72,7 @@ namespace Wallet::Html
       // Month Categories
       // Match common categories to month categories.
       mstch::array monthCategories{};
-      std::transform(cib, cie, std::back_inserter(monthCategories), [&monthPair](const auto& pair) {
+      std::transform(_categories_begin, _categories_end, std::back_inserter(monthCategories), [&monthPair](const auto& pair) {
         std::string balance{"&nbsp;"};
         std::string balanceClass{};
 
@@ -96,7 +96,7 @@ namespace Wallet::Html
       // Month Epics
       // Match common epics to month epics.
       mstch::array monthEpics{};
-      std::transform(eib, eie, std::back_inserter(monthEpics), [&monthPair](const auto& pair) {
+      std::transform(_epics_begin, _epics_end, std::back_inserter(monthEpics), [&monthPair](const auto& pair) {
         DLog(" -> month epic: '%s'\n", pair.first.c_str());
 
         std::string balance{"&nbsp;"};
@@ -137,7 +137,7 @@ namespace Wallet::Html
 
     // Match common categories to total month categories.
     mstch::array totalCategories{};
-    std::transform(cib, cie, std::back_inserter(totalCategories), [](const auto& pair) {
+    std::transform(_categories_begin, _categories_end, std::back_inserter(totalCategories), [](const auto& pair) {
       //DLog(" -> category: '%s'\n", pair.first.c_str());
 
       return mstch::map{
@@ -148,7 +148,7 @@ namespace Wallet::Html
 
     // Totoal Epics
     mstch::array totalEpics{};
-    std::transform(eib, eie, std::back_inserter(totalEpics), [](const auto& pair) {
+    std::transform(_epics_begin, _epics_end, std::back_inserter(totalEpics), [](const auto& pair) {
       DLog(" -> epic: '%s'\n", pair.first.c_str());
 
       return mstch::map{

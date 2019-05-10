@@ -427,27 +427,29 @@ namespace Wallet
   void MutableWallet::updateEpic(const Epic& epic) noexcept
   {
     DLog(" -> MutableWallet::updateEpic()\n");
-    //DLog(" -> MutableWallet::updateEpic() -> sequence? %c\n", this->epics["epics"].IsSequence() ? 'Y' : 'N');
 
-    for (auto node : this->epics["epics"]) {
-      DLog(" -> MutableWallet::updateEpic() -> node '%s'\n", node["handle"].as<std::string>().c_str());
+    const auto _begin = this->epics["epics"].begin();
+    const auto _end = this->epics["epics"].end();
 
-      // Catch Epic by handle.
-      if (node["handle"].as<std::string>() == epic.handle) {
-        DLog(" -> MutableWallet::updateEpic() -> update\n");
+    auto it = std::find_if(_begin, _end, [&epic](const auto& item) {
+      DLog(" -> MutableWallet::updateEpic() -> find '%s'\n", epic.handle.c_str());
+      return item["handle"].template as<std::string>() == epic.handle;
+    });
 
-        if (!epic.title.empty()) {
-          node["title"] = epic.title;
+    DLog(" -> MutableWallet::updateEpic() -> found: %c\n", it != _end ? 'Y' : 'N');
+
+    if (it != _end) {
+      // Found
+
+      if (!epic.title.empty()) {
+          (*it)["title"] = epic.title;
           this->areEpicsModified = true;
         }
 
         if (!epic.bgColor.empty()) {
-          node["bg_color"] = epic.bgColor;
+          (*it)["bg_color"] = epic.bgColor;
           this->areEpicsModified = true;
         }
-
-        break;
-      }
     }
   }
 
