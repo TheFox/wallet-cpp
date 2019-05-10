@@ -67,16 +67,16 @@ namespace Wallet::Mustache
     //DLog(" -> YearMustache::getEpics() -> %lu\n", this->epicNames.size());
 
     // Iterators
-    const auto enb = this->epicNames.cbegin(); // Epic Names Begin
-    const auto ene = this->epicNames.cend();   // Epic Names End
+    const auto _begin = this->epicNames.cbegin(); // Epic Names Begin
+    const auto _end = this->epicNames.cend();   // Epic Names End
 
     mstch::array names{};
 
     // Transform vector of names to map with 'name' property.
-    std::transform(enb, ene, std::back_inserter(names), [](std::string name) {
+    std::transform(_begin, _end, std::back_inserter(names), [](std::string name) {
       //DLog(" -> transform: '%s'\n", name.c_str());
       return mstch::map{
-        {"name", std::move(name)},
+        {"handle", std::move(name)},
       };
     });
 
