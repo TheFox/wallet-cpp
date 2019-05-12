@@ -130,6 +130,7 @@ namespace Wallet
         std::cout << "Create new Epic '" << entry.epicHandle << "'" << std::endl;
 
         Epic epic{};
+        epic.title = entry.epicHandle;
         epic.handle = entry.epicHandle;
 
         wallet.addEpic(epic);

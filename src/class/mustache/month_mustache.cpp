@@ -12,9 +12,9 @@ namespace Wallet::Mustache
     //DLog(" -> MonthMustache::MonthMustache()\n");
 
     this->register_methods(this, {
-      {"year",      &MonthMustache::getYear},
-      {"month",     &MonthMustache::getMonth},
-      {"file_name", &MonthMustache::getFileName},
+      {"year",       &MonthMustache::getYear},
+      {"month",      &MonthMustache::getMonth},
+      {"file_name",  &MonthMustache::getFileName},
       {"show_epics", &MonthMustache::getShowEpics},
     });
   }

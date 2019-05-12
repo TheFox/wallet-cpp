@@ -12,13 +12,8 @@ namespace Wallet::Container
 
   bool EpicComparator::operator()(const std::string& epic1, const std::string& epic2) const
   {
-    DLog(" -> EpicComparator::operator(%s, %s)\n",
-      epic1.c_str(), epic2.c_str());
-
-    /*DLog(" -> EpicComparator::operator(%s, %s)\n",
-      epic1.handle.c_str(), epic2.handle.c_str());
-
-    return false;*/
+    //DLog(" -> EpicComparator::operator(%s, %s)\n",
+    //  epic1.c_str(), epic2.c_str());
 
     if (epic1 == epic2) {
       return false;

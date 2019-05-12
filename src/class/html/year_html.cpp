@@ -54,15 +54,13 @@ namespace Wallet::Html
     const auto _epics_end   = this->container.epics.cend();   // Epic Iterator End
 
     // Epics
-    Container::EpicMap epics{};
-    // Container::EpicArray epics2{};
+    Container::Epics epics{};
 
+    // Transform Epics Node to Epics Map (Epics type).
     for (const auto& nodePair : this->container.epics) {
-      DLog(" -> YearHtml::generate() -> transform epic: %s\n",
-        nodePair.first.c_str());
-      // const auto& handle = nodePair.second["handle"].as<std::string>();
-      // const Epic epic{nodePair.second};
-      // epics[nodePair.first] = epic;
+      DLog(" -> YearHtml::generate() -> transform epic: %s\n", nodePair.first.c_str());
+
+      epics[nodePair.first] = nodePair.second.epic;
     }
     DLog(" -> YearHtml::generate() -> epics: %lu\n", epics.size());
 
@@ -70,7 +68,7 @@ namespace Wallet::Html
     mstch::array entries{};
 
     for (const auto& monthPair : this->container.months) {
-      const MonthHtml monthHtml{this->basePath, monthPair};
+      const MonthHtml monthHtml{this->basePath, monthPair, epics};
       monthHtml.logLevel = this->logLevel;
       monthHtml.generate();
 
@@ -154,7 +152,7 @@ namespace Wallet::Html
     // Total Epics
     mstch::array totalEpics{};
     std::transform(_epics_begin, _epics_end, std::back_inserter(totalEpics), [](const auto& pair) {
-      DLog(" -> epic: '%s'\n", pair.first.c_str());
+      DLog(" -> transform total epic: '%s'\n", pair.first.c_str());
 
       return mstch::map{
         {"name",    pair.first},

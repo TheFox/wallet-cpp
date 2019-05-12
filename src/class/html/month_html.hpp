@@ -6,6 +6,7 @@
 
 #include "base_html.hpp"
 #include "class/container/entry_container.hpp"
+#include "class/container/epic_container.hpp"
 
 namespace Wallet::Html
 {
@@ -15,13 +16,14 @@ namespace Wallet::Html
   class MonthHtml final : public BaseHtml
   {
   public:
-    MonthHtml(fs::path, Container::MonthPair);
+    MonthHtml(fs::path, Container::MonthPair, Container::Epics);
     void generate() const;
     const std::string name{};
 
   private:
     const Container::MonthEntryContainer container{};
     const std::string year{};
+    const Container::Epics epics{};
 
     static std::string getMonthFile(Container::ContainerMonth) noexcept;
     static std::string getMonthName(Container::ContainerMonth) noexcept;

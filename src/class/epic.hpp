@@ -32,6 +32,9 @@ namespace Wallet
     // Move Constructor
     Epic(Epic&& epic) noexcept;
 
+    // Copy Assignment Operator
+    Epic& operator=(const Epic&) noexcept;
+
     // Parameter
     std::string handle{"default"};
     std::string title{};

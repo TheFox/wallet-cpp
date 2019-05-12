@@ -35,7 +35,7 @@ namespace Wallet
     void removeEpic(const std::string&) noexcept;
     // void removeEpic(const Epic&) noexcept;
     void updateEpic(const Epic&) noexcept;
-    Epic getEpicByHandle(const std::string&);
+    Epic getEpicByHandle(std::string) const;
     bool epicExists(const std::string&) noexcept;
     bool epicExists(const Epic&) noexcept;
     Container::EntryContainer getEntries(const Components::Date&,
@@ -57,9 +57,9 @@ namespace Wallet
     bool isIndexLoaded{};
     bool isIndexModified{};
     YAML::Node index{};
-    bool areEpicsLoaded{};
     bool areEpicsModified{};
-    YAML::Node epics{};
+    mutable bool areEpicsLoaded{};
+    mutable YAML::Node epics{};
 
     // Functions
     void setup();
@@ -69,6 +69,7 @@ namespace Wallet
     void loadIndex() noexcept;
     void saveIndex() noexcept;
     bool entryExists(const Entry&) noexcept;
+    void loadEpics() const noexcept;
     void loadEpics() noexcept;
     void saveEpics() noexcept;
   };

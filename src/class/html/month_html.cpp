@@ -27,10 +27,10 @@ namespace calendar = boost::gregorian;
 
 namespace Wallet::Html
 {
-  MonthHtml::MonthHtml(fs::path _basePath, Container::MonthPair _map) :
+  MonthHtml::MonthHtml(fs::path _basePath, Container::MonthPair _map, Container::Epics _epics) :
     BaseHtml{std::move(_basePath), fs::path{}, fs::path{getMonthFile(_map.first)},
-      getMonthName(_map.first) + " " + std::to_string(_map.second.year)},
-    name(getMonthName(_map.first)), container(std::move(_map.second)), year(std::to_string(_map.second.year))
+      getMonthName(_map.first) + " " + std::to_string(_map.second.year)}, // BaseHtml
+    name(getMonthName(_map.first)), container(std::move(_map.second)), year(std::to_string(_map.second.year)), epics(std::move(_epics))
   {
     //DLog(" -> MonthHtml::MonthHtml(bp'%s') -> p'%s' n'%s'\n", this->basePath.c_str(),
     //  this->getFileName().c_str(), this->name.c_str());
@@ -38,7 +38,8 @@ namespace Wallet::Html
 
   void MonthHtml::generate() const
   {
-    //DLog(" -> MonthHtml::generate()\n");
+    DLog(" -> MonthHtml::generate()\n");
+
     const auto yearStr = std::to_string(this->container.year);
 
     this->log("[month_html] generate: " + yearStr);
@@ -54,6 +55,9 @@ namespace Wallet::Html
     // Columns
     bool showEpics = false;
 
+    Container::Epics _epics = this->epics;
+    //const auto& _epics = this->epics;
+
     std::uint64_t entryCount{};
     for (const auto& dayPair : this->container.days) {
       //DLog("     -> day pair\n");
@@ -62,11 +66,15 @@ namespace Wallet::Html
       const auto _end = dayPair.second.entries.cend();
 
       // Add Day entries to month entry list.
-      std::transform(_begin, _end, std::back_inserter(entries), [&entryCount, &showEpics](const auto& entry) {
+      std::transform(_begin, _end, std::back_inserter(entries), [&entryCount, &showEpics, &_epics](const auto& entry) {
         ++entryCount;
 
         if (!showEpics && !entry.hasDefaultEpic())
           showEpics = true;
+
+        //const auto& epic = this->epics[entry.handle];
+        const auto& epic = _epics[entry.epicHandle];
+        DLog(" -> MonthHtml::generate() -> epic '%s'\n", epic.handle.c_str());
 
         return mstch::map{
           {"no",            std::to_string(entryCount)},
@@ -78,6 +86,8 @@ namespace Wallet::Html
           {"balance_class", entry.getBalanceHtmlClass()},
           {"category",      entry.getCategoryHtml()},
           {"epic_handle",   entry.getEpicHandleHtml()},
+          {"epic_title",    epic.title},
+          {"epic_bg_color", epic.bgColor},
           {"comment",       entry.comment},
         };
       });
