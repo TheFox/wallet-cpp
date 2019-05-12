@@ -10,6 +10,7 @@
 #include "components.hpp"
 #include "year_html.hpp"
 #include "month_html.hpp"
+#include "class/epic.hpp"
 #include "class/mustache/year_mustache.hpp"
 #ifdef WALLETCPP_GNUPLOT_SUPPORT
 #include "class/mustache/year_gnuplot.hpp"
@@ -50,16 +51,20 @@ namespace Wallet::Html
 
     // Epic Iterators
     const auto _epics_begin = this->container.epics.cbegin(); // Epic Iterator Begin
-    const auto _epics_end = this->container.epics.cend();   // Epic Iterator End
+    const auto _epics_end   = this->container.epics.cend();   // Epic Iterator End
 
-    // Epic Names
-    Container::EpicArray epicNames{};
+    // Epics
+    Container::EpicMap epics{};
+    // Container::EpicArray epics2{};
 
-    // https://thispointer.com/how-to-copy-all-values-from-a-map-to-a-vector-in-c/
-    std::transform(_epics_begin, _epics_end, std::back_inserter(epicNames), [](const auto& pair) {
-      return pair.first;
-    });
-    DLog(" -> YearHtml::generate() -> epics: %lu\n", epicNames.size());
+    for (const auto& nodePair : this->container.epics) {
+      DLog(" -> YearHtml::generate() -> transform epic: %s\n",
+        nodePair.first.c_str());
+      // const auto& handle = nodePair.second["handle"].as<std::string>();
+      // const Epic epic{nodePair.second};
+      // epics[nodePair.first] = epic;
+    }
+    DLog(" -> YearHtml::generate() -> epics: %lu\n", epics.size());
 
     // Table Body
     mstch::array entries{};
@@ -146,7 +151,7 @@ namespace Wallet::Html
       };
     });
 
-    // Totoal Epics
+    // Total Epics
     mstch::array totalEpics{};
     std::transform(_epics_begin, _epics_end, std::back_inserter(totalEpics), [](const auto& pair) {
       DLog(" -> epic: '%s'\n", pair.first.c_str());
@@ -172,8 +177,7 @@ namespace Wallet::Html
     };
 
     const auto tpl = Components::readFileIntoString(WALLETCPP_YEAR_VIEW_PATH);
-    const auto context = std::make_shared<Mustache::YearMustache>("../..", entries, total, yearStr, categoryNames, epicNames,
-      yearPngFileStr);
+    const auto context = std::make_shared<Mustache::YearMustache>("../..", entries, total, yearStr, categoryNames, epics, yearPngFileStr);
 
     // Year HTML File Output
     std::ofstream indexFh{this->getFullPath()};

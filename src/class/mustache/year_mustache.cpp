@@ -1,14 +1,15 @@
 
 #include "debug.hpp"
 #include "year_mustache.hpp"
+#include "class/epic.hpp"
 
 namespace Wallet::Mustache
 {
   YearMustache::YearMustache(std::string _rel, mstch::array _entries, mstch::map _total,
-                             std::string _year, Container::CategoryArray _categoryNames, Container::EpicArray _epicNames,
+                             std::string _year, Container::CategoryArray _categoryNames, Container::EpicMap _epics,
                              std::string _pngFileName) :
     BaseMustache{std::move(_rel), std::move(_entries), std::move(_total)},
-    year(std::move(_year)), categoryNames(std::move(_categoryNames)), epicNames(std::move(_epicNames)), pngFileName(std::move(_pngFileName))
+    year(std::move(_year)), categoryNames(std::move(_categoryNames)), epics(std::move(_epics)), pngFileName(std::move(_pngFileName))
   {
     //DLog(" -> YearMustache::YearMustache('%s', '%s', %lu)\n",
     //  _rel.c_str(), this->year.c_str(), _categoryNames.size());
@@ -58,29 +59,33 @@ namespace Wallet::Mustache
 
   mstch::node YearMustache::getEpicCount() noexcept
   {
-    DLog(" -> YearMustache::getEpicCount() -> %lu\n", this->epicNames.size());
-    return std::to_string(this->epicNames.size());
+    DLog(" -> YearMustache::getEpicCount() -> %lu\n", this->epics.size());
+    return std::to_string(this->epics.size());
   }
 
   mstch::node YearMustache::getEpics() noexcept
   {
-    //DLog(" -> YearMustache::getEpics() -> %lu\n", this->epicNames.size());
+    DLog(" -> YearMustache::getEpics() -> %lu\n", this->epics.size());
 
     // Iterators
-    const auto _begin = this->epicNames.cbegin(); // Epic Names Begin
-    const auto _end = this->epicNames.cend();   // Epic Names End
+    // const auto _begin <= this->epics.cbegin(); // Epic Names Begin
+    // const auto _end   = this->epics.cend();   // Epic Names End
 
-    mstch::array names{};
+    mstch::array _epics{};
 
-    // Transform vector of names to map with 'name' property.
-    std::transform(_begin, _end, std::back_inserter(names), [](std::string name) {
-      //DLog(" -> transform: '%s'\n", name.c_str());
+    // Transform vector of epics to map.
+    /*std::transform(_begin, _end, std::back_inserter(_epics), [](const Epic& epic) {
+      DLog(" -> transform epics\n");
+      // DLog(" -> transform: '%s'\n", epic.handle.c_str());
+
       return mstch::map{
-        {"handle", std::move(name)},
+        // {"handle", std::move(epic.handle)},
+        {"handle", std::string{"test"}},
       };
-    });
+    });*/
+    
 
-    return names;
+    return _epics;
   }
 
   mstch::node YearMustache::getPngFileName() noexcept

@@ -6,25 +6,32 @@ namespace Wallet::Container
 {
   BaseEpicContainer::BaseEpicContainer()
   {
+    // Default Epic
     this->epics["default"];
   }
 
-  bool EpicComparator::operator()(const std::string& c1, const std::string& c2) const
+  bool EpicComparator::operator()(const std::string& epic1, const std::string& epic2) const
   {
-    //DLog(" -> EpicComparator::operator(%s, %s)\n", c1.c_str(), c2.c_str());
+    DLog(" -> EpicComparator::operator(%s, %s)\n",
+      epic1.c_str(), epic2.c_str());
 
-    if (c1 == c2) {
+    /*DLog(" -> EpicComparator::operator(%s, %s)\n",
+      epic1.handle.c_str(), epic2.handle.c_str());
+
+    return false;*/
+
+    if (epic1 == epic2) {
       return false;
     }
 
     // Make 'default' always first.
-    if (c1 == "default") {
+    if (epic1 == "default") {
       return true;
     }
-    if (c2 == "default") {
+    if (epic2 == "default") {
       return false;
     }
 
-    return c1 < c2;
+    return epic1 < epic2;
   }
 } // Wallet::Container Namespace

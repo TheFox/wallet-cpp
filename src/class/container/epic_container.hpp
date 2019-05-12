@@ -3,12 +3,10 @@
 #define WALLETCPP_CONTAINER_EPIC_CONTAINER_HPP_
 
 #include <string>
-//#include <utility> // pair
 #include <map>
-//#include <cstdint> // uint8_t
 #include <functional> // function
 
-//#include "class/entry.hpp"
+#include "class/epic.hpp"
 #include "class/trait/accountable.hpp"
 
 namespace Wallet::Container
@@ -27,9 +25,10 @@ namespace Wallet::Container
   {
   public:
     bool operator()(const std::string&, const std::string&) const;
+    // bool operator()(const Epic&, const Epic&) const;
   };
 
-  using EpicArray = std::vector<std::string>;
+  using EpicArray = std::vector<Epic>;
   using EpicMap = std::map<std::string, EpicContainer, EpicComparator>;
   struct BaseEpicContainer
   {

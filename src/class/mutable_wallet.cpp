@@ -269,11 +269,12 @@ namespace Wallet
           // Add entry to array.
           dayMap.entries.push_back(entry);
 
+          // TODO
           // Default Epic
-          std::string entityEpic{"default"};
-          if (!entry.epicHandle.empty()) {
-            entityEpic = entry.epicHandle;
-          }
+          // std::string entityEpic{"default"};
+          // if (!entry.epicHandle.empty()) {
+          //   entityEpic = entry.epicHandle;
+          // }
 
           // Container
           container.entryCount++;
@@ -293,11 +294,12 @@ namespace Wallet
           ycategory.expense += entry.expense;
           ycategory.balance += entry.balance;
 
+          // TODO
           // Year Epic
-          auto& yepic = yearMap.epics[entityEpic];
-          yepic.revenue += entry.revenue;
-          yepic.expense += entry.expense;
-          yepic.balance += entry.balance;
+          // auto& yepic = yearMap.epics[entityEpic];
+          // yepic.revenue += entry.revenue;
+          // yepic.expense += entry.expense;
+          // yepic.balance += entry.balance;
 
           // Month
           monthMap.entryCount++;
@@ -312,10 +314,10 @@ namespace Wallet
           mcategory.balance += entry.balance;
 
           // Month Epic
-          auto& mepic = monthMap.epics[entityEpic];
-          mepic.revenue += entry.revenue;
-          mepic.expense += entry.expense;
-          mepic.balance += entry.balance;
+          // auto& mepic = monthMap.epics[entityEpic];
+          // mepic.revenue += entry.revenue;
+          // mepic.expense += entry.expense;
+          // mepic.balance += entry.balance;
 
           // Day
           dayMap.entryCount++;

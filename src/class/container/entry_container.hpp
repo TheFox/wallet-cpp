@@ -9,6 +9,7 @@
 #include <functional> // function
 
 #include "class/entry.hpp"
+#include "class/epic.hpp"
 #include "class/trait/accountable.hpp"
 #include "epic_container.hpp"
 

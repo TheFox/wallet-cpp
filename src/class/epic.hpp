@@ -33,7 +33,7 @@ namespace Wallet
     Epic(Epic&& epic) noexcept;
 
     // Parameter
-    std::string handle{};
+    std::string handle{"default"};
     std::string title{};
     std::string bgColor{"#ffffff"}; // Default white
 

@@ -6,6 +6,7 @@
 
 #include "base_mustache.hpp"
 #include "class/container/entry_container.hpp"
+#include "class/container/epic_container.hpp"
 
 namespace Wallet::Mustache
 {
@@ -14,13 +15,13 @@ namespace Wallet::Mustache
   {
   public:
     // Constructor
-    YearMustache(std::string, mstch::array, mstch::map, std::string, Container::CategoryArray, Container::EpicArray, std::string);
+    YearMustache(std::string, mstch::array, mstch::map, std::string, Container::CategoryArray, Container::EpicMap, std::string);
 
   private:
     // Properties
     const std::string year{};
     const Container::CategoryArray categoryNames{};
-    const Container::EpicArray epicNames{};
+    const Container::EpicMap epics{};
     const std::string pngFileName{};
 
     // Functions
