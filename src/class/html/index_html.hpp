@@ -27,6 +27,8 @@ namespace Wallet::Html
     const std::string balanceClass{};
     const std::string balanceSum{};
     const std::string balanceSumClass{};
+    //const mstch::array epics{};
+    // const Container:: epics{};
   };
 
   using IndexHtmlRows = std::vector<IndexHtmlRow>;

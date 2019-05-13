@@ -2,6 +2,15 @@
 #include <iomanip> // setprecision
 #include <ios> // fixed
 #include <sstream> // ostringstream
+#include <algorithm> // transform
+
+#ifdef __has_include
+#  if __has_include(<mstch/mstch.hpp>)
+#    include <mstch/mstch.hpp>
+#  else
+#    error "Missing <mstch/mstch.hpp>"
+#  endif
+#endif // __has_include
 
 #include "debug.hpp"
 #include "config.hpp"
@@ -32,8 +41,12 @@ namespace Wallet::Html
     IndexHtml indexHtml{this->basePath, this->tmpPath};
     indexHtml.logLevel = this->logLevel;
 
+    // Epics
+    const auto _epics_begin = this->container.epics.cbegin();
+    const auto _epics_end   = this->container.epics.cend();
+
     // Iterate Years.
-    for (const auto& yearPair : container.years) {
+    for (const auto& yearPair : this->container.years) {
       //DLog(" -> year: %d\n", yearPair.first);
 
       const auto yearStr = std::to_string(yearPair.first);
@@ -56,6 +69,33 @@ namespace Wallet::Html
       std::ostringstream balanceSumSs{};
       balanceSumSs << std::fixed << std::setprecision(2) << balanceSum;
 
+      // Year Epics
+      // Match common epics to year epics.
+      mstch::array _epics{};
+      /*for (const auto& epicPair : yearPair.second.epics) {
+        DLog(" -> HtmlGenerator::generate() -> epic pair: %s (%s)\n",
+          epicPair.first.c_str(), epicPair.second.epic.title.c_str());
+        
+        mstch::map _emap{
+            {"handle", epicPair.second.epic.handle},
+            {"title", epicPair.second.epic.title},
+            {"bg_color", epicPair.second.epic.bgColor},
+            {"epic_balance", epicPair.second.getBalanceStr()},
+            {"epic_balance_class", epicPair.second.getBalanceHtmlClass()},
+        };
+        _epics.push_back(_emap);
+      }*/
+      // TODO
+      /*std::transform(_epics_begin, _epics_end, std::back_inserter(_epics), [](const auto& epicPair){
+        DLog(" -> HtmlGenerator::generate() -> epic pair\n");
+
+        try {
+          // Search by handle.
+
+        }
+        catch (const std::out_of_range& exception) {}
+      });*/
+
       // Add row to HTML file.
       const IndexHtmlRow row{
         yearStr,
@@ -64,17 +104,36 @@ namespace Wallet::Html
         yearPair.second.getBalanceStr(),
         yearPair.second.getBalanceHtmlClass(),
         balanceSumSs.str(),
-        balanceSum < 0 ? "red" : ""
+        balanceSum < 0 ? "red" : "",
+        // _epics
       };
       indexHtml.addRow(row);
-    }
+    } // this->container.years
+
+    // Transform Epics
+    mstch::array totalEpics{};
+    std::transform(_epics_begin, _epics_end, std::back_inserter(totalEpics), [](const auto& epicPair) {
+      // DLog(" -> HtmlGenerator::generate() -> transform epic: %s/%s -> '%s'\n",
+      //   epicPair.first.c_str(), epicPair.second.epic.handle.c_str(),
+      //   epicPair.second.epic.title.c_str());
+
+      return mstch::map{
+        {"epic_title", epicPair.second.epic.title},
+        {"epic_balance", epicPair.second.getBalanceStr()},
+        {"epic_balance_class", epicPair.second.getBalanceHtmlClass()},
+      };
+    });
 
     // Generate HTML file.
     const IndexHtmlRow totalRow{
-      "TOTAL",
-      container.getRevenueStr(),
-      container.getExpenseStr(),
-      container.getBalanceStr()
+      "TOTAL", // year
+      container.getRevenueStr(), // revenue
+      container.getExpenseStr(), // expense
+      container.getBalanceStr(), // balance
+      std::string{}, // balanceClass
+      std::string{}, // balanceSum
+      std::string{}  // balanceSumClass
+      // totalEpics
     };
     indexHtml.generate(totalRow);
   }

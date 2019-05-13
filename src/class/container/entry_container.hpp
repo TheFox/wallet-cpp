@@ -79,7 +79,7 @@ namespace Wallet::Container
   };
 
   using YearMap = std::map<ContainerYear, YearEntryContainer>;
-  struct EntryContainer final : public BaseEntryContainer
+  struct EntryContainer final : public BaseEntryContainer /* TODO BaseCategoryContainer here */, public BaseEpicContainer
   {
     YearMap years{};
   };

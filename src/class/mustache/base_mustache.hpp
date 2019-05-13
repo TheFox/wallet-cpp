@@ -26,6 +26,7 @@ namespace Wallet::Mustache
     const std::string relativePath{"."};
     const mstch::array entries{};
     const mstch::map total{};
+    //const mstch::array epics{}; // TODO
 
     // Functions
     void setup() noexcept;
@@ -39,6 +40,7 @@ namespace Wallet::Mustache
 
     mstch::node getEntries() noexcept;
     mstch::node getTotal() noexcept;
+    //mstch::node getEpics() noexcept; // TODO
   };
 } // Wallet::Mustache Namespace
 

@@ -58,7 +58,7 @@ namespace Wallet::Html
 
     // Transform Epics Node to Epics Map (Epics type).
     for (const auto& nodePair : this->container.epics) {
-      DLog(" -> YearHtml::generate() -> transform epic: %s\n", nodePair.first.c_str());
+      //DLog(" -> YearHtml::generate() -> transform epic: %s\n", nodePair.first.c_str());
 
       epics[nodePair.first] = nodePair.second.epic;
     }
@@ -75,19 +75,19 @@ namespace Wallet::Html
       // Month Categories
       // Match common categories to month categories.
       mstch::array monthCategories{};
-      std::transform(_categories_begin, _categories_end, std::back_inserter(monthCategories), [&monthPair](const auto& pair) {
+      std::transform(_categories_begin, _categories_end, std::back_inserter(monthCategories), [&monthPair](const auto& categoryPair) {
         std::string balance{"&nbsp;"};
         std::string balanceClass{};
 
         try {
           // Search by key (Name).
-          const auto& category = monthPair.second.categories.at(pair.first);
-          //DLog(" -> category found: '%s'\n", pair.first.c_str());
+          const auto& category = monthPair.second.categories.at(categoryPair.first);
+          //DLog(" -> category found: '%s'\n", categoryPair.first.c_str());
 
           balance = category.getBalanceStr();
           balanceClass = category.getBalanceHtmlClass();
         } catch (const std::out_of_range& exception) {
-          //DLog(" -> nothing found for category '%s'\n", pair.first.c_str());
+          //DLog(" -> nothing found for category '%s'\n", categoryPair.first.c_str());
         }
 
         return mstch::map{
@@ -100,16 +100,16 @@ namespace Wallet::Html
       // Match common epics to month epics.
       mstch::array monthEpics{};
       std::transform(_epics_begin, _epics_end, std::back_inserter(monthEpics), [&monthPair](const auto& pair) {
-        DLog(" -> month epic: '%s'\n", pair.first.c_str());
+        // DLog(" -> month epic: '%s'\n", pair.first.c_str());
 
         std::string balance{"&nbsp;"};
         std::string balanceClass{};
 
         try {
           // Search by key (Name).
-          DLog(" -> search epic: '%s'\n", pair.first.c_str());
+          //DLog(" -> search epic: '%s'\n", pair.first.c_str());
           const auto& epic = monthPair.second.epics.at(pair.first);
-          DLog(" -> epic found: '%s'\n", pair.first.c_str());
+          //DLog(" -> epic found: '%s'\n", pair.first.c_str());
 
           balance = epic.getBalanceStr();
           balanceClass = epic.getBalanceHtmlClass();
@@ -152,7 +152,7 @@ namespace Wallet::Html
     // Total Epics
     mstch::array totalEpics{};
     std::transform(_epics_begin, _epics_end, std::back_inserter(totalEpics), [](const auto& pair) {
-      DLog(" -> transform total epic: '%s'\n", pair.first.c_str());
+      //DLog(" -> transform total epic: '%s'\n", pair.first.c_str());
 
       return mstch::map{
         {"name",    pair.first},
@@ -170,8 +170,8 @@ namespace Wallet::Html
       {"expense",          this->container.getExpenseStr()},
       {"balance",          this->container.getBalanceStr()},
       {"balance_class",    this->container.getBalanceHtmlClass()},
-      {"month_categories", std::move(totalCategories)},
-      {"month_epics",      std::move(totalEpics)},
+      {"total_categories", std::move(totalCategories)},
+      {"total_epics",      std::move(totalEpics)},
     };
 
     const auto tpl = Components::readFileIntoString(WALLETCPP_YEAR_VIEW_PATH);

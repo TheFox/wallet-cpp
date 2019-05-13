@@ -57,7 +57,7 @@ namespace Wallet::Html
     // Transform IndexHtmlRow entries to mstch::array<mstch::map>.
     mstch::array _entries{};
     std::transform(this->entries.cbegin(), this->entries.cend(), std::back_inserter(_entries), [](auto row) {
-      DLog(" -> transform %s\n", row.year.c_str());
+      // DLog(" -> IndexHtml::generate() -> transform year: %s\n", row.year.c_str());
 
       return mstch::map{
         {"year",              std::move(row.year)},
@@ -67,6 +67,7 @@ namespace Wallet::Html
         {"balance_class",     std::move(row.balanceClass)},
         {"balance_sum",       std::move(row.balanceSum)},
         {"balance_sum_class", std::move(row.balanceSumClass)},
+        // {"year_epics",        std::move(row.epics)},
       };
     });
 
@@ -81,8 +82,10 @@ namespace Wallet::Html
 
     DLog(" -> IndexHtml::generate('%s') -> %lu entries, %lu totals\n", totalRow.year.c_str(), _entries.size(), total.size());
 
+    mstch::array _tmp_epics{};
+
     const auto tpl = Components::readFileIntoString(WALLETCPP_INDEX_VIEW_PATH);
-    const auto context = std::make_shared<Mustache::IndexMustache>(_entries, total);
+    const auto context = std::make_shared<Mustache::IndexMustache>(_entries, total, _tmp_epics);
 
 //#ifdef DEBUG
 //    // Template debug

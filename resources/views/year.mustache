@@ -66,14 +66,14 @@
             <td class="right red">{{{expense}}}</td>
             <td class="right {{{balance_class}}}">{{{balance}}}</td>
 
-            {{#month_categories}}
+            {{#total_categories}}
                 <td class="right {{{balance_class}}}">{{{balance}}}</td>
-            {{/month_categories}}
+            {{/total_categories}}
 
             {{#has_epics}}
-                {{#month_epics}}
+                {{#total_epics}}
                     <th class="right {{{balance_class}}}">{{{balance}}}</th>
-                {{/month_epics}}
+                {{/total_epics}}
             {{/has_epics}}
         </tr>
     {{/total}}

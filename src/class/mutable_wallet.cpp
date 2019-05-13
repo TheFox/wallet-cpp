@@ -251,22 +251,23 @@ namespace Wallet
 
           // Filter Category.
           if (hasCategory) {
-            DLog(" -> MutableWallet::getEntries() -> compare category: %d '%s' '%s'\n",
-                entry.category.compare(category),
-                entry.category.c_str(), category.c_str());
+            // DLog(" -> MutableWallet::getEntries() -> compare category: %d '%s' '%s'\n",
+            //     entry.category.compare(category),
+            //     entry.category.c_str(), category.c_str());
 
             if (entry.category != category) {
-              DLog(" -> MutableWallet::getEntries() -> skip, category not equal\n");
+              // DLog(" -> MutableWallet::getEntries() -> skip, category not equal\n");
               continue;
             }
           }
 
           // Filter Epic.
           if (hasEpic) {
-            DLog(" -> MutableWallet::getEntries() -> compare epic: %d '%s' '%s'\n",
-                entry.epicHandle.compare(epicHandle), entry.epicHandle.c_str(), epicHandle.c_str());
+            // DLog(" -> MutableWallet::getEntries() -> compare epic: %d '%s' '%s'\n",
+            //     entry.epicHandle.compare(epicHandle), entry.epicHandle.c_str(), epicHandle.c_str());
+            
             if (entry.epicHandle != epicHandle) {
-              DLog(" -> MutableWallet::getEntries() -> skip, epic not equal\n");
+              // DLog(" -> MutableWallet::getEntries() -> skip, epic not equal\n");
               continue;
             }
           }
@@ -281,14 +282,27 @@ namespace Wallet
           try {
             epic = this->getEpicByHandle(entry.epicHandle);
           } catch (const std::string& e) {
-            DLog(" -> MutableWallet::getEntries() -> cannot find epic by handle: '%s'\n", entry.epicHandle.c_str());
+            // DLog(" -> MutableWallet::getEntries() -> cannot find epic by handle: '%s'\n", entry.epicHandle.c_str());
           }
+
+          // DLog(" -> MutableWallet::getEntries() -> epic: '%s' (%s)\n",
+          //   epic.handle.c_str(), epic.title.c_str());
 
           // Container
           container.entryCount++;
           container.revenue += entry.revenue;
           container.expense += entry.expense;
           container.balance += entry.balance;
+
+          // Container Epic
+          auto& cepic = container.epics[epic.handle];
+          if (cepic.isDefaultEpic) {
+            cepic.epic = epic;
+            cepic.isDefaultEpic = false;
+          }
+          cepic.revenue += entry.revenue;
+          cepic.expense += entry.expense;
+          cepic.balance += entry.balance;
 
           // Year
           yearMap.entryCount++;
@@ -475,7 +489,7 @@ namespace Wallet
 
   Epic MutableWallet::getEpicByHandle(std::string handle) const
   {
-    DLog(" -> MutableWallet::getEpicByHandle() -> handle '%s'\n", handle.c_str());
+    //DLog(" -> MutableWallet::getEpicByHandle() -> handle '%s'\n", handle.c_str());
     if (handle.empty()) {
       handle = "default";
     }
@@ -486,12 +500,12 @@ namespace Wallet
     const auto _end = this->epics["epics"].end();
 
     const auto it = std::find_if(_begin, _end, [&handle](const auto& item) {
-      DLog(" -> MutableWallet::getEpicByHandle() -> find '%s'\n", handle.c_str());
+      //DLog(" -> MutableWallet::getEpicByHandle() -> find '%s'\n", handle.c_str());
       //DLog(" -> MutableWallet::getEpicByHandle() -> find '%s'\n", item["handle"].as<std::string>().c_str());
       return item["handle"].template as<std::string>() == handle;
     });
 
-    DLog(" -> MutableWallet::epicExists() -> found: %c\n", it != _end ? 'Y' : 'N');
+    //DLog(" -> MutableWallet::epicExists() -> found: %c\n", it != _end ? 'Y' : 'N');
 
     if (it == _end) {
       throw std::string{"No Epic found: "} + handle;
@@ -710,7 +724,7 @@ namespace Wallet
    */
   void MutableWallet::loadEpics() const noexcept
   {
-    DLog(" -> MutableWallet::loadEpics() const\n");
+    //DLog(" -> MutableWallet::loadEpics() const\n");
 
     if (this->areEpicsLoaded) {
       return;
@@ -738,7 +752,7 @@ namespace Wallet
    */
   void MutableWallet::loadEpics() noexcept
   {
-    DLog(" -> MutableWallet::loadEpics() non-const\n");
+    //DLog(" -> MutableWallet::loadEpics() non-const\n");
 
     if (this->areEpicsLoaded) {
       return;

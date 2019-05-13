@@ -42,13 +42,13 @@ namespace Wallet::Mustache
     //DLog(" -> YearMustache::getCategories() -> %lu\n", this->categoryNames.size());
 
     // Iterators
-    const auto cnb = this->categoryNames.cbegin();
-    const auto cne = this->categoryNames.cend();
+    const auto _begin = this->categoryNames.cbegin();
+    const auto _end   = this->categoryNames.cend();
 
     mstch::array names{};
 
     // Transform vector of names to map with 'name' property.
-    std::transform(cnb, cne, std::back_inserter(names), [](std::string name) {
+    std::transform(_begin, _end, std::back_inserter(names), [](std::string name) {
       //DLog(" -> transform: '%s'\n", name.c_str());
       return mstch::map{
         {"name", std::move(name)},
@@ -60,19 +60,20 @@ namespace Wallet::Mustache
 
   mstch::node YearMustache::getEpicCount() noexcept
   {
-    DLog(" -> YearMustache::getEpicCount() -> %lu\n", this->epics.size());
+    // DLog(" -> YearMustache::getEpicCount() -> %lu\n", this->epics.size());
+
     return std::to_string(this->epics.size());
   }
 
   mstch::node YearMustache::getEpics() noexcept
   {
-    DLog(" -> YearMustache::getEpics() -> %lu\n", this->epics.size());
+    // DLog(" -> YearMustache::getEpics() -> %lu\n", this->epics.size());
 
     mstch::array _epics{};
 
     // Transform vector of epics to map.
     for (const auto& pair : this->epics) {
-      DLog(" -> YearMustache::getEpics() -> pair: '%s'\n", pair.first.c_str());
+      // DLog(" -> YearMustache::getEpics() -> pair: '%s'\n", pair.first.c_str());
 
       mstch::map _emap{
           {"handle", pair.second.handle},

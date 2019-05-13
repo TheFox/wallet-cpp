@@ -7,7 +7,7 @@ namespace Wallet
 {
   Epic::Epic() noexcept
   {
-    DLog(" -> Epic::Epic(%p)\n", this);
+    //DLog(" -> Epic::Epic(%p)\n", this);
 
     this->generateRandomId();
     //DLog(" -> Epic::Epic(%p) -> ID '%s'\n", this, this->id.c_str());
