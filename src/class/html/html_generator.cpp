@@ -98,7 +98,7 @@ namespace Wallet::Html
         mstch::map _emap{
             {"handle", epicPair.second.epic.handle},
             {"title", epicPair.second.epic.title},
-            {"bg_color", epicPair.second.epic.bgColor},
+            {"epic_bg_color", epicPair.second.epic.bgColor},
             {"epic_balance", balance},
             {"epic_balance_class", balanceClass},
         };
