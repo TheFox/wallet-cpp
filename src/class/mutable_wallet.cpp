@@ -277,8 +277,6 @@ namespace Wallet
 
           // Default Epic
           Epic epic{};
-          epic.title = "Default";
-          epic.handle = "default";
           try {
             epic = this->getEpicByHandle(entry.epicHandle);
           } catch (const std::string& e) {

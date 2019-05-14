@@ -12,6 +12,7 @@ namespace Wallet::Container
 {
   struct EpicContainer final : public Wallet::Trait::Accountable
   {
+    // Properties
     Epic epic{};
     bool isDefaultEpic{true};
   };

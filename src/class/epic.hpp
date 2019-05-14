@@ -37,8 +37,8 @@ namespace Wallet
 
     // Parameter
     std::string handle{"default"};
-    std::string title{};
-    std::string bgColor{"#ffffff"}; // Default white
+    std::string title{"Default"};
+    std::string bgColor{"#ffffff"}; // White
 
     // Conversion
     template<typename T>
