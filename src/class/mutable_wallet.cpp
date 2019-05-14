@@ -282,7 +282,8 @@ namespace Wallet
           try {
             epic = this->getEpicByHandle(entry.epicHandle);
           } catch (const std::string& e) {
-            // DLog(" -> MutableWallet::getEntries() -> cannot find epic by handle: '%s'\n", entry.epicHandle.c_str());
+            DLog(" -> MutableWallet::getEntries() -> cannot find epic by handle: '%s'\n",
+              entry.epicHandle.c_str());
           }
 
           // DLog(" -> MutableWallet::getEntries() -> epic: '%s' (%s)\n",
@@ -489,7 +490,7 @@ namespace Wallet
 
   Epic MutableWallet::getEpicByHandle(std::string handle) const
   {
-    //DLog(" -> MutableWallet::getEpicByHandle() -> handle '%s'\n", handle.c_str());
+    DLog(" -> MutableWallet::getEpicByHandle() -> handle '%s'\n", handle.c_str());
     if (handle.empty()) {
       handle = "default";
     }
@@ -500,12 +501,8 @@ namespace Wallet
     const auto _end = this->epics["epics"].end();
 
     const auto it = std::find_if(_begin, _end, [&handle](const auto& item) {
-      //DLog(" -> MutableWallet::getEpicByHandle() -> find '%s'\n", handle.c_str());
-      //DLog(" -> MutableWallet::getEpicByHandle() -> find '%s'\n", item["handle"].as<std::string>().c_str());
       return item["handle"].template as<std::string>() == handle;
     });
-
-    //DLog(" -> MutableWallet::epicExists() -> found: %c\n", it != _end ? 'Y' : 'N');
 
     if (it == _end) {
       throw std::string{"No Epic found: "} + handle;

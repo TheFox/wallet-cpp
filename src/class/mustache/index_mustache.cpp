@@ -19,19 +19,22 @@ namespace Wallet::Mustache
 
   mstch::node IndexMustache::getEpicCount() noexcept
   {
-    DLog(" -> IndexMustache::getEpicCount() -> %lu\n", this->epics.size());
+    //DLog(" -> IndexMustache::getEpicCount() -> %lu\n", this->epics.size());
+
     return std::to_string(this->epics.size());
   }
 
   mstch::node IndexMustache::getEpics() noexcept
   {
-    DLog(" -> IndexMustache::getEpics() -> %lu\n", this->epics.size());
+    //DLog(" -> IndexMustache::getEpics() -> %lu\n", this->epics.size());
+    
     return this->epics;
   }
 
   mstch::node IndexMustache::getHasEpics() noexcept
   {
-    DLog(" -> IndexMustache::getHasEpics() -> %lu\n", this->epics.size());
+    //DLog(" -> IndexMustache::getHasEpics() -> %lu\n", this->epics.size());
+    
     return this->epics.size() > 0;
   }
 } // Wallet::Mustache Namespace

@@ -74,7 +74,7 @@ namespace Wallet::Html
 
         //const auto& epic = this->epics[entry.handle];
         const auto& epic = _epics[entry.epicHandle];
-        DLog(" -> MonthHtml::generate() -> epic '%s'\n", epic.handle.c_str());
+        //DLog(" -> MonthHtml::generate() -> epic '%s'\n", epic.handle.c_str());
 
         return mstch::map{
           {"no",            std::to_string(entryCount)},

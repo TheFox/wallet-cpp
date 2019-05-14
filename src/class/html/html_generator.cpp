@@ -72,33 +72,38 @@ namespace Wallet::Html
       // Year Epics
       // Match common epics to year epics.
       mstch::array _epics{};
-      /*for (const auto& epicPair : yearPair.second.epics) {
-        DLog(" -> HtmlGenerator::generate() -> epic pair: %s (%s)\n",
-          epicPair.first.c_str(), epicPair.second.epic.title.c_str());
-        
+      
+      std::transform(_epics_begin, _epics_end, std::back_inserter(_epics), [&yearPair](const auto& epicPair){
+        DLog(" -> HtmlGenerator::generate() -> epic pair: %s\n", epicPair.first.c_str());
+
+        std::string balance{"&nbsp;"};
+        std::string balanceClass{};
+
+        try {
+          // Search by handle.
+          DLog(" -> HtmlGenerator::generate() -> search by handle: %s\n", epicPair.first.c_str());
+
+          const auto& epicContainer = yearPair.second.epics.at(epicPair.first);
+
+          DLog(" -> HtmlGenerator::generate() -> found epic: %s (%s)\n",
+            epicContainer.epic.handle.c_str(), epicContainer.epic.title.c_str());
+
+          balance = epicContainer.getBalanceStr();
+          balanceClass = epicContainer.getBalanceHtmlClass();
+        }
+        catch (const std::out_of_range& exception) {
+          DLog(" -> HtmlGenerator::generate() -> error: nothing found for epic '%s'\n", epicPair.first.c_str());
+        }
+
         mstch::map _emap{
             {"handle", epicPair.second.epic.handle},
             {"title", epicPair.second.epic.title},
             {"bg_color", epicPair.second.epic.bgColor},
-            {"epic_balance", epicPair.second.getBalanceStr()},
-            {"epic_balance_class", epicPair.second.getBalanceHtmlClass()},
+            {"epic_balance", balance},
+            {"epic_balance_class", balanceClass},
         };
-        _epics.push_back(_emap);
-      }*/
-      
-      // TODO
-      /*std::transform(_epics_begin, _epics_end, std::back_inserter(_epics), [](const auto& pair){
-        DLog(" -> HtmlGenerator::generate() -> epic pair\n");
-        // DLog(" -> HtmlGenerator::generate() -> epic pair: %s\n", epicPair.first.c_str());
-
-        try {
-          // Search by handle.
-          DLog(" -> HtmlGenerator::generate() -> search by handle\n");
-        }
-        catch (const std::out_of_range& exception) {
-          DLog(" -> HtmlGenerator::generate() -> error\n");
-        }
-      });*/
+        return _emap;
+      });
 
       // Add row to HTML file.
       const IndexHtmlRow row{
@@ -109,7 +114,7 @@ namespace Wallet::Html
         yearPair.second.getBalanceHtmlClass(),
         balanceSumSs.str(),
         balanceSum < 0 ? "red" : "",
-        // _epics
+        _epics
       };
       indexHtml.addRow(row);
     } // this->container.years

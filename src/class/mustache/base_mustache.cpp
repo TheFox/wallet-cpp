@@ -16,7 +16,7 @@ namespace Wallet::Mustache
   BaseMustache::BaseMustache(mstch::array _entries, mstch::map _total) :
     entries(std::move(_entries)), total(std::move(_total))
   {
-    DLog(" -> BaseMustache::BaseMustache() -> %lu entries, %lu totals\n", this->entries.size(), this->total.size());
+    //DLog(" -> BaseMustache::BaseMustache() -> %lu entries, %lu totals\n", this->entries.size(), this->total.size());
 
     this->setup();
   }
@@ -24,7 +24,7 @@ namespace Wallet::Mustache
   BaseMustache::BaseMustache(std::string _rel, mstch::array _entries, mstch::map _total) :
     relativePath(std::move(_rel)), entries(std::move(_entries)), total(std::move(_total))
   {
-    DLog(" -> BaseMustache::BaseMustache() -> %lu entries, %lu totals\n", this->entries.size(), this->total.size());
+    //DLog(" -> BaseMustache::BaseMustache() -> %lu entries, %lu totals\n", this->entries.size(), this->total.size());
 
     this->setup();
   }
@@ -86,17 +86,17 @@ namespace Wallet::Mustache
   mstch::node BaseMustache::hasGnuplotSupport() noexcept
   {
 #ifdef WALLETCPP_GNUPLOT_SUPPORT
-    DLog(" -> BaseMustache::hasGnuplotSupport() -> YES\n");
+    //DLog(" -> BaseMustache::hasGnuplotSupport() -> YES\n");
     return true;
 #else
-    DLog(" -> BaseMustache::hasGnuplotSupport() -> NO\n");
+    //DLog(" -> BaseMustache::hasGnuplotSupport() -> NO\n");
     return false;
 #endif
   }
 
   mstch::node BaseMustache::getEntries() noexcept
   {
-    DLog(" -> BaseMustache::getEntries() -> size %lu\n", this->entries.size());
+    //DLog(" -> BaseMustache::getEntries() -> size %lu\n", this->entries.size());
     return this->entries;
   }
 

@@ -56,7 +56,7 @@ namespace Wallet::Html
     // Transform IndexHtmlRow entries to mstch::array<mstch::map>.
     mstch::array _entries{};
     std::transform(this->entries.cbegin(), this->entries.cend(), std::back_inserter(_entries), [](auto row) {
-      // DLog(" -> IndexHtml::generate() -> transform year: %s\n", row.year.c_str());
+      DLog(" -> IndexHtml::generate() -> transform year: %s\n", row.year.c_str());
 
       return mstch::map{
         {"year",              std::move(row.year)},
@@ -66,7 +66,7 @@ namespace Wallet::Html
         {"balance_class",     std::move(row.balanceClass)},
         {"balance_sum",       std::move(row.balanceSum)},
         {"balance_sum_class", std::move(row.balanceSumClass)},
-        // {"year_epics",        std::move(row.epics)},
+        {"year_epics",        std::move(row.epics)},
       };
     });
 
