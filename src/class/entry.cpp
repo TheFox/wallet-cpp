@@ -189,7 +189,7 @@ namespace Wallet
   std::string Entry::getEpicHandleHtml() const noexcept
   {
     if (this->hasDefaultEpic()) {
-      return " ";
+      return "&nbsp;";
     }
 
     return this->epicHandle;

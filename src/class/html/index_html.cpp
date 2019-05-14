@@ -76,9 +76,9 @@ namespace Wallet::Html
       DLog(" -> IndexHtml::generate() -> transform epic: %s\n", pair.first.c_str());
 
       return mstch::map{
-        {"epic_title", pair.second.epic.title},
-        {"epic_balance", pair.second.getBalanceStr()},
-        {"epic_balance_class", pair.second.getBalanceHtmlClass()},
+        {"title", pair.second.epic.title},
+        {"balance", pair.second.getBalanceStr()},
+        {"balance_class", pair.second.getBalanceHtmlClass()},
       };
     });
 

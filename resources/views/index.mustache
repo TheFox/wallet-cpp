@@ -27,7 +27,7 @@
         <th colspan="5">&nbsp;</th>
         {{#has_epics}}
             {{#epics}}
-                <th class="right">{{{epic_title}}}</th>
+                <th class="right">{{{title}}}</th>
             {{/epics}}
         {{/has_epics}}
     </tr>
@@ -43,7 +43,7 @@
             <td class="right {{{balance_sum_class}}}">{{balance_sum}}</td>
             {{#has_epics}}
                 {{#year_epics}}
-                    <td class="right {{{epic_balance_class}}}" bgcolor="{{{epic_bg_color}}}">{{{epic_balance}}}</td>
+                    <td class="right {{{balance_class}}}" bgcolor="{{{bg_color}}}">{{{balance}}}</td>
                 {{/year_epics}}
             {{/has_epics}}
         </tr>
@@ -60,7 +60,7 @@
             <td>&nbsp;</td>
             {{#has_epics}}
                 {{#epics}}
-                    <td class="right {{{epic_balance_class}}}">{{{epic_balance}}}</td>
+                    <td class="right {{{balance_class}}}">{{{balance}}}</td>
                 {{/epics}}
             {{/has_epics}}
         </tr>

@@ -98,9 +98,9 @@ namespace Wallet::Html
         mstch::map _emap{
             {"handle", epicPair.second.epic.handle},
             {"title", epicPair.second.epic.title},
-            {"epic_bg_color", epicPair.second.epic.bgColor},
-            {"epic_balance", balance},
-            {"epic_balance_class", balanceClass},
+            {"bg_color", epicPair.second.epic.bgColor},
+            {"balance", balance},
+            {"balance_class", balanceClass},
         };
         return _emap;
       });
@@ -128,9 +128,9 @@ namespace Wallet::Html
 
       // second = EpicContainer
       return mstch::map{
-        {"epic_title", epicPair.second.epic.title},
-        {"epic_balance", epicPair.second.getBalanceStr()},
-        {"epic_balance_class", epicPair.second.getBalanceHtmlClass()},
+        {"title", epicPair.second.epic.title},
+        {"balance", epicPair.second.getBalanceStr()},
+        {"balance_class", epicPair.second.getBalanceHtmlClass()},
       };
     });
 
