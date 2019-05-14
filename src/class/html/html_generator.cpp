@@ -42,8 +42,8 @@ namespace Wallet::Html
     indexHtml.logLevel = this->logLevel;
 
     // Epics
-    const auto _epics_begin = this->container.epics.cbegin();
-    const auto _epics_end   = this->container.epics.cend();
+    const auto _epics_begin = this->container.epics.begin();
+    const auto _epics_end   = this->container.epics.end();
 
     // Iterate Years.
     for (const auto& yearPair : this->container.years) {
@@ -85,15 +85,19 @@ namespace Wallet::Html
         };
         _epics.push_back(_emap);
       }*/
+      
       // TODO
-      /*std::transform(_epics_begin, _epics_end, std::back_inserter(_epics), [](const auto& epicPair){
+      /*std::transform(_epics_begin, _epics_end, std::back_inserter(_epics), [](const auto& pair){
         DLog(" -> HtmlGenerator::generate() -> epic pair\n");
+        // DLog(" -> HtmlGenerator::generate() -> epic pair: %s\n", epicPair.first.c_str());
 
         try {
           // Search by handle.
-
+          DLog(" -> HtmlGenerator::generate() -> search by handle\n");
         }
-        catch (const std::out_of_range& exception) {}
+        catch (const std::out_of_range& exception) {
+          DLog(" -> HtmlGenerator::generate() -> error\n");
+        }
       });*/
 
       // Add row to HTML file.
@@ -110,13 +114,14 @@ namespace Wallet::Html
       indexHtml.addRow(row);
     } // this->container.years
 
-    // Transform Epics
+    // Total Epics
     mstch::array totalEpics{};
     std::transform(_epics_begin, _epics_end, std::back_inserter(totalEpics), [](const auto& epicPair) {
       // DLog(" -> HtmlGenerator::generate() -> transform epic: %s/%s -> '%s'\n",
       //   epicPair.first.c_str(), epicPair.second.epic.handle.c_str(),
       //   epicPair.second.epic.title.c_str());
 
+      // second = EpicContainer
       return mstch::map{
         {"epic_title", epicPair.second.epic.title},
         {"epic_balance", epicPair.second.getBalanceStr()},
@@ -124,7 +129,7 @@ namespace Wallet::Html
       };
     });
 
-    // Generate HTML file.
+    // Total Row
     const IndexHtmlRow totalRow{
       "TOTAL", // year
       container.getRevenueStr(), // revenue
@@ -135,7 +140,9 @@ namespace Wallet::Html
       std::string{}  // balanceSumClass
       // totalEpics
     };
-    indexHtml.generate(totalRow);
+
+    // Generate HTML file.
+    indexHtml.generate(totalRow, this->container.epics);
   }
 
   void HtmlGenerator::setup() const noexcept

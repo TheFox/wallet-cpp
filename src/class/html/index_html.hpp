@@ -15,6 +15,7 @@
 
 #include "config.hpp"
 #include "base_html.hpp"
+#include "class/container/epic_container.hpp"
 
 namespace Wallet::Html
 {
@@ -44,7 +45,7 @@ namespace Wallet::Html
 
     // Functions
     void addRow(IndexHtmlRow) noexcept;
-    void generate(IndexHtmlRow) const;
+    void generate(IndexHtmlRow, const Container::EpicMap&) const;
 
   private:
     // Properties
