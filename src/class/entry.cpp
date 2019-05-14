@@ -179,11 +179,16 @@ namespace Wallet
 
   std::string Entry::getCategoryHtml() const noexcept
   {
-    if (this->category == "default") {
-      return " ";
+    if (this->hasDefaultCategory()) {
+      return "&nbsp;";
     }
 
     return this->category;
+  }
+
+  bool Entry::hasDefaultCategory() const noexcept
+  {
+    return this->category == "default";
   }
 
   std::string Entry::getEpicHandleHtml() const noexcept

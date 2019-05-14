@@ -45,6 +45,7 @@ namespace Wallet
     // Parameter: Category
     std::string category{};
     std::string getCategoryHtml() const noexcept;
+    bool hasDefaultCategory() const noexcept;
 
     // Parameter: Epic Handle
     //Epic epic{};
