@@ -11,13 +11,19 @@ namespace Wallet::Mustache
   {
   public:
     // Constructor
-    IndexMustache(mstch::array, mstch::map, mstch::array);
+    IndexMustache(mstch::array, mstch::map, mstch::array, mstch::array);
 
   private:
     // Properties
+    const mstch::array categories{};
     const mstch::array epics{};
 
-    // Functions
+    // Category Functions
+    mstch::node getCategoryCount() noexcept;
+    mstch::node getCategories() noexcept;
+    mstch::node getHasCategories() noexcept;
+
+    // Epic Functions
     mstch::node getEpicCount() noexcept;
     mstch::node getEpics() noexcept;
     mstch::node getHasEpics() noexcept;

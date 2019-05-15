@@ -287,13 +287,19 @@ namespace Wallet
           // DLog(" -> MutableWallet::getEntries() -> epic: '%s' (%s)\n",
           //   epic.handle.c_str(), epic.title.c_str());
 
-          // Container
+          // Total Total
           container.entryCount++;
           container.revenue += entry.revenue;
           container.expense += entry.expense;
           container.balance += entry.balance;
 
-          // Container Epic
+          // Total Category
+          auto& ccategory = container.categories[entry.category];
+          ccategory.revenue += entry.revenue;
+          ccategory.expense += entry.expense;
+          ccategory.balance += entry.balance;
+
+          // Total Epic
           auto& cepic = container.epics[epic.handle];
           if (cepic.isDefaultEpic) {
             cepic.epic = epic;

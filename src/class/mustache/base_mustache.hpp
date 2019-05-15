@@ -26,6 +26,7 @@ namespace Wallet::Mustache
     const std::string relativePath{"."};
     const mstch::array entries{};
     const mstch::map total{};
+    //const mstch::array categories{}; // TODO
     //const mstch::array epics{}; // TODO
 
     // Functions

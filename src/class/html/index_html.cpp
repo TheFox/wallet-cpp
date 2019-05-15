@@ -37,7 +37,7 @@ namespace Wallet::Html
     DLog(" -> IndexHtml::addRow(%s) -> size %lu\n", row.year.c_str(), this->entries.size());
   }
 
-  void IndexHtml::generate(const IndexHtmlRow totalRow, const Container::EpicMap& totalEpics) const
+  void IndexHtml::generate(const IndexHtmlRow totalRow, const Container::CategoryMap& totalCategories, const Container::EpicMap& totalEpics) const
   {
     DLog(" -> IndexHtml::generate('%s')\n", totalRow.year.c_str());
     this->log("[index_html] generate");
@@ -70,6 +70,10 @@ namespace Wallet::Html
       };
     });
 
+    // TODO
+    // Total Categories
+    mstch::array _totalCategories{};
+
     // Total Epics
     mstch::array _totalEpics{};
     std::transform(totalEpics.cbegin(), totalEpics.cend(), std::back_inserter(_totalEpics), [](const auto& pair) {
@@ -94,8 +98,7 @@ namespace Wallet::Html
     DLog(" -> IndexHtml::generate('%s') -> %lu entries, %lu totals, %lu epics\n", totalRow.year.c_str(), _entries.size(), _totalRow.size(), _totalEpics.size());
 
     const auto tpl = Components::readFileIntoString(WALLETCPP_INDEX_VIEW_PATH);
-    const auto context = std::make_shared<Mustache::IndexMustache>(_entries,
-      _totalRow, _totalEpics);
+    const auto context = std::make_shared<Mustache::IndexMustache>(_entries, _totalRow, _totalCategories, _totalEpics);
 
 //#ifdef DEBUG
 //    // Template debug

@@ -69,6 +69,10 @@ namespace Wallet::Html
       std::ostringstream balanceSumSs{};
       balanceSumSs << std::fixed << std::setprecision(2) << balanceSum;
 
+      // Year Categories
+      mstch::array _categories{};
+      // TODO
+
       // Year Epics
       // Match common epics to year epics.
       mstch::array _epics{};
@@ -114,6 +118,7 @@ namespace Wallet::Html
         yearPair.second.getBalanceHtmlClass(),
         balanceSumSs.str(),
         balanceSum < 0 ? "red" : "",
+        _categories,
         _epics
       };
       indexHtml.addRow(row);
@@ -147,7 +152,7 @@ namespace Wallet::Html
     };
 
     // Generate HTML file.
-    indexHtml.generate(totalRow, this->container.epics);
+    indexHtml.generate(totalRow, this->container.categories, this->container.epics);
   }
 
   void HtmlGenerator::setup() const noexcept

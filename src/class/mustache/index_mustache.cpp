@@ -5,16 +5,42 @@
 
 namespace Wallet::Mustache
 {
-  IndexMustache::IndexMustache(mstch::array _entries, mstch::map _total, mstch::array _epics) :
-    BaseMustache{std::move(_entries), std::move(_total)}, epics(std::move(_epics))
+  IndexMustache::IndexMustache(mstch::array _entries, mstch::map _total, mstch::array _categories, mstch::array _epics) :
+    BaseMustache{std::move(_entries), std::move(_total)},
+    categories(std::move(_categories)), epics(std::move(_epics))
   {
     //DLog(" -> IndexMustache::IndexMustache() -> %lu entries, %lu totals\n", this->entries.size(), this->total.size());
 
     this->register_methods(this, {
-      {"epic_count",     &IndexMustache::getEpicCount},
-      {"epics",          &IndexMustache::getEpics},
-      {"has_epics",      &IndexMustache::getHasEpics},
+      {"category_count",  &IndexMustache::getCategoryCount},
+      {"categories",      &IndexMustache::getCategories},
+      {"has_categories",  &IndexMustache::getHasCategories},
+
+      {"epic_count",      &IndexMustache::getEpicCount},
+      {"epics",           &IndexMustache::getEpics},
+      {"has_epics",       &IndexMustache::getHasEpics},
     });
+  }
+
+  mstch::node IndexMustache::getCategoryCount() noexcept
+  {
+    //DLog(" -> IndexMustache::getCategoryCount() -> %lu\n", this->categories.size());
+
+    return std::to_string(this->categories.size());
+  }
+
+  mstch::node IndexMustache::getCategories() noexcept
+  {
+    //DLog(" -> IndexMustache::getCategories() -> %lu\n", this->categories.size());
+
+    return this->categories;
+  }
+
+  mstch::node IndexMustache::getHasCategories() noexcept
+  {
+    //DLog(" -> IndexMustache::getHasCategories() -> %lu\n", this->categories.size());
+
+    return this->categories.size() > 0;
   }
 
   mstch::node IndexMustache::getEpicCount() noexcept
@@ -27,7 +53,7 @@ namespace Wallet::Mustache
   mstch::node IndexMustache::getEpics() noexcept
   {
     //DLog(" -> IndexMustache::getEpics() -> %lu\n", this->epics.size());
-    
+
     return this->epics;
   }
 

@@ -15,6 +15,7 @@
 
 #include "config.hpp"
 #include "base_html.hpp"
+#include "class/container/entry_container.hpp"
 #include "class/container/epic_container.hpp"
 
 namespace Wallet::Html
@@ -28,6 +29,8 @@ namespace Wallet::Html
     const std::string balanceClass{};
     const std::string balanceSum{};
     const std::string balanceSumClass{};
+
+    const mstch::array categories{};
     const mstch::array epics{};
   };
 
@@ -44,7 +47,7 @@ namespace Wallet::Html
 
     // Functions
     void addRow(IndexHtmlRow) noexcept;
-    void generate(IndexHtmlRow, const Container::EpicMap&) const;
+    void generate(IndexHtmlRow, const Container::CategoryMap&, const Container::EpicMap&) const;
 
   private:
     // Properties
