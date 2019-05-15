@@ -29,6 +29,7 @@ namespace Wallet::Trait
     Number revenue{};
     Number expense{};
     Number balance{};
+    Number balanceAbs{};
     std::float_t balancePercent{};
 
     // Functions

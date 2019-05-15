@@ -73,12 +73,12 @@
             <td>&nbsp;</td>
             {{#has_categories}}
                 {{#categories}}
-                    <td class="right {{{balance_class}}}">{{balance}}</td>
+                    <td class="right {{{balance_class}}}">{{balance}} ({{{balance_percent}}} %)</td>
                 {{/categories}}
             {{/has_categories}}
             {{#has_epics}}
                 {{#epics}}
-                    <td class="right {{{balance_class}}}">{{{balance}}}</td>
+                    <td class="right {{{balance_class}}}">{{{balance}}} ({{{balance_percent}}} %)</td>
                 {{/epics}}
             {{/has_epics}}
         </tr>

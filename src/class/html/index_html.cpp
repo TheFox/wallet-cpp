@@ -81,6 +81,7 @@ namespace Wallet::Html
         {"title", pair.second.category},
         {"balance", pair.second.getBalanceStr()},
         {"balance_class", pair.second.getBalanceHtmlClass()},
+        {"balance_percent", pair.second.getBalancePercentStr()},
       };
     });
 
@@ -93,6 +94,7 @@ namespace Wallet::Html
         {"title", pair.second.epic.title},
         {"balance", pair.second.getBalanceStr()},
         {"balance_class", pair.second.getBalanceHtmlClass()},
+        {"balance_percent", pair.second.getBalancePercentStr()},
       };
     });
 

@@ -3,6 +3,7 @@
 #include <ios> // fixed
 #include <sstream> // ostringstream
 #include <algorithm> // transform
+#include <cmath> // float_t
 
 #ifdef __has_include
 #  if __has_include(<mstch/mstch.hpp>)
@@ -75,12 +76,13 @@ namespace Wallet::Html
 
       // Year Categories
       mstch::array _categories{};
-      
+
       std::transform(_categories_begin, _categories_end, std::back_inserter(_categories), [&yearPair](const auto& categoryPair){
         //DLog(" -> HtmlGenerator::generate() -> transform category pair: %s\n", categoryPair.first.c_str());
 
         std::string balance{"&nbsp;"};
         std::string balanceClass{};
+        std::string balancePercent{"1.2"}; // TODO
 
         try {
           // Search by handle.
@@ -90,6 +92,7 @@ namespace Wallet::Html
 
           balance = categoryContainer.getBalanceStr();
           balanceClass = categoryContainer.getBalanceHtmlClass();
+          // balancePercent = categoryContainer.balancePercentStr();
         }
         catch (const std::out_of_range& exception) {
           // DLog(" -> HtmlGenerator::generate() -> error: nothing found for category '%s'\n", categoryPair.first.c_str());
@@ -99,6 +102,7 @@ namespace Wallet::Html
           {"handle", categoryPair.first},
           {"balance", balance},
           {"balance_class", balanceClass},
+          {"balance_percent", balancePercent},
         };
         return _cmap;
       });
@@ -107,12 +111,13 @@ namespace Wallet::Html
       // Year Epics
       // Match common epics to year epics.
       mstch::array _epics{};
-      
+
       std::transform(_epics_begin, _epics_end, std::back_inserter(_epics), [&yearPair](const auto& epicPair){
         // DLog(" -> HtmlGenerator::generate() -> transform epic pair: %s\n", epicPair.first.c_str());
 
         std::string balance{"&nbsp;"};
         std::string balanceClass{};
+        std::string balancePercent{"1.5"}; // TODO
 
         try {
           // Search by handle.
@@ -125,6 +130,7 @@ namespace Wallet::Html
 
           balance = epicContainer.getBalanceStr();
           balanceClass = epicContainer.getBalanceHtmlClass();
+          // balancePercent = categoryContainer.balancePercentStr();
         }
         catch (const std::out_of_range& exception) {
           // DLog(" -> HtmlGenerator::generate() -> error: nothing found for epic '%s'\n", epicPair.first.c_str());
@@ -136,6 +142,7 @@ namespace Wallet::Html
             {"bg_color", epicPair.second.epic.bgColor},
             {"balance", balance},
             {"balance_class", balanceClass},
+            {"balance_percent", balancePercent},
         };
         return _emap;
       });
@@ -168,6 +175,7 @@ namespace Wallet::Html
         {"title", epicPair.second.epic.title},
         {"balance", epicPair.second.getBalanceStr()},
         {"balance_class", epicPair.second.getBalanceHtmlClass()},
+        {"balance_percent", epicPair.second.getBalancePercentStr()},
       };
     });
 

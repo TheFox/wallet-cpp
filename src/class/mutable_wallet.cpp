@@ -3,6 +3,8 @@
 #include <iostream>
 #include <cstdint>
 #include <cstdio> // remove
+#include <cstdlib> // abs
+#include <cmath> // float_t
 
 #ifdef __has_include
 #  if __has_include(<yaml-cpp/yaml.h>)
@@ -265,7 +267,7 @@ namespace Wallet
           if (hasEpic) {
             // DLog(" -> MutableWallet::getEntries() -> compare epic: %d '%s' '%s'\n",
             //     entry.epicHandle.compare(epicHandle), entry.epicHandle.c_str(), epicHandle.c_str());
-            
+
             if (entry.epicHandle != epicHandle) {
               // DLog(" -> MutableWallet::getEntries() -> skip, epic not equal\n");
               continue;
@@ -292,6 +294,7 @@ namespace Wallet
           container.revenue += entry.revenue;
           container.expense += entry.expense;
           container.balance += entry.balance;
+          container.balanceAbs += std::abs(entry.balance);
 
           // Total Category
           auto& ccategory = container.categories[entry.category];
@@ -302,6 +305,7 @@ namespace Wallet
           ccategory.revenue += entry.revenue;
           ccategory.expense += entry.expense;
           ccategory.balance += entry.balance;
+          ccategory.balanceAbs += std::abs(entry.balance);
 
           // Total Epic
           auto& cepic = container.epics[epic.handle];
@@ -312,6 +316,7 @@ namespace Wallet
           cepic.revenue += entry.revenue;
           cepic.expense += entry.expense;
           cepic.balance += entry.balance;
+          cepic.balanceAbs += std::abs(entry.balance);
 
           // Year
           yearMap.entryCount++;
@@ -366,12 +371,26 @@ namespace Wallet
       } // Days
     } // Files
 
-    // Percentage
-    DLog(" -> MutableWallet::getEntries() -> calc percentages: %.2f\n",
-      container.balance);
-    for (const auto& categoryPair : container.categories) {
-      DLog(" -> MutableWallet::getEntries() -> categoryPair: '%s', %.2f\n",
-        categoryPair.first.c_str(), categoryPair.second.balance);
+    // Category Percentage
+    DLog(" -> MutableWallet::getEntries() -> calc category percentages: %.2f %.2f\n",
+      container.balance, container.balanceAbs);
+    for (auto& categoryPair : container.categories) {
+      categoryPair.second.balancePercent = categoryPair.second.balanceAbs / container.balanceAbs * 100;
+
+      DLog(" -> MutableWallet::getEntries() -> categoryPair: '%s', %.2f, %.2f -> %.2f %%\n",
+        categoryPair.first.c_str(), categoryPair.second.balance, categoryPair.second.balanceAbs,
+        categoryPair.second.balancePercent);
+    }
+
+    // Epic Percentage
+    DLog(" -> MutableWallet::getEntries() -> calc epic percentages: %.2f %.2f\n",
+      container.balance, container.balanceAbs);
+    for (auto& epicPair : container.epics) {
+      epicPair.second.balancePercent = epicPair.second.balanceAbs / container.balanceAbs * 100;
+
+      DLog(" -> MutableWallet::getEntries() -> epicPair: '%s', %.2f, %.2f -> %.2f %%\n",
+        epicPair.first.c_str(), epicPair.second.balance, epicPair.second.balanceAbs,
+        epicPair.second.balancePercent);
     }
 
     return container;
@@ -445,7 +464,7 @@ namespace Wallet
 
   /**
    * Update Epic.
-   * 
+   *
    * TODO: use std lib here instead of loop
    */
   void MutableWallet::updateEpic(const Epic& epic) noexcept
