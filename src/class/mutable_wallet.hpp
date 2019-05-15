@@ -33,7 +33,6 @@ namespace Wallet
     void htmlOutput(const std::string&, const std::string& = "", const std::string& = "") const;
     void addEpic(const Epic&) noexcept;
     void removeEpic(const std::string&) noexcept;
-    // void removeEpic(const Epic&) noexcept;
     void updateEpic(const Epic&) noexcept;
     Epic getEpicByHandle(std::string) const;
     bool epicExists(const std::string&) noexcept;
