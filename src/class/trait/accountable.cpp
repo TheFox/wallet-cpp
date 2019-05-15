@@ -65,6 +65,20 @@ namespace Wallet::Trait
     return this->balanceStr;
   }
 
+  std::string Accountable::getBalancePercentStr() const noexcept
+  {
+    if (this->balancePercentCache) {
+      return this->balancePercentStr;
+    }
+
+    std::ostringstream ss{};
+    if (this->balancePercent != 0.0) {
+      ss << std::fixed << std::setprecision(2) << this->balancePercent;
+    }
+    this->balancePercentStr = ss.str();
+    return this->balancePercentStr;
+  }
+
   void Accountable::calcBalance() noexcept
   {
     this->balanceCache = false;

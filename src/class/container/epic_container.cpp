@@ -6,7 +6,7 @@ namespace Wallet::Container
 {
   BaseEpicContainer::BaseEpicContainer()
   {
-    DLog(" -> BaseEpicContainer::BaseEpicContainer()\n");
+    //DLog(" -> BaseEpicContainer::BaseEpicContainer()\n");
 
     // Default Epic
     this->epics["default"];

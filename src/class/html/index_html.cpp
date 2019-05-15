@@ -56,7 +56,7 @@ namespace Wallet::Html
     // Transform IndexHtmlRow entries to mstch::array<mstch::map>.
     mstch::array _entries{};
     std::transform(this->entries.cbegin(), this->entries.cend(), std::back_inserter(_entries), [](auto row) {
-      DLog(" -> IndexHtml::generate() -> transform year: %s\n", row.year.c_str());
+      //DLog(" -> IndexHtml::generate() -> transform year: %s\n", row.year.c_str());
 
       return mstch::map{
         {"year",              std::move(row.year)},
@@ -74,7 +74,7 @@ namespace Wallet::Html
     // Total Categories
     mstch::array _totalCategories{};
     std::transform(totalCategories.cbegin(), totalCategories.cend(), std::back_inserter(_totalCategories), [](const auto& pair) {
-      DLog(" -> IndexHtml::generate() -> transform category: %s\n", pair.first.c_str());
+      //DLog(" -> IndexHtml::generate() -> transform category: %s\n", pair.first.c_str());
 
       // second = CategoryContainer
       return mstch::map{
@@ -87,7 +87,7 @@ namespace Wallet::Html
     // Total Epics
     mstch::array _totalEpics{};
     std::transform(totalEpics.cbegin(), totalEpics.cend(), std::back_inserter(_totalEpics), [](const auto& pair) {
-      DLog(" -> IndexHtml::generate() -> transform epic: %s\n", pair.first.c_str());
+      //DLog(" -> IndexHtml::generate() -> transform epic: %s\n", pair.first.c_str());
 
       return mstch::map{
         {"title", pair.second.epic.title},

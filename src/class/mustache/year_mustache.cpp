@@ -88,7 +88,7 @@ namespace Wallet::Mustache
 
   mstch::node YearMustache::getHasEpics() noexcept
   {
-    DLog(" -> YearMustache::getHasEpics() -> %lu\n", this->epics.size());
+    //DLog(" -> YearMustache::getHasEpics() -> %lu\n", this->epics.size());
     return this->epics.size() > 0;
   }
 

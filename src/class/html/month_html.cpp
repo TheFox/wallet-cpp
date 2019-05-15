@@ -38,7 +38,7 @@ namespace Wallet::Html
 
   void MonthHtml::generate() const
   {
-    DLog(" -> MonthHtml::generate()\n");
+    //DLog(" -> MonthHtml::generate()\n");
 
     const auto yearStr = std::to_string(this->container.year);
 

@@ -77,22 +77,22 @@ namespace Wallet::Html
       mstch::array _categories{};
       
       std::transform(_categories_begin, _categories_end, std::back_inserter(_categories), [&yearPair](const auto& categoryPair){
-        DLog(" -> HtmlGenerator::generate() -> transform category pair: %s\n", categoryPair.first.c_str());
+        //DLog(" -> HtmlGenerator::generate() -> transform category pair: %s\n", categoryPair.first.c_str());
 
         std::string balance{"&nbsp;"};
         std::string balanceClass{};
 
         try {
           // Search by handle.
-          DLog(" -> HtmlGenerator::generate() -> search category\n");
+          // DLog(" -> HtmlGenerator::generate() -> search category\n");
           const auto& categoryContainer = yearPair.second.categories.at(categoryPair.first);
-          DLog(" -> HtmlGenerator::generate() -> found category\n");
+          // DLog(" -> HtmlGenerator::generate() -> found category\n");
 
           balance = categoryContainer.getBalanceStr();
           balanceClass = categoryContainer.getBalanceHtmlClass();
         }
         catch (const std::out_of_range& exception) {
-          DLog(" -> HtmlGenerator::generate() -> error: nothing found for category '%s'\n", categoryPair.first.c_str());
+          // DLog(" -> HtmlGenerator::generate() -> error: nothing found for category '%s'\n", categoryPair.first.c_str());
         }
 
         mstch::map _cmap{
@@ -102,32 +102,32 @@ namespace Wallet::Html
         };
         return _cmap;
       });
-      DLog(" -> HtmlGenerator::generate() -> transformed categories: %lu\n", _categories.size());
+      // DLog(" -> HtmlGenerator::generate() -> transformed categories: %lu\n", _categories.size());
 
       // Year Epics
       // Match common epics to year epics.
       mstch::array _epics{};
       
       std::transform(_epics_begin, _epics_end, std::back_inserter(_epics), [&yearPair](const auto& epicPair){
-        DLog(" -> HtmlGenerator::generate() -> transform epic pair: %s\n", epicPair.first.c_str());
+        // DLog(" -> HtmlGenerator::generate() -> transform epic pair: %s\n", epicPair.first.c_str());
 
         std::string balance{"&nbsp;"};
         std::string balanceClass{};
 
         try {
           // Search by handle.
-          DLog(" -> HtmlGenerator::generate() -> search epic\n");
+          // DLog(" -> HtmlGenerator::generate() -> search epic\n");
 
           const auto& epicContainer = yearPair.second.epics.at(epicPair.first);
 
-          DLog(" -> HtmlGenerator::generate() -> found epic: %s (%s)\n",
-            epicContainer.epic.handle.c_str(), epicContainer.epic.title.c_str());
+          // DLog(" -> HtmlGenerator::generate() -> found epic: %s (%s)\n",
+          //   epicContainer.epic.handle.c_str(), epicContainer.epic.title.c_str());
 
           balance = epicContainer.getBalanceStr();
           balanceClass = epicContainer.getBalanceHtmlClass();
         }
         catch (const std::out_of_range& exception) {
-          DLog(" -> HtmlGenerator::generate() -> error: nothing found for epic '%s'\n", epicPair.first.c_str());
+          // DLog(" -> HtmlGenerator::generate() -> error: nothing found for epic '%s'\n", epicPair.first.c_str());
         }
 
         mstch::map _emap{
@@ -139,7 +139,7 @@ namespace Wallet::Html
         };
         return _emap;
       });
-      DLog(" -> HtmlGenerator::generate() -> transformed epics: %lu\n", _epics.size());
+      // DLog(" -> HtmlGenerator::generate() -> transformed epics: %lu\n", _epics.size());
 
       // Add row to HTML file.
       const IndexHtmlRow row{

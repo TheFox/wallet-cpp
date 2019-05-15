@@ -366,6 +366,14 @@ namespace Wallet
       } // Days
     } // Files
 
+    // Percentage
+    DLog(" -> MutableWallet::getEntries() -> calc percentages: %.2f\n",
+      container.balance);
+    for (const auto& categoryPair : container.categories) {
+      DLog(" -> MutableWallet::getEntries() -> categoryPair: '%s', %.2f\n",
+        categoryPair.first.c_str(), categoryPair.second.balance);
+    }
+
     return container;
   }
 
@@ -475,7 +483,7 @@ namespace Wallet
     if (handle.empty()) {
       handle = "default";
     }
-    DLog(" -> MutableWallet::getEpicByHandle() -> epic handle '%s'\n", handle.c_str());
+    //DLog(" -> MutableWallet::getEpicByHandle() -> epic handle '%s'\n", handle.c_str());
 
     this->loadEpics();
 
