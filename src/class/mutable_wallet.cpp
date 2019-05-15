@@ -280,8 +280,8 @@ namespace Wallet
           try {
             epic = this->getEpicByHandle(entry.epicHandle);
           } catch (const std::string& e) {
-            DLog(" -> MutableWallet::getEntries() -> cannot find epic by handle: '%s'\n",
-              entry.epicHandle.c_str());
+            // DLog(" -> MutableWallet::getEntries() -> cannot find epic by handle: '%s'\n",
+            //   entry.epicHandle.c_str());
           }
 
           // DLog(" -> MutableWallet::getEntries() -> epic: '%s' (%s)\n",
@@ -295,6 +295,10 @@ namespace Wallet
 
           // Total Category
           auto& ccategory = container.categories[entry.category];
+          if (ccategory.isDefaultCategory) {
+            ccategory.category = entry.category;
+            ccategory.isDefaultCategory = false;
+          }
           ccategory.revenue += entry.revenue;
           ccategory.expense += entry.expense;
           ccategory.balance += entry.balance;
@@ -494,10 +498,11 @@ namespace Wallet
 
   Epic MutableWallet::getEpicByHandle(std::string handle) const
   {
-    DLog(" -> MutableWallet::getEpicByHandle() -> handle '%s'\n", handle.c_str());
+    //DLog(" -> MutableWallet::getEpicByHandle() -> epic handle '%s'\n", handle.c_str());
     if (handle.empty()) {
       handle = "default";
     }
+    DLog(" -> MutableWallet::getEpicByHandle() -> epic handle '%s'\n", handle.c_str());
 
     this->loadEpics();
 

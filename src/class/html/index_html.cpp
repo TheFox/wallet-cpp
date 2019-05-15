@@ -66,13 +66,23 @@ namespace Wallet::Html
         {"balance_class",     std::move(row.balanceClass)},
         {"balance_sum",       std::move(row.balanceSum)},
         {"balance_sum_class", std::move(row.balanceSumClass)},
+        {"year_categories",   std::move(row.categories)},
         {"year_epics",        std::move(row.epics)},
       };
     });
 
-    // TODO
     // Total Categories
     mstch::array _totalCategories{};
+    std::transform(totalCategories.cbegin(), totalCategories.cend(), std::back_inserter(_totalCategories), [](const auto& pair) {
+      DLog(" -> IndexHtml::generate() -> transform category: %s\n", pair.first.c_str());
+
+      // second = CategoryContainer
+      return mstch::map{
+        {"title", pair.second.category},
+        {"balance", pair.second.getBalanceStr()},
+        {"balance_class", pair.second.getBalanceHtmlClass()},
+      };
+    });
 
     // Total Epics
     mstch::array _totalEpics{};

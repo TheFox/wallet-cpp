@@ -20,7 +20,7 @@
         <th class="right">Balance</th>
         <th class="right">Balance &#8721;</th>
         {{#has_categories}}
-            <th colspan="2">{{{category_count}}} Categories</th>
+            <th colspan="{{{category_count}}}">{{{category_count}}} Categories</th>
         {{/has_categories}}
         {{#has_epics}}
             <th colspan="{{{epic_count}}}">{{{epic_count}}} Epics</th>
@@ -29,10 +29,8 @@
     <tr>
         <th colspan="5">&nbsp;</th>
         {{#has_categories}}
-            <th>Category x</th>
-            <th>Category y</th>
             {{#categories}}
-                <th>Category z</th>
+                <th class="right">{{{title}}}</th>
             {{/categories}}
         {{/has_categories}}
         {{#has_epics}}
@@ -52,11 +50,9 @@
             <td class="right {{{balance_class}}}">{{balance}}</td>
             <td class="right {{{balance_sum_class}}}">{{balance_sum}}</td>
             {{#has_categories}}
-                <td class="right">cat x</td>
-                <td class="right">cat y</td>
-                {{#categories}}
-                    <td class="right">cat z</td>
-                {{/categories}}
+                {{#year_categories}}
+                    <td class="right {{{balance_class}}}">{{{balance}}}</td>
+                {{/year_categories}}
             {{/has_categories}}
             {{#has_epics}}
                 {{#year_epics}}
@@ -76,10 +72,8 @@
             <td class="right {{{balance_class}}}">{{balance}}</td>
             <td>&nbsp;</td>
             {{#has_categories}}
-                <td>c x</td>
-                <td>c y</td>
                 {{#categories}}
-                    <td>c z</td>
+                    <td class="right {{{balance_class}}}">{{balance}}</td>
                 {{/categories}}
             {{/has_categories}}
             {{#has_epics}}

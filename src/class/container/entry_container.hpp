@@ -24,6 +24,8 @@ namespace Wallet::Container
 
   struct CategoryContainer final : public Wallet::Trait::Accountable
   {
+    std::string category{"default"};
+    bool isDefaultCategory{true};
   };
 
   /**
@@ -50,6 +52,7 @@ namespace Wallet::Container
     // Properties
     std::size_t dayCount{};
     std::size_t entryCount{};
+    //std::size_t categoryCount{};
     //std::size_t epicCount{};
   };
 

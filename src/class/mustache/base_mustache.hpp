@@ -41,6 +41,7 @@ namespace Wallet::Mustache
 
     mstch::node getEntries() noexcept;
     mstch::node getTotal() noexcept;
+    //mstch::node getCategories() noexcept; // TODO
     //mstch::node getEpics() noexcept; // TODO
   };
 } // Wallet::Mustache Namespace

@@ -41,6 +41,10 @@ namespace Wallet::Html
     IndexHtml indexHtml{this->basePath, this->tmpPath};
     indexHtml.logLevel = this->logLevel;
 
+    // Categories
+    const auto _categories_begin = this->container.categories.begin();
+    const auto _categories_end   = this->container.categories.end();
+
     // Epics
     const auto _epics_begin = this->container.epics.begin();
     const auto _epics_end   = this->container.epics.end();
@@ -71,21 +75,48 @@ namespace Wallet::Html
 
       // Year Categories
       mstch::array _categories{};
-      // TODO
-
-      // Year Epics
-      // Match common epics to year epics.
-      mstch::array _epics{};
       
-      std::transform(_epics_begin, _epics_end, std::back_inserter(_epics), [&yearPair](const auto& epicPair){
-        DLog(" -> HtmlGenerator::generate() -> epic pair: %s\n", epicPair.first.c_str());
+      std::transform(_categories_begin, _categories_end, std::back_inserter(_categories), [&yearPair](const auto& categoryPair){
+        DLog(" -> HtmlGenerator::generate() -> transform category pair: %s\n", categoryPair.first.c_str());
 
         std::string balance{"&nbsp;"};
         std::string balanceClass{};
 
         try {
           // Search by handle.
-          DLog(" -> HtmlGenerator::generate() -> search by handle: %s\n", epicPair.first.c_str());
+          DLog(" -> HtmlGenerator::generate() -> search category\n");
+          const auto& categoryContainer = yearPair.second.categories.at(categoryPair.first);
+          DLog(" -> HtmlGenerator::generate() -> found category\n");
+
+          balance = categoryContainer.getBalanceStr();
+          balanceClass = categoryContainer.getBalanceHtmlClass();
+        }
+        catch (const std::out_of_range& exception) {
+          DLog(" -> HtmlGenerator::generate() -> error: nothing found for category '%s'\n", categoryPair.first.c_str());
+        }
+
+        mstch::map _cmap{
+          {"handle", categoryPair.first},
+          {"balance", balance},
+          {"balance_class", balanceClass},
+        };
+        return _cmap;
+      });
+      DLog(" -> HtmlGenerator::generate() -> transformed categories: %lu\n", _categories.size());
+
+      // Year Epics
+      // Match common epics to year epics.
+      mstch::array _epics{};
+      
+      std::transform(_epics_begin, _epics_end, std::back_inserter(_epics), [&yearPair](const auto& epicPair){
+        DLog(" -> HtmlGenerator::generate() -> transform epic pair: %s\n", epicPair.first.c_str());
+
+        std::string balance{"&nbsp;"};
+        std::string balanceClass{};
+
+        try {
+          // Search by handle.
+          DLog(" -> HtmlGenerator::generate() -> search epic\n");
 
           const auto& epicContainer = yearPair.second.epics.at(epicPair.first);
 
@@ -108,6 +139,7 @@ namespace Wallet::Html
         };
         return _emap;
       });
+      DLog(" -> HtmlGenerator::generate() -> transformed epics: %lu\n", _epics.size());
 
       // Add row to HTML file.
       const IndexHtmlRow row{
@@ -148,7 +180,6 @@ namespace Wallet::Html
       std::string{}, // balanceClass
       std::string{}, // balanceSum
       std::string{}  // balanceSumClass
-      // totalEpics
     };
 
     // Generate HTML file.
