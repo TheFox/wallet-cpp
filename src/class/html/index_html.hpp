@@ -24,7 +24,9 @@ namespace Wallet::Html
   {
     const std::string year{};
     const std::string revenue{};
+    const std::string revenuePercent{};
     const std::string expense{};
+    const std::string expensePercent{};
     const std::string balance{};
     const std::string balanceClass{};
     const std::string balanceSum{};

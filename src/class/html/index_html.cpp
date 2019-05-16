@@ -99,10 +99,13 @@ namespace Wallet::Html
     });
 
     // Total Row
+    DLog(" -> IndexHtml::generate() -> total row: rp=%s ep=%s\n", totalRow.revenuePercent.c_str(), totalRow.expensePercent.c_str());
     const mstch::map _totalRow{
       {"label",         totalRow.year},
       {"revenue",       totalRow.revenue},
+      {"revenue_percent", totalRow.revenuePercent},
       {"expense",       totalRow.expense},
+      {"expense_percent", totalRow.expensePercent},
       {"balance",       totalRow.balance},
       {"balance_class", totalRow.balanceClass},
     };
@@ -167,7 +170,7 @@ namespace Wallet::Html
 
     // Total Gnuplot File
     const auto gnuplotFilePath = (this->tmpPath / "total.gp").string();
-    DLog(" -> gp: '%s'\n", gnuplotFilePath.c_str());
+    //DLog(" -> gp: '%s'\n", gnuplotFilePath.c_str());
     std::ofstream totalFh{gnuplotFilePath};
     totalFh << mstch::render(gnuplotTpl, gnuplotContext) << '\n';
     totalFh.close();

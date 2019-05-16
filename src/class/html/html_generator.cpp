@@ -152,7 +152,11 @@ namespace Wallet::Html
       const IndexHtmlRow row{
         yearStr,
         yearPair.second.getRevenueStr(),
+        // TODO
+        std::string{}, // revenuePercent
         yearPair.second.getExpenseStr(),
+        // TODO
+        std::string{}, // expensePercent
         yearPair.second.getBalanceStr(),
         yearPair.second.getBalanceHtmlClass(),
         balanceSumSs.str(),
@@ -182,9 +186,11 @@ namespace Wallet::Html
     // Total Row
     const IndexHtmlRow totalRow{
       "TOTAL", // year
-      container.getRevenueStr(), // revenue
-      container.getExpenseStr(), // expense
-      container.getBalanceStr(), // balance
+      container.getRevenueStr(),
+      container.getRevenuePercentStr(),
+      container.getExpenseStr(),
+      container.getExpensePercentStr(),
+      container.getBalanceStr(),
       std::string{}, // balanceClass
       std::string{}, // balanceSum
       std::string{}  // balanceSumClass

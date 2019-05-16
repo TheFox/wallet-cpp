@@ -371,6 +371,14 @@ namespace Wallet
       } // Days
     } // Files
 
+    // Total Percentage
+    DLog(" -> MutableWallet::getEntries() -> calc total percentages: b=%.2f ba=%.2f\n",
+      container.balance, container.balanceAbs);
+    container.revenuePercent = std::abs(container.revenue) / container.balanceAbs * 100;
+    container.expensePercent = std::abs(container.expense) / container.balanceAbs * 100;
+    DLog(" -> MutableWallet::getEntries() -> total percentages: r=%.2f e=%.2f\n",
+      container.revenuePercent, container.expensePercent);
+
     // Category Percentage
     DLog(" -> MutableWallet::getEntries() -> calc category percentages: %.2f %.2f\n",
       container.balance, container.balanceAbs);

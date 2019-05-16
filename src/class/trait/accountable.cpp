@@ -3,6 +3,7 @@
 #include <iomanip> // setprecision
 #include <ios> // fixed
 
+#include "debug.hpp"
 #include "accountable.hpp"
 
 namespace Wallet::Trait
@@ -30,6 +31,22 @@ namespace Wallet::Trait
     return this->revenueStr;
   }
 
+  std::string Accountable::getRevenuePercentStr() const noexcept
+  {
+    if (this->revenuePercentCache) {
+      return this->revenuePercentStr;
+    }
+    this->revenuePercentCache = true;
+
+    std::ostringstream ss{};
+    if (this->revenuePercent > 0.0) {
+      ss << std::fixed << std::setprecision(2) << this->revenuePercent;
+    }
+    this->revenuePercentStr = ss.str();
+    //DLog(" -> Accountable::getRevenuePercentStr() -> '%s'\n", this->revenuePercentStr.c_str());
+    return this->revenuePercentStr;
+  }
+
   void Accountable::setExpense(Accountable::Number _expense) noexcept
   {
     this->expenseCache = false;
@@ -42,6 +59,7 @@ namespace Wallet::Trait
     if (this->expenseCache) {
       return this->expenseStr;
     }
+    this->expenseCache = true;
 
     std::ostringstream ss{};
     if (this->expense < 0.0) {
@@ -51,11 +69,36 @@ namespace Wallet::Trait
     return this->expenseStr;
   }
 
+  std::string Accountable::getExpensePercentStr() const noexcept
+  {
+    if (this->expensePercentCache) {
+      return this->expensePercentStr;
+    }
+    this->expensePercentCache = true;
+
+    //DLog(" -> Accountable::getExpensePercentStr() -> expensePercent: %f\n",
+    //  this->expensePercent);
+
+    std::ostringstream ss{};
+    if (this->expensePercent > 0.0) {
+      //DLog(" -> Accountable::getExpensePercentStr() -> expensePercent > 0.0\n");
+      ss << std::fixed << std::setprecision(2) << this->expensePercent;
+    }
+    //else DLog(" -> Accountable::getExpensePercentStr() -> expensePercent <= 0\n");
+
+    //DLog(" -> Accountable::getExpensePercentStr() -> expensePercent str: '%s'\n", ss.str().c_str());
+
+    this->expensePercentStr = ss.str();
+    //DLog(" -> Accountable::getExpensePercentStr() -> '%s'\n", this->expensePercentStr.c_str());
+    return this->expensePercentStr;
+  }
+
   std::string Accountable::getBalanceStr() const noexcept
   {
     if (this->balanceCache) {
       return this->balanceStr;
     }
+    this->balanceCache = true;
 
     std::ostringstream ss{};
     if (this->balance != 0.0) {
@@ -70,6 +113,7 @@ namespace Wallet::Trait
     if (this->balancePercentCache) {
       return this->balancePercentStr;
     }
+    this->balancePercentCache = true;
 
     std::ostringstream ss{};
     if (this->balancePercent != 0.0) {

@@ -229,7 +229,7 @@ namespace Wallet::Html
 
     // Year Gnuplot File
     const auto gnuplotFilePath = (this->tmpPath / (yearFileStr + ".gp")).string();
-    DLog(" -> gp: '%s'\n", gnuplotFilePath.c_str());
+    //DLog(" -> gp: '%s'\n", gnuplotFilePath.c_str());
     std::ofstream totalFh{gnuplotFilePath};
     totalFh << mstch::render(gnuplotTpl, gnuplotContext) << '\n';
     totalFh.close();

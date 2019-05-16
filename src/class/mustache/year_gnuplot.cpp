@@ -1,5 +1,5 @@
 
-#include "debug.hpp"
+//#include "debug.hpp"
 #include "year_gnuplot.hpp"
 
 namespace Wallet::Mustache
@@ -7,7 +7,7 @@ namespace Wallet::Mustache
   YearGnuplot::YearGnuplot(std::string _year, std::string _pngFilePath, std::string _datFilePath) :
     year(std::move(_year)), pngFilePath(std::move(_pngFilePath)), datFilePath(std::move(_datFilePath))
   {
-    DLog(" -> YearGnuplot::YearGnuplot()\n");
+    //DLog(" -> YearGnuplot::YearGnuplot()\n");
 
     this->register_methods(this, {
       {"year",          &YearGnuplot::getYear},

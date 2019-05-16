@@ -86,7 +86,10 @@
     {{#total}}
         <tr>
             <td>{{label}} %</td>
-            <td colspan="4">&nbsp;</td>
+            <td class="right">{{{revenue_percent}}}</td>
+            <td class="right red">{{{expense_percent}}}</td>
+            <td class="right">&nbsp;</td>
+            <td>&nbsp;</td>
             {{#has_categories}}
                 {{#categories}}
                     <td class="right {{{balance_class}}}">{{{balance_percent}}}</td>
