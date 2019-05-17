@@ -12,20 +12,24 @@ namespace Wallet::Mustache
   {
   public:
     // Constructor
-    MonthMustache(std::string, mstch::array, mstch::map, std::string, std::string, std::string, bool);
+    MonthMustache(std::string, mstch::array, mstch::map, std::string, std::string, std::string, bool, bool, bool);
 
   private:
     // Properties
     const std::string year{};
     const std::string month{};
     const std::string fileName{};
+    const bool showCategories{};
     const bool showEpics{};
+    const bool showComments{};
 
     // Functions
     mstch::node getYear() noexcept;
     mstch::node getMonth() noexcept;
     mstch::node getFileName() noexcept;
+    mstch::node getShowCategories() noexcept;
     mstch::node getShowEpics() noexcept;
+    mstch::node getShowComments() noexcept;
   };
 } // Wallet::Mustache Namespace
 

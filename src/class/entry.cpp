@@ -202,7 +202,7 @@ namespace Wallet
 
   bool Entry::hasDefaultEpic() const noexcept
   {
-    return this->epicHandle == "default";
+    return this->epicHandle == "default" || this->epicHandle.empty();
   }
 
   std::string Entry::getFileName() const noexcept

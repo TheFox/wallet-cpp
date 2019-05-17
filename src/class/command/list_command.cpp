@@ -47,7 +47,8 @@ namespace Wallet
       for (const auto& monthPair : yearPair.second.months)
       for (const auto& dayPair : monthPair.second.days)
       for (const auto& entry : dayPair.second.entries) {
-        ++count;
+        // Count
+        count++;
 
         // Print Entry
         std::cout

@@ -392,32 +392,32 @@ namespace Wallet
     } // Files
 
     // Total Percentage
-    DLog(" -> MutableWallet::getEntries() -> calc total percentages: b=%.2f ba=%.2f e=%.2f ea=%.2f\n",
-      container.balance, container.balanceAbs, container.expense, container.expenseAbs);
+    // DLog(" -> MutableWallet::getEntries() -> calc total percentages: b=%.2f ba=%.2f e=%.2f ea=%.2f\n",
+    //   container.balance, container.balanceAbs, container.expense, container.expenseAbs);
 
     //container.revenuePercent = std::abs(container.revenue) / container.balanceAbs * 100;
     container.revenuePercent = container.revenue / container.balanceAbs * 100;
     container.expensePercent = container.expenseAbs / container.balanceAbs * 100;
 
-    DLog(" -> MutableWallet::getEntries() -> total percentages: r=%.2f e=%.2f\n",
-      container.revenuePercent, container.expensePercent);
+    // DLog(" -> MutableWallet::getEntries() -> total percentages: r=%.2f e=%.2f\n",
+    //   container.revenuePercent, container.expensePercent);
 
     // Total Year Percentage
     for (auto& yearPair : container.years) {
       yearPair.second.revenuePercent = yearPair.second.revenue / yearPair.second.balanceAbs * 100;
       yearPair.second.expensePercent = yearPair.second.expenseAbs / yearPair.second.balanceAbs * 100;
-      
-      DLog(" -> MutableWallet::getEntries() -> calc year %d percentages: r=%.2f -> rp=%.2f ep=%.2f\n", yearPair.first, yearPair.second.revenue, yearPair.second.revenuePercent, yearPair.second.expensePercent);
+
+      // DLog(" -> MutableWallet::getEntries() -> calc year %d percentages: r=%.2f -> rp=%.2f ep=%.2f\n", yearPair.first, yearPair.second.revenue, yearPair.second.revenuePercent, yearPair.second.expensePercent);
 
       // Months
       for (auto& monthPair : yearPair.second.months) {
         monthPair.second.revenuePercent = monthPair.second.revenue / monthPair.second.balanceAbs * 100;
         monthPair.second.expensePercent = monthPair.second.expenseAbs / monthPair.second.balanceAbs * 100;
 
-        DLog(" -> MutableWallet::getEntries() -> calc month %d/%d percentages -> r=%.2f e=%.2f b=%.2f -> r=%.2f e=%.2f\n",
-          yearPair.first, monthPair.first,
-          monthPair.second.revenue, monthPair.second.expenseAbs, monthPair.second.balanceAbs,
-          monthPair.second.revenuePercent, monthPair.second.expensePercent);
+        // DLog(" -> MutableWallet::getEntries() -> calc month %d/%d percentages -> r=%.2f e=%.2f b=%.2f -> r=%.2f e=%.2f\n",
+        //   yearPair.first, monthPair.first,
+        //   monthPair.second.revenue, monthPair.second.expenseAbs, monthPair.second.balanceAbs,
+        //   monthPair.second.revenuePercent, monthPair.second.expensePercent);
       }
 
       // Category
@@ -436,25 +436,25 @@ namespace Wallet
     }
 
     // Category Percentage
-    DLog(" -> MutableWallet::getEntries() -> calc category percentages: %.2f %.2f\n",
-      container.balance, container.balanceAbs);
+    // DLog(" -> MutableWallet::getEntries() -> calc category percentages: %.2f %.2f\n",
+    //   container.balance, container.balanceAbs);
     for (auto& categoryPair : container.categories) {
       categoryPair.second.balancePercent = categoryPair.second.balanceAbs / container.balanceAbs * 100;
 
-      DLog(" -> MutableWallet::getEntries() -> categoryPair: '%s', %.2f, %.2f -> %.2f %%\n",
-        categoryPair.first.c_str(), categoryPair.second.balance, categoryPair.second.balanceAbs,
-        categoryPair.second.balancePercent);
+      // DLog(" -> MutableWallet::getEntries() -> categoryPair: '%s', %.2f, %.2f -> %.2f %%\n",
+      //   categoryPair.first.c_str(), categoryPair.second.balance, categoryPair.second.balanceAbs,
+      //   categoryPair.second.balancePercent);
     }
 
     // Epic Percentage
-    DLog(" -> MutableWallet::getEntries() -> calc epic percentages: %.2f %.2f\n",
-      container.balance, container.balanceAbs);
+    // DLog(" -> MutableWallet::getEntries() -> calc epic percentages: %.2f %.2f\n",
+    //   container.balance, container.balanceAbs);
     for (auto& epicPair : container.epics) {
       epicPair.second.balancePercent = epicPair.second.balanceAbs / container.balanceAbs * 100;
 
-      DLog(" -> MutableWallet::getEntries() -> epicPair: '%s', %.2f, %.2f -> %.2f %%\n",
-        epicPair.first.c_str(), epicPair.second.balance, epicPair.second.balanceAbs,
-        epicPair.second.balancePercent);
+      // DLog(" -> MutableWallet::getEntries() -> epicPair: '%s', %.2f, %.2f -> %.2f %%\n",
+      //   epicPair.first.c_str(), epicPair.second.balance, epicPair.second.balanceAbs,
+      //   epicPair.second.balancePercent);
     }
 
     return container;

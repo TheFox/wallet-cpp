@@ -77,8 +77,8 @@ namespace Wallet::Trait
     std::ostringstream ss{};
     ss << std::fixed << std::setprecision(2) << this->expensePercent;
     this->expensePercentStr = ss.str();
-    
-    DLog(" -> Accountable::getExpensePercentStr() -> '%s'\n", this->expensePercentStr.c_str());
+
+    //DLog(" -> Accountable::getExpensePercentStr() -> '%s'\n", this->expensePercentStr.c_str());
     return this->expensePercentStr;
   }
 
