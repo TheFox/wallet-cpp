@@ -51,17 +51,26 @@
     <tfoot>
     {{#total}}
         <tr>
-            <th colspan="2">&nbsp;</th>
+            <th colspan="2" rowspan="2">&nbsp;</th>
             <th class="left">{{label}}</th>
             <th class="right">{{revenue}}</th>
             <th class="right red">{{expense}}</th>
             <th class="right {{balance_class}}">{{balance}}</th>
             {{#show_epics}}
-                <th colspan="3">&nbsp;</th>
+                <th colspan="3" rowspan="2">&nbsp;</th>
             {{/show_epics}}
             {{^show_epics}}
-                <th colspan="2">&nbsp;</th>
+                <th colspan="2" rowspan="2">&nbsp;</th>
             {{/show_epics}}
+        </tr>
+    {{/total}}
+    {{#total}}
+        <tr>
+            {{! <th colspan="2">&nbsp;</th> }}
+            <th class="left">{{label}} %</th>
+            <th class="right">{{{revenue_percent}}}</th>
+            <th class="right red">{{{expense_percent}}}</th>
+            <th class="right {{balance_class}}">&nbsp;</th>
         </tr>
     {{/total}}
     </tfoot>

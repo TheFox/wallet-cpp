@@ -96,7 +96,9 @@ namespace Wallet::Html
     const mstch::map total{
       {"label",         std::string{"TOTAL"}},
       {"revenue",       this->container.getRevenueStr()},
+      {"revenue_percent", this->container.getRevenuePercentStr()},
       {"expense",       this->container.getExpenseStr()},
+      {"expense_percent", this->container.getExpensePercentStr()},
       {"balance",       this->container.getBalanceStr()},
       {"balance_class", this->container.getBalanceHtmlClass()},
     };

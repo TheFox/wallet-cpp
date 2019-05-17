@@ -20,6 +20,7 @@
 #include "entry.hpp"
 #include "container/entry_container.hpp"
 #include "html/html_generator.hpp"
+#include "class/trait/accountable.hpp"
 
 namespace Wallet
 {
@@ -289,12 +290,17 @@ namespace Wallet
           // DLog(" -> MutableWallet::getEntries() -> epic: '%s' (%s)\n",
           //   epic.handle.c_str(), epic.title.c_str());
 
+          // Entity Abs
+          const Trait::Accountable::Number expenseAbs = std::abs(entry.expense);
+          //const Trait::Accountable::Number balanceAbs = std::abs(entry.balance);
+
           // Total Total
           container.entryCount++;
           container.revenue += entry.revenue;
           container.expense += entry.expense;
+          container.expenseAbs += expenseAbs;
           container.balance += entry.balance;
-          container.balanceAbs += std::abs(entry.balance);
+          container.balanceAbs += entry.revenue + expenseAbs;
 
           // Total Category
           auto& ccategory = container.categories[entry.category];
@@ -304,8 +310,9 @@ namespace Wallet
           }
           ccategory.revenue += entry.revenue;
           ccategory.expense += entry.expense;
+          //ccategory.expenseAbs += expenseAbs;
           ccategory.balance += entry.balance;
-          ccategory.balanceAbs += std::abs(entry.balance);
+          ccategory.balanceAbs += entry.revenue + expenseAbs;
 
           // Total Epic
           auto& cepic = container.epics[epic.handle];
@@ -315,20 +322,25 @@ namespace Wallet
           }
           cepic.revenue += entry.revenue;
           cepic.expense += entry.expense;
+          //cepic.expenseAbs += expenseAbs;
           cepic.balance += entry.balance;
-          cepic.balanceAbs += std::abs(entry.balance);
+          cepic.balanceAbs += entry.revenue + expenseAbs;
 
           // Year
           yearMap.entryCount++;
           yearMap.revenue += entry.revenue;
           yearMap.expense += entry.expense;
+          yearMap.expenseAbs += expenseAbs;
           yearMap.balance += entry.balance;
+          yearMap.balanceAbs += entry.revenue + expenseAbs;
 
           // Year Category
           auto& ycategory = yearMap.categories[entry.category];
           ycategory.revenue += entry.revenue;
           ycategory.expense += entry.expense;
+          //ycategory.expenseAbs += expenseAbs;
           ycategory.balance += entry.balance;
+          ycategory.balanceAbs += entry.revenue + expenseAbs;
 
           // Year Epic
           auto& yepic = yearMap.epics[epic.handle];
@@ -338,19 +350,25 @@ namespace Wallet
           }
           yepic.revenue += entry.revenue;
           yepic.expense += entry.expense;
+          //yepic.expenseAbs += expenseAbs;
           yepic.balance += entry.balance;
+          yepic.balanceAbs += entry.revenue + expenseAbs;
 
           // Month
           monthMap.entryCount++;
           monthMap.revenue += entry.revenue;
           monthMap.expense += entry.expense;
+          monthMap.expenseAbs += expenseAbs;
           monthMap.balance += entry.balance;
+          monthMap.balanceAbs += entry.revenue + expenseAbs;
 
           // Month Category
           auto& mcategory = monthMap.categories[entry.category];
           mcategory.revenue += entry.revenue;
           mcategory.expense += entry.expense;
+          //mcategory.expenseAbs += expenseAbs;
           mcategory.balance += entry.balance;
+          mcategory.balanceAbs += entry.revenue + expenseAbs;
 
           // Month Epic
           auto& mepic = monthMap.epics[epic.handle];
@@ -360,7 +378,9 @@ namespace Wallet
           }
           mepic.revenue += entry.revenue;
           mepic.expense += entry.expense;
+          //mepic.expenseAbs += expenseAbs;
           mepic.balance += entry.balance;
+          mepic.balanceAbs += entry.revenue + expenseAbs;
 
           // Day
           dayMap.entryCount++;
@@ -372,12 +392,48 @@ namespace Wallet
     } // Files
 
     // Total Percentage
-    DLog(" -> MutableWallet::getEntries() -> calc total percentages: b=%.2f ba=%.2f\n",
-      container.balance, container.balanceAbs);
-    container.revenuePercent = std::abs(container.revenue) / container.balanceAbs * 100;
-    container.expensePercent = std::abs(container.expense) / container.balanceAbs * 100;
+    DLog(" -> MutableWallet::getEntries() -> calc total percentages: b=%.2f ba=%.2f e=%.2f ea=%.2f\n",
+      container.balance, container.balanceAbs, container.expense, container.expenseAbs);
+
+    //container.revenuePercent = std::abs(container.revenue) / container.balanceAbs * 100;
+    container.revenuePercent = container.revenue / container.balanceAbs * 100;
+    container.expensePercent = container.expenseAbs / container.balanceAbs * 100;
+
     DLog(" -> MutableWallet::getEntries() -> total percentages: r=%.2f e=%.2f\n",
       container.revenuePercent, container.expensePercent);
+
+    // Total Year Percentage
+    for (auto& yearPair : container.years) {
+      yearPair.second.revenuePercent = yearPair.second.revenue / yearPair.second.balanceAbs * 100;
+      yearPair.second.expensePercent = yearPair.second.expenseAbs / yearPair.second.balanceAbs * 100;
+      
+      DLog(" -> MutableWallet::getEntries() -> calc year %d percentages: r=%.2f -> rp=%.2f ep=%.2f\n", yearPair.first, yearPair.second.revenue, yearPair.second.revenuePercent, yearPair.second.expensePercent);
+
+      // Months
+      for (auto& monthPair : yearPair.second.months) {
+        monthPair.second.revenuePercent = monthPair.second.revenue / monthPair.second.balanceAbs * 100;
+        monthPair.second.expensePercent = monthPair.second.expenseAbs / monthPair.second.balanceAbs * 100;
+
+        DLog(" -> MutableWallet::getEntries() -> calc month %d/%d percentages -> r=%.2f e=%.2f b=%.2f -> r=%.2f e=%.2f\n",
+          yearPair.first, monthPair.first,
+          monthPair.second.revenue, monthPair.second.expenseAbs, monthPair.second.balanceAbs,
+          monthPair.second.revenuePercent, monthPair.second.expensePercent);
+      }
+
+      // Category
+      for (auto& categoryPair : yearPair.second.categories) {
+        categoryPair.second.balancePercent = categoryPair.second.balanceAbs / yearPair.second.balanceAbs * 100;
+
+        //DLog(" -> MutableWallet::getEntries() -> calc year %d, category '%s' percentages -> c=%.2f y=%.2f bp=%.2f\n", yearPair.first, categoryPair.first.c_str(), categoryPair.second.balanceAbs, yearPair.second.balanceAbs, categoryPair.second.balancePercent);
+      }
+
+      // Epic
+      for (auto& epicPair : yearPair.second.epics) {
+        epicPair.second.balancePercent = epicPair.second.balanceAbs / yearPair.second.balanceAbs * 100;
+
+        //DLog(" -> MutableWallet::getEntries() -> calc year %d, epic '%s' percentages -> e=%.2f y=%.2f bp=%.2f\n", yearPair.first, epicPair.first.c_str(), epicPair.second.balanceAbs, yearPair.second.balanceAbs, epicPair.second.balancePercent);
+      }
+    }
 
     // Category Percentage
     DLog(" -> MutableWallet::getEntries() -> calc category percentages: %.2f %.2f\n",

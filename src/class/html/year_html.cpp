@@ -146,6 +146,7 @@ namespace Wallet::Html
       return mstch::map{
         {"balance",       pair.second.getBalanceStr()},
         {"balance_class", pair.second.getBalanceHtmlClass()},
+        {"balance_percent", pair.second.getBalancePercentStr()},
       };
     });
 
@@ -156,7 +157,11 @@ namespace Wallet::Html
 
       return mstch::map{
         {"name",    pair.first},
+        //{"revenue_percent", pair.second.getRevenuePercentStr()},
+        //{"expense_percent", pair.second.getExpensePercentStr()},
         {"balance", pair.second.getBalanceStr()},
+        {"balance_class", pair.second.getBalanceHtmlClass()},
+        {"balance_percent", pair.second.getBalancePercentStr()},
       };
     });
 
@@ -167,9 +172,12 @@ namespace Wallet::Html
     const mstch::map total{
       {"label",            std::string{"TOTAL"}},
       {"revenue",          this->container.getRevenueStr()},
+      {"revenue_percent",  this->container.getRevenuePercentStr()},
       {"expense",          this->container.getExpenseStr()},
+      {"expense_percent",  this->container.getExpensePercentStr()},
       {"balance",          this->container.getBalanceStr()},
       {"balance_class",    this->container.getBalanceHtmlClass()},
+      //{"balance_percent", std::string{"getBalancePercentStr"}},
       {"total_categories", std::move(totalCategories)},
       {"total_epics",      std::move(totalEpics)},
     };

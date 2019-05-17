@@ -77,6 +77,24 @@
             {{/has_epics}}
         </tr>
     {{/total}}
+    {{#total}}
+        <tr>
+            <td class="left">{{label}} %</td>
+            <td class="right">{{{revenue_percent}}}</td>
+            <td class="right red">{{{expense_percent}}}</td>
+            <td class="right">&nbsp;</td>
+
+            {{#total_categories}}
+                <td class="right {{{balance_class}}}">{{{balance_percent}}}</td>
+            {{/total_categories}}
+
+            {{#has_epics}}
+                {{#total_epics}}
+                    <th class="right {{{balance_class}}}">{{{balance_percent}}}</th>
+                {{/total_epics}}
+            {{/has_epics}}
+        </tr>
+    {{/total}}
     </tfoot>
 </table>
 

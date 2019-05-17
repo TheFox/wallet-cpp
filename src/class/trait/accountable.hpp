@@ -31,6 +31,7 @@ namespace Wallet::Trait
     Number revenue{};
     std::float_t revenuePercent{};
     Number expense{};
+    Number expenseAbs{};
     std::float_t expensePercent{};
     Number balance{};
     Number balanceAbs{};

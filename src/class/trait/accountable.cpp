@@ -39,9 +39,7 @@ namespace Wallet::Trait
     this->revenuePercentCache = true;
 
     std::ostringstream ss{};
-    if (this->revenuePercent > 0.0) {
-      ss << std::fixed << std::setprecision(2) << this->revenuePercent;
-    }
+    ss << std::fixed << std::setprecision(2) << this->revenuePercent;
     this->revenuePercentStr = ss.str();
     //DLog(" -> Accountable::getRevenuePercentStr() -> '%s'\n", this->revenuePercentStr.c_str());
     return this->revenuePercentStr;
@@ -76,20 +74,11 @@ namespace Wallet::Trait
     }
     this->expensePercentCache = true;
 
-    //DLog(" -> Accountable::getExpensePercentStr() -> expensePercent: %f\n",
-    //  this->expensePercent);
-
     std::ostringstream ss{};
-    if (this->expensePercent > 0.0) {
-      //DLog(" -> Accountable::getExpensePercentStr() -> expensePercent > 0.0\n");
-      ss << std::fixed << std::setprecision(2) << this->expensePercent;
-    }
-    //else DLog(" -> Accountable::getExpensePercentStr() -> expensePercent <= 0\n");
-
-    //DLog(" -> Accountable::getExpensePercentStr() -> expensePercent str: '%s'\n", ss.str().c_str());
-
+    ss << std::fixed << std::setprecision(2) << this->expensePercent;
     this->expensePercentStr = ss.str();
-    //DLog(" -> Accountable::getExpensePercentStr() -> '%s'\n", this->expensePercentStr.c_str());
+    
+    DLog(" -> Accountable::getExpensePercentStr() -> '%s'\n", this->expensePercentStr.c_str());
     return this->expensePercentStr;
   }
 
@@ -116,9 +105,9 @@ namespace Wallet::Trait
     this->balancePercentCache = true;
 
     std::ostringstream ss{};
-    if (this->balancePercent != 0.0) {
+    //if (this->balancePercent != 0.0) {
       ss << std::fixed << std::setprecision(2) << this->balancePercent;
-    }
+    //}
     this->balancePercentStr = ss.str();
     return this->balancePercentStr;
   }
