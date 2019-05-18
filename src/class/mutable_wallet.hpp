@@ -38,8 +38,8 @@ namespace Wallet
     bool epicExists(const std::string&) noexcept;
     bool epicExists(const Epic&) noexcept;
     Container::EntryContainer getEntries(const Components::Date&,
-      const std::string& = "",
-      const std::string& = "") const;
+                                         const std::string& = "",
+                                         const std::string& = "") const;
 
   private:
     // Variables

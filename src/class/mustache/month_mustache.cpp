@@ -5,19 +5,21 @@
 namespace Wallet::Mustache
 {
   MonthMustache::MonthMustache(std::string _rel, mstch::array _entries, mstch::map _total,
-                               std::string _year, std::string _month, std::string _fileName, bool _showCategories, bool _showEpics, bool _showComments) :
-    BaseMustache{std::move(_rel), std::move(_entries), std::move(_total)},
-    year(std::move(_year)), month(std::move(_month)), fileName(std::move(_fileName)), showCategories(_showCategories), showEpics(_showEpics), showComments(_showComments)
+                               std::string _year, std::string _month, std::string _fileName, bool _showCategories,
+                               bool _showEpics, bool _showComments) :
+      BaseMustache{std::move(_rel), std::move(_entries), std::move(_total)},
+      year(std::move(_year)), month(std::move(_month)), fileName(std::move(_fileName)), showCategories(
+      _showCategories), showEpics(_showEpics), showComments(_showComments)
   {
     //DLog(" -> MonthMustache::MonthMustache()\n");
 
     this->register_methods(this, {
-      {"year",            &MonthMustache::getYear},
-      {"month",           &MonthMustache::getMonth},
-      {"file_name",       &MonthMustache::getFileName},
-      {"show_categories", &MonthMustache::getShowCategories},
-      {"show_epics",      &MonthMustache::getShowEpics},
-      {"show_comments",   &MonthMustache::getShowComments},
+        {"year",            &MonthMustache::getYear},
+        {"month",           &MonthMustache::getMonth},
+        {"file_name",       &MonthMustache::getFileName},
+        {"show_categories", &MonthMustache::getShowCategories},
+        {"show_epics",      &MonthMustache::getShowEpics},
+        {"show_comments",   &MonthMustache::getShowComments},
     });
   }
 

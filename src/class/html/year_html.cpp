@@ -19,9 +19,9 @@
 namespace Wallet::Html
 {
   YearHtml::YearHtml(fs::path _basePath, fs::path _tmpPath, Container::YearEntryContainer _container) :
-    BaseHtml{std::move(_basePath), std::move(_tmpPath), fs::path{"index.html"},
-      "Year " + std::to_string(_container.year)},
-    container(std::move(_container))
+      BaseHtml{std::move(_basePath), std::move(_tmpPath), fs::path{"index.html"},
+          "Year " + std::to_string(_container.year)},
+      container(std::move(_container))
   {
     //DLog(" -> YearHtml::YearHtml('%s', '%s')\n", this->basePath.c_str(), this->getFileName().c_str());
   }
@@ -51,7 +51,7 @@ namespace Wallet::Html
 
     // Epic Iterators
     const auto _epics_begin = this->container.epics.cbegin(); // Epic Iterator Begin
-    const auto _epics_end   = this->container.epics.cend();   // Epic Iterator End
+    const auto _epics_end = this->container.epics.cend();   // Epic Iterator End
 
     // Epics
     Container::Epics epics{};
@@ -75,26 +75,27 @@ namespace Wallet::Html
       // Month Categories
       // Match common categories to month categories.
       mstch::array monthCategories{};
-      std::transform(_categories_begin, _categories_end, std::back_inserter(monthCategories), [&monthPair](const auto& categoryPair) {
-        std::string balance{"&nbsp;"};
-        std::string balanceClass{};
+      std::transform(_categories_begin, _categories_end, std::back_inserter(monthCategories),
+          [&monthPair](const auto& categoryPair) {
+            std::string balance{"&nbsp;"};
+            std::string balanceClass{};
 
-        try {
-          // Search by key (Name).
-          const auto& category = monthPair.second.categories.at(categoryPair.first);
-          //DLog(" -> category found: '%s'\n", categoryPair.first.c_str());
+            try {
+              // Search by key (Name).
+              const auto& category = monthPair.second.categories.at(categoryPair.first);
+              //DLog(" -> category found: '%s'\n", categoryPair.first.c_str());
 
-          balance = category.getBalanceStr();
-          balanceClass = category.getBalanceHtmlClass();
-        } catch (const std::out_of_range& exception) {
-          //DLog(" -> nothing found for category '%s'\n", categoryPair.first.c_str());
-        }
+              balance = category.getBalanceStr();
+              balanceClass = category.getBalanceHtmlClass();
+            } catch (const std::out_of_range& exception) {
+              //DLog(" -> nothing found for category '%s'\n", categoryPair.first.c_str());
+            }
 
-        return mstch::map{
-          {"balance",       std::move(balance)},
-          {"balance_class", std::move(balanceClass)},
-        };
-      });
+            return mstch::map{
+                {"balance",       std::move(balance)},
+                {"balance_class", std::move(balanceClass)},
+            };
+          });
 
       // Month Epics
       // Match common epics to month epics.
@@ -118,22 +119,22 @@ namespace Wallet::Html
         }
 
         return mstch::map{
-          //{"name",    pair.first},
-          {"balance", std::move(balance)},
-          {"balance_class", std::move(balanceClass)},
+            //{"name",    pair.first},
+            {"balance",       std::move(balance)},
+            {"balance_class", std::move(balanceClass)},
         };
       });
 
       // Month Map
       mstch::map monthMap{
-        {"file_name",        monthHtml.getFileName()},
-        {"month_name",       monthHtml.name},
-        {"revenue",          monthPair.second.getRevenueStr()},
-        {"expense",          monthPair.second.getExpenseStr()},
-        {"balance",          monthPair.second.getBalanceStr()},
-        {"balance_class",    monthPair.second.getBalanceHtmlClass()},
-        {"month_categories", std::move(monthCategories)},
-        {"month_epics",      std::move(monthEpics)},
+          {"file_name",        monthHtml.getFileName()},
+          {"month_name",       monthHtml.name},
+          {"revenue",          monthPair.second.getRevenueStr()},
+          {"expense",          monthPair.second.getExpenseStr()},
+          {"balance",          monthPair.second.getBalanceStr()},
+          {"balance_class",    monthPair.second.getBalanceHtmlClass()},
+          {"month_categories", std::move(monthCategories)},
+          {"month_epics",      std::move(monthEpics)},
       };
       entries.push_back(monthMap);
     } // this->container.months
@@ -144,9 +145,9 @@ namespace Wallet::Html
       //DLog(" -> category: '%s'\n", pair.first.c_str());
 
       return mstch::map{
-        {"balance",       pair.second.getBalanceStr()},
-        {"balance_class", pair.second.getBalanceHtmlClass()},
-        {"balance_percent", pair.second.getBalancePercentStr()},
+          {"balance",         pair.second.getBalanceStr()},
+          {"balance_class",   pair.second.getBalanceHtmlClass()},
+          {"balance_percent", pair.second.getBalancePercentStr()},
       };
     });
 
@@ -156,12 +157,12 @@ namespace Wallet::Html
       //DLog(" -> transform total epic: '%s'\n", pair.first.c_str());
 
       return mstch::map{
-        {"name",    pair.first},
-        //{"revenue_percent", pair.second.getRevenuePercentStr()},
-        //{"expense_percent", pair.second.getExpensePercentStr()},
-        {"balance", pair.second.getBalanceStr()},
-        {"balance_class", pair.second.getBalanceHtmlClass()},
-        {"balance_percent", pair.second.getBalancePercentStr()},
+          {"name",            pair.first},
+          //{"revenue_percent", pair.second.getRevenuePercentStr()},
+          //{"expense_percent", pair.second.getExpensePercentStr()},
+          {"balance",         pair.second.getBalanceStr()},
+          {"balance_class",   pair.second.getBalanceHtmlClass()},
+          {"balance_percent", pair.second.getBalancePercentStr()},
       };
     });
 
@@ -170,20 +171,21 @@ namespace Wallet::Html
 
     // Total Map
     const mstch::map total{
-      {"label",            std::string{"TOTAL"}},
-      {"revenue",          this->container.getRevenueStr()},
-      {"revenue_percent",  this->container.getRevenuePercentStr()},
-      {"expense",          this->container.getExpenseStr()},
-      {"expense_percent",  this->container.getExpensePercentStr()},
-      {"balance",          this->container.getBalanceStr()},
-      {"balance_class",    this->container.getBalanceHtmlClass()},
-      //{"balance_percent", std::string{"getBalancePercentStr"}},
-      {"total_categories", std::move(totalCategories)},
-      {"total_epics",      std::move(totalEpics)},
+        {"label",            std::string{"TOTAL"}},
+        {"revenue",          this->container.getRevenueStr()},
+        {"revenue_percent",  this->container.getRevenuePercentStr()},
+        {"expense",          this->container.getExpenseStr()},
+        {"expense_percent",  this->container.getExpensePercentStr()},
+        {"balance",          this->container.getBalanceStr()},
+        {"balance_class",    this->container.getBalanceHtmlClass()},
+        //{"balance_percent", std::string{"getBalancePercentStr"}},
+        {"total_categories", std::move(totalCategories)},
+        {"total_epics",      std::move(totalEpics)},
     };
 
     const auto tpl = Components::readFileIntoString(WALLETCPP_YEAR_VIEW_PATH);
-    const auto context = std::make_shared<Mustache::YearMustache>("../..", entries, total, yearStr, categoryNames, epics, yearPngFileStr);
+    const auto context = std::make_shared<Mustache::YearMustache>("../..", entries, total, yearStr, categoryNames,
+        epics, yearPngFileStr);
 
     // Year HTML File Output
     std::ofstream indexFh{this->getFullPath()};

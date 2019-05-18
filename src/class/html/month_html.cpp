@@ -29,9 +29,10 @@ namespace calendar = boost::gregorian;
 namespace Wallet::Html
 {
   MonthHtml::MonthHtml(fs::path _basePath, Container::MonthPair _map, Container::Epics _epics) :
-    BaseHtml{std::move(_basePath), fs::path{}, fs::path{getMonthFile(_map.first)},
-      getMonthName(_map.first) + " " + std::to_string(_map.second.year)}, // BaseHtml
-    name(getMonthName(_map.first)), container(std::move(_map.second)), year(std::to_string(_map.second.year)), epics(std::move(_epics))
+      BaseHtml{std::move(_basePath), fs::path{}, fs::path{getMonthFile(_map.first)},
+          getMonthName(_map.first) + " " + std::to_string(_map.second.year)}, // BaseHtml
+      name(getMonthName(_map.first)), container(std::move(_map.second)), year(std::to_string(_map.second.year)), epics(
+      std::move(_epics))
   {
     //DLog(" -> MonthHtml::MonthHtml(bp'%s') -> p'%s' n'%s'\n", this->basePath.c_str(),
     //  this->getFileName().c_str(), this->name.c_str());
@@ -69,42 +70,46 @@ namespace Wallet::Html
       const auto _end = dayPair.second.entries.cend();
 
       // Add Day entries to month entry list.
-      std::transform(_begin, _end, std::back_inserter(entries), [&entryCount, &showCategories, &showEpics, &showComments, &_epics](const auto& entry) {
-        //DLog(" -> MonthHtml::generate() -> day pair -> transform entry (%c) '%s'\n", showEpics ? 'Y' : 'N', entry.epicHandle.c_str());
+      std::transform(_begin, _end, std::back_inserter(entries),
+          [&entryCount, &showCategories, &showEpics, &showComments, &_epics](const auto& entry) {
+            //DLog(" -> MonthHtml::generate() -> day pair -> transform entry (%c) '%s'\n", showEpics ? 'Y' : 'N', entry.epicHandle.c_str());
 
-        // Count
-        entryCount++;
+            // Count
+            entryCount++;
 
-        // Show Categories Column
-        if (!showCategories && !entry.hasDefaultCategory())
-          showCategories = true;
+            // Show Categories Column
+            if (!showCategories && !entry.hasDefaultCategory()) {
+              showCategories = true;
+            }
 
-        // Show Epics Column
-        if (!showEpics && !entry.hasDefaultEpic())
-          showEpics = true;
+            // Show Epics Column
+            if (!showEpics && !entry.hasDefaultEpic()) {
+              showEpics = true;
+            }
 
-        if (!showComments && !entry.comment.empty())
-          showComments = true;
+            if (!showComments && !entry.comment.empty()) {
+              showComments = true;
+            }
 
-        //const auto& epic = this->epics[entry.handle];
-        const auto& epic = _epics[entry.epicHandle];
-        //DLog(" -> MonthHtml::generate() -> epic '%s'\n", epic.handle.c_str());
+            //const auto& epic = this->epics[entry.handle];
+            const auto& epic = _epics[entry.epicHandle];
+            //DLog(" -> MonthHtml::generate() -> epic '%s'\n", epic.handle.c_str());
 
-        return mstch::map{
-          {"no",            std::to_string(entryCount)},
-          {"date",          entry.getDateStr()},
-          {"title",         entry.title},
-          {"revenue",       entry.getRevenueStr()},
-          {"expense",       entry.getExpenseStr()},
-          {"balance",       entry.getBalanceStr()},
-          {"balance_class", entry.getBalanceHtmlClass()},
-          {"category",      entry.getCategoryHtml()},
-          {"epic_handle",   entry.getEpicHandleHtml()}, // TODO: sub map with all epic_*?
-          {"epic_title",    epic.title},
-          {"epic_bg_color", epic.bgColor},
-          {"comment",       entry.comment},
-        };
-      }); // Transform Entries
+            return mstch::map{
+                {"no",            std::to_string(entryCount)},
+                {"date",          entry.getDateStr()},
+                {"title",         entry.title},
+                {"revenue",       entry.getRevenueStr()},
+                {"expense",       entry.getExpenseStr()},
+                {"balance",       entry.getBalanceStr()},
+                {"balance_class", entry.getBalanceHtmlClass()},
+                {"category",      entry.getCategoryHtml()},
+                {"epic_handle",   entry.getEpicHandleHtml()}, // TODO: sub map with all epic_*?
+                {"epic_title",    epic.title},
+                {"epic_bg_color", epic.bgColor},
+                {"comment",       entry.comment},
+            };
+          }); // Transform Entries
     } // this->container.days
 
     // Columns
@@ -113,19 +118,20 @@ namespace Wallet::Html
     DLog(" -> MonthHtml::generate() -> columns: %d -> '%s'\n", columns, columnsStr.c_str());
 
     const mstch::map total{
-      {"label",           std::string{"TOTAL"}},
-      {"revenue",         this->container.getRevenueStr()},
-      {"revenue_percent", this->container.getRevenuePercentStr()},
-      {"expense",         this->container.getExpenseStr()},
-      {"expense_percent", this->container.getExpensePercentStr()},
-      {"balance",         this->container.getBalanceStr()},
-      {"balance_class",   this->container.getBalanceHtmlClass()},
-      {"has_columns",     columns > 0},
-      {"columns",         columnsStr},
+        {"label",           std::string{"TOTAL"}},
+        {"revenue",         this->container.getRevenueStr()},
+        {"revenue_percent", this->container.getRevenuePercentStr()},
+        {"expense",         this->container.getExpenseStr()},
+        {"expense_percent", this->container.getExpensePercentStr()},
+        {"balance",         this->container.getBalanceStr()},
+        {"balance_class",   this->container.getBalanceHtmlClass()},
+        {"has_columns",     columns > 0},
+        {"columns",         columnsStr},
     };
 
     const auto tpl = Components::readFileIntoString(WALLETCPP_MONTH_VIEW_PATH);
-    const auto context = std::make_shared<Mustache::MonthMustache>("../..", entries, total, yearStr, this->name, this->container.fileName, showCategories, showEpics, showComments);
+    const auto context = std::make_shared<Mustache::MonthMustache>("../..", entries, total, yearStr, this->name,
+        this->container.fileName, showCategories, showEpics, showComments);
 
     // Month HTML File Output
     std::ofstream indexFh{this->getFullPath()};
