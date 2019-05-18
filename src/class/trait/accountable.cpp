@@ -105,9 +105,9 @@ namespace Wallet::Trait
     this->balancePercentCache = true;
 
     std::ostringstream ss{};
-    //if (this->balancePercent != 0.0) {
+    if (this->balancePercent != 0.0) {
       ss << std::fixed << std::setprecision(2) << this->balancePercent;
-    //}
+    }
     this->balancePercentStr = ss.str();
     return this->balancePercentStr;
   }
