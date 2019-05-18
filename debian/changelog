@@ -1,3 +1,9 @@
+wallet-cpp (0.9.0) unstable; urgency=medium
+
+  * Epics
+
+ -- Christian Mayer <christian@fox21.at>  Sat, 18 May 2019 20:45:34 +0200
+
 wallet-cpp (0.8.4) unstable; urgency=medium
 
   * Determine correct version for Homebrew build.

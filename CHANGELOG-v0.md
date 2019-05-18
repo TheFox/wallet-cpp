@@ -1,6 +1,8 @@
 # Release Notes for WalletCpp v0.x
 
-## Unreleased (v0.9)
+## Unreleased (v0.x)
+
+## v0.9.0
 
 - New line at the end of a YAML file.
 - Epics
