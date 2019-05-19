@@ -43,6 +43,11 @@ namespace Wallet
     // Conversion
     template<typename T>
     T as() const noexcept;
+
+    // Functions
+    bool isDefaultEpic() const noexcept;
+    bool hasDefaultTitle() const noexcept;
+    std::string getTitleHtmlStr() const noexcept;
   };
 } // Wallet Namespace
 

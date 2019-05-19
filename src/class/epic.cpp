@@ -109,4 +109,23 @@ namespace Wallet
 
     return node;
   }
+
+  bool Epic::isDefaultEpic() const noexcept
+  {
+    return this->handle == "default";
+  }
+
+  bool Epic::hasDefaultTitle() const noexcept
+  {
+    return this->title == "Default";
+  }
+
+  std::string Epic::getTitleHtmlStr() const noexcept
+  {
+    if (this->isDefaultEpic() && this->hasDefaultTitle()) {
+      return "&nbsp;";
+    }
+
+    return this->title;
+  }
 } // Wallet Namespace
