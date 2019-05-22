@@ -4,12 +4,18 @@
 
 #include <string>
 #include <map>
+#include <memory> // shared_ptr
 
 #include "class/epic.hpp"
 #include "class/trait/accountable.hpp"
 
 namespace Wallet::Container
 {
+  // Types
+  using EpicArray = std::vector<Epic>;
+  using Epics = std::map<std::string, Epic>;
+  using EpicPtr = std::shared_ptr<Epic>;
+
   struct EpicContainer final : public Wallet::Trait::Accountable
   {
     // Properties
@@ -26,9 +32,7 @@ namespace Wallet::Container
     bool operator()(const std::string&, const std::string&) const;
   };
 
-  using EpicArray = std::vector<Epic>;
   using EpicMap = std::map<std::string, EpicContainer, EpicComparator>;
-  using Epics = std::map<std::string, Epic>;
   struct BaseEpicContainer
   {
     BaseEpicContainer();

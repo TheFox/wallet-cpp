@@ -12,6 +12,7 @@
 #include "entry.hpp"
 #include "epic.hpp"
 #include "container/entry_container.hpp"
+#include "container/epic_container.hpp"
 
 #define WALLET_MONTH_FILE_VERSION 2
 
@@ -34,7 +35,8 @@ namespace Wallet
     void addEpic(const Epic&) noexcept;
     void removeEpic(const std::string&) noexcept;
     void updateEpic(const Epic&) noexcept;
-    Epic getEpicByHandle(std::string) const;
+    Epic getEpicByHandle1(std::string) const;
+    Container::EpicPtr getEpicByHandle2(std::string) const;
     bool epicExists(const std::string&) noexcept;
     bool epicExists(const Epic&) noexcept;
     Container::EntryContainer getEntries(const Components::Date&,

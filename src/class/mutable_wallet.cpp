@@ -280,8 +280,10 @@ namespace Wallet
 
           // Default Epic
           Epic epic{};
+          Container::EpicPtr epicPtr{};
           try {
-            epic = this->getEpicByHandle(entry.epicHandle);
+            //epic = this->getEpicByHandle1(entry.epicHandle);
+            epicPtr = this->getEpicByHandle2(entry.epicHandle);
           } catch (const std::string& e) {
             // DLog(" -> MutableWallet::getEntries() -> cannot find epic by handle: '%s'\n",
             //   entry.epicHandle.c_str());
@@ -317,7 +319,7 @@ namespace Wallet
           // Total Epic
           auto& cepic = container.epics[epic.handle];
           if (cepic.isDefaultEpic) {
-            cepic.epic = epic;
+            cepic.epic = epic; // TODO
             cepic.isDefaultEpic = false;
           }
           cepic.revenue += entry.revenue;
@@ -345,7 +347,7 @@ namespace Wallet
           // Year Epic
           auto& yepic = yearMap.epics[epic.handle];
           if (yepic.isDefaultEpic) {
-            yepic.epic = epic;
+            yepic.epic = epic; // TODO
             yepic.isDefaultEpic = false;
           }
           yepic.revenue += entry.revenue;
@@ -373,7 +375,7 @@ namespace Wallet
           // Month Epic
           auto& mepic = monthMap.epics[epic.handle];
           if (mepic.isDefaultEpic) {
-            mepic.epic = epic;
+            mepic.epic = epic; // TODO
             mepic.isDefaultEpic = false;
           }
           mepic.revenue += entry.revenue;
@@ -560,7 +562,7 @@ namespace Wallet
     }
   }
 
-  Epic MutableWallet::getEpicByHandle(std::string handle) const
+  Epic MutableWallet::getEpicByHandle1(std::string handle) const
   {
     //DLog(" -> MutableWallet::getEpicByHandle() -> epic handle '%s'\n", handle.c_str());
     if (handle.empty()) {
@@ -583,6 +585,31 @@ namespace Wallet
 
     Epic epic{*it};
     return epic;
+  }
+
+  std::shared_ptr<Epic> MutableWallet::getEpicByHandle2(std::string handle) const
+  {
+    //DLog(" -> MutableWallet::getEpicByHandle() -> epic handle '%s'\n", handle.c_str());
+    if (handle.empty()) {
+      handle = "default";
+    }
+    //DLog(" -> MutableWallet::getEpicByHandle() -> epic handle '%s'\n", handle.c_str());
+
+    this->loadEpics();
+
+    const auto _begin = this->epics["epics"].begin();
+    const auto _end = this->epics["epics"].end();
+
+    const auto it = std::find_if(_begin, _end, [&handle](const auto& item) {
+      return item["handle"].template as<std::string>() == handle;
+    });
+
+    if (it == _end) {
+      throw std::string{"No Epic found: "} + handle;
+    }
+
+    const auto epicPtr = std::make_shared<Epic>(*it);
+    return epicPtr;
   }
 
   /**
