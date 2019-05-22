@@ -139,7 +139,7 @@ namespace Wallet::Html
     indexFh.close();
   }
 
-  std::string MonthHtml::getMonthFile(const Container::ContainerMonth _month) noexcept
+  std::string MonthHtml::getMonthFile(const Container::Month _month) noexcept
   {
     std::ostringstream ss{};
     ss << "month_";
@@ -148,7 +148,7 @@ namespace Wallet::Html
     return ss.str();
   }
 
-  std::string MonthHtml::getMonthName(const Container::ContainerMonth _month) noexcept
+  std::string MonthHtml::getMonthName(const Container::Month _month) noexcept
   {
     calendar::greg_month month{_month};
     return month.as_long_string();

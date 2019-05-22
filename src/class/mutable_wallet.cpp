@@ -205,9 +205,9 @@ namespace Wallet
       // Iterate days.
       for (const auto& dayNode : yaml["days"]) {
         const auto dayStr = dayNode.first.as<std::string>();
-        const auto year = static_cast<Container::ContainerYear>(std::stoi(dayStr.substr(0, 4)));
-        const auto month = static_cast<Container::ContainerMonth>(std::stoi(dayStr.substr(5, 2)));
-        const auto day = static_cast<Container::ContainerDay>(std::stoi(dayStr.substr(8)));
+        const auto year = static_cast<Container::Year>(std::stoi(dayStr.substr(0, 4)));
+        const auto month = static_cast<Container::Month>(std::stoi(dayStr.substr(5, 2)));
+        const auto day = static_cast<Container::Day>(std::stoi(dayStr.substr(8)));
         const auto node = dayNode.second;
 
         // Filter Day

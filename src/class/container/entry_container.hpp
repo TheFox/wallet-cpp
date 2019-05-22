@@ -18,9 +18,9 @@ namespace Wallet::Container
   // Types
   using EntryArray = std::vector<Entry>;
 
-  using ContainerDay = std::uint8_t;
-  using ContainerMonth = std::uint8_t;
-  using ContainerYear = std::uint16_t;
+  using Day = std::uint8_t;
+  using Month = std::uint8_t;
+  using Year = std::uint16_t;
 
   struct CategoryContainer final : public Wallet::Trait::Accountable
   {
@@ -52,36 +52,34 @@ namespace Wallet::Container
     // Properties
     std::size_t dayCount{};
     std::size_t entryCount{};
-    //std::size_t categoryCount{};
-    //std::size_t epicCount{};
   };
 
   struct DayEntryContainer final : public BaseEntryContainer
   {
-    ContainerDay day{};
+    Day day{};
     EntryArray entries{};
   };
 
-  using DayMap = std::map<ContainerDay, DayEntryContainer>;
+  using DayMap = std::map<Day, DayEntryContainer>;
   struct MonthEntryContainer final : public BaseEntryContainer, public BaseCategoryContainer, public BaseEpicContainer
   {
     // Properties
-    ContainerYear year{};
+    Year year{};
     DayMap days{};
     std::string fileName{};
     std::string yearMonth{};
   };
 
-  using MonthMap = std::map<ContainerMonth, MonthEntryContainer>;
-  using MonthPair = std::pair<ContainerMonth, MonthEntryContainer>;
+  using MonthMap = std::map<Month, MonthEntryContainer>;
+  using MonthPair = std::pair<Month, MonthEntryContainer>;
   struct YearEntryContainer final : public BaseEntryContainer, public BaseCategoryContainer, public BaseEpicContainer
   {
     // Properties
-    ContainerYear year{};
+    Year year{};
     MonthMap months{};
   };
 
-  using YearMap = std::map<ContainerYear, YearEntryContainer>;
+  using YearMap = std::map<Year, YearEntryContainer>;
   struct EntryContainer final : public BaseEntryContainer, public BaseCategoryContainer, public BaseEpicContainer
   {
     YearMap years{};

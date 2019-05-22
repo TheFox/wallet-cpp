@@ -25,8 +25,8 @@ namespace Wallet::Html
     const std::string year{};
     const Container::Epics epics{};
 
-    static std::string getMonthFile(Container::ContainerMonth) noexcept;
-    static std::string getMonthName(Container::ContainerMonth) noexcept;
+    static std::string getMonthFile(Container::Month) noexcept;
+    static std::string getMonthName(Container::Month) noexcept;
   };
 } // Wallet::Html Namespace
 
