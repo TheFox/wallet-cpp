@@ -13,7 +13,7 @@ namespace Wallet::Container
 {
   // Types
   using EpicArray = std::vector<Epic>;
-  using Epics = std::map<std::string, Epic>;
+  using UnsortedEpics = std::map<std::string, Epic>;
   using EpicPtr = std::shared_ptr<Epic>;
 
   struct EpicContainer final : public Wallet::Trait::Accountable
@@ -32,13 +32,13 @@ namespace Wallet::Container
     bool operator()(const std::string&, const std::string&) const;
   };
 
-  using EpicMap = std::map<std::string, EpicContainer, EpicComparator>;
+  using SortedEpics = std::map<std::string, EpicContainer, EpicComparator>;
   struct BaseEpicContainer
   {
     BaseEpicContainer();
 
     // Properties
-    EpicMap epics{};
+    SortedEpics epics{};
   };
 } // Wallet::Container Namespace
 

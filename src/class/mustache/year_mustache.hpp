@@ -15,13 +15,13 @@ namespace Wallet::Mustache
   {
   public:
     // Constructor
-    YearMustache(std::string, mstch::array, mstch::map, std::string, Container::CategoryArray, Container::Epics, std::string);
+    YearMustache(std::string, mstch::array, mstch::map, std::string, Container::CategoryArray, Container::UnsortedEpics, std::string);
 
   private:
     // Properties
     const std::string year{};
     const Container::CategoryArray categoryNames{};
-    const Container::Epics epics{};
+    const Container::UnsortedEpics epics{};
     const std::string pngFileName{};
 
     // Functions

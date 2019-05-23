@@ -54,7 +54,7 @@ namespace Wallet::Html
     const auto _epics_end = this->container.epics.cend();   // Epic Iterator End
 
     // Epics
-    Container::Epics epics{};
+    Container::UnsortedEpics epics{};
 
     // Transform Epics Node to Epics Map (Epics type).
     for (const auto& nodePair : this->container.epics) {

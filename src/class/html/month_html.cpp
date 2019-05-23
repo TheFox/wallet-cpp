@@ -28,7 +28,7 @@ namespace calendar = boost::gregorian;
 
 namespace Wallet::Html
 {
-  MonthHtml::MonthHtml(fs::path _basePath, Container::MonthPair _map, Container::Epics _epics) :
+  MonthHtml::MonthHtml(fs::path _basePath, Container::MonthPair _map, Container::UnsortedEpics _epics) :
       BaseHtml{std::move(_basePath), fs::path{}, fs::path{getMonthFile(_map.first)},
           getMonthName(_map.first) + " " + std::to_string(_map.second.year)}, // BaseHtml
       name(getMonthName(_map.first)), container(std::move(_map.second)), year(std::to_string(_map.second.year)), epics(
@@ -59,7 +59,7 @@ namespace Wallet::Html
     bool showEpics = false;
     bool showComments = false;
 
-    Container::Epics _epics = this->epics;
+    Container::UnsortedEpics _epics = this->epics;
     //const auto& _epics = this->epics;
 
     std::uint64_t entryCount{};
