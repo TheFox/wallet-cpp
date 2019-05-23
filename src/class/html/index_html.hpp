@@ -49,7 +49,7 @@ namespace Wallet::Html
 
     // Functions
     void addRow(IndexHtmlRow) noexcept;
-    void generate(IndexHtmlRow, const Container::CategoryMap&, const Container::SortedEpics&) const;
+    void generate(IndexHtmlRow, const Container::SortedCategories&, const Container::SortedEpics&) const;
 
   private:
     // Properties

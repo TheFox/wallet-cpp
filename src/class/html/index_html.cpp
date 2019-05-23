@@ -37,7 +37,7 @@ namespace Wallet::Html
     DLog(" -> IndexHtml::addRow(%s) -> size %lu\n", row.year.c_str(), this->entries.size());
   }
 
-  void IndexHtml::generate(const IndexHtmlRow totalRow, const Container::CategoryMap& totalCategories, const Container::SortedEpics& totalEpics) const
+  void IndexHtml::generate(const IndexHtmlRow totalRow, const Container::SortedCategories& totalCategories, const Container::SortedEpics& totalEpics) const
   {
     DLog(" -> IndexHtml::generate('%s')\n", totalRow.year.c_str());
     this->log("[index_html] generate");

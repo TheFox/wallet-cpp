@@ -38,13 +38,13 @@ namespace Wallet::Container
   };
 
   using UnsortedCategories = std::vector<std::string>;
-  using CategoryMap = std::map<std::string, CategoryContainer, CategoryComparator>;
+  using SortedCategories = std::map<std::string, CategoryContainer, CategoryComparator>;
   struct BaseCategoryContainer
   {
     BaseCategoryContainer();
 
     // Properties
-    CategoryMap categories{};
+    SortedCategories categories{};
   };
 
   struct BaseEntryContainer : public Wallet::Trait::Accountable
