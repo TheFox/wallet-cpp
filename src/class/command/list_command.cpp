@@ -38,7 +38,7 @@ namespace Wallet
     // Header
     std::cout
       << std::string(countLenSize, '#')
-      << " Date          Revenue    Expense    Balance   Title"
+      << " Date          Revenue    Expense    Balance    Category   Title"
       << std::endl;
 
     // Entries
@@ -57,6 +57,7 @@ namespace Wallet
           << ' ' << std::setw(10) << std::right << entry.getRevenueStr()
           << ' ' << std::setw(10) << std::right << entry.getExpenseStr()
           << ' ' << std::setw(10) << std::right << entry.getBalanceStr()
+          << ' ' << std::setw(11) << std::right << entry.category
           << "   " << entry.title
           << std::endl;
       }
