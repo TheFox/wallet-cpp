@@ -60,7 +60,7 @@ namespace Wallet
     YAML::Node index{};
     bool areEpicsModified{};
     mutable bool areEpicsLoaded{};
-    mutable YAML::Node epics{};
+    mutable YAML::Node epics{}; // TODO Change this to Assoc Array instead of YAML::Node
 
     // Functions
     void setup();
