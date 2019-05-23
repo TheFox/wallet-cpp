@@ -37,7 +37,7 @@ namespace Wallet::Container
     bool operator()(const std::string&, const std::string&) const;
   };
 
-  using CategoryArray = std::vector<std::string>;
+  using UnsortedCategories = std::vector<std::string>;
   using CategoryMap = std::map<std::string, CategoryContainer, CategoryComparator>;
   struct BaseCategoryContainer
   {

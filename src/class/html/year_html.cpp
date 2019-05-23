@@ -42,10 +42,10 @@ namespace Wallet::Html
     const auto _categories_end = this->container.categories.cend();
 
     // Category Names
-    Container::CategoryArray categoryNames{};
+    Container::UnsortedCategories categories{};
 
     // https://thispointer.com/how-to-copy-all-values-from-a-map-to-a-vector-in-c/
-    std::transform(_categories_begin, _categories_end, std::back_inserter(categoryNames), [](const auto& pair) {
+    std::transform(_categories_begin, _categories_end, std::back_inserter(categories), [](const auto& pair) {
       return pair.first;
     });
 
@@ -184,7 +184,7 @@ namespace Wallet::Html
     };
 
     const auto tpl = Components::readFileIntoString(WALLETCPP_YEAR_VIEW_PATH);
-    const auto context = std::make_shared<Mustache::YearMustache>("../..", entries, total, yearStr, categoryNames,
+    const auto context = std::make_shared<Mustache::YearMustache>("../..", entries, total, yearStr, categories,
         epics, yearPngFileStr);
 
     // Year HTML File Output

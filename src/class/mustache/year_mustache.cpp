@@ -6,7 +6,7 @@
 namespace Wallet::Mustache
 {
   YearMustache::YearMustache(std::string _rel, mstch::array _entries, mstch::map _total,
-                             std::string _year, Container::CategoryArray _categoryNames, Container::UnsortedEpics _epics,
+                             std::string _year, Container::UnsortedCategories _categoryNames, Container::UnsortedEpics _epics,
                              std::string _pngFileName) :
     BaseMustache{std::move(_rel), std::move(_entries), std::move(_total)},
     year(std::move(_year)), categoryNames(std::move(_categoryNames)), epics(std::move(_epics)), pngFileName(std::move(_pngFileName))
