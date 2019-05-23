@@ -1,6 +1,8 @@
 # Release Notes for WalletCpp v0.x
 
-## Unreleased (v0.x)
+## Unreleased (v0.10)
+
+- Show Categories and Epics on List command.
 
 ## v0.9.0
 
