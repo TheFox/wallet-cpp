@@ -60,29 +60,29 @@ namespace Wallet::Container
     UnsortedEntries entries{};
   };
 
-  using DayMap = std::map<Day, DayEntryContainer>;
+  using Days = std::map<Day, DayEntryContainer>;
   struct MonthEntryContainer final : public BaseEntryContainer, public BaseCategoryContainer, public BaseEpicContainer
   {
     // Properties
     Year year{};
-    DayMap days{};
+    Days days{};
     std::string fileName{};
     std::string yearMonth{};
   };
 
-  using MonthMap = std::map<Month, MonthEntryContainer>;
+  using Months = std::map<Month, MonthEntryContainer>;
   using MonthPair = std::pair<Month, MonthEntryContainer>;
   struct YearEntryContainer final : public BaseEntryContainer, public BaseCategoryContainer, public BaseEpicContainer
   {
     // Properties
     Year year{};
-    MonthMap months{};
+    Months months{};
   };
 
-  using YearMap = std::map<Year, YearEntryContainer>;
+  using Years = std::map<Year, YearEntryContainer>;
   struct EntryContainer final : public BaseEntryContainer, public BaseCategoryContainer, public BaseEpicContainer
   {
-    YearMap years{};
+    Years years{};
   };
 } // Wallet::Container Namespace
 
