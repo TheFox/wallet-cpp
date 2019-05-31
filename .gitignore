@@ -4,6 +4,7 @@
 /build_test/
 /build_linux/
 /build_debian/
+/cmake-build-debug/
 /obj-x86*
 /.idea/
 /.vagrant/
