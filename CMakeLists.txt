@@ -34,9 +34,12 @@ endif ()
 
 # Modules
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules")
+message(STATUS "CMake Module path: ${CMAKE_MODULE_PATH}")
 
 # Mustache
+message(STATUS "Include FindMustache")
 include(FindMustache)
+#include("${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules/FindMustache.cmake")
 
 # yaml-cpp
 message(STATUS "Check yaml-cpp")

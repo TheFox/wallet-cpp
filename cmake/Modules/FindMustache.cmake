@@ -8,6 +8,7 @@ set(__find_mustache INCLUDED)
 message(STATUS "Installing external project: mstch")
 
 include(ExternalProject)
+#include(${CMAKE_ROOT}/Modules/ExternalProject.cmake)
 
 set(MSTCH_PREFIX "${CMAKE_CURRENT_BINARY_DIR}/vendor/mstch")
 set(MSTCH_STAMP_DIR "${MSTCH_PREFIX}/stamp")
