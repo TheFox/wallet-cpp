@@ -562,6 +562,12 @@ namespace Wallet
     }
   }
 
+  /**
+   * Return Epic object.
+   *
+   * @param handle
+   * @return
+   */
   Epic MutableWallet::getEpicByHandle1(std::string handle) const
   {
     //DLog(" -> MutableWallet::getEpicByHandle() -> epic handle '%s'\n", handle.c_str());
@@ -587,6 +593,12 @@ namespace Wallet
     return epic;
   }
 
+  /**
+   * Return Epic shared Pointer. Yeah!
+   *
+   * @param handle
+   * @return
+   */
   std::shared_ptr<Epic> MutableWallet::getEpicByHandle2(std::string handle) const
   {
     //DLog(" -> MutableWallet::getEpicByHandle() -> epic handle '%s'\n", handle.c_str());
