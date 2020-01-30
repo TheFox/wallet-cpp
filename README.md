@@ -52,3 +52,4 @@ Further readings:
 ## Similar Projects
 
 - [Wallet written Ruby](https://github.com/TheFox/wallet)
+- [Wallet written Rust](https://github.com/TheFox/wallet-rust)
