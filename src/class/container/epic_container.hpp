@@ -20,6 +20,7 @@ namespace Wallet::Container
   {
     // Properties
     Epic epic{};
+    EpicPtr epicPtr{};
     bool isDefaultEpic{true};
   };
 

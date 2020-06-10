@@ -282,11 +282,11 @@ namespace Wallet
           Epic epic{};
           Container::EpicPtr epicPtr{};
           try {
-            //epic = this->getEpicByHandle1(entry.epicHandle);
+            epic = this->getEpicByHandle1(entry.epicHandle);
             epicPtr = this->getEpicByHandle2(entry.epicHandle);
           } catch (const std::string& e) {
-            // DLog(" -> MutableWallet::getEntries() -> cannot find epic by handle: '%s'\n",
-            //   entry.epicHandle.c_str());
+             DLog(" -> MutableWallet::getEntries() -> cannot find epic by handle: '%s'\n",
+               entry.epicHandle.c_str());
           }
 
           // DLog(" -> MutableWallet::getEntries() -> epic: '%s' (%s)\n",
@@ -567,6 +567,7 @@ namespace Wallet
    *
    * @param handle
    * @return
+   * @deprecated Use getEpicByHandle2
    */
   Epic MutableWallet::getEpicByHandle1(std::string handle) const
   {
@@ -601,7 +602,7 @@ namespace Wallet
    */
   std::shared_ptr<Epic> MutableWallet::getEpicByHandle2(std::string handle) const
   {
-    //DLog(" -> MutableWallet::getEpicByHandle() -> epic handle '%s'\n", handle.c_str());
+    DLog(" -> MutableWallet::getEpicByHandle() -> epic handle '%s'\n", handle.c_str());
     if (handle.empty()) {
       handle = "default";
     }
@@ -613,6 +614,8 @@ namespace Wallet
     const auto _end = this->epics["epics"].end();
 
     const auto it = std::find_if(_begin, _end, [&handle](const auto& item) {
+      DLog(" -> MutableWallet::getEpicByHandle() -> find_if\n");
+      DLog(" -> MutableWallet::getEpicByHandle() -> find_if: '%s'\n", item["handle"].template as<std::string>().c_str());
       return item["handle"].template as<std::string>() == handle;
     });
 

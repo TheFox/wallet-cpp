@@ -35,7 +35,7 @@ namespace Wallet
 
   Epic::Epic(const YAML::Node& node) noexcept : Epic()
   {
-    //DLog(" -> Epic::Epic(YAML::Node) -> ID '%s'\n", this->id.c_str());
+    DLog(" -> Epic::Epic(YAML::Node) -> ID '%s'\n", this->id.c_str());
 
     if (node["id"].IsDefined()) {
       //DLog(" -> Epic::Epic(YAML::Node) -> get ID from node\n");

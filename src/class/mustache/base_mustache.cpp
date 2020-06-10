@@ -77,7 +77,10 @@ namespace Wallet::Mustache
   {
 #ifdef DEBUG
     // tmp/wallet/html relative
-    return this->relativePath + "/../../../resources/css";
+    // return this->relativePath + "/../../../resources/css";
+
+    // tmp/html relative
+    return this->relativePath + "/../../resources/css";
 #else
     return this->getRelativePath();
 #endif
