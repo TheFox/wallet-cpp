@@ -12,14 +12,18 @@
 namespace Wallet::Container
 {
   // Types
-  using EpicArray = std::vector<Epic>;
-  using UnsortedEpics = std::map<std::string, Epic>;
   using EpicPtr = std::shared_ptr<Epic>;
+
+  using EpicArray = std::vector<Epic>; // @deprecated
+  using EpicPtrArray = std::vector<EpicPtr>;
+
+  using UnsortedEpics = std::map<std::string, Epic>; // @deprecated
+  using UnsortedEpicPtrs = std::map<std::string, EpicPtr>;
 
   struct EpicContainer final : public Wallet::Trait::Accountable
   {
     // Properties
-    Epic epic{};
+    Epic epic{}; // @deprecated: Use epicPtr instead.
     EpicPtr epicPtr{};
     bool isDefaultEpic{true};
   };

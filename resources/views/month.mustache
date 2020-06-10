@@ -26,7 +26,7 @@
             <th class="right">Category</th>
         {{/show_categories}}
         {{#show_epics}}
-            <th class="right">Epic</th>
+            <th class="right">xEpic</th>
         {{/show_epics}}
         {{#show_comments}}
             <th class="left">Comment</th>
@@ -47,7 +47,7 @@
                 <td valign="top" class="right">{{{category}}}</td>
             {{/show_categories}}
             {{#show_epics}}
-                <td valign="top" class="right" bgcolor="{{{epic_bg_color}}}">{{{epic_title}}}</td>
+                <td valign="top" class="right" bgcolor="{{{epic_bg_color}}}">x{{{epic_title}}} {{{epic_handle}}}</td>
             {{/show_epics}}
             {{#show_comments}}
                 <td valign="top" class="left">{{comment}}</td>

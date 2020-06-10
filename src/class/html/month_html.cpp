@@ -104,8 +104,10 @@ namespace Wallet::Html
                 {"balance",       entry.getBalanceStr()},
                 {"balance_class", entry.getBalanceHtmlClass()},
                 {"category",      entry.getCategoryHtml()},
-                {"epic_handle",   entry.getEpicHandleHtml()}, // TODO: sub map with all epic_*?
-                {"epic_title",    epic.getTitleHtmlStr()},
+                {"epic_handle",   std::string("xyz")}, // Debug
+                //{"epic_handle",   entry.getEpicHandleHtml()}, // TODO: sub map with all epic_*?
+                //{"epic_title",    epic.getTitleHtmlStr()},
+                {"epic_title",    std::string("hello")}, // Debug
                 {"epic_bg_color", epic.bgColor},
                 {"comment",       entry.comment},
             };

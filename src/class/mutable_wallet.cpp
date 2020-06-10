@@ -279,18 +279,21 @@ namespace Wallet
           dayMap.entries.push_back(entry);
 
           // Default Epic
-          Epic epic{};
+          Epic epicObj{}; // TODO: remove
           Container::EpicPtr epicPtr{};
           try {
-            epic = this->getEpicByHandle1(entry.epicHandle);
+            epicObj = this->getEpicByHandle1(entry.epicHandle);
             epicPtr = this->getEpicByHandle2(entry.epicHandle);
           } catch (const std::string& e) {
-             DLog(" -> MutableWallet::getEntries() -> cannot find epic by handle: '%s'\n",
-               entry.epicHandle.c_str());
+            DLog(" -> MutableWallet::getEntries() -> cannot find epic by handle: '%s'\n",
+                entry.epicHandle.c_str());
           }
 
-          // DLog(" -> MutableWallet::getEntries() -> epic: '%s' (%s)\n",
-          //   epic.handle.c_str(), epic.title.c_str());
+          //DLog(" -> MutableWallet::getEntries() -> epic normal: '%s' (%s)\n",
+          //    epicObj.handle.c_str(), epicObj.title.c_str());
+
+          DLog(" -> MutableWallet::getEntries() -> epic shrptr: '%s' (%s)\n",
+              (*epicPtr).handle.c_str(), (*epicPtr).title.c_str());
 
           // Entity Abs
           const Trait::Accountable::Number expenseAbs = std::abs(entry.expense);
@@ -317,9 +320,11 @@ namespace Wallet
           ccategory.balanceAbs += entry.revenue + expenseAbs;
 
           // Total Epic
-          auto& cepic = container.epics[epic.handle];
+          //auto& cepic = container.epics[epicObj.handle];
+          auto& cepic = container.epics[(*epicPtr).handle];
           if (cepic.isDefaultEpic) {
-            cepic.epic = epic; // TODO
+            cepic.epic = epicObj; // TODO: remove
+            cepic.epicPtr = epicPtr; // TODO
             cepic.isDefaultEpic = false;
           }
           cepic.revenue += entry.revenue;
@@ -345,9 +350,11 @@ namespace Wallet
           ycategory.balanceAbs += entry.revenue + expenseAbs;
 
           // Year Epic
-          auto& yepic = yearMap.epics[epic.handle];
+          //auto& yepic = yearMap.epics[epic.handle];
+          auto& yepic = yearMap.epics[(*epicPtr).handle];
           if (yepic.isDefaultEpic) {
-            yepic.epic = epic; // TODO
+            yepic.epic = epicObj; // TODO: remove
+            yepic.epicPtr = epicPtr; // TODO
             yepic.isDefaultEpic = false;
           }
           yepic.revenue += entry.revenue;
@@ -373,9 +380,11 @@ namespace Wallet
           mcategory.balanceAbs += entry.revenue + expenseAbs;
 
           // Month Epic
-          auto& mepic = monthMap.epics[epic.handle];
+          //auto& mepic = monthMap.epics[epic.handle];
+          auto& mepic = monthMap.epics[(*epicPtr).handle];
           if (mepic.isDefaultEpic) {
-            mepic.epic = epic; // TODO
+            mepic.epic = epicObj; // TODO: remove
+            mepic.epicPtr = epicPtr; // TODO
             mepic.isDefaultEpic = false;
           }
           mepic.revenue += entry.revenue;
@@ -614,8 +623,9 @@ namespace Wallet
     const auto _end = this->epics["epics"].end();
 
     const auto it = std::find_if(_begin, _end, [&handle](const auto& item) {
-      DLog(" -> MutableWallet::getEpicByHandle() -> find_if\n");
-      DLog(" -> MutableWallet::getEpicByHandle() -> find_if: '%s'\n", item["handle"].template as<std::string>().c_str());
+      DLog(" -> MutableWallet::getEpicByHandle() -> find_if: '%s'\n",
+          item["handle"].template as<std::string>().c_str());
+
       return item["handle"].template as<std::string>() == handle;
     });
 
