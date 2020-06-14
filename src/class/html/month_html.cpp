@@ -28,14 +28,17 @@ namespace calendar = boost::gregorian;
 
 namespace Wallet::Html
 {
-  MonthHtml::MonthHtml(fs::path _basePath, Container::MonthPair _map, Container::UnsortedEpics _epics) :
+  MonthHtml::MonthHtml(fs::path _basePath, Container::MonthPair _map, Container::UnsortedEpics _epics, const Container::UnsortedEpicPtrs& _epicPtrs) :
+  //MonthHtml::MonthHtml(fs::path _basePath, Container::MonthPair _map, Container::UnsortedEpics _epics, Container::UnsortedEpicPtrs _epicPtrs) :
       BaseHtml{std::move(_basePath), fs::path{}, fs::path{getMonthFile(_map.first)},
           getMonthName(_map.first) + " " + std::to_string(_map.second.year)}, // BaseHtml
-      name(getMonthName(_map.first)), container(std::move(_map.second)), year(std::to_string(_map.second.year)), epics(
-      std::move(_epics))
+      name(getMonthName(_map.first)), container(std::move(_map.second)), year(std::to_string(_map.second.year)), epics(std::move(_epics), epicPtrs(std::move(_epicPtrs)))
   {
+    DLog(" -> MonthHtml::MonthHtml()\n");
     //DLog(" -> MonthHtml::MonthHtml(bp'%s') -> p'%s' n'%s'\n", this->basePath.c_str(),
     //  this->getFileName().c_str(), this->name.c_str());
+    //this->epicPtrs = _epicPtrs;
+    //this->epicPtrs = std::move(_epicPtrs);
   }
 
   void MonthHtml::generate() const
@@ -59,7 +62,8 @@ namespace Wallet::Html
     bool showEpics = false;
     bool showComments = false;
 
-    Container::UnsortedEpics _epics = this->epics;
+    Container::UnsortedEpics _epics = this->epics; // TODO @deprecated
+    //Container::UnsortedEpicPtrs _epicPtrs = this->epicsPtrs;
     //const auto& _epics = this->epics;
 
     std::uint64_t entryCount{};
@@ -93,7 +97,10 @@ namespace Wallet::Html
 
             //const auto& epic = this->epics[entry.handle];
             const auto& epic = _epics[entry.epicHandle];
-            //DLog(" -> MonthHtml::generate() -> epic '%s'\n", epic.handle.c_str());
+            DLog(" -> MonthHtml::generate() -> epic normal '%s'\n", epic.handle.c_str());
+
+            //const auto& epicPtr = _epics[entry.epicHandle];
+            //DLog(" -> MonthHtml::generate() -> epic ptr    '%s'\n", (*epicPtr).handle.c_str());
 
             return mstch::map{
                 {"no",            std::to_string(entryCount)},
@@ -104,10 +111,13 @@ namespace Wallet::Html
                 {"balance",       entry.getBalanceStr()},
                 {"balance_class", entry.getBalanceHtmlClass()},
                 {"category",      entry.getCategoryHtml()},
+
                 {"epic_handle",   std::string("xyz")}, // Debug
                 //{"epic_handle",   entry.getEpicHandleHtml()}, // TODO: sub map with all epic_*?
+
                 //{"epic_title",    epic.getTitleHtmlStr()},
                 {"epic_title",    std::string("hello")}, // Debug
+
                 {"epic_bg_color", epic.bgColor},
                 {"comment",       entry.comment},
             };

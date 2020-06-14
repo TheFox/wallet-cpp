@@ -38,6 +38,7 @@ namespace Wallet::Container
   };
 
   using SortedEpics = std::map<std::string, EpicContainer, EpicComparator>;
+  //using SortedEpicPair = std::pair<std::string, EpicContainer>;
   struct BaseEpicContainer
   {
     BaseEpicContainer();

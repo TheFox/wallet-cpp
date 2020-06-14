@@ -16,14 +16,17 @@ namespace Wallet::Html
   class MonthHtml final : public BaseHtml
   {
   public:
-    MonthHtml(fs::path, Container::MonthPair, Container::UnsortedEpics);
+    //MonthHtml(fs::path, Container::MonthPair, Container::UnsortedEpics);
+    MonthHtml(fs::path, Container::MonthPair, Container::UnsortedEpics, const Container::UnsortedEpicPtrs&);
     void generate() const;
     const std::string name{};
 
   private:
     const Container::MonthEntryContainer container{};
     const std::string year{};
-    const Container::UnsortedEpics epics{};
+
+    const Container::UnsortedEpics epics{}; // @deprecated
+    const Container::UnsortedEpicPtrs& epicPtrs{};
 
     static std::string getMonthFile(Container::Month) noexcept;
     static std::string getMonthName(Container::Month) noexcept;

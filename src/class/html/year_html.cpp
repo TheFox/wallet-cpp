@@ -50,17 +50,20 @@ namespace Wallet::Html
     });
 
     // Epic Iterators
+    // TODO: use epics ptr here?
     const auto _epics_begin = this->container.epics.cbegin(); // Epic Iterator Begin
     const auto _epics_end = this->container.epics.cend();   // Epic Iterator End
 
     // Epics
-    Container::UnsortedEpics epics{};
+    Container::UnsortedEpics epics{}; // TODO @deprecated
+    Container::UnsortedEpicPtrs epicPtrs{};
 
     // Transform Epics Node to Epics Map (Epics type).
     for (const auto& nodePair : this->container.epics) {
-      //DLog(" -> YearHtml::generate() -> transform epic: %s\n", nodePair.first.c_str());
+      DLog(" -> YearHtml::generate() -> transform epic: %s\n", nodePair.first.c_str());
 
       epics[nodePair.first] = nodePair.second.epic;
+      epicPtrs[nodePair.first] = nodePair.second.epicPtr;
     }
     DLog(" -> YearHtml::generate() -> epics: %lu\n", epics.size());
 
@@ -68,7 +71,9 @@ namespace Wallet::Html
     mstch::array entries{};
 
     for (const auto& monthPair : this->container.months) {
-      const MonthHtml monthHtml{this->basePath, monthPair, epics};
+      // Month HTML file.
+      //const MonthHtml monthHtml{this->basePath, monthPair, epics};
+      const MonthHtml monthHtml{this->basePath, monthPair, epics, epicPtrs};
       monthHtml.logLevel = this->logLevel;
       monthHtml.generate();
 
