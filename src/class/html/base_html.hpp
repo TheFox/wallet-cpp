@@ -9,7 +9,9 @@
 
 namespace Wallet::Html
 {
-  class BaseHtml : public Wallet::Trait::Logable
+  using Wallet::Trait::Logable;
+
+  class BaseHtml : public Logable
   {
   public:
     explicit BaseHtml(fs::path, fs::path, fs::path, std::string);

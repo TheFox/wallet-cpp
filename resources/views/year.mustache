@@ -51,7 +51,7 @@
 
                 {{#has_epics}}
                     {{#month_epics}}
-                        <th class="right {{{balance_class}}}">{{{balance}}}</th>
+                        <th class="right {{{balance_class}}}" bgcolor="{{{epic_bg_color}}}">{{{balance}}}</th>
                     {{/month_epics}}
                 {{/has_epics}}
             </tr>
@@ -72,7 +72,7 @@
 
             {{#has_epics}}
                 {{#total_epics}}
-                    <th class="right {{{balance_class}}}">{{{balance}}}</th>
+                    <th class="right {{{balance_class}}}" bgcolor="{{{epic_bg_color}}}">{{{balance}}}</th>
                 {{/total_epics}}
             {{/has_epics}}
         </tr>
@@ -90,7 +90,7 @@
 
             {{#has_epics}}
                 {{#total_epics}}
-                    <th class="right {{{balance_class}}}">{{{balance_percent}}}</th>
+                    <th class="right {{{balance_class}}}" bgcolor="{{{epic_bg_color}}}">{{{balance_percent}}}</th>
                 {{/total_epics}}
             {{/has_epics}}
         </tr>

@@ -23,7 +23,7 @@
             <th colspan="{{{category_count}}}">{{{category_count}}} Categories</th>
         {{/has_categories}}
         {{#has_epics}}
-            <th colspan="{{{epic_count}}}">{{{epic_count}}} Epics</th>
+            <th colspan="{{{epic_count}}}">{{{epic_count}}} xEpics</th>
         {{/has_epics}}
     </tr>
     <tr>
@@ -35,7 +35,7 @@
         {{/has_categories}}
         {{#has_epics}}
             {{#epics}}
-                <th class="right">{{{title}}}</th>
+                <th class="right" bgcolor="{{{epic_bg_color}}}">{{{title}}}</th>
             {{/epics}}
         {{/has_epics}}
     </tr>
@@ -78,7 +78,7 @@
             {{/has_categories}}
             {{#has_epics}}
                 {{#epics}}
-                    <td class="right {{{balance_class}}}">{{{balance}}}</td>
+                    <td class="right {{{balance_class}}}" bgcolor="{{{epic_bg_color}}}">{{{balance}}}</td>
                 {{/epics}}
             {{/has_epics}}
         </tr>
@@ -96,7 +96,7 @@
             {{/has_categories}}
             {{#has_epics}}
                 {{#epics}}
-                    <td class="right {{{balance_class}}}">{{{balance_percent}}}</td>
+                    <td class="right {{{balance_class}}}" bgcolor="{{{epic_bg_color}}}">{{{balance_percent}}}</td>
                 {{/epics}}
             {{/has_epics}}
         </tr>

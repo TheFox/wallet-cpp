@@ -23,7 +23,8 @@ namespace Wallet::Container
   struct EpicContainer final : public Wallet::Trait::Accountable
   {
     // Properties
-    Epic epic{}; // @deprecated: Use epicPtr instead.
+    //[[deprecated]]
+    //Epic epic{}; // @deprecated: Use epicPtr instead.
     EpicPtr epicPtr{};
     bool isDefaultEpic{true};
   };

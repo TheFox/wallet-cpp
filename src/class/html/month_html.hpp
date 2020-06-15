@@ -10,26 +10,31 @@
 
 namespace Wallet::Html
 {
+  using Container::Month;
+  using Container::MonthPair;
+  using Container::MonthEntryContainer;
+  using Container::UnsortedEpics;
+  using Container::UnsortedEpicPtrs;
+
   /**
    * Generates one month html file.
    */
   class MonthHtml final : public BaseHtml
   {
   public:
-    //MonthHtml(fs::path, Container::MonthPair, Container::UnsortedEpics);
-    MonthHtml(fs::path, Container::MonthPair, Container::UnsortedEpics, const Container::UnsortedEpicPtrs&);
+    MonthHtml(fs::path, MonthPair, UnsortedEpics, const UnsortedEpicPtrs&);
     void generate() const;
     const std::string name{};
 
   private:
-    const Container::MonthEntryContainer container{};
+    const MonthEntryContainer container{};
     const std::string year{};
 
-    const Container::UnsortedEpics epics{}; // @deprecated
-    const Container::UnsortedEpicPtrs& epicPtrs{};
+    const UnsortedEpics epics{}; // @deprecated
+    const UnsortedEpicPtrs& epicPtrs{};
 
-    static std::string getMonthFile(Container::Month) noexcept;
-    static std::string getMonthName(Container::Month) noexcept;
+    static std::string getMonthFile(Month) noexcept;
+    static std::string getMonthName(Month) noexcept;
   };
 } // Wallet::Html Namespace
 

@@ -108,26 +108,25 @@ namespace Wallet::Html
       std::transform(_epics_begin, _epics_end, std::back_inserter(monthEpics), [&monthPair](const auto& pair) {
         // DLog(" -> month epic: '%s'\n", pair.first.c_str());
 
-        std::string balance{"&nbsp;"};
-        std::string balanceClass{};
-
         try {
           // Search by key (Name).
           //DLog(" -> search epic: '%s'\n", pair.first.c_str());
-          const auto& epic = monthPair.second.epics.at(pair.first);
-          //DLog(" -> epic found: '%s'\n", pair.first.c_str());
+          const auto& epicContainer = monthPair.second.epics.at(pair.first);
 
-          balance = epic.getBalanceStr();
-          balanceClass = epic.getBalanceHtmlClass();
+          return mstch::map{
+              {"balance",       epicContainer.getBalanceStr()},
+              {"balance_class", epicContainer.getBalanceHtmlClass()},
+              {"epic_bg_color", (*epicContainer.epicPtr).bgColor},
+          };
         } catch (const std::out_of_range& exception) {
           //DLog(" -> nothing found for epic '%s'\n", pair.first.c_str());
-        }
 
-        return mstch::map{
-            //{"name",    pair.first},
-            {"balance",       std::move(balance)},
-            {"balance_class", std::move(balanceClass)},
-        };
+          return mstch::map{
+              {"balance",       std::string("&nbsp;")},
+              {"balance_class", std::string()},
+              {"epic_bg_color", std::string("#ffffff")},
+          };
+        }
       });
 
       // Month Map
@@ -161,13 +160,16 @@ namespace Wallet::Html
     std::transform(_epics_begin, _epics_end, std::back_inserter(totalEpics), [](const auto& pair) {
       //DLog(" -> transform total epic: '%s'\n", pair.first.c_str());
 
+      const auto& epicContainer = pair.second;
+
       return mstch::map{
           {"name",            pair.first},
           //{"revenue_percent", pair.second.getRevenuePercentStr()},
           //{"expense_percent", pair.second.getExpensePercentStr()},
-          {"balance",         pair.second.getBalanceStr()},
-          {"balance_class",   pair.second.getBalanceHtmlClass()},
-          {"balance_percent", pair.second.getBalancePercentStr()},
+          {"balance",         epicContainer.getBalanceStr()},
+          {"balance_class",   epicContainer.getBalanceHtmlClass()},
+          {"balance_percent", epicContainer.getBalancePercentStr()},
+          {"epic_bg_color",   (*epicContainer.epicPtr).bgColor},
       };
     });
 

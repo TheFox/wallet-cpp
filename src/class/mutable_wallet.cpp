@@ -320,18 +320,18 @@ namespace Wallet
           ccategory.balanceAbs += entry.revenue + expenseAbs;
 
           // Total Epic
-          //auto& cepic = container.epics[epicObj.handle];
-          auto& cepic = container.epics[(*epicPtr).handle];
-          if (cepic.isDefaultEpic) {
-            cepic.epic = epicObj; // TODO: remove
-            cepic.epicPtr = epicPtr; // TODO
-            cepic.isDefaultEpic = false;
+          //auto& epicContainer = container.epics[epicObj.handle];
+          auto& epicContainer = container.epics[(*epicPtr).handle];
+          if (epicContainer.isDefaultEpic) {
+            //epicContainer.epic = epicObj; // TODO: remove
+            epicContainer.epicPtr = epicPtr;
+            epicContainer.isDefaultEpic = false;
           }
-          cepic.revenue += entry.revenue;
-          cepic.expense += entry.expense;
-          //cepic.expenseAbs += expenseAbs;
-          cepic.balance += entry.balance;
-          cepic.balanceAbs += entry.revenue + expenseAbs;
+          epicContainer.revenue += entry.revenue;
+          epicContainer.expense += entry.expense;
+          //epicContainer.expenseAbs += expenseAbs;
+          epicContainer.balance += entry.balance;
+          epicContainer.balanceAbs += entry.revenue + expenseAbs;
 
           // Year
           yearMap.entryCount++;
@@ -350,18 +350,18 @@ namespace Wallet
           ycategory.balanceAbs += entry.revenue + expenseAbs;
 
           // Year Epic
-          //auto& yepic = yearMap.epics[epic.handle];
-          auto& yepic = yearMap.epics[(*epicPtr).handle];
-          if (yepic.isDefaultEpic) {
-            yepic.epic = epicObj; // TODO: remove
-            yepic.epicPtr = epicPtr; // TODO
-            yepic.isDefaultEpic = false;
+          //auto& epicYearContainer = yearMap.epics[epic.handle];
+          auto& epicYearContainer = yearMap.epics[(*epicPtr).handle];
+          if (epicYearContainer.isDefaultEpic) {
+            //epicYearContainer.epic = epicObj; // TODO: remove
+            epicYearContainer.epicPtr = epicPtr; // TODO
+            epicYearContainer.isDefaultEpic = false;
           }
-          yepic.revenue += entry.revenue;
-          yepic.expense += entry.expense;
-          //yepic.expenseAbs += expenseAbs;
-          yepic.balance += entry.balance;
-          yepic.balanceAbs += entry.revenue + expenseAbs;
+          epicYearContainer.revenue += entry.revenue;
+          epicYearContainer.expense += entry.expense;
+          //epicYearContainer.expenseAbs += expenseAbs;
+          epicYearContainer.balance += entry.balance;
+          epicYearContainer.balanceAbs += entry.revenue + expenseAbs;
 
           // Month
           monthMap.entryCount++;
@@ -380,18 +380,18 @@ namespace Wallet
           mcategory.balanceAbs += entry.revenue + expenseAbs;
 
           // Month Epic
-          //auto& mepic = monthMap.epics[epic.handle];
-          auto& mepic = monthMap.epics[(*epicPtr).handle];
-          if (mepic.isDefaultEpic) {
-            mepic.epic = epicObj; // TODO: remove
-            mepic.epicPtr = epicPtr; // TODO
-            mepic.isDefaultEpic = false;
+          //auto& epicMonthContainer = monthMap.epics[epic.handle];
+          auto& epicMonthContainer = monthMap.epics[(*epicPtr).handle];
+          if (epicMonthContainer.isDefaultEpic) {
+            //epicMonthContainer.epic = epicObj; // TODO: remove
+            epicMonthContainer.epicPtr = epicPtr; // TODO
+            epicMonthContainer.isDefaultEpic = false;
           }
-          mepic.revenue += entry.revenue;
-          mepic.expense += entry.expense;
-          //mepic.expenseAbs += expenseAbs;
-          mepic.balance += entry.balance;
-          mepic.balanceAbs += entry.revenue + expenseAbs;
+          epicMonthContainer.revenue += entry.revenue;
+          epicMonthContainer.expense += entry.expense;
+          //epicMonthContainer.expenseAbs += expenseAbs;
+          epicMonthContainer.balance += entry.balance;
+          epicMonthContainer.balanceAbs += entry.revenue + expenseAbs;
 
           // Day
           dayMap.entryCount++;
