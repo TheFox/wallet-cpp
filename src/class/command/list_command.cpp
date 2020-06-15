@@ -24,7 +24,7 @@ namespace Wallet
 
   void listEntries(const Container::EntryContainer& container)
   {
-    DLog(" -> listEntries() c=%lu\n", container.entryCount);
+    DLog("-> listEntries() c=%lu\n", container.entryCount);
 
     if (container.entryCount == 0) {
       std::cout << "No entries found." << std::endl;

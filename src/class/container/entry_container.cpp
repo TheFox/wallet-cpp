@@ -11,7 +11,7 @@ namespace Wallet::Container
 
   bool CategoryComparator::operator()(const std::string& c1, const std::string& c2) const
   {
-    //DLog(" -> CategoryComparator::operator(%s, %s)\n", c1.c_str(), c2.c_str());
+    //DLog("-> CategoryComparator::operator(%s, %s)\n", c1.c_str(), c2.c_str());
 
     if (c1 == c2) {
       return false;

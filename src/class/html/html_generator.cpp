@@ -116,7 +116,7 @@ namespace Wallet::Html
       mstch::array _epics{};
 
       std::transform(_epics_begin, _epics_end, std::back_inserter(_epics), [&yearPair](const auto& epicPair) {
-        DLog("-> HtmlGenerator::generate() -> transform epic pair: %s\n", epicPair.first.c_str());
+        //DLog("-> HtmlGenerator::generate() -> transform epic pair: %s\n", epicPair.first.c_str());
 
         std::string balance{"&nbsp;"};
         std::string balanceClass{};
@@ -124,7 +124,7 @@ namespace Wallet::Html
 
         try {
           // Search by handle.
-          DLog("-> HtmlGenerator::generate() -> search epic\n");
+          //DLog("-> HtmlGenerator::generate() -> search epic\n");
 
           const auto& epicContainer1 = yearPair.second.epics.at(epicPair.first);
 
@@ -173,7 +173,7 @@ namespace Wallet::Html
     // Total Epics
     mstch::array totalEpics{};
     std::transform(_epics_begin, _epics_end, std::back_inserter(totalEpics), [](const auto& epicPair) {
-      DLog("-> HtmlGenerator::generate() -> transform epic\n");
+      //DLog("-> HtmlGenerator::generate() -> transform epic\n");
       //DLog("-> HtmlGenerator::generate() -> transform epic: %s/%s -> '%s'\n",
       //  epicPair.first.c_str(), epicPair.second.epic.handle.c_str(),
       //  epicPair.second.epic.title.c_str());

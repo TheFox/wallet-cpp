@@ -24,22 +24,22 @@ namespace Wallet::Html
   IndexHtml::IndexHtml(fs::path _basePath, fs::path _tmpPath) :
     BaseHtml{std::move(_basePath), std::move(_tmpPath), fs::path{"index.html"}, "Index"}
   {
-    //DLog(" -> IndexHtml::IndexHtml('%s')\n", this->basePath.c_str());
+    //DLog("-> IndexHtml::IndexHtml('%s')\n", this->basePath.c_str());
   }
 
   void IndexHtml::addRow(IndexHtmlRow row) noexcept
   {
-    DLog(" -> IndexHtml::addRow(%s)\n", row.year.c_str());
+    DLog("-> IndexHtml::addRow(%s)\n", row.year.c_str());
     this->log("[index_html] add row: " + row.year);
 
     this->entries.push_back(row);
 
-    DLog(" -> IndexHtml::addRow(%s) -> size %lu\n", row.year.c_str(), this->entries.size());
+    DLog("-> IndexHtml::addRow(%s) -> size %lu\n", row.year.c_str(), this->entries.size());
   }
 
   void IndexHtml::generate(const IndexHtmlRow totalRow, const Container::SortedCategories& totalCategories, const Container::SortedEpics& totalEpics) const
   {
-    DLog(" -> IndexHtml::generate('%s')\n", totalRow.year.c_str());
+    DLog("-> IndexHtml::generate('%s')\n", totalRow.year.c_str());
     this->log("[index_html] generate");
 
     if (!fs::exists(WALLETCPP_INDEX_VIEW_PATH)) {
@@ -56,7 +56,7 @@ namespace Wallet::Html
     // Transform IndexHtmlRow entries to mstch::array<mstch::map>.
     mstch::array _entries{};
     std::transform(this->entries.cbegin(), this->entries.cend(), std::back_inserter(_entries), [](auto row) {
-      //DLog(" -> IndexHtml::generate() -> transform year: %s\n", row.year.c_str());
+      //DLog("-> IndexHtml::generate() -> transform year: %s\n", row.year.c_str());
 
       return mstch::map{
         {"year",              std::move(row.year)},
@@ -74,7 +74,7 @@ namespace Wallet::Html
     // Total Categories
     mstch::array _totalCategories{};
     std::transform(totalCategories.cbegin(), totalCategories.cend(), std::back_inserter(_totalCategories), [](const auto& pair) {
-      //DLog(" -> IndexHtml::generate() -> transform category: %s\n", pair.first.c_str());
+      //DLog("-> IndexHtml::generate() -> transform category: %s\n", pair.first.c_str());
 
       // second = CategoryContainer
       return mstch::map{
@@ -91,7 +91,7 @@ namespace Wallet::Html
       const auto& epicContainer = pair.second;
       const auto& epicPtr = epicContainer.epicPtr;
 
-      //DLog(" -> IndexHtml::generate() -> transform epic: '%s' -> '%s'\n", pair.first.c_str(), (*epicPtr).handle.c_str());
+      //DLog("-> IndexHtml::generate() -> transform epic: '%s' -> '%s'\n", pair.first.c_str(), (*epicPtr).handle.c_str());
 
       return mstch::map{
         {"title", (*epicPtr).title},
@@ -104,7 +104,7 @@ namespace Wallet::Html
     });
 
     // Total Row
-    DLog(" -> IndexHtml::generate() -> total row: rp=%s ep=%s\n", totalRow.revenuePercent.c_str(), totalRow.expensePercent.c_str());
+    DLog("-> IndexHtml::generate() -> total row: rp=%s ep=%s\n", totalRow.revenuePercent.c_str(), totalRow.expensePercent.c_str());
     const mstch::map _totalRow{
       {"label",         totalRow.year},
       {"revenue",       totalRow.revenue},
@@ -115,7 +115,7 @@ namespace Wallet::Html
       {"balance_class", totalRow.balanceClass},
     };
 
-    DLog(" -> IndexHtml::generate('%s') -> %lu entries, %lu totals, %lu epics\n", totalRow.year.c_str(), _entries.size(), _totalRow.size(), _totalEpics.size());
+    DLog("-> IndexHtml::generate('%s') -> %lu entries, %lu totals, %lu epics\n", totalRow.year.c_str(), _entries.size(), _totalRow.size(), _totalEpics.size());
 
     const auto tpl = Components::readFileIntoString(WALLETCPP_INDEX_VIEW_PATH);
     const auto context = std::make_shared<Mustache::IndexMustache>(_entries, _totalRow, _totalCategories, _totalEpics);
@@ -123,7 +123,7 @@ namespace Wallet::Html
 //#ifdef DEBUG
 //    // Template debug
 //    //const auto indexDebugFilePath = (this->tmpPath / "index_debug.html").string();
-//    //DLog(" -> tpl debug: '%s'\n", indexDebugFilePath.c_str());
+//    //DLog("-> tpl debug: '%s'\n", indexDebugFilePath.c_str());
 //    std::cout << "--------------- TPL ---------------" << std::endl;
 //    std::cout << tpl << std::endl;
 //    std::cout << "--------------- --- ---------------" << std::endl;
@@ -139,7 +139,7 @@ namespace Wallet::Html
     indexFh.close();
 
 #ifdef WALLETCPP_GNUPLOT_SUPPORT
-    DLog(" -> index_html: %lu entries\n", this->entries.size());
+    DLog("-> index_html: %lu entries\n", this->entries.size());
 
     const auto maxLen = this->entries.size() >= 10 ? this->entries.size() - 10 : 0;
     const auto entriesBegin = this->entries.cbegin() + maxLen;
@@ -158,14 +158,14 @@ namespace Wallet::Html
 
     // Write data file for GNUPlot.
     const auto datFilePath = (this->tmpPath / "total.dat").string();
-    DLog(" -> dat: '%s'\n", datFilePath.c_str());
+    DLog("-> dat: '%s'\n", datFilePath.c_str());
     std::ofstream datFh{datFilePath};
     std::copy(datRows.cbegin(), datRows.cend(), std::ostream_iterator<std::string>(datFh, "\n"));
     datFh.close();
 
     // PNG file
     const auto pngFilePath = (this->basePath / "total.png").string();
-    DLog(" -> png: '%s'\n", pngFilePath.c_str());
+    DLog("-> png: '%s'\n", pngFilePath.c_str());
 
     // Mustache Template file
     const auto gnuplotTpl = Components::readFileIntoString(WALLETCPP_TOTAL_GNUPLOT_PATH);
@@ -175,7 +175,7 @@ namespace Wallet::Html
 
     // Total Gnuplot File
     const auto gnuplotFilePath = (this->tmpPath / "total.gp").string();
-    //DLog(" -> gp: '%s'\n", gnuplotFilePath.c_str());
+    //DLog("-> gp: '%s'\n", gnuplotFilePath.c_str());
     std::ofstream totalFh{gnuplotFilePath};
     totalFh << mstch::render(gnuplotTpl, gnuplotContext) << '\n';
     totalFh.close();
@@ -184,9 +184,9 @@ namespace Wallet::Html
     const auto gnuplotCmd = std::string{"gnuplot "} + gnuplotFilePath + " &> /dev/null < /dev/null";
 
 #ifdef DEBUG
-    DLog(" -> exec gnuplot: '%s'\n", gnuplotCmd.c_str());
+    DLog("-> exec gnuplot: '%s'\n", gnuplotCmd.c_str());
     const auto execrv = std::system(gnuplotCmd.c_str());
-    DLog(" -> exec gnuplot: %d\n", execrv);
+    DLog("-> exec gnuplot: %d\n", execrv);
 #else
     std::system(gnuplotCmd.c_str());
 #endif

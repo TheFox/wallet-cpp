@@ -26,14 +26,14 @@ namespace Wallet
 {
   Entry::Entry() noexcept
   {
-    //DLog(" -> Entry::Entry(%p)\n", this);
+    //DLog("-> Entry::Entry(%p)\n", this);
 
     this->date = calendar::day_clock::local_day();
   }
 
   Entry::Entry(const CommandOptions& options) : Entry()
   {
-    //DLog(" -> Entry::Entry(%p, CommandOptions %p)\n", this, &options);
+    //DLog("-> Entry::Entry(%p, CommandOptions %p)\n", this, &options);
 
     // ID
     if (options.id.empty()) {
@@ -49,7 +49,7 @@ namespace Wallet
     if (!options.date.empty()) {
       this->setDate(options.date);
     }
-    // DLog(" -> set date: %s\n", this->date.to_iso_extended_string().c_str());
+    // DLog("-> set date: %s\n", this->date.to_iso_extended_string().c_str());
     calendar::to_iso_extended_string(this->date);
 
     // Revenue
@@ -60,7 +60,7 @@ namespace Wallet
 
     // Balance
     this->calcBalance();
-    DLog(" -> set balance %.2f\n", this->balance);
+    DLog("-> set balance %.2f\n", this->balance);
 
     // Category
     this->category = options.category;
@@ -74,7 +74,7 @@ namespace Wallet
 
   Entry::Entry(const YAML::Node& node) noexcept
   {
-    //DLog(" -> Entry::Entry(%p, YAML::Node)\n", this);
+    //DLog("-> Entry::Entry(%p, YAML::Node)\n", this);
 
     if (node["id"].IsDefined()) {
       this->id = node["id"].as<decltype(this->id)>();
@@ -108,7 +108,7 @@ namespace Wallet
   // TODO: move function to Components to be reused.
   void Entry::setDate(const std::string& _dateStr)
   {
-    //DLog(" -> Entry::setDate(%s)\n", _dateStr.c_str());
+    //DLog("-> Entry::setDate(%s)\n", _dateStr.c_str());
     const auto _dateStrLen = _dateStr.length();
 
     // Now
@@ -169,7 +169,7 @@ namespace Wallet
       }
     }
 
-    DLog(" -> date: %s\n", calendar::to_iso_extended_string(this->date).c_str());
+    DLog("-> date: %s\n", calendar::to_iso_extended_string(this->date).c_str());
   }
 
   std::string Entry::getDateStr() const noexcept

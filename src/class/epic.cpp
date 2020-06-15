@@ -1,5 +1,5 @@
 
-#include "debug.hpp"
+//#include "debug.hpp"
 #include "epic.hpp"
 #include "command/command_options.hpp"
 
@@ -7,26 +7,26 @@ namespace Wallet
 {
   Epic::Epic() noexcept
   {
-    //DLog(" -> Epic::Epic(%p)\n", this);
+    //DLog("-> Epic::Epic(%p)\n", this);
 
     this->generateRandomId();
-    //DLog(" -> Epic::Epic(%p) -> ID '%s'\n", this, this->id.c_str());
+    //DLog("-> Epic::Epic(%p) -> ID '%s'\n", this, this->id.c_str());
   }
 
   Epic::Epic(const CommandOptions& options) noexcept
   {
-    //DLog(" -> Epic::Epic(CommandOptions) -> ID '%s'\n", this->id.c_str());
+    //DLog("-> Epic::Epic(CommandOptions) -> ID '%s'\n", this->id.c_str());
 
     // ID
     if (options.id.empty()) {
-      //DLog(" -> Epic::Epic(CommandOptions) -> generate new ID\n");
+      //DLog("-> Epic::Epic(CommandOptions) -> generate new ID\n");
       this->generateRandomId();
     } else {
-      //DLog(" -> Epic::Epic(CommandOptions) -> set ID from options\n");
+      //DLog("-> Epic::Epic(CommandOptions) -> set ID from options\n");
       this->id = options.id;
     }
 
-    //DLog(" -> Epic::Epic(CommandOptions) -> ID '%s'\n", this->id.c_str());
+    //DLog("-> Epic::Epic(CommandOptions) -> ID '%s'\n", this->id.c_str());
 
     this->handle = options.epicHandle;
     this->title = options.title;
@@ -35,10 +35,10 @@ namespace Wallet
 
   Epic::Epic(const YAML::Node& node) noexcept : Epic()
   {
-    DLog(" -> Epic::Epic(YAML::Node) -> ID '%s'\n", this->id.c_str());
+    //DLog("-> Epic::Epic(YAML::Node) -> ID '%s'\n", this->id.c_str());
 
     if (node["id"].IsDefined()) {
-      //DLog(" -> Epic::Epic(YAML::Node) -> get ID from node\n");
+      //DLog("-> Epic::Epic(YAML::Node) -> get ID from node\n");
       this->id = node["id"].as<decltype(this->id)>();
     }
     if (node["handle"].IsDefined()) {
@@ -55,7 +55,7 @@ namespace Wallet
   // Copy Contructor
   Epic::Epic(const Epic& epic) noexcept
   {
-    //DLog(" -> Epic::Epic(%p, %p) [COPY]\n", this, &epic);
+    //DLog("-> Epic::Epic(%p, %p) [COPY]\n", this, &epic);
 
     this->id = epic.id;
     this->handle = epic.handle;
@@ -66,7 +66,7 @@ namespace Wallet
   // Move Constructor
   Epic::Epic(Epic&& epic) noexcept
   {
-    //DLog(" -> Epic::Epic(%p, %p) [MOVE]\n", this, &epic);
+    //DLog("-> Epic::Epic(%p, %p) [MOVE]\n", this, &epic);
 
     this->id = std::move(epic.id);
     this->handle = std::move(epic.handle);
@@ -77,7 +77,7 @@ namespace Wallet
   // Copy assignment operator.
   Epic& Epic::operator=(const Epic& epic) noexcept
   {
-    //DLog(" -> Epic::operator=(%p, %p) [COPY ASSIG]\n", this, &epic);
+    //DLog("-> Epic::operator=(%p, %p) [COPY ASSIG]\n", this, &epic);
 
     // Check for self-assignment.
     if (&epic == this) {

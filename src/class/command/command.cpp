@@ -6,12 +6,12 @@ namespace Wallet
 {
   Command::Command() noexcept
   {
-    DLog(" -> Command::Command(%p)\n", this);
+    DLog("-> Command::Command(%p)\n", this);
   }
 
   Command::~Command()
   {
-    DLog(" -> Command::~Command(%p)\n", this);
+    DLog("-> Command::~Command(%p)\n", this);
   }
 
   int Command::execute()

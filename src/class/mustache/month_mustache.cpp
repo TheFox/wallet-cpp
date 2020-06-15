@@ -9,7 +9,7 @@ namespace Wallet::Mustache
       BaseMustache{std::move(_rel), std::move(_entries), std::move(_total)},
       year(std::move(_year)), month(std::move(_month)), fileName(std::move(_fileName)), showCategories(_showCategories), showEpics(_showEpics), showComments(_showComments)
   {
-    //DLog(" -> MonthMustache::MonthMustache()\n");
+    //DLog("-> MonthMustache::MonthMustache()\n");
 
     this->register_methods(this, {
         {"year",            &MonthMustache::getYear},
@@ -23,19 +23,19 @@ namespace Wallet::Mustache
 
   mstch::node MonthMustache::getYear() noexcept
   {
-    //DLog(" -> MonthMustache::getYear()\n");
+    //DLog("-> MonthMustache::getYear()\n");
     return this->year;
   }
 
   mstch::node MonthMustache::getMonth() noexcept
   {
-    //DLog(" -> MonthMustache::getMonth()\n");
+    //DLog("-> MonthMustache::getMonth()\n");
     return this->month;
   }
 
   mstch::node MonthMustache::getFileName() noexcept
   {
-    //DLog(" -> MonthMustache::getFileName()\n");
+    //DLog("-> MonthMustache::getFileName()\n");
     return this->fileName;
   }
 

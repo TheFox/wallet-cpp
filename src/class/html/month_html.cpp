@@ -35,8 +35,8 @@ namespace Wallet::Html
       name(getMonthName(_map.first)), container(std::move(_map.second)), year(
       std::to_string(_map.second.year)), epicPtrs(_epicPtrs)
   {
-    DLog(" -> MonthHtml::MonthHtml()\n");
-    //DLog(" -> MonthHtml::MonthHtml(bp'%s') -> p'%s' n'%s'\n", this->basePath.c_str(),
+    DLog("-> MonthHtml::MonthHtml()\n");
+    //DLog("-> MonthHtml::MonthHtml(bp'%s') -> p'%s' n'%s'\n", this->basePath.c_str(),
     //  this->getFileName().c_str(), this->name.c_str());
     //this->epicPtrs = _epicPtrs;
     //this->epicPtrs = std::move(_epicPtrs);
@@ -44,7 +44,7 @@ namespace Wallet::Html
 
   void MonthHtml::generate() const
   {
-    DLog(" -> MonthHtml::generate() -> %d %s\n", this->container.year, this->name.c_str());
+    DLog("-> MonthHtml::generate() -> %d %s\n", this->container.year, this->name.c_str());
 
     const auto yearStr = std::to_string(this->container.year);
 
@@ -67,7 +67,7 @@ namespace Wallet::Html
 
     std::uint64_t entryCount{};
     for (const auto& dayPair : this->container.days) {
-      //DLog(" -> MonthHtml::generate() -> day pair\n");
+      //DLog("-> MonthHtml::generate() -> day pair\n");
 
       const auto _begin = dayPair.second.entries.cbegin();
       const auto _end = dayPair.second.entries.cend();
@@ -75,7 +75,7 @@ namespace Wallet::Html
       // Add Day entries to month entry list.
       std::transform(_begin, _end, std::back_inserter(entries),
           [&entryCount, &showCategories, &showEpics, &showComments, &_epicPtrs](const auto& entry) {
-            //DLog(" -> MonthHtml::generate() -> day pair -> transform entry (%c) '%s'\n", showEpics ? 'Y' : 'N', entry.epicHandle.c_str());
+            //DLog("-> MonthHtml::generate() -> day pair -> transform entry (%c) '%s'\n", showEpics ? 'Y' : 'N', entry.epicHandle.c_str());
 
             // Count
             entryCount++;
@@ -108,7 +108,7 @@ namespace Wallet::Html
               epicHandle = (*epicPtr).handle;
               epicTitle = (*epicPtr).title;
               epicBgColor = (*epicPtr).bgColor;
-              //DLog(" -> MonthHtml::generate() -> epic ptr '%s'\n", epicHandle.c_str());
+              //DLog("-> MonthHtml::generate() -> epic ptr '%s'\n", epicHandle.c_str());
             }
 
             return mstch::map{
@@ -135,7 +135,7 @@ namespace Wallet::Html
     // Columns
     const std::uint8_t columns = showCategories + showEpics + showComments;
     const auto columnsStr = std::to_string(columns);
-    DLog(" -> MonthHtml::generate() -> columns: %d -> '%s'\n", columns, columnsStr.c_str());
+    DLog("-> MonthHtml::generate() -> columns: %d -> '%s'\n", columns, columnsStr.c_str());
 
     const mstch::map total{
         {"label",           std::string{"TOTAL"}},

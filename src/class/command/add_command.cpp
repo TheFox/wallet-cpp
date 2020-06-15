@@ -15,7 +15,7 @@ namespace Wallet
 {
   int AddCommand::execute()
   {
-    //DLog(" -> options %p\n", &this->options);
+    //DLog("-> options %p\n", &this->options);
 
     if (this->options.category.empty())
       this->options.category = "default";

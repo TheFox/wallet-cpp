@@ -7,7 +7,7 @@ namespace Wallet::Mustache
   YearGnuplot::YearGnuplot(std::string _year, std::string _pngFilePath, std::string _datFilePath) :
     year(std::move(_year)), pngFilePath(std::move(_pngFilePath)), datFilePath(std::move(_datFilePath))
   {
-    //DLog(" -> YearGnuplot::YearGnuplot()\n");
+    //DLog("-> YearGnuplot::YearGnuplot()\n");
 
     this->register_methods(this, {
       {"year",          &YearGnuplot::getYear},
@@ -23,13 +23,13 @@ namespace Wallet::Mustache
 
   mstch::node YearGnuplot::getPngFilePath() noexcept
   {
-    //DLog(" -> YearGnuplot::getPngFilePath()\n");
+    //DLog("-> YearGnuplot::getPngFilePath()\n");
     return this->pngFilePath;
   }
 
   mstch::node YearGnuplot::getDatFilePath() noexcept
   {
-    //DLog(" -> YearGnuplot::getDatFilePath()\n");
+    //DLog("-> YearGnuplot::getDatFilePath()\n");
     return this->datFilePath;
   }
 } // Wallet::Mustache Namespace

@@ -6,6 +6,6 @@ namespace Wallet::Mustache
 {
   BaseGnuplot::BaseGnuplot()
   {
-    //DLog(" -> BaseGnuplot::BaseGnuplot()\n");
+    //DLog("-> BaseGnuplot::BaseGnuplot()\n");
   }
 } // Wallet::Mustache Namespace

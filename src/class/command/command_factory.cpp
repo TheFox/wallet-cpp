@@ -20,7 +20,7 @@ namespace Wallet
     }
     isSetup = true;
 
-    DLog(" -> CommandFactory::setup()\n");
+    DLog("-> CommandFactory::setup()\n");
 
     // Clear creators.
     creators.clear();

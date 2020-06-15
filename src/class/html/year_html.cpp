@@ -23,12 +23,12 @@ namespace Wallet::Html
           "Year " + std::to_string(_container.year)},
       container(std::move(_container))
   {
-    //DLog(" -> YearHtml::YearHtml('%s', '%s')\n", this->basePath.c_str(), this->getFileName().c_str());
+    //DLog("-> YearHtml::YearHtml('%s', '%s')\n", this->basePath.c_str(), this->getFileName().c_str());
   }
 
   void YearHtml::generate() const
   {
-    //DLog(" -> YearHtml::generate() -> %d\n", this->container.year);
+    //DLog("-> YearHtml::generate() -> %d\n", this->container.year);
     const auto yearStr = std::to_string(this->container.year);
     this->log("[year_html] generate: " + yearStr);
 
@@ -50,32 +50,27 @@ namespace Wallet::Html
     });
 
     // Epic Iterators
-    // TODO: use epics ptr here?
     const auto _epics_begin = this->container.epics.cbegin(); // Epic Iterator Begin
     const auto _epics_end = this->container.epics.cend();   // Epic Iterator End
 
     // Epics
-    //Container::UnsortedEpics epics{}; // TODO @deprecated
     Container::UnsortedEpicPtrs epicPtrs{};
 
     // Transform Epics Node to Epics Map (Epics type).
     for (const auto& nodePair : this->container.epics) {
       const auto& epicContainer = nodePair.second;
 
-      DLog(" -> YearHtml::generate() -> transform epic: '%s' -> '%s'\n", nodePair.first.c_str(), (*epicContainer.epicPtr).handle.c_str());
+      //DLog("-> YearHtml::generate() -> transform epic: '%s' -> '%s'\n", nodePair.first.c_str(), (*epicContainer.epicPtr).handle.c_str());
 
-      //epics[nodePair.first] = epicContainer.epic;
       epicPtrs[nodePair.first] = epicContainer.epicPtr;
     }
-    DLog(" -> YearHtml::generate() -> epics: %lu\n", epicPtrs.size());
+    DLog("-> YearHtml::generate() -> epics: %lu\n", epicPtrs.size());
 
     // Table Body
     mstch::array entries{};
 
     for (const auto& monthPair : this->container.months) {
       // Month HTML file.
-      //const MonthHtml monthHtml{this->basePath, monthPair, epics};
-      //const MonthHtml monthHtml{this->basePath, monthPair, epics, epicPtrs};
       const MonthHtml monthHtml{this->basePath, monthPair, epicPtrs};
       monthHtml.logLevel = this->logLevel;
       monthHtml.generate();
@@ -91,12 +86,12 @@ namespace Wallet::Html
             try {
               // Search by key (Name).
               const auto& category = monthPair.second.categories.at(categoryPair.first);
-              //DLog(" -> category found: '%s'\n", categoryPair.first.c_str());
+              DLog("-> YearHtml::generate() category found: '%s'\n", categoryPair.first.c_str());
 
               balance = category.getBalanceStr();
               balanceClass = category.getBalanceHtmlClass();
             } catch (const std::out_of_range& exception) {
-              //DLog(" -> nothing found for category '%s'\n", categoryPair.first.c_str());
+              DLog("-> YearHtml::generate() nothing found for category: '%s'\n", categoryPair.first.c_str());
             }
 
             return mstch::map{
@@ -109,11 +104,11 @@ namespace Wallet::Html
       // Match common epics to month epics.
       mstch::array monthEpics{};
       std::transform(_epics_begin, _epics_end, std::back_inserter(monthEpics), [&monthPair](const auto& pair) {
-        // DLog(" -> month epic: '%s'\n", pair.first.c_str());
+        // DLog("-> month epic: '%s'\n", pair.first.c_str());
 
         try {
           // Search by key (Name).
-          //DLog(" -> search epic: '%s'\n", pair.first.c_str());
+          //DLog("-> search epic: '%s'\n", pair.first.c_str());
           const auto& epicContainer = monthPair.second.epics.at(pair.first);
 
           return mstch::map{
@@ -122,7 +117,7 @@ namespace Wallet::Html
               {"epic_bg_color", (*epicContainer.epicPtr).bgColor},
           };
         } catch (const std::out_of_range& exception) {
-          //DLog(" -> nothing found for epic '%s'\n", pair.first.c_str());
+          DLog("-> nothing found for epic '%s'\n", pair.first.c_str());
 
           return mstch::map{
               {"balance",       std::string("&nbsp;")},
@@ -149,7 +144,7 @@ namespace Wallet::Html
     // Match common categories to total month categories.
     mstch::array totalCategories{};
     std::transform(_categories_begin, _categories_end, std::back_inserter(totalCategories), [](const auto& pair) {
-      //DLog(" -> category: '%s'\n", pair.first.c_str());
+      //DLog("-> category: '%s'\n", pair.first.c_str());
 
       return mstch::map{
           {"balance",         pair.second.getBalanceStr()},
@@ -161,7 +156,7 @@ namespace Wallet::Html
     // Total Epics
     mstch::array totalEpics{};
     std::transform(_epics_begin, _epics_end, std::back_inserter(totalEpics), [](const auto& pair) {
-      //DLog(" -> transform total epic: '%s'\n", pair.first.c_str());
+      //DLog("-> transform total epic: '%s'\n", pair.first.c_str());
 
       const auto& epicContainer = pair.second;
 
@@ -232,8 +227,8 @@ namespace Wallet::Html
     const auto pngFilePath = (this->basePath / yearPngFileStr).string();
     const auto datFilePath = (this->tmpPath / yearDatFileStr).string();
 
-    DLog(" -> png: '%s'\n", pngFilePath.c_str());
-    DLog(" -> dat: '%s'\n", datFilePath.c_str());
+    DLog("-> png: '%s'\n", pngFilePath.c_str());
+    DLog("-> dat: '%s'\n", datFilePath.c_str());
 
     // Write data file for GNUPlot.
     std::ofstream datFh{datFilePath};
@@ -248,7 +243,7 @@ namespace Wallet::Html
 
     // Year Gnuplot File
     const auto gnuplotFilePath = (this->tmpPath / (yearFileStr + ".gp")).string();
-    //DLog(" -> gp: '%s'\n", gnuplotFilePath.c_str());
+    //DLog("-> gp: '%s'\n", gnuplotFilePath.c_str());
     std::ofstream totalFh{gnuplotFilePath};
     totalFh << mstch::render(gnuplotTpl, gnuplotContext) << '\n';
     totalFh.close();
@@ -257,9 +252,9 @@ namespace Wallet::Html
     const auto gnuplotCmd = std::string{"gnuplot "} + gnuplotFilePath + " &> /dev/null < /dev/null";
 
 #ifdef DEBUG
-    DLog(" -> exec gnuplot: '%s'\n", gnuplotCmd.c_str());
+    DLog("-> exec gnuplot: '%s'\n", gnuplotCmd.c_str());
     const auto execrv = std::system(gnuplotCmd.c_str());
-    DLog(" -> exec gnuplot: %d\n", execrv);
+    DLog("-> exec gnuplot: %d\n", execrv);
 #else
     std::system(gnuplotCmd.c_str());
 #endif

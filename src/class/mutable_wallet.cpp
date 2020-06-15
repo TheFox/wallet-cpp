@@ -32,12 +32,12 @@ namespace Wallet
       tmpPath(this->path / "tmp"),
       lockPath(this->tmpPath / "lock")
   {
-    DLog(" -> MutableWallet::MutableWallet('%s')\n", this->path.c_str());
+    DLog("-> MutableWallet::MutableWallet('%s')\n", this->path.c_str());
   }
 
   MutableWallet::~MutableWallet() noexcept
   {
-    DLog(" -> MutableWallet::~MutableWallet()\n");
+    DLog("-> MutableWallet::~MutableWallet()\n");
 
     this->saveIndex();
     this->saveEpics();
@@ -46,7 +46,7 @@ namespace Wallet
 
   void MutableWallet::init() noexcept
   {
-    DLog(" -> MutableWallet::init()\n");
+    DLog("-> MutableWallet::init()\n");
 
     // Make main directory.
     if (fs::exists(this->path)) {
@@ -61,7 +61,7 @@ namespace Wallet
 
   bool MutableWallet::addUniqueEntry(const Entry& entry)
   {
-    DLog(" -> MutableWallet::addUniqueEntry(%p)\n", &entry);
+    DLog("-> MutableWallet::addUniqueEntry(%p)\n", &entry);
 
     if (this->entryExists(entry)) {
       return false;
@@ -72,7 +72,7 @@ namespace Wallet
 
   bool MutableWallet::addEntry(const Entry& entry)
   {
-    DLog(" -> MutableWallet::addEntry(%p)\n", &entry);
+    DLog("-> MutableWallet::addEntry(%p)\n", &entry);
 
     this->setup();
     this->loadIndex();
@@ -90,7 +90,7 @@ namespace Wallet
 
     YAML::Node month{};
     if (fs::exists(monthFilePathStr)) {
-      DLog(" -> load month file: %s\n", monthFilePathStr.c_str());
+      DLog("-> load month file: %s\n", monthFilePathStr.c_str());
 
       // Load YAML file.
       month = YAML::LoadFile(monthFilePathStr);
@@ -104,7 +104,7 @@ namespace Wallet
       // Updated At
       month["meta"]["updated_at"] = now;
     } else {
-      DLog(" -> create month file: %s\n", monthFilePathStr.c_str());
+      DLog("-> create month file: %s\n", monthFilePathStr.c_str());
 
       // Create new meta data.
       YAML::Node meta{YAML::NodeType::Map};
@@ -123,7 +123,7 @@ namespace Wallet
     // Create day sequence.
     const auto dayStr = entry.getDateStr();
     if (!month["days"][dayStr]) {
-      DLog(" -> create new day: %s\n", entry.getDateStr().c_str());
+      DLog("-> create new day: %s\n", entry.getDateStr().c_str());
 
       YAML::Node day{YAML::NodeType::Sequence};
       month["days"][dayStr] = day;
@@ -147,7 +147,7 @@ namespace Wallet
   Container::EntryContainer MutableWallet::getEntries(const Components::Date& date, const std::string& category,
                                                       const std::string& epicHandle) const
   {
-    DLog(" -> MutableWallet::getEntries(%d, %d, %d, '%s', '%s')\n", date.year, date.month, date.day, category.c_str(),
+    DLog("-> MutableWallet::getEntries(%d, %d, %d, '%s', '%s')\n", date.year, date.month, date.day, category.c_str(),
         epicHandle.c_str());
 
     // Log
@@ -165,8 +165,8 @@ namespace Wallet
     const bool hasCategory = !category.empty();
     const bool hasEpic = !epicHandle.empty();
 
-    DLog(" -> MutableWallet::getEntries() -> has category: %c\n", hasCategory ? 'Y' : 'N');
-    DLog(" -> MutableWallet::getEntries() -> has epic: %c\n", hasEpic ? 'Y' : 'N');
+    DLog("-> MutableWallet::getEntries() -> has category: %c\n", hasCategory ? 'Y' : 'N');
+    DLog("-> MutableWallet::getEntries() -> has epic: %c\n", hasEpic ? 'Y' : 'N');
 
     // Iterate files (= months).
     for (auto& directoryItem : fs::directory_iterator(this->dataPath)) {
@@ -254,23 +254,23 @@ namespace Wallet
 
           // Filter Category.
           if (hasCategory) {
-            // DLog(" -> MutableWallet::getEntries() -> compare category: %d '%s' '%s'\n",
+            // DLog("-> MutableWallet::getEntries() -> compare category: %d '%s' '%s'\n",
             //     entry.category.compare(category),
             //     entry.category.c_str(), category.c_str());
 
             if (entry.category != category) {
-              // DLog(" -> MutableWallet::getEntries() -> skip, category not equal\n");
+              // DLog("-> MutableWallet::getEntries() -> skip, category not equal\n");
               continue;
             }
           }
 
           // Filter Epic.
           if (hasEpic) {
-            // DLog(" -> MutableWallet::getEntries() -> compare epic: %d '%s' '%s'\n",
+            // DLog("-> MutableWallet::getEntries() -> compare epic: %d '%s' '%s'\n",
             //     entry.epicHandle.compare(epicHandle), entry.epicHandle.c_str(), epicHandle.c_str());
 
             if (entry.epicHandle != epicHandle) {
-              // DLog(" -> MutableWallet::getEntries() -> skip, epic not equal\n");
+              // DLog("-> MutableWallet::getEntries() -> skip, epic not equal\n");
               continue;
             }
           }
@@ -284,15 +284,13 @@ namespace Wallet
             //epicObj = this->getEpicByHandle1(entry.epicHandle);
             epicPtr = this->getEpicByHandle2(entry.epicHandle);
           } catch (const std::string& e) {
-            DLog(" -> MutableWallet::getEntries() -> cannot find epic by handle: '%s'\n",
-                entry.epicHandle.c_str());
+            //DLog("-> MutableWallet::getEntries() -> cannot find epic by handle: '%s'\n", entry.epicHandle.c_str());
           }
 
-          //DLog(" -> MutableWallet::getEntries() -> epic normal: '%s' (%s)\n",
+          //DLog("-> MutableWallet::getEntries() -> epic normal: '%s' (%s)\n",
           //    epicObj.handle.c_str(), epicObj.title.c_str());
 
-          DLog(" -> MutableWallet::getEntries() -> epic shrptr: '%s' (%s)\n",
-              (*epicPtr).handle.c_str(), (*epicPtr).title.c_str());
+          //DLog("-> MutableWallet::getEntries() -> epic shrptr: '%s' (%s)\n", (*epicPtr).handle.c_str(), (*epicPtr).title.c_str());
 
           // Entity Abs
           const Trait::Accountable::Number expenseAbs = std::abs(entry.expense);
@@ -396,14 +394,14 @@ namespace Wallet
     } // Files
 
     // Total Percentage
-    // DLog(" -> MutableWallet::getEntries() -> calc total percentages: b=%.2f ba=%.2f e=%.2f ea=%.2f\n",
+    // DLog("-> MutableWallet::getEntries() -> calc total percentages: b=%.2f ba=%.2f e=%.2f ea=%.2f\n",
     //   container.balance, container.balanceAbs, container.expense, container.expenseAbs);
 
     //container.revenuePercent = std::abs(container.revenue) / container.balanceAbs * 100;
     container.revenuePercent = container.revenue / container.balanceAbs * 100;
     container.expensePercent = container.expenseAbs / container.balanceAbs * 100;
 
-    // DLog(" -> MutableWallet::getEntries() -> total percentages: r=%.2f e=%.2f\n",
+    // DLog("-> MutableWallet::getEntries() -> total percentages: r=%.2f e=%.2f\n",
     //   container.revenuePercent, container.expensePercent);
 
     // Total Year Percentage
@@ -411,14 +409,14 @@ namespace Wallet
       yearPair.second.revenuePercent = yearPair.second.revenue / yearPair.second.balanceAbs * 100;
       yearPair.second.expensePercent = yearPair.second.expenseAbs / yearPair.second.balanceAbs * 100;
 
-      // DLog(" -> MutableWallet::getEntries() -> calc year %d percentages: r=%.2f -> rp=%.2f ep=%.2f\n", yearPair.first, yearPair.second.revenue, yearPair.second.revenuePercent, yearPair.second.expensePercent);
+      // DLog("-> MutableWallet::getEntries() -> calc year %d percentages: r=%.2f -> rp=%.2f ep=%.2f\n", yearPair.first, yearPair.second.revenue, yearPair.second.revenuePercent, yearPair.second.expensePercent);
 
       // Months
       for (auto& monthPair : yearPair.second.months) {
         monthPair.second.revenuePercent = monthPair.second.revenue / monthPair.second.balanceAbs * 100;
         monthPair.second.expensePercent = monthPair.second.expenseAbs / monthPair.second.balanceAbs * 100;
 
-        // DLog(" -> MutableWallet::getEntries() -> calc month %d/%d percentages -> r=%.2f e=%.2f b=%.2f -> r=%.2f e=%.2f\n",
+        // DLog("-> MutableWallet::getEntries() -> calc month %d/%d percentages -> r=%.2f e=%.2f b=%.2f -> r=%.2f e=%.2f\n",
         //   yearPair.first, monthPair.first,
         //   monthPair.second.revenue, monthPair.second.expenseAbs, monthPair.second.balanceAbs,
         //   monthPair.second.revenuePercent, monthPair.second.expensePercent);
@@ -428,35 +426,35 @@ namespace Wallet
       for (auto& categoryPair : yearPair.second.categories) {
         categoryPair.second.balancePercent = categoryPair.second.balanceAbs / yearPair.second.balanceAbs * 100;
 
-        //DLog(" -> MutableWallet::getEntries() -> calc year %d, category '%s' percentages -> c=%.2f y=%.2f bp=%.2f\n", yearPair.first, categoryPair.first.c_str(), categoryPair.second.balanceAbs, yearPair.second.balanceAbs, categoryPair.second.balancePercent);
+        //DLog("-> MutableWallet::getEntries() -> calc year %d, category '%s' percentages -> c=%.2f y=%.2f bp=%.2f\n", yearPair.first, categoryPair.first.c_str(), categoryPair.second.balanceAbs, yearPair.second.balanceAbs, categoryPair.second.balancePercent);
       }
 
       // Epic
       for (auto& epicPair : yearPair.second.epics) {
         epicPair.second.balancePercent = epicPair.second.balanceAbs / yearPair.second.balanceAbs * 100;
 
-        //DLog(" -> MutableWallet::getEntries() -> calc year %d, epic '%s' percentages -> e=%.2f y=%.2f bp=%.2f\n", yearPair.first, epicPair.first.c_str(), epicPair.second.balanceAbs, yearPair.second.balanceAbs, epicPair.second.balancePercent);
+        //DLog("-> MutableWallet::getEntries() -> calc year %d, epic '%s' percentages -> e=%.2f y=%.2f bp=%.2f\n", yearPair.first, epicPair.first.c_str(), epicPair.second.balanceAbs, yearPair.second.balanceAbs, epicPair.second.balancePercent);
       }
     }
 
     // Category Percentage
-    // DLog(" -> MutableWallet::getEntries() -> calc category percentages: %.2f %.2f\n",
+    // DLog("-> MutableWallet::getEntries() -> calc category percentages: %.2f %.2f\n",
     //   container.balance, container.balanceAbs);
     for (auto& categoryPair : container.categories) {
       categoryPair.second.balancePercent = categoryPair.second.balanceAbs / container.balanceAbs * 100;
 
-      // DLog(" -> MutableWallet::getEntries() -> categoryPair: '%s', %.2f, %.2f -> %.2f %%\n",
+      // DLog("-> MutableWallet::getEntries() -> categoryPair: '%s', %.2f, %.2f -> %.2f %%\n",
       //   categoryPair.first.c_str(), categoryPair.second.balance, categoryPair.second.balanceAbs,
       //   categoryPair.second.balancePercent);
     }
 
     // Epic Percentage
-    // DLog(" -> MutableWallet::getEntries() -> calc epic percentages: %.2f %.2f\n",
+    // DLog("-> MutableWallet::getEntries() -> calc epic percentages: %.2f %.2f\n",
     //   container.balance, container.balanceAbs);
     for (auto& epicPair : container.epics) {
       epicPair.second.balancePercent = epicPair.second.balanceAbs / container.balanceAbs * 100;
 
-      // DLog(" -> MutableWallet::getEntries() -> epicPair: '%s', %.2f, %.2f -> %.2f %%\n",
+      // DLog("-> MutableWallet::getEntries() -> epicPair: '%s', %.2f, %.2f -> %.2f %%\n",
       //   epicPair.first.c_str(), epicPair.second.balance, epicPair.second.balanceAbs,
       //   epicPair.second.balancePercent);
     }
@@ -468,12 +466,12 @@ namespace Wallet
   void MutableWallet::htmlOutput(const std::string& _path,
                                  const std::string& category, const std::string& epicHandle) const
   {
-    DLog(" -> MutableWallet::htmlOutput('%s', '%s', '%s')\n",
+    DLog("-> MutableWallet::htmlOutput('%s', '%s', '%s')\n",
         _path.c_str(), category.c_str(), epicHandle.c_str());
     this->log("[wallet] generate html files");
 
     const auto& container = this->getEntries({0, 0, 0}, category, epicHandle);
-    DLog(" -> MutableWallet::htmlOutput() -> container %p\n", &container);
+    DLog("-> MutableWallet::htmlOutput() -> container %p\n", &container);
 
     fs::path htmlPath{};
     if (_path.empty()) {
@@ -489,7 +487,7 @@ namespace Wallet
 
   void MutableWallet::addEpic(const Epic& epic) noexcept
   {
-    DLog(" -> MutableWallet::addEpic()\n");
+    DLog("-> MutableWallet::addEpic()\n");
 
     this->setup();
     this->loadEpics();
@@ -508,7 +506,7 @@ namespace Wallet
    */
   void MutableWallet::removeEpic(const std::string& handle) noexcept
   {
-    DLog(" -> MutableWallet::removeEpic('%s')\n", handle.c_str());
+    DLog("-> MutableWallet::removeEpic('%s')\n", handle.c_str());
 
     this->loadEpics();
 
@@ -517,17 +515,17 @@ namespace Wallet
 
     // TODO use std lib here instead of loop
     for (const auto& node : epicsOriginal) {
-      DLog(" -> MutableWallet::removeEpic() -> node '%s'\n", node["handle"].as<std::string>().c_str());
+      DLog("-> MutableWallet::removeEpic() -> node '%s'\n", node["handle"].as<std::string>().c_str());
 
       if (node["handle"].as<std::string>() != handle) {
-        DLog(" -> MutableWallet::removeEpic() -> keep node\n");
+        DLog("-> MutableWallet::removeEpic() -> keep node\n");
         epicsNew.push_back(node);
       }
     }
 
     this->epics["epics"] = std::move(epicsNew);
     this->areEpicsModified = true;
-    DLog(" -> MutableWallet::removeEpic() END\n");
+    DLog("-> MutableWallet::removeEpic() END\n");
   }
 
   /**
@@ -537,17 +535,17 @@ namespace Wallet
    */
   void MutableWallet::updateEpic(const Epic& epic) noexcept
   {
-    DLog(" -> MutableWallet::updateEpic()\n");
+    DLog("-> MutableWallet::updateEpic()\n");
 
     const auto _begin = this->epics["epics"].begin();
     const auto _end = this->epics["epics"].end();
 
     auto it = std::find_if(_begin, _end, [&epic](const auto& item) {
-      DLog(" -> MutableWallet::updateEpic() -> find '%s'\n", epic.handle.c_str());
+      DLog("-> MutableWallet::updateEpic() -> find '%s'\n", epic.handle.c_str());
       return item["handle"].template as<std::string>() == epic.handle;
     });
 
-    DLog(" -> MutableWallet::updateEpic() -> found: %c\n", it != _end ? 'Y' : 'N');
+    DLog("-> MutableWallet::updateEpic() -> found: %c\n", it != _end ? 'Y' : 'N');
 
     if (it != _end) {
       // Found
@@ -573,11 +571,11 @@ namespace Wallet
    */
   Epic MutableWallet::getEpicByHandle1(std::string handle) const
   {
-    //DLog(" -> MutableWallet::getEpicByHandle() -> epic handle '%s'\n", handle.c_str());
+    //DLog("-> MutableWallet::getEpicByHandle() -> epic handle '%s'\n", handle.c_str());
     if (handle.empty()) {
       handle = "default";
     }
-    //DLog(" -> MutableWallet::getEpicByHandle() -> epic handle '%s'\n", handle.c_str());
+    //DLog("-> MutableWallet::getEpicByHandle() -> epic handle '%s'\n", handle.c_str());
 
     this->loadEpics();
 
@@ -604,11 +602,11 @@ namespace Wallet
    */
   std::shared_ptr<Epic> MutableWallet::getEpicByHandle2(std::string handle) const
   {
-    //DLog(" -> MutableWallet::getEpicByHandle() -> epic handle '%s'\n", handle.c_str());
+    //DLog("-> MutableWallet::getEpicByHandle() -> epic handle '%s'\n", handle.c_str());
     if (handle.empty()) {
       handle = "default";
     }
-    //DLog(" -> MutableWallet::getEpicByHandle() -> epic handle '%s'\n", handle.c_str());
+    //DLog("-> MutableWallet::getEpicByHandle() -> epic handle '%s'\n", handle.c_str());
 
     this->loadEpics();
 
@@ -616,7 +614,7 @@ namespace Wallet
     const auto _end = this->epics["epics"].end();
 
     const auto it = std::find_if(_begin, _end, [&handle](const auto& item) {
-      //DLog(" -> MutableWallet::getEpicByHandle() -> find_if: '%s'\n",
+      //DLog("-> MutableWallet::getEpicByHandle() -> find_if: '%s'\n",
       //    item["handle"].template as<std::string>().c_str());
 
       return item["handle"].template as<std::string>() == handle;
@@ -635,7 +633,7 @@ namespace Wallet
    */
   bool MutableWallet::epicExists(const std::string& handle) noexcept
   {
-    //DLog(" -> MutableWallet::epicExists('%s')\n", handle.c_str());
+    //DLog("-> MutableWallet::epicExists('%s')\n", handle.c_str());
 
     this->loadEpics();
 
@@ -646,7 +644,7 @@ namespace Wallet
       return item["handle"].template as<std::string>() == handle;
     });
 
-    //DLog(" -> MutableWallet::epicExists() -> found: %c\n", it != _end ? 'Y' : 'N');
+    //DLog("-> MutableWallet::epicExists() -> found: %c\n", it != _end ? 'Y' : 'N');
     return it != _end;
   }
 
@@ -655,14 +653,14 @@ namespace Wallet
    */
   bool MutableWallet::epicExists(const Epic& epic) noexcept
   {
-    DLog(" -> MutableWallet::epicExists(Epic)\n");
+    DLog("-> MutableWallet::epicExists(Epic)\n");
 
     return this->epicExists(epic.handle);
   }
 
   void MutableWallet::setup()
   {
-    DLog(" -> MutableWallet::setup()\n");
+    DLog("-> MutableWallet::setup()\n");
 
     if (this->hasSetup) {
       return;
@@ -724,7 +722,7 @@ namespace Wallet
 
   void MutableWallet::createLock()
   {
-    DLog(" -> MutableWallet::createLock()\n");
+    DLog("-> MutableWallet::createLock()\n");
 
     // Already locked.
     if (this->isLocked) {
@@ -750,7 +748,7 @@ namespace Wallet
 
   void MutableWallet::removeLock() noexcept
   {
-    DLog(" -> MutableWallet::removeLock()\n");
+    DLog("-> MutableWallet::removeLock()\n");
 
     if (!this->isLocked) {
       return;
@@ -771,7 +769,7 @@ namespace Wallet
 
   void MutableWallet::loadIndex() noexcept
   {
-    DLog(" -> MutableWallet::loadIndex()\n");
+    DLog("-> MutableWallet::loadIndex()\n");
 
     if (this->isIndexLoaded) {
       return;
@@ -802,7 +800,7 @@ namespace Wallet
    */
   void MutableWallet::saveIndex() noexcept
   {
-    DLog(" -> MutableWallet::saveIndex()\n");
+    DLog("-> MutableWallet::saveIndex()\n");
 
     // Skip function when nothing has been changed.
     if (!this->isIndexModified) {
@@ -820,7 +818,7 @@ namespace Wallet
    */
   bool MutableWallet::entryExists(const Entry& entry) noexcept
   {
-    DLog(" -> MutableWallet::entryExists()\n");
+    DLog("-> MutableWallet::entryExists()\n");
 
     this->loadIndex();
 
@@ -839,7 +837,7 @@ namespace Wallet
    */
   void MutableWallet::loadEpics() const noexcept
   {
-    //DLog(" -> MutableWallet::loadEpics() const\n");
+    //DLog("-> MutableWallet::loadEpics() const\n");
 
     if (this->areEpicsLoaded) {
       return;
@@ -851,7 +849,7 @@ namespace Wallet
       // Load YAML file.
       this->epics = YAML::LoadFile(this->epicsPath.string());
 
-      DLog(" -> MutableWallet::loadEpics() -> yaml loaded: %lu\n", this->epics.size());
+      DLog("-> MutableWallet::loadEpics() -> yaml loaded: %lu\n", this->epics.size());
     }
 
     const auto idx = this->epics["epics"];
@@ -867,7 +865,7 @@ namespace Wallet
    */
   void MutableWallet::loadEpics() noexcept
   {
-    //DLog(" -> MutableWallet::loadEpics() non-const\n");
+    //DLog("-> MutableWallet::loadEpics() non-const\n");
 
     if (this->areEpicsLoaded) {
       return;
@@ -879,7 +877,7 @@ namespace Wallet
       // Load YAML file.
       this->epics = YAML::LoadFile(this->epicsPath.string());
 
-      DLog(" -> MutableWallet::loadEpics() -> yaml loaded: %lu\n", this->epics.size());
+      DLog("-> MutableWallet::loadEpics() -> yaml loaded: %lu\n", this->epics.size());
     } else {
       // Create new epics file.
       this->areEpicsModified = true;
@@ -897,7 +895,7 @@ namespace Wallet
 
   void MutableWallet::saveEpics() noexcept
   {
-    DLog(" -> MutableWallet::saveEpics()\n");
+    DLog("-> MutableWallet::saveEpics()\n");
 
     // Skip function when nothing has been changed.
     if (!this->areEpicsModified) {
@@ -909,6 +907,6 @@ namespace Wallet
     fout << this->epics << '\n';
     fout.close();
 
-    DLog(" -> MutableWallet::saveEpics() END\n");
+    DLog("-> MutableWallet::saveEpics() END\n");
   }
 } // Wallet Namespace
