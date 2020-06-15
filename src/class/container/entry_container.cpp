@@ -4,6 +4,18 @@
 
 namespace Wallet::Container
 {
+  void CategoryContainer::set(std::string _category) noexcept
+  {
+    //DLog("-> CategoryContainer::set('%s')\n", _category.c_str());
+
+    if (_category == "default") {
+      return;
+    }
+
+    this->category = std::move(_category);
+    this->isDefaultCategory = false;
+  }
+
   BaseCategoryContainer::BaseCategoryContainer()
   {
     this->categories["default"];

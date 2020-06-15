@@ -15,6 +15,8 @@
 
 namespace Wallet::Container
 {
+  using Wallet::Trait::Accountable;
+
   // Types
   using UnsortedEntries = std::vector<Entry>;
 
@@ -22,10 +24,11 @@ namespace Wallet::Container
   using Month = std::uint8_t;
   using Year = std::uint16_t;
 
-  struct CategoryContainer final : public Wallet::Trait::Accountable
+  struct CategoryContainer final : public Accountable
   {
     std::string category{"default"};
     bool isDefaultCategory{true};
+    void set(std::string) noexcept;
   };
 
   /**
@@ -47,7 +50,7 @@ namespace Wallet::Container
     SortedCategories categories{};
   };
 
-  struct BaseEntryContainer : public Wallet::Trait::Accountable
+  struct BaseEntryContainer : public Accountable
   {
     // Properties
     std::size_t dayCount{};

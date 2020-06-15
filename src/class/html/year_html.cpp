@@ -108,13 +108,19 @@ namespace Wallet::Html
 
         try {
           // Search by key (Name).
-          //DLog("-> search epic: '%s'\n", pair.first.c_str());
+          DLog("-> search epic: '%s'\n", pair.first.c_str());
           const auto& epicContainer = monthPair.second.epics.at(pair.first);
+
+          const auto& epicPtr = epicContainer.epicPtr;
+          std::string epicBgColor{};
+          if (epicPtr != nullptr) {
+            epicBgColor = (*epicPtr).bgColor;
+          }
 
           return mstch::map{
               {"balance",       epicContainer.getBalanceStr()},
               {"balance_class", epicContainer.getBalanceHtmlClass()},
-              {"epic_bg_color", (*epicContainer.epicPtr).bgColor},
+              {"epic_bg_color", std::move(epicBgColor)},
           };
         } catch (const std::out_of_range& exception) {
           DLog("-> nothing found for epic '%s'\n", pair.first.c_str());
@@ -159,6 +165,7 @@ namespace Wallet::Html
       //DLog("-> transform total epic: '%s'\n", pair.first.c_str());
 
       const auto& epicContainer = pair.second;
+      const auto& epicPtr = epicContainer.epicPtr;
 
       return mstch::map{
           {"name",            pair.first},
@@ -167,7 +174,7 @@ namespace Wallet::Html
           {"balance",         epicContainer.getBalanceStr()},
           {"balance_class",   epicContainer.getBalanceHtmlClass()},
           {"balance_percent", epicContainer.getBalancePercentStr()},
-          {"epic_bg_color",   (*epicContainer.epicPtr).bgColor},
+          {"epic_bg_color",   (*epicContainer.epicPtr).bgColor}, // TODO
       };
     });
 
@@ -189,7 +196,8 @@ namespace Wallet::Html
     };
 
     const auto tpl = Components::readFileIntoString(WALLETCPP_YEAR_VIEW_PATH);
-    const auto context = std::make_shared<Mustache::YearMustache>("../..", entries, total, yearStr, categories, epicPtrs, yearPngFileStr);
+    const auto context = std::make_shared<Mustache::YearMustache>("../..", entries, total, yearStr, categories,
+        epicPtrs, yearPngFileStr);
 
     // Year HTML File Output
     std::ofstream indexFh{this->getFullPath()};

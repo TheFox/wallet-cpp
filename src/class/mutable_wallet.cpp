@@ -251,6 +251,7 @@ namespace Wallet
         // Iterate Day entries.
         for (const auto& entryNode : node) {
           const Entry entry{entryNode};
+          //const bool isDefaultCategory = entry.category == "default";
 
           // Filter Category.
           if (hasCategory) {
@@ -287,6 +288,8 @@ namespace Wallet
             //DLog("-> MutableWallet::getEntries() -> cannot find epic by handle: '%s'\n", entry.epicHandle.c_str());
           }
 
+          const bool isDefaultEpic = (*epicPtr).handle == "default";
+
           //DLog("-> MutableWallet::getEntries() -> epic normal: '%s' (%s)\n",
           //    epicObj.handle.c_str(), epicObj.title.c_str());
 
@@ -305,11 +308,13 @@ namespace Wallet
           container.balanceAbs += entry.revenue + expenseAbs;
 
           // Total Category
+          DLog("-> category: '%s'\n", entry.category.c_str());
           auto& ccategory = container.categories[entry.category];
-          if (ccategory.isDefaultCategory) {
-            ccategory.category = entry.category;
-            ccategory.isDefaultCategory = false;
-          }
+          ccategory.set(entry.category);
+          //if (ccategory.isDefaultCategory && !isDefaultCategory) {
+          //  ccategory.category = entry.category;
+          //  ccategory.isDefaultCategory = false;
+          //}
           ccategory.revenue += entry.revenue;
           ccategory.expense += entry.expense;
           //ccategory.expenseAbs += expenseAbs;
@@ -318,7 +323,8 @@ namespace Wallet
 
           // Total Epic
           auto& epicContainer = container.epics[(*epicPtr).handle];
-          if (epicContainer.isDefaultEpic) {
+          // TODO: replace this if block with Container function, "set" like for CategoryContainer.
+          if (epicContainer.isDefaultEpic && !isDefaultEpic) {
             epicContainer.epicPtr = epicPtr;
             epicContainer.isDefaultEpic = false;
           }
@@ -338,6 +344,11 @@ namespace Wallet
 
           // Year Category
           auto& ycategory = yearMap.categories[entry.category];
+          ycategory.set(entry.category);
+          //if (ycategory.isDefaultCategory && !isDefaultCategory) {
+          //  ycategory.category = entry.category;
+          //  ycategory.isDefaultCategory = false;
+          //}
           ycategory.revenue += entry.revenue;
           ycategory.expense += entry.expense;
           //ycategory.expenseAbs += expenseAbs;
@@ -346,7 +357,8 @@ namespace Wallet
 
           // Year Epic
           auto& epicYearContainer = yearMap.epics[(*epicPtr).handle];
-          if (epicYearContainer.isDefaultEpic) {
+          // TODO: replace this if block with Container function, "set" like for CategoryContainer.
+          if (epicYearContainer.isDefaultEpic && !isDefaultEpic) {
             epicYearContainer.epicPtr = epicPtr;
             epicYearContainer.isDefaultEpic = false;
           }
@@ -366,6 +378,11 @@ namespace Wallet
 
           // Month Category
           auto& mcategory = monthMap.categories[entry.category];
+          mcategory.set(entry.category);
+          //if (mcategory.isDefaultCategory && !isDefaultCategory) {
+          //  mcategory.category = entry.category;
+          //  mcategory.isDefaultCategory = false;
+          //}
           mcategory.revenue += entry.revenue;
           mcategory.expense += entry.expense;
           //mcategory.expenseAbs += expenseAbs;
@@ -374,7 +391,8 @@ namespace Wallet
 
           // Month Epic
           auto& epicMonthContainer = monthMap.epics[(*epicPtr).handle];
-          if (epicMonthContainer.isDefaultEpic) {
+          // TODO: replace this if block with Container function, "set" like for CategoryContainer.
+          if (epicMonthContainer.isDefaultEpic && !isDefaultEpic) {
             epicMonthContainer.epicPtr = epicPtr;
             epicMonthContainer.isDefaultEpic = false;
           }
