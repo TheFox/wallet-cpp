@@ -55,15 +55,17 @@ namespace Wallet::Html
     const auto _epics_end = this->container.epics.cend();   // Epic Iterator End
 
     // Epics
-    Container::UnsortedEpics epics{}; // TODO @deprecated
+    //Container::UnsortedEpics epics{}; // TODO @deprecated
     Container::UnsortedEpicPtrs epicPtrs{};
 
     // Transform Epics Node to Epics Map (Epics type).
     for (const auto& nodePair : this->container.epics) {
-      DLog(" -> YearHtml::generate() -> transform epic: %s\n", nodePair.first.c_str());
+      const auto& epicContainer = nodePair.second;
 
-      epics[nodePair.first] = nodePair.second.epic;
-      epicPtrs[nodePair.first] = nodePair.second.epicPtr;
+      DLog(" -> YearHtml::generate() -> transform epic: '%s' -> '%s'\n", nodePair.first.c_str(), (*epicContainer.epicPtr).handle.c_str());
+
+      //epics[nodePair.first] = epicContainer.epic;
+      epicPtrs[nodePair.first] = epicContainer.epicPtr;
     }
     DLog(" -> YearHtml::generate() -> epics: %lu\n", epics.size());
 

@@ -62,7 +62,7 @@ namespace Wallet::Html
     bool showEpics = false;
     bool showComments = false;
 
-    UnsortedEpics _epics = this->epics; // TODO @deprecated
+    //UnsortedEpics _epics = this->epics; // TODO @deprecated
     UnsortedEpicPtrs _epicPtrs = this->epicPtrs;
 
     std::uint64_t entryCount{};
@@ -74,7 +74,7 @@ namespace Wallet::Html
 
       // Add Day entries to month entry list.
       std::transform(_begin, _end, std::back_inserter(entries),
-          [&entryCount, &showCategories, &showEpics, &showComments, &_epics, &_epicPtrs](const auto& entry) {
+          [&entryCount, &showCategories, &showEpics, &showComments, &_epicPtrs](const auto& entry) {
             //DLog(" -> MonthHtml::generate() -> day pair -> transform entry (%c) '%s'\n", showEpics ? 'Y' : 'N', entry.epicHandle.c_str());
 
             // Count
@@ -94,7 +94,7 @@ namespace Wallet::Html
               showComments = true;
             }
 
-            const auto& epicPtr = _epicPtrs[entry.epicHandle];
+            const auto epicPtr = _epicPtrs[entry.epicHandle];
             DLog(" -> MonthHtml::generate() -> epic ptr    '%s'\n", (*epicPtr).handle.c_str());
 
             return mstch::map{

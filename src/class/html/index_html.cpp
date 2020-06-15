@@ -88,8 +88,9 @@ namespace Wallet::Html
     // Total Epics
     mstch::array _totalEpics{};
     std::transform(totalEpics.cbegin(), totalEpics.cend(), std::back_inserter(_totalEpics), [](const auto& pair) {
-      //DLog(" -> IndexHtml::generate() -> transform epic: %s\n", pair.first.c_str());
       const auto& epicContainer = pair.second;
+
+      DLog(" -> IndexHtml::generate() -> transform epic: '%s' -> '%s'\n", pair.first.c_str(), (*epicContainer.epicPtr).handle.c_str());
 
       return mstch::map{
         {"title", (*epicContainer.epicPtr).title},
