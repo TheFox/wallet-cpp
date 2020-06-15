@@ -6,22 +6,23 @@
 namespace Wallet::Mustache
 {
   YearMustache::YearMustache(std::string _rel, mstch::array _entries, mstch::map _total,
-                             std::string _year, Container::UnsortedCategories _categoryNames, Container::UnsortedEpics _epics,
-                             std::string _pngFileName) :
-    BaseMustache{std::move(_rel), std::move(_entries), std::move(_total)},
-    year(std::move(_year)), categoryNames(std::move(_categoryNames)), epics(std::move(_epics)), pngFileName(std::move(_pngFileName))
+                             std::string _year, Container::UnsortedCategories _categoryNames,
+                             Container::UnsortedEpicPtrs _epicPtrs, std::string _pngFileName) :
+      BaseMustache{std::move(_rel), std::move(_entries), std::move(_total)},
+      year(std::move(_year)), categoryNames(std::move(_categoryNames)), epicPtrs(_epicPtrs), pngFileName(
+      std::move(_pngFileName))
   {
     //DLog(" -> YearMustache::YearMustache('%s', '%s', %lu)\n",
     //  _rel.c_str(), this->year.c_str(), _categoryNames.size());
 
     this->register_methods(this, {
-      {"year",           &YearMustache::getYear},
-      {"category_count", &YearMustache::getCategoryCount},
-      {"categories",     &YearMustache::getCategories},
-      {"epic_count",     &YearMustache::getEpicCount},
-      {"epics",          &YearMustache::getEpics},
-      {"has_epics",      &YearMustache::getHasEpics},
-      {"png_file_name",  &YearMustache::getPngFileName},
+        {"year",           &YearMustache::getYear},
+        {"category_count", &YearMustache::getCategoryCount},
+        {"categories",     &YearMustache::getCategories},
+        {"epic_count",     &YearMustache::getEpicCount},
+        {"epics",          &YearMustache::getEpics},
+        {"has_epics",      &YearMustache::getHasEpics},
+        {"png_file_name",  &YearMustache::getPngFileName},
     });
   }
 
@@ -43,7 +44,7 @@ namespace Wallet::Mustache
 
     // Iterators
     const auto _begin = this->categoryNames.cbegin();
-    const auto _end   = this->categoryNames.cend();
+    const auto _end = this->categoryNames.cend();
 
     mstch::array names{};
 
@@ -51,7 +52,7 @@ namespace Wallet::Mustache
     std::transform(_begin, _end, std::back_inserter(names), [](std::string name) {
       //DLog(" -> transform: '%s'\n", name.c_str());
       return mstch::map{
-        {"name", std::move(name)},
+          {"name", std::move(name)},
       };
     });
 
@@ -62,7 +63,7 @@ namespace Wallet::Mustache
   {
     // DLog(" -> YearMustache::getEpicCount() -> %lu\n", this->epics.size());
 
-    return std::to_string(this->epics.size());
+    return std::to_string(this->epicPtrs.size());
   }
 
   mstch::node YearMustache::getEpics() noexcept
@@ -72,13 +73,15 @@ namespace Wallet::Mustache
     mstch::array _epics{};
 
     // Transform vector of epics to map.
-    for (const auto& pair : this->epics) {
-      // DLog(" -> YearMustache::getEpics() -> pair: '%s'\n", pair.first.c_str());
+    for (const auto& pair : this->epicPtrs) {
+      DLog(" -> YearMustache::getEpics() -> pair: '%s'\n", pair.first.c_str());
+
+      const auto& epicPtr = pair.second;
 
       mstch::map _emap{
-          {"handle", pair.second.handle},
-          {"title", pair.second.title},
-          {"bg_color", pair.second.bgColor},
+          {"handle",   (*epicPtr).handle},
+          {"title",    (*epicPtr).title},
+          {"bg_color", (*epicPtr).bgColor},
       };
       _epics.push_back(_emap);
     }
@@ -89,7 +92,7 @@ namespace Wallet::Mustache
   mstch::node YearMustache::getHasEpics() noexcept
   {
     //DLog(" -> YearMustache::getHasEpics() -> %lu\n", this->epics.size());
-    return this->epics.size() > 0;
+    return this->epicPtrs.size() > 0;
   }
 
   mstch::node YearMustache::getPngFileName() noexcept

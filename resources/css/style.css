@@ -5,6 +5,10 @@ html {
   -webkit-text-size-adjust: none;
 }
 
+.top {
+    vertical-align: top;
+}
+
 .right {
     text-align: right;
 }

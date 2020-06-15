@@ -3,7 +3,7 @@
 #include <iomanip> // setprecision, setfill, setw
 #include <iterator> // back_inserter
 #include <algorithm> // transform
-#include <sstream> // ostringstream
+//#include <sstream> // ostringstream
 #include <cstdint> // uint8_t
 
 #ifdef __has_include
@@ -28,11 +28,12 @@ namespace calendar = boost::gregorian;
 
 namespace Wallet::Html
 {
-  MonthHtml::MonthHtml(fs::path _basePath, MonthPair _map, UnsortedEpics _epics, const UnsortedEpicPtrs& _epicPtrs) :
+  MonthHtml::MonthHtml(fs::path _basePath, MonthPair _map, const UnsortedEpicPtrs& _epicPtrs) :
   //MonthHtml::MonthHtml(fs::path _basePath, MonthPair _map, UnsortedEpics _epics, UnsortedEpicPtrs _epicPtrs) :
       BaseHtml{std::move(_basePath), fs::path{}, fs::path{getMonthFile(_map.first)},
           getMonthName(_map.first) + " " + std::to_string(_map.second.year)}, // BaseHtml
-      name(getMonthName(_map.first)), container(std::move(_map.second)), year(std::to_string(_map.second.year)), epics(std::move(_epics)), epicPtrs(_epicPtrs)
+      name(getMonthName(_map.first)), container(std::move(_map.second)), year(
+      std::to_string(_map.second.year)), epicPtrs(_epicPtrs)
   {
     DLog(" -> MonthHtml::MonthHtml()\n");
     //DLog(" -> MonthHtml::MonthHtml(bp'%s') -> p'%s' n'%s'\n", this->basePath.c_str(),
@@ -62,7 +63,6 @@ namespace Wallet::Html
     bool showEpics = false;
     bool showComments = false;
 
-    //UnsortedEpics _epics = this->epics; // TODO @deprecated
     UnsortedEpicPtrs _epicPtrs = this->epicPtrs;
 
     std::uint64_t entryCount{};
@@ -95,7 +95,21 @@ namespace Wallet::Html
             }
 
             const auto epicPtr = _epicPtrs[entry.epicHandle];
-            DLog(" -> MonthHtml::generate() -> epic ptr    '%s'\n", (*epicPtr).handle.c_str());
+
+            std::string epicHandle{};
+            std::string epicTitle{};
+            std::string epicBgColor{};
+            if (epicPtr == nullptr) {
+              Epic defaultEpic{};
+              epicHandle = defaultEpic.handle;
+              epicTitle = defaultEpic.title;
+              epicBgColor = defaultEpic.bgColor;
+            } else {
+              epicHandle = (*epicPtr).handle;
+              epicTitle = (*epicPtr).title;
+              epicBgColor = (*epicPtr).bgColor;
+              //DLog(" -> MonthHtml::generate() -> epic ptr '%s'\n", epicHandle.c_str());
+            }
 
             return mstch::map{
                 {"no",            std::to_string(entryCount)},
@@ -109,9 +123,9 @@ namespace Wallet::Html
 
                 {"category",      entry.getCategoryHtml()},
 
-                {"epic_handle",   (*epicPtr).handle},
-                {"epic_title",    (*epicPtr).title},
-                {"epic_bg_color", (*epicPtr).bgColor},
+                {"epic_handle",   std::move(epicHandle)},
+                {"epic_title",    std::move(epicTitle)},
+                {"epic_bg_color", std::move(epicBgColor)},
 
                 {"comment",       entry.comment},
             };

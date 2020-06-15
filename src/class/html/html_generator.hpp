@@ -10,10 +10,13 @@
 
 namespace Wallet::Html
 {
-  class HtmlGenerator final : public Wallet::Trait::Logable
+  using Wallet::Trait::Logable;
+  using Wallet::Container::EntryContainer;
+
+  class HtmlGenerator final : public Logable
   {
   public:
-    HtmlGenerator(fs::path, fs::path, Wallet::Container::EntryContainer);
+    HtmlGenerator(fs::path, fs::path, EntryContainer);
     void generate() const;
 
   private:
@@ -21,7 +24,7 @@ namespace Wallet::Html
     const fs::path yearPath{};
     const fs::path basePath{};
     const fs::path tmpPath{};
-    const Wallet::Container::EntryContainer container{};
+    const EntryContainer container{};
 
     // Methods
     void setup() const noexcept;

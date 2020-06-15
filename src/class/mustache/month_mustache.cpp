@@ -5,11 +5,9 @@
 namespace Wallet::Mustache
 {
   MonthMustache::MonthMustache(std::string _rel, mstch::array _entries, mstch::map _total,
-                               std::string _year, std::string _month, std::string _fileName, bool _showCategories,
-                               bool _showEpics, bool _showComments) :
+                               std::string _year, std::string _month, std::string _fileName, bool _showCategories, bool _showEpics, bool _showComments) :
       BaseMustache{std::move(_rel), std::move(_entries), std::move(_total)},
-      year(std::move(_year)), month(std::move(_month)), fileName(std::move(_fileName)), showCategories(
-      _showCategories), showEpics(_showEpics), showComments(_showComments)
+      year(std::move(_year)), month(std::move(_month)), fileName(std::move(_fileName)), showCategories(_showCategories), showEpics(_showEpics), showComments(_showComments)
   {
     //DLog(" -> MonthMustache::MonthMustache()\n");
 

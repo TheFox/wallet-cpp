@@ -21,22 +21,24 @@
 
 namespace Wallet::Html
 {
+  using Number = Wallet::Trait::Accountable::Number;
+
   HtmlGenerator::HtmlGenerator(fs::path _basePath, fs::path _tmpPath, Wallet::Container::EntryContainer _container) :
       yearPath(_basePath / "year"), basePath(std::move(_basePath)), tmpPath(std::move(_tmpPath)),
       container(std::move(_container))
   {
-    //DLog(" -> HtmlGenerator::HtmlGenerator(%s, %p)\n", this->basePath.c_str(), &this->container);
+    //DLog("-> HtmlGenerator::HtmlGenerator(%s, %p)\n", this->basePath.c_str(), &this->container);
   }
 
   void HtmlGenerator::generate() const
   {
-    DLog(" -> HtmlGenerator::generate()\n");
+    DLog("-> HtmlGenerator::generate()\n");
 
     // Setup
     this->setup();
 
     // Balance Sum
-    Trait::Accountable::Number balanceSum{0.0};
+    Number balanceSum{0.0};
 
     // Index HTML
     IndexHtml indexHtml{this->basePath, this->tmpPath};
@@ -52,7 +54,7 @@ namespace Wallet::Html
 
     // Iterate Years.
     for (const auto& yearPair : this->container.years) {
-      //DLog(" -> year: %d\n", yearPair.first);
+      DLog("-> year: %d\n", yearPair.first);
 
       const auto yearStr = std::to_string(yearPair.first);
       this->log("[html_generator] year: " + yearStr);
@@ -79,7 +81,7 @@ namespace Wallet::Html
 
       std::transform(_categories_begin, _categories_end, std::back_inserter(_categories),
           [&yearPair](const auto& categoryPair) {
-            //DLog(" -> HtmlGenerator::generate() -> transform category pair: %s\n", categoryPair.first.c_str());
+            //DLog("-> HtmlGenerator::generate() -> transform category pair: %s\n", categoryPair.first.c_str());
 
             std::string balance{"&nbsp;"};
             std::string balanceClass{};
@@ -87,16 +89,16 @@ namespace Wallet::Html
 
             try {
               // Search by handle.
-              // DLog(" -> HtmlGenerator::generate() -> search category\n");
+              // DLog("-> HtmlGenerator::generate() -> search category\n");
               const auto& categoryContainer = yearPair.second.categories.at(categoryPair.first);
-              // DLog(" -> HtmlGenerator::generate() -> found category\n");
+              // DLog("-> HtmlGenerator::generate() -> found category\n");
 
               balance = categoryContainer.getBalanceStr();
               balanceClass = categoryContainer.getBalanceHtmlClass();
               // balancePercent = categoryContainer.balancePercentStr();
             }
             catch (const std::out_of_range& exception) {
-              // DLog(" -> HtmlGenerator::generate() -> error: nothing found for category '%s'\n", categoryPair.first.c_str());
+              // DLog("-> HtmlGenerator::generate() -> error: nothing found for category '%s'\n", categoryPair.first.c_str());
             }
 
             mstch::map _cmap{
@@ -107,14 +109,14 @@ namespace Wallet::Html
             };
             return _cmap;
           });
-      // DLog(" -> HtmlGenerator::generate() -> transformed categories: %lu\n", _categories.size());
+      // DLog("-> HtmlGenerator::generate() -> transformed categories: %lu\n", _categories.size());
 
       // Year Epics
       // Match common epics to year epics.
       mstch::array _epics{};
 
       std::transform(_epics_begin, _epics_end, std::back_inserter(_epics), [&yearPair](const auto& epicPair) {
-        // DLog(" -> HtmlGenerator::generate() -> transform epic pair: %s\n", epicPair.first.c_str());
+        DLog("-> HtmlGenerator::generate() -> transform epic pair: %s\n", epicPair.first.c_str());
 
         std::string balance{"&nbsp;"};
         std::string balanceClass{};
@@ -122,32 +124,32 @@ namespace Wallet::Html
 
         try {
           // Search by handle.
-          // DLog(" -> HtmlGenerator::generate() -> search epic\n");
+          DLog("-> HtmlGenerator::generate() -> search epic\n");
 
-          const auto& epicContainer = yearPair.second.epics.at(epicPair.first);
+          const auto& epicContainer1 = yearPair.second.epics.at(epicPair.first);
 
-          // DLog(" -> HtmlGenerator::generate() -> found epic: %s (%s)\n",
-          //   epicContainer.epic.handle.c_str(), epicContainer.epic.title.c_str());
-
-          balance = epicContainer.getBalanceStr();
-          balanceClass = epicContainer.getBalanceHtmlClass();
+          balance = epicContainer1.getBalanceStr();
+          balanceClass = epicContainer1.getBalanceHtmlClass();
           // balancePercent = categoryContainer.balancePercentStr();
         }
         catch (const std::out_of_range& exception) {
-          // DLog(" -> HtmlGenerator::generate() -> error: nothing found for epic '%s'\n", epicPair.first.c_str());
+          DLog("-> HtmlGenerator::generate() -> error: nothing found for epic '%s'\n", epicPair.first.c_str());
         }
 
+        const auto& epicContainer2 = epicPair.second;
+        const auto& epicPtr = epicContainer2.epicPtr;
+
         mstch::map _emap{
-            {"handle",          epicPair.second.epic.handle},
-            {"title",           epicPair.second.epic.title},
-            {"bg_color",        epicPair.second.epic.bgColor},
+            {"handle",          (*epicPtr).handle},
+            {"title",           (*epicPtr).title},
+            {"bg_color",        (*epicPtr).bgColor},
             {"balance",         balance},
             {"balance_class",   balanceClass},
             {"balance_percent", balancePercent},
         };
         return _emap;
       });
-      // DLog(" -> HtmlGenerator::generate() -> transformed epics: %lu\n", _epics.size());
+      // DLog("-> HtmlGenerator::generate() -> transformed epics: %lu\n", _epics.size());
 
       // Add row to HTML file.
       const IndexHtmlRow row{
@@ -171,16 +173,20 @@ namespace Wallet::Html
     // Total Epics
     mstch::array totalEpics{};
     std::transform(_epics_begin, _epics_end, std::back_inserter(totalEpics), [](const auto& epicPair) {
-      // DLog(" -> HtmlGenerator::generate() -> transform epic: %s/%s -> '%s'\n",
-      //   epicPair.first.c_str(), epicPair.second.epic.handle.c_str(),
-      //   epicPair.second.epic.title.c_str());
+      DLog("-> HtmlGenerator::generate() -> transform epic\n");
+      //DLog("-> HtmlGenerator::generate() -> transform epic: %s/%s -> '%s'\n",
+      //  epicPair.first.c_str(), epicPair.second.epic.handle.c_str(),
+      //  epicPair.second.epic.title.c_str());
+
+      const auto& epicContainer = epicPair.second;
+      const auto& epicPtr = epicContainer.epicPtr;
 
       // second = EpicContainer
       return mstch::map{
-          {"title",           epicPair.second.epic.title},
-          {"balance",         epicPair.second.getBalanceStr()},
-          {"balance_class",   epicPair.second.getBalanceHtmlClass()},
-          {"balance_percent", epicPair.second.getBalancePercentStr()},
+          {"title",           (*epicPtr).title},
+          {"balance",         epicContainer.getBalanceStr()},
+          {"balance_class",   epicContainer.getBalanceHtmlClass()},
+          {"balance_percent", epicContainer.getBalancePercentStr()},
       };
     });
 

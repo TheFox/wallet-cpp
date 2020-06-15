@@ -67,7 +67,7 @@ namespace Wallet::Html
       //epics[nodePair.first] = epicContainer.epic;
       epicPtrs[nodePair.first] = epicContainer.epicPtr;
     }
-    DLog(" -> YearHtml::generate() -> epics: %lu\n", epics.size());
+    DLog(" -> YearHtml::generate() -> epics: %lu\n", epicPtrs.size());
 
     // Table Body
     mstch::array entries{};
@@ -75,7 +75,8 @@ namespace Wallet::Html
     for (const auto& monthPair : this->container.months) {
       // Month HTML file.
       //const MonthHtml monthHtml{this->basePath, monthPair, epics};
-      const MonthHtml monthHtml{this->basePath, monthPair, epics, epicPtrs};
+      //const MonthHtml monthHtml{this->basePath, monthPair, epics, epicPtrs};
+      const MonthHtml monthHtml{this->basePath, monthPair, epicPtrs};
       monthHtml.logLevel = this->logLevel;
       monthHtml.generate();
 
@@ -193,8 +194,7 @@ namespace Wallet::Html
     };
 
     const auto tpl = Components::readFileIntoString(WALLETCPP_YEAR_VIEW_PATH);
-    const auto context = std::make_shared<Mustache::YearMustache>("../..", entries, total, yearStr, categories,
-        epics, yearPngFileStr);
+    const auto context = std::make_shared<Mustache::YearMustache>("../..", entries, total, yearStr, categories, epicPtrs, yearPngFileStr);
 
     // Year HTML File Output
     std::ofstream indexFh{this->getFullPath()};

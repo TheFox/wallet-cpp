@@ -89,16 +89,17 @@ namespace Wallet::Html
     mstch::array _totalEpics{};
     std::transform(totalEpics.cbegin(), totalEpics.cend(), std::back_inserter(_totalEpics), [](const auto& pair) {
       const auto& epicContainer = pair.second;
+      const auto& epicPtr = epicContainer.epicPtr;
 
-      DLog(" -> IndexHtml::generate() -> transform epic: '%s' -> '%s'\n", pair.first.c_str(), (*epicContainer.epicPtr).handle.c_str());
+      //DLog(" -> IndexHtml::generate() -> transform epic: '%s' -> '%s'\n", pair.first.c_str(), (*epicPtr).handle.c_str());
 
       return mstch::map{
-        {"title", (*epicContainer.epicPtr).title},
+        {"title", (*epicPtr).title},
+        {"epic_bg_color", (*epicPtr).bgColor},
         {"balance", epicContainer.getBalanceStr()},
         {"balance_class", epicContainer.getBalanceHtmlClass()},
         {"balance_percent", epicContainer.getBalancePercentStr()},
         {"balance_percent", epicContainer.getBalancePercentStr()},
-        {"epic_bg_color", (*epicContainer.epicPtr).bgColor},
       };
     });
 
