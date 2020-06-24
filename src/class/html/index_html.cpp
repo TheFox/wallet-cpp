@@ -91,11 +91,19 @@ namespace Wallet::Html
       const auto& epicContainer = pair.second;
       const auto& epicPtr = epicContainer.epicPtr;
 
-      //DLog("-> IndexHtml::generate() -> transform epic: '%s' -> '%s'\n", pair.first.c_str(), (*epicPtr).handle.c_str());
+      std::string epicTitle{"Default"};
+      std::string epicBgColor{"#ffffff"};
+
+      if (epicPtr != nullptr) {
+        epicTitle = epicPtr->title;
+        epicBgColor = epicPtr->bgColor;
+      }
+
+      //DLog("-> IndexHtml::generate() -> transform epic: '%s' -> '%s'\n", pair.first.c_str(), epicPtr->handle.c_str());
 
       return mstch::map{
-        {"title", (*epicPtr).title},
-        {"epic_bg_color", (*epicPtr).bgColor},
+        {"title", std::move(epicTitle)},
+        {"epic_bg_color", std::move(epicBgColor)},
         {"balance", epicContainer.getBalanceStr()},
         {"balance_class", epicContainer.getBalanceHtmlClass()},
         {"balance_percent", epicContainer.getBalancePercentStr()},

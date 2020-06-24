@@ -4,6 +4,20 @@
 
 namespace Wallet::Container
 {
+  void EpicContainer::set(EpicPtr _epicPtr) noexcept
+  {
+    //DLog("-> EpicContainer::set('%s')\n", _epicPtr->handle.c_str());
+
+    if (this->epicPtr == nullptr) {
+      if (_epicPtr->handle != "default") {
+        this->isDefaultEpic = false;
+      }
+      this->epicPtr = std::move(_epicPtr);
+    //} else {
+    //  DLog("-> EpicContainer::set() is set\n");
+    }
+  }
+
   BaseEpicContainer::BaseEpicContainer()
   {
     //DLog("-> BaseEpicContainer::BaseEpicContainer()\n");

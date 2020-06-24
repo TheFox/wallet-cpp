@@ -114,7 +114,7 @@ namespace Wallet::Html
           const auto& epicPtr = epicContainer.epicPtr;
           std::string epicBgColor{};
           if (epicPtr != nullptr) {
-            epicBgColor = (*epicPtr).bgColor;
+            epicBgColor = epicPtr->bgColor;
           }
 
           return mstch::map{
@@ -167,6 +167,12 @@ namespace Wallet::Html
       const auto& epicContainer = pair.second;
       const auto& epicPtr = epicContainer.epicPtr;
 
+      std::string epicBgColor{"#ffffff"};
+
+      if (epicPtr != nullptr) {
+        epicBgColor = epicPtr->bgColor;
+      }
+
       return mstch::map{
           {"name",            pair.first},
           //{"revenue_percent", pair.second.getRevenuePercentStr()},
@@ -174,7 +180,7 @@ namespace Wallet::Html
           {"balance",         epicContainer.getBalanceStr()},
           {"balance_class",   epicContainer.getBalanceHtmlClass()},
           {"balance_percent", epicContainer.getBalancePercentStr()},
-          {"epic_bg_color",   (*epicContainer.epicPtr).bgColor}, // TODO
+          {"epic_bg_color",   std::move(epicBgColor)},
       };
     });
 

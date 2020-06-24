@@ -139,10 +139,20 @@ namespace Wallet::Html
         const auto& epicContainer2 = epicPair.second;
         const auto& epicPtr = epicContainer2.epicPtr;
 
+        std::string epicHandle{"default"};
+        std::string epicTitle{"default"};
+        std::string epicBgColor{"#ffffff"};
+
+        if (epicPtr != nullptr) {
+          epicHandle = epicPtr->handle;
+          epicTitle = epicPtr->title;
+          epicBgColor = epicPtr->bgColor;
+        }
+
         mstch::map _emap{
-            {"handle",          (*epicPtr).handle},
-            {"title",           (*epicPtr).title},
-            {"bg_color",        (*epicPtr).bgColor},
+            {"handle",          std::move(epicHandle)},
+            {"title",           std::move(epicTitle)},
+            {"bg_color",        std::move(epicBgColor)},
             {"balance",         balance},
             {"balance_class",   balanceClass},
             {"balance_percent", balancePercent},
@@ -181,9 +191,15 @@ namespace Wallet::Html
       const auto& epicContainer = epicPair.second;
       const auto& epicPtr = epicContainer.epicPtr;
 
+      std::string epicTitle{"Default"};
+
+      if (epicPtr != nullptr) {
+        epicTitle = epicPtr->title;
+      }
+
       // second = EpicContainer
       return mstch::map{
-          {"title",           (*epicPtr).title},
+          {"title",           std::move(epicTitle)},
           {"balance",         epicContainer.getBalanceStr()},
           {"balance_class",   epicContainer.getBalanceHtmlClass()},
           {"balance_percent", epicContainer.getBalancePercentStr()},

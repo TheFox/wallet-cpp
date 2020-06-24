@@ -13,8 +13,6 @@ namespace Wallet::Container
 {
   // Types
   using EpicPtr = std::shared_ptr<Epic>;
-
-  using EpicArray = std::vector<Epic>; // @deprecated
   using EpicPtrArray = std::vector<EpicPtr>;
 
   using UnsortedEpics = std::map<std::string, Epic>; // @deprecated
@@ -22,11 +20,9 @@ namespace Wallet::Container
 
   struct EpicContainer final : public Wallet::Trait::Accountable
   {
-    // Properties
-    //[[deprecated]]
-    //Epic epic{}; // @deprecated: Use epicPtr instead.
     EpicPtr epicPtr{};
     bool isDefaultEpic{true};
+    void set(EpicPtr) noexcept;
   };
 
   /**

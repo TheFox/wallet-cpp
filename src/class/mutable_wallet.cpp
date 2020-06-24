@@ -288,13 +288,6 @@ namespace Wallet
             //DLog("-> MutableWallet::getEntries() -> cannot find epic by handle: '%s'\n", entry.epicHandle.c_str());
           }
 
-          const bool isDefaultEpic = (*epicPtr).handle == "default";
-
-          //DLog("-> MutableWallet::getEntries() -> epic normal: '%s' (%s)\n",
-          //    epicObj.handle.c_str(), epicObj.title.c_str());
-
-          //DLog("-> MutableWallet::getEntries() -> epic shrptr: '%s' (%s)\n", (*epicPtr).handle.c_str(), (*epicPtr).title.c_str());
-
           // Entity Abs
           const Trait::Accountable::Number expenseAbs = std::abs(entry.expense);
           //const Trait::Accountable::Number balanceAbs = std::abs(entry.balance);
@@ -308,13 +301,9 @@ namespace Wallet
           container.balanceAbs += entry.revenue + expenseAbs;
 
           // Total Category
-          DLog("-> category: '%s'\n", entry.category.c_str());
+          //DLog("-> category: '%s'\n", entry.category.c_str());
           auto& ccategory = container.categories[entry.category];
           ccategory.set(entry.category);
-          //if (ccategory.isDefaultCategory && !isDefaultCategory) {
-          //  ccategory.category = entry.category;
-          //  ccategory.isDefaultCategory = false;
-          //}
           ccategory.revenue += entry.revenue;
           ccategory.expense += entry.expense;
           //ccategory.expenseAbs += expenseAbs;
@@ -322,12 +311,8 @@ namespace Wallet
           ccategory.balanceAbs += entry.revenue + expenseAbs;
 
           // Total Epic
-          auto& epicContainer = container.epics[(*epicPtr).handle];
-          // TODO: replace this if block with Container function, "set" like for CategoryContainer.
-          if (epicContainer.isDefaultEpic && !isDefaultEpic) {
-            epicContainer.epicPtr = epicPtr;
-            epicContainer.isDefaultEpic = false;
-          }
+          auto& epicContainer = container.epics[epicPtr->handle];
+          epicContainer.set(epicPtr);
           epicContainer.revenue += entry.revenue;
           epicContainer.expense += entry.expense;
           //epicContainer.expenseAbs += expenseAbs;
@@ -345,10 +330,6 @@ namespace Wallet
           // Year Category
           auto& ycategory = yearMap.categories[entry.category];
           ycategory.set(entry.category);
-          //if (ycategory.isDefaultCategory && !isDefaultCategory) {
-          //  ycategory.category = entry.category;
-          //  ycategory.isDefaultCategory = false;
-          //}
           ycategory.revenue += entry.revenue;
           ycategory.expense += entry.expense;
           //ycategory.expenseAbs += expenseAbs;
@@ -356,12 +337,8 @@ namespace Wallet
           ycategory.balanceAbs += entry.revenue + expenseAbs;
 
           // Year Epic
-          auto& epicYearContainer = yearMap.epics[(*epicPtr).handle];
-          // TODO: replace this if block with Container function, "set" like for CategoryContainer.
-          if (epicYearContainer.isDefaultEpic && !isDefaultEpic) {
-            epicYearContainer.epicPtr = epicPtr;
-            epicYearContainer.isDefaultEpic = false;
-          }
+          auto& epicYearContainer = yearMap.epics[epicPtr->handle];
+          epicYearContainer.set(epicPtr);
           epicYearContainer.revenue += entry.revenue;
           epicYearContainer.expense += entry.expense;
           //epicYearContainer.expenseAbs += expenseAbs;
@@ -379,10 +356,6 @@ namespace Wallet
           // Month Category
           auto& mcategory = monthMap.categories[entry.category];
           mcategory.set(entry.category);
-          //if (mcategory.isDefaultCategory && !isDefaultCategory) {
-          //  mcategory.category = entry.category;
-          //  mcategory.isDefaultCategory = false;
-          //}
           mcategory.revenue += entry.revenue;
           mcategory.expense += entry.expense;
           //mcategory.expenseAbs += expenseAbs;
@@ -390,12 +363,8 @@ namespace Wallet
           mcategory.balanceAbs += entry.revenue + expenseAbs;
 
           // Month Epic
-          auto& epicMonthContainer = monthMap.epics[(*epicPtr).handle];
-          // TODO: replace this if block with Container function, "set" like for CategoryContainer.
-          if (epicMonthContainer.isDefaultEpic && !isDefaultEpic) {
-            epicMonthContainer.epicPtr = epicPtr;
-            epicMonthContainer.isDefaultEpic = false;
-          }
+          auto& epicMonthContainer = monthMap.epics[epicPtr->handle];
+          epicMonthContainer.set(epicPtr);
           epicMonthContainer.revenue += entry.revenue;
           epicMonthContainer.expense += entry.expense;
           //epicMonthContainer.expenseAbs += expenseAbs;

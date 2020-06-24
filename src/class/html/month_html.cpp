@@ -105,9 +105,9 @@ namespace Wallet::Html
               epicTitle = defaultEpic.title;
               epicBgColor = defaultEpic.bgColor;
             } else {
-              epicHandle = (*epicPtr).handle;
-              epicTitle = (*epicPtr).title;
-              epicBgColor = (*epicPtr).bgColor;
+              epicHandle = epicPtr->handle;
+              epicTitle = epicPtr->title;
+              epicBgColor = epicPtr->bgColor;
               //DLog("-> MonthHtml::generate() -> epic ptr '%s'\n", epicHandle.c_str());
             }
 

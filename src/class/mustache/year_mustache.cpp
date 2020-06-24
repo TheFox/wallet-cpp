@@ -78,10 +78,20 @@ namespace Wallet::Mustache
 
       const auto& epicPtr = pair.second;
 
+      std::string epicHandle{"default"};
+      std::string epicTitle{"default"};
+      std::string epicBgColor{"#ffffff"};
+
+      if (epicPtr != nullptr) {
+        epicHandle = epicPtr->handle;
+        epicTitle = epicPtr->title;
+        epicBgColor = epicPtr->bgColor;
+      }
+
       mstch::map _emap{
-          {"handle",   (*epicPtr).handle},
-          {"title",    (*epicPtr).title},
-          {"bg_color", (*epicPtr).bgColor},
+          {"handle",   std::move(epicHandle)},
+          {"title",    std::move(epicTitle)},
+          {"bg_color", std::move(epicBgColor)},
       };
       _epics.push_back(_emap);
     }
