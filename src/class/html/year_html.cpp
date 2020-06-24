@@ -86,12 +86,12 @@ namespace Wallet::Html
             try {
               // Search by key (Name).
               const auto& category = monthPair.second.categories.at(categoryPair.first);
-              DLog("-> YearHtml::generate() category found: '%s'\n", categoryPair.first.c_str());
+              //DLog("-> YearHtml::generate() category found: '%s'\n", categoryPair.first.c_str());
 
               balance = category.getBalanceStr();
               balanceClass = category.getBalanceHtmlClass();
             } catch (const std::out_of_range& exception) {
-              DLog("-> YearHtml::generate() nothing found for category: '%s'\n", categoryPair.first.c_str());
+              //DLog("-> YearHtml::generate() nothing found for category: '%s'\n", categoryPair.first.c_str());
             }
 
             return mstch::map{

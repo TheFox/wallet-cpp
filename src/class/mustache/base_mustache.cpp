@@ -99,7 +99,7 @@ namespace Wallet::Mustache
 
   mstch::node BaseMustache::getEntries() noexcept
   {
-    DLog("-> BaseMustache::getEntries() -> size %lu\n", this->entries.size());
+    //DLog("-> BaseMustache::getEntries() -> size %lu\n", this->entries.size());
 
     return this->entries;
   }

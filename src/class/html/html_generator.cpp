@@ -133,7 +133,7 @@ namespace Wallet::Html
           // balancePercent = categoryContainer.balancePercentStr();
         }
         catch (const std::out_of_range& exception) {
-          DLog("-> HtmlGenerator::generate() -> error: nothing found for epic '%s'\n", epicPair.first.c_str());
+          //DLog("-> HtmlGenerator::generate() -> error: nothing found for epic '%s'\n", epicPair.first.c_str());
         }
 
         const auto& epicContainer2 = epicPair.second;
