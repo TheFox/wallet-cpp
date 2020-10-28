@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.8.0)
 
 project(WalletCpp LANGUAGES CXX)
-set(PROJECT_VERSION_APPENDIX "-dev.7a")
+set(PROJECT_VERSION_APPENDIX "-dev.8a")
 set(PROJECT_COPYRIGHT "Copyright (C) 2018 Christian Mayer <https://fox21.at>")
 set(PROJECT_HOMEPAGE_URL "https://github.com/TheFox/wallet-cpp")
 set(PROJECT_SHARE_PATH "share/wallet_cpp")
@@ -44,28 +44,42 @@ include(FindMustache)
 # yaml-cpp
 message(STATUS "Check yaml-cpp")
 find_package(yaml-cpp REQUIRED)
-message(STATUS "yaml-cpp config: ${yaml-cpp_CONFIG}")
+if (yaml-cpp_FOUND)
+    message(STATUS "yaml-cpp config: ${yaml-cpp_CONFIG}")
+else ()
+    message(FATAL_ERROR "yaml-cpp not found")
+endif ()
 
 # Term Color
 message(STATUS "Check termcolor")
 find_package(termcolor QUIET)
-message(STATUS "termcolor config: ${termcolor_CONFIG}")
+if (termcolor_FOUND)
+    message(STATUS "termcolor config: ${termcolor_CONFIG}")
+else ()
+    message(FATAL_ERROR "termcolor not found")
+endif ()
 
 # Catch2
 message(STATUS "Check catch2")
 find_package(catch2 QUIET)
-message(STATUS "catch2 config: ${catch2_CONFIG}")
+if (catch2_FOUND)
+    message(STATUS "catch2 config: ${catch2_CONFIG}")
+else ()
+    message(FATAL_ERROR "catch2 not found")
+endif ()
 
 # Boost
 message(STATUS "Check Boost")
 set(Boost_USE_STATIC_LIBS ON)
 set(Boost_USE_STATIC_RUNTIME ON)
 set(Boost_USE_MULTITHREADED OFF)
-find_package(Boost 1.62.0 COMPONENTS filesystem program_options date_time)
+find_package(Boost 1.62.0)
 if (Boost_FOUND)
     message(STATUS "Found Boost")
     message(STATUS "Boost INCL ${Boost_INCLUDE_DIRS}")
     message(STATUS "Boost LIBS ${Boost_LIBRARIES}")
+else ()
+    message(FATAL_ERROR "Boost not found")
 endif ()
 
 # Git/Version
