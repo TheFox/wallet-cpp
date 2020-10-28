@@ -151,6 +151,7 @@ set(TARGET_WALLET_FILES
     src/app/wallet.cpp
     src/debug.hpp
     src/fs.hpp
+    src/mstch.hpp
     src/components.cpp src/components.hpp
     src/class/mutable_wallet.cpp src/class/mutable_wallet.hpp
     src/class/command/command_options.cpp src/class/command/command_options.hpp

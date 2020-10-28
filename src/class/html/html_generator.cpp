@@ -5,15 +5,8 @@
 #include <algorithm> // transform
 #include <cmath> // float_t
 
-#ifdef __has_include
-#  if __has_include(<mstch/mstch.hpp>)
-#    include <mstch/mstch.hpp>
-#  else
-#    error "Missing <mstch/mstch.hpp>"
-#  endif
-#endif // __has_include
-
 #include "debug.hpp"
+#include "mstch.hpp"
 #include "config.hpp"
 #include "html_generator.hpp"
 #include "index_html.hpp"
