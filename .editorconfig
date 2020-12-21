@@ -10,10 +10,7 @@ charset = utf-8
 trim_trailing_whitespace = true
 insert_final_newline = true
 
-[*.{cpp,hpp,h}]
-indent_size = 2
-
-[*.{yml,yaml}]
+[*.{cpp,hpp,h,yml,yaml,json}]
 indent_size = 2
 
 [{Makefile,debian/rules}]

@@ -8,9 +8,7 @@
 /obj-x86*
 /.idea/
 /.vagrant/
-/.vscode/
 /.wallet/
-*.code-workspace
 Makefile
 .env
 /tmp/
