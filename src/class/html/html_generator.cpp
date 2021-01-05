@@ -53,7 +53,9 @@ namespace Wallet::Html
       this->log("[html_generator] year: " + yearStr);
 
       // Create Directory
-      const auto yearDirPath = this->yearPath / yearStr;
+      // TODO
+      const auto yearDirPath = this->yearPath;
+      //const auto yearDirPath = this->yearPath / yearStr;
       if (!fs::exists(yearDirPath)) {
         fs::create_directories(yearDirPath);
       }
@@ -221,21 +223,22 @@ namespace Wallet::Html
     this->log("[html_generator] setup");
 
     // Make tmp/ directory.
-    if (!fs::exists(this->tmpPath)) {
-      fs::create_directories(this->tmpPath);
-    }
+    // TODO
+    // if (!fs::exists(this->tmpPath)) {
+    //   fs::create_directories(this->tmpPath);
+    // }
 
-    if (!fs::exists(this->basePath)) {
-      fs::create_directory(this->basePath);
-    }
-    if (!fs::exists(this->yearPath)) {
-      fs::create_directory(this->yearPath);
-    }
+    // if (!fs::exists(this->basePath)) {
+    //   fs::create_directory(this->basePath);
+    // }
+    // if (!fs::exists(this->yearPath)) {
+    //   fs::create_directory(this->yearPath);
+    // }
 
 #ifdef NDEBUG
     this->log("[html_generator] copy file: " PROJECT_RESOURCES_PREFIX);
-    fs::copy_file(fs::path{PROJECT_RESOURCES_PREFIX} / "css/style.css",
-        this->basePath / "style.css", fs::copy_option::overwrite_if_exists);
+    //fs::copy_file(fs::path{PROJECT_RESOURCES_PREFIX} / "css/style.css",
+    //    this->basePath / "style.css", fs::copy_option::overwrite_if_exists);
 #endif
   }
 } // Wallet::Html Namespace

@@ -165,14 +165,18 @@ namespace Wallet::Html
     });
 
     // Write data file for GNUPlot.
-    const auto datFilePath = (this->tmpPath / "total.dat").string();
+    // TODO
+    const auto datFilePath = this->tmpPath.string();
+    //const auto datFilePath = (this->tmpPath / "total.dat").string();
     DLog("-> dat: '%s'\n", datFilePath.c_str());
     std::ofstream datFh{datFilePath};
     std::copy(datRows.cbegin(), datRows.cend(), std::ostream_iterator<std::string>(datFh, "\n"));
     datFh.close();
 
     // PNG file
-    const auto pngFilePath = (this->basePath / "total.png").string();
+    // TODO
+    const auto pngFilePath = this->basePath.string();
+    //const auto pngFilePath = (this->basePath / "total.png").string();
     DLog("-> png: '%s'\n", pngFilePath.c_str());
 
     // Mustache Template file
@@ -182,7 +186,9 @@ namespace Wallet::Html
     const auto gnuplotContext = std::make_shared<Mustache::TotalGnuplot>(pngFilePath, datFilePath);
 
     // Total Gnuplot File
-    const auto gnuplotFilePath = (this->tmpPath / "total.gp").string();
+    // TODO
+    const auto gnuplotFilePath = this->tmpPath.string();
+    //const auto gnuplotFilePath = (this->tmpPath / "total.gp").string();
     //DLog("-> gp: '%s'\n", gnuplotFilePath.c_str());
     std::ofstream totalFh{gnuplotFilePath};
     totalFh << mstch::render(gnuplotTpl, gnuplotContext) << '\n';

@@ -238,8 +238,11 @@ namespace Wallet::Html
 
     const auto yearDatFileStr = yearFileStr + ".dat";
 
-    const auto pngFilePath = (this->basePath / yearPngFileStr).string();
-    const auto datFilePath = (this->tmpPath / yearDatFileStr).string();
+    // TODO
+    const auto pngFilePath = this->basePath.string();
+    //const auto pngFilePath = (this->basePath / yearPngFileStr).string();
+    const auto datFilePath = this->tmpPath.string();
+    //const auto datFilePath = (this->tmpPath / yearDatFileStr).string();
 
     DLog("-> png: '%s'\n", pngFilePath.c_str());
     DLog("-> dat: '%s'\n", datFilePath.c_str());
@@ -256,7 +259,9 @@ namespace Wallet::Html
     const auto gnuplotContext = std::make_shared<Mustache::YearGnuplot>(yearStr, pngFilePath, datFilePath);
 
     // Year Gnuplot File
-    const auto gnuplotFilePath = (this->tmpPath / (yearFileStr + ".gp")).string();
+    // TODO
+    const auto gnuplotFilePath = this->tmpPath.string();
+    //const auto gnuplotFilePath = (this->tmpPath / (yearFileStr + ".gp")).string();
     //DLog("-> gp: '%s'\n", gnuplotFilePath.c_str());
     std::ofstream totalFh{gnuplotFilePath};
     totalFh << mstch::render(gnuplotTpl, gnuplotContext) << '\n';
