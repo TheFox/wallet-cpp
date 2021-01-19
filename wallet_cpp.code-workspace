@@ -5,5 +5,23 @@
 		}
 	],
 	"settings": {
-	}
+    },
+    "tasks": {
+        "version": "2.0.0",
+        "tasks": [
+            {
+                "label": "Build: Debug",
+                "type": "shell",
+                "command": "./bin/build.sh debug",
+                "group": {
+                    "kind": "build",
+                    "isDefault": true
+                },
+                "presentation": {
+                    "reveal": "always",
+                    "panel": "dedicated"
+                }
+            }
+          ]
+    }
 }
