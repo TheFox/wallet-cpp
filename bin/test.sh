@@ -5,21 +5,22 @@ BUILD_TYPE=test
 
 cd "${SCRIPT_BASEDIR}/.."
 
-mkdir -p build_${BUILD_TYPE}
-cd build_${BUILD_TYPE}
+mkdir -p "build_${BUILD_TYPE}"
+cd "build_${BUILD_TYPE}"
 
-set -x
+# set -x
 set -e
+
 cmake -DCMAKE_BUILD_TYPE=${BUILD_TYPE} ..
 make -j 4
 
 cd bin
 
 ./test --libidentify
-echo $?
+echo "status: $?"
 
 ./test --list-tests || true
-echo $?
+echo "status: $?"
 
 ./test --abort --durations yes
-echo $?
+echo "status: $?"
