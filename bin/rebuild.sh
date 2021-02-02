@@ -16,4 +16,4 @@ pwd
 set -e
 set -x
 cmake ..
-make
+make -j 4

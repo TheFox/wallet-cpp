@@ -2,8 +2,8 @@
 
 SCRIPT_BASEDIR=$(dirname "$0")
 
-
 cd "${SCRIPT_BASEDIR}/.."
+pwd
 
 if [[ ! -f .env ]]; then
 	cp .env.example .env

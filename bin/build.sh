@@ -8,10 +8,9 @@ project_dir=${PWD}
 
 which cmake &> /dev/null || { echo 'ERROR: cmake not found in PATH'; exit 1; }
 
-mkdir -p build_${BUILD_TYPE}
-cd build_${BUILD_TYPE}
-
-set -x
+mkdir -p "build_${BUILD_TYPE}"
+cd "build_${BUILD_TYPE}"
+pwd
 
 if [[ "${BUILD_TYPE}" = "debug" ]]; then
     mkdir -p "${project_dir}/tmp/fakeroot"

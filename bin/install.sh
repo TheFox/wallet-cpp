@@ -7,9 +7,11 @@ cd "${SCRIPT_BASEDIR}/.."
 
 which cmake &> /dev/null || { echo 'ERROR: cmake not found in PATH'; exit 1; }
 
-set -x
 set -e
 
 ./bin/build.sh
-cd build_${BUILD_TYPE}
+
+cd "build_${BUILD_TYPE}"
+pwd
+
 sudo make install

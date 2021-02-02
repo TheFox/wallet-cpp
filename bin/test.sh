@@ -7,8 +7,8 @@ cd "${SCRIPT_BASEDIR}/.."
 
 mkdir -p "build_${BUILD_TYPE}"
 cd "build_${BUILD_TYPE}"
+pwd
 
-# set -x
 set -e
 
 cmake -DCMAKE_BUILD_TYPE=${BUILD_TYPE} ..
