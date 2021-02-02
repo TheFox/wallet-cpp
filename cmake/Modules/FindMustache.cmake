@@ -34,7 +34,7 @@ ExternalProject_Add(mstch_project
 
     UPDATE_COMMAND ""
     CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${MSTCH_INSTALL_DIR}"
-    )
+)
 
 include_directories(${MSTCH_SOURCE_DIR}/include)
 link_directories(${MSTCH_INSTALL_DIR}/lib)

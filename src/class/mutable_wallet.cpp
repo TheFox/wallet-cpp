@@ -14,13 +14,13 @@
 #  endif
 #endif // __has_include
 
-#include "debug.hpp"
-#include "components.hpp"
+#include "../debug.hpp"
+#include "../components.hpp"
 #include "mutable_wallet.hpp"
 #include "entry.hpp"
-#include "container/entry_container.hpp"
-#include "html/html_generator.hpp"
-#include "class/trait/accountable.hpp"
+#include "./container/entry_container.hpp"
+#include "./html/html_generator.hpp"
+#include "./class/trait/accountable.hpp"
 
 namespace Wallet
 {

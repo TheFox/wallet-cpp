@@ -5,6 +5,13 @@
 		}
 	],
 	"settings": {
+        "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
+        "files.associations": {
+            "Dockerfile_dev": "dockerfile",
+            "Dockerfile_prod": "dockerfile",
+            ".env": "shellscript",
+            "__locale": "cpp"
+        },
     },
     "tasks": {
         "version": "2.0.0",
@@ -12,16 +19,94 @@
             {
                 "label": "Build: Debug",
                 "type": "shell",
-                "command": "./bin/build.sh debug",
-                "group": {
-                    "kind": "build",
-                    "isDefault": true
+                "command": "./bin/build.sh",
+                "args": [],
+                "group": "build",
+                "presentation": {
+                    "reveal": "always",
+                    "panel": "dedicated"
                 },
+                "options": {
+                    "env": {
+                        "BUILD_TYPE": "debug"
+                    }
+                },
+                "problemMatcher": ["$gcc"]
+            }, {
+                "label": "Build: Test",
+                "type": "shell",
+                "command": "./bin/build.sh",
+                "args": [],
+                "group": "build",
+                "presentation": {
+                    "reveal": "always",
+                    "panel": "dedicated"
+                },
+                "options": {
+                    "env": {
+                        "BUILD_TYPE": "test"
+                    }
+                },
+                "problemMatcher": ["$gcc"]
+            }, {
+                "label": "Build: Release",
+                "type": "shell",
+                "command": "./bin/build.sh",
+                "args": [],
+                "group": "build",
+                "presentation": {
+                    "reveal": "always",
+                    "panel": "dedicated"
+                },
+                "problemMatcher": ["$gcc"]
+            }, {
+                "label": "Test",
+                "type": "shell",
+                "command": "echo ${workspaceFolder} ${workspaceRoot}",
+                "args": [],
+                "group": "build",
                 "presentation": {
                     "reveal": "always",
                     "panel": "dedicated"
                 }
             }
-          ]
+        ]
+    },
+    "launch": {
+        "version": "0.2.0",
+        "configurations": [
+            {
+                "name": "lldb: --help",
+                "type": "cppdbg",
+                "request": "launch",
+                "program": "${workspaceFolder}/build_debug/bin/wallet",
+                "args": ["--help"],
+                "stopAtEntry": false,
+                "cwd": "${workspaceFolder}",
+                "environment": [],
+                "externalConsole": false,
+                "MIMode": "lldb",
+                "preLaunchTask": "Build: Debug"
+            }, {
+                "name": "lldb: html",
+                "type": "cppdbg",
+                "request": "launch",
+                "program": "${workspaceFolder}/build_debug/bin/wallet",
+                "args": ["-w", "tmp/wallet", "html", "-p", "tmp/html"],
+                "stopAtEntry": false,
+                "cwd": "${workspaceFolder}",
+                "environment": [],
+                "externalConsole": false,
+                "MIMode": "lldb",
+                "preLaunchTask": "Build: Debug"
+            }
+        ]
+    },
+    "extensions": {
+        "recommendations": [
+            "ms-vscode.cmake-tools",
+            "ms-vscode.cpptools",
+            "twxs.cmake"
+        ]
     }
 }

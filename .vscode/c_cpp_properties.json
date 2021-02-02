@@ -1,0 +1,38 @@
+{
+    "configurations": [
+        {
+            "name": "Mac Clang",
+            "includePath": [
+                "${workspaceFolder}/src/**",
+                "${workspaceFolder}/build_debug/src",
+                "${workspaceFolder}/build_debug/vendor/mstch/src/include",
+                "/usr/local/include",
+                "/Library/Developer/CommandLineTools/usr/include/c++/v1",
+                "/Library/Developer/CommandLineTools/usr/lib/clang/10.0.1/include",
+                "/Library/Developer/CommandLineTools/usr/include",
+                "/Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk/usr/include",
+                "/Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk/System/Library/Frameworks"
+            ],
+            "defines": [
+                "WALLETCPP_GNUPLOT_SUPPORT=ON",
+                "DEBUG"
+            ],
+            "macFrameworkPath": [
+                "/System/Library/Frameworks",
+                "/Library/Frameworks"
+            ],
+            "compilerPath": "/usr/bin/clang++",
+            "cStandard": "gnu17",
+            "cppStandard": "gnu++17",
+            "intelliSenseMode": "clang-x64",
+            "configurationProvider": "ms-vscode.cmake-tools",
+            "browse": {
+                "path": [
+                    "${workspaceRoot}",
+                    "/usr/local/include"
+                ]
+            }
+        }
+    ],
+    "version": 4
+}
