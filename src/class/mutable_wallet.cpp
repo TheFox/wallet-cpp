@@ -462,7 +462,6 @@ namespace Wallet
 
     fs::path htmlPath{};
     if (_path.empty()) {
-      // TODO: path fix
       htmlPath = this->path / "html";
     } else {
       htmlPath = _path;
@@ -678,7 +677,6 @@ namespace Wallet
       fs::create_directories(this->tmpPath);
     }
 
-    // TODO: path fix
     const auto versionFile = this->path / "version";
     std::uint8_t oldVersion{0}; // should use same type as this->version
     if (fs::exists(versionFile)) {

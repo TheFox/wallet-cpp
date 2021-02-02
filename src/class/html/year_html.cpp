@@ -238,7 +238,6 @@ namespace Wallet::Html
 
     const auto yearDatFileStr = yearFileStr + ".dat";
 
-    // TODO: path fix
     const auto pngFilePath = (this->basePath / yearPngFileStr).string();
     const auto datFilePath = (this->tmpPath / yearDatFileStr).string();
 
@@ -257,7 +256,6 @@ namespace Wallet::Html
     const auto gnuplotContext = std::make_shared<Mustache::YearGnuplot>(yearStr, pngFilePath, datFilePath);
 
     // Year Gnuplot File
-    // TODO: path fix
     const auto gnuplotFilePath = (this->tmpPath / (yearFileStr + ".gp")).string();
     DLog("-> gnuplotFilePath: '%s'\n", gnuplotFilePath.c_str());
 

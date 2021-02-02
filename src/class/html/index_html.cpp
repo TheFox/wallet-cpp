@@ -165,7 +165,6 @@ namespace Wallet::Html
     });
 
     // Write data file for GNUPlot.
-    // TODO: path fix
     const auto datFilePath = (this->tmpPath / "total.dat").string();
     DLog("-> dat: '%s'\n", datFilePath.c_str());
     std::ofstream datFh{datFilePath};
@@ -173,7 +172,6 @@ namespace Wallet::Html
     datFh.close();
 
     // PNG file
-    // TODO: path fix
     const auto pngFilePath = (this->basePath / "total.png").string();
     DLog("-> png: '%s'\n", pngFilePath.c_str());
 
@@ -184,7 +182,6 @@ namespace Wallet::Html
     const auto gnuplotContext = std::make_shared<Mustache::TotalGnuplot>(pngFilePath, datFilePath);
 
     // Total Gnuplot File
-    // TODO: path fix
     const auto gnuplotFilePath = (this->tmpPath / "total.gp").string();
     DLog("-> gnuplotFilePath: '%s'\n", gnuplotFilePath.c_str());
 

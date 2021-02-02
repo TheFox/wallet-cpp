@@ -13,7 +13,6 @@ namespace Wallet::Html
 
   std::string BaseHtml::getFullPath() const noexcept
   {
-    // TODO: path fix
     return (this->basePath / this->fileName).string();
   }
 
