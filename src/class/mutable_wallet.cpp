@@ -449,7 +449,7 @@ namespace Wallet
     return container;
   }
 
-  // TODO: date
+  // TODO: add date argument
   void MutableWallet::htmlOutput(const std::string& _path,
                                  const std::string& category, const std::string& epicHandle) const
   {

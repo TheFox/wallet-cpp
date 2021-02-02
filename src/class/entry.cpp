@@ -105,7 +105,7 @@ namespace Wallet
     }
   }
 
-  // TODO: move function to Components to be reused.
+  // TODO: move function to Components so it can be reused.
   void Entry::setDate(const std::string& _dateStr)
   {
     //DLog("-> Entry::setDate(%s)\n", _dateStr.c_str());

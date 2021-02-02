@@ -78,7 +78,7 @@ namespace Wallet::Html
 
             std::string balance{"&nbsp;"};
             std::string balanceClass{};
-            std::string balancePercent{"1.2"}; // TODO
+            std::string balancePercent{"1.2"}; // TODO: remove test value
 
             try {
               // Search by handle.

@@ -23,7 +23,7 @@ namespace Wallet
     const MutableWallet wallet{this->options.walletPath};
     wallet.logLevel = this->options.verbose;
 
-    // TODO: date
+    // TODO: add date argument
     wallet.htmlOutput(this->options.path, this->options.category, this->options.epicHandle);
 
     return Command::execute();
