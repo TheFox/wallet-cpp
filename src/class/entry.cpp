@@ -74,8 +74,6 @@ namespace Wallet
 
   Entry::Entry(const YAML::Node& node) noexcept
   {
-    //DLog("-> Entry::Entry(%p, YAML::Node)\n", this);
-
     if (node["id"].IsDefined()) {
       this->id = node["id"].as<decltype(this->id)>();
     }

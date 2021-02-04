@@ -290,7 +290,6 @@ namespace Wallet
 
           // Entity Abs
           const Trait::Accountable::Number expenseAbs = std::abs(entry.expense);
-          //const Trait::Accountable::Number balanceAbs = std::abs(entry.balance);
 
           // Total Total
           container.entryCount++;
@@ -301,12 +300,10 @@ namespace Wallet
           container.balanceAbs += entry.revenue + expenseAbs;
 
           // Total Category
-          //DLog("-> category: '%s'\n", entry.category.c_str());
           auto& ccategory = container.categories[entry.category];
           ccategory.set(entry.category);
           ccategory.revenue += entry.revenue;
           ccategory.expense += entry.expense;
-          //ccategory.expenseAbs += expenseAbs;
           ccategory.balance += entry.balance;
           ccategory.balanceAbs += entry.revenue + expenseAbs;
 
@@ -315,7 +312,6 @@ namespace Wallet
           epicContainer.set(epicPtr);
           epicContainer.revenue += entry.revenue;
           epicContainer.expense += entry.expense;
-          //epicContainer.expenseAbs += expenseAbs;
           epicContainer.balance += entry.balance;
           epicContainer.balanceAbs += entry.revenue + expenseAbs;
 
@@ -332,7 +328,6 @@ namespace Wallet
           ycategory.set(entry.category);
           ycategory.revenue += entry.revenue;
           ycategory.expense += entry.expense;
-          //ycategory.expenseAbs += expenseAbs;
           ycategory.balance += entry.balance;
           ycategory.balanceAbs += entry.revenue + expenseAbs;
 
@@ -341,7 +336,6 @@ namespace Wallet
           epicYearContainer.set(epicPtr);
           epicYearContainer.revenue += entry.revenue;
           epicYearContainer.expense += entry.expense;
-          //epicYearContainer.expenseAbs += expenseAbs;
           epicYearContainer.balance += entry.balance;
           epicYearContainer.balanceAbs += entry.revenue + expenseAbs;
 
@@ -358,7 +352,6 @@ namespace Wallet
           mcategory.set(entry.category);
           mcategory.revenue += entry.revenue;
           mcategory.expense += entry.expense;
-          //mcategory.expenseAbs += expenseAbs;
           mcategory.balance += entry.balance;
           mcategory.balanceAbs += entry.revenue + expenseAbs;
 
@@ -367,7 +360,6 @@ namespace Wallet
           epicMonthContainer.set(epicPtr);
           epicMonthContainer.revenue += entry.revenue;
           epicMonthContainer.expense += entry.expense;
-          //epicMonthContainer.expenseAbs += expenseAbs;
           epicMonthContainer.balance += entry.balance;
           epicMonthContainer.balanceAbs += entry.revenue + expenseAbs;
 

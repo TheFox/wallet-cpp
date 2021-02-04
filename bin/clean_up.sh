@@ -6,3 +6,4 @@ BUILD_TYPE=${BUILD_TYPE:-release}
 cd "${SCRIPT_BASEDIR}/.."
 
 rm -rf build_debug build_release build_test
+rm -rf tmp/wallet tmp/html

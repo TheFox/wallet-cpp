@@ -104,8 +104,6 @@ namespace Wallet::Html
       // Match common epics to month epics.
       mstch::array monthEpics{};
       std::transform(_epics_begin, _epics_end, std::back_inserter(monthEpics), [&monthPair](const auto& pair) {
-        // DLog("-> month epic: '%s'\n", pair.first.c_str());
-
         try {
           // Search by key (Name).
           DLog("-> search epic: '%s'\n", pair.first.c_str());
