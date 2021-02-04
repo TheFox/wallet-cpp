@@ -13,7 +13,6 @@ namespace Wallet::Html
   using Container::Month;
   using Container::MonthPair;
   using Container::MonthEntryContainer;
-  using Container::UnsortedEpics;
   using Container::SortedEpicPtrs;
 
   /**
@@ -30,7 +29,6 @@ namespace Wallet::Html
     const MonthEntryContainer container{};
     const std::string year{};
 
-    const UnsortedEpics epics{}; // @deprecated
     const SortedEpicPtrs& epicPtrs{};
 
     static std::string getMonthFile(Month) noexcept;

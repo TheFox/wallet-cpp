@@ -74,7 +74,7 @@ namespace Wallet::Mustache
 
     // Transform vector of epics to map.
     for (const auto& pair : this->epicPtrs) {
-      DLog("-> YearMustache::getEpics() -> pair: '%s'\n", pair.first.c_str());
+      // DLog("-> YearMustache::getEpics() -> pair: '%s'\n", pair.first.c_str());
 
       const auto& epicPtr = pair.second;
 

@@ -15,8 +15,6 @@ namespace Wallet::Container
   using EpicPtr = std::shared_ptr<Epic>;
   using EpicPtrArray = std::vector<EpicPtr>;
 
-  using UnsortedEpics = std::map<std::string, Epic>; // @deprecated
-
   struct EpicContainer final : public Wallet::Trait::Accountable
   {
     EpicPtr epicPtr{};
