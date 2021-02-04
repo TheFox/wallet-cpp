@@ -6,8 +6,8 @@
 namespace Wallet::Mustache
 {
   YearMustache::YearMustache(std::string _rel, mstch::array _entries, mstch::map _total,
-                             std::string _year, Container::UnsortedCategories _categoryNames,
-                             Container::UnsortedEpicPtrs _epicPtrs, std::string _pngFileName) :
+        std::string _year, Container::UnsortedCategories _categoryNames,
+        Container::SortedEpicPtrs _epicPtrs, std::string _pngFileName) :
       BaseMustache{std::move(_rel), std::move(_entries), std::move(_total)},
       year(std::move(_year)), categoryNames(std::move(_categoryNames)), epicPtrs(_epicPtrs), pngFileName(
       std::move(_pngFileName))

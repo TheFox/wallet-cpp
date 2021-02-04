@@ -80,6 +80,8 @@ namespace Wallet
     if (node["title"].IsDefined()) {
       this->title = node["title"].as<decltype(this->title)>();
     }
+    // DLog("-> Entry::Entry(%p, YAML::Node) -> '%s'\n", this, this->title.c_str());
+
     if (node["date"].IsDefined()) {
       this->date = calendar::from_string(node["date"].as<std::string>());
     }
@@ -94,9 +96,20 @@ namespace Wallet
     }
     if (node["category"].IsDefined()) {
       this->category = node["category"].as<decltype(this->category)>();
+
+      if (this->category == "") {
+        this->category = std::string{"default"};
+      }
+    } else {
+      this->category = std::string{"default"};
     }
+
+    // DLog("-> Entry::Entry -> category '%s'\n", this->category.c_str());
     if (node["epic"].IsDefined()) {
       this->epicHandle = node["epic"].as<decltype(this->epicHandle)>();
+      // DLog("-> Entry::Entry -> epic '%s'\n", this->epicHandle.c_str());
+    } else {
+      this->epicHandle = std::string{"default"};
     }
     if (node["comment"].IsDefined()) {
       this->comment = node["comment"].as<decltype(this->comment)>();

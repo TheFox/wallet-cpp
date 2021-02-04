@@ -92,10 +92,12 @@ namespace Wallet::Html
       const auto& epicPtr = epicContainer.epicPtr;
 
       std::string epicTitle{"Default"};
+      std::string epicHandle{"default"};
       std::string epicBgColor{"#ffffff"};
 
       if (epicPtr != nullptr) {
         epicTitle = epicPtr->title;
+        epicHandle = epicPtr->handle;
         epicBgColor = epicPtr->bgColor;
       }
 
@@ -103,6 +105,7 @@ namespace Wallet::Html
 
       return mstch::map{
         {"title", std::move(epicTitle)},
+        {"handle", std::move(epicHandle)},
         {"epic_bg_color", std::move(epicBgColor)},
         {"balance", epicContainer.getBalanceStr()},
         {"balance_class", epicContainer.getBalanceHtmlClass()},

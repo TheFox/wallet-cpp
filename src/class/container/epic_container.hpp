@@ -16,7 +16,6 @@ namespace Wallet::Container
   using EpicPtrArray = std::vector<EpicPtr>;
 
   using UnsortedEpics = std::map<std::string, Epic>; // @deprecated
-  using UnsortedEpicPtrs = std::map<std::string, EpicPtr>;
 
   struct EpicContainer final : public Wallet::Trait::Accountable
   {
@@ -26,7 +25,7 @@ namespace Wallet::Container
   };
 
   /**
-   * Compare Epics by name.
+   * Sort Epics by Handle.
    */
   class EpicComparator
   {
@@ -35,7 +34,6 @@ namespace Wallet::Container
   };
 
   using SortedEpics = std::map<std::string, EpicContainer, EpicComparator>;
-  //using SortedEpicPair = std::pair<std::string, EpicContainer>;
   struct BaseEpicContainer
   {
     BaseEpicContainer();
@@ -43,6 +41,8 @@ namespace Wallet::Container
     // Properties
     SortedEpics epics{};
   };
+
+  using SortedEpicPtrs = std::map<std::string, EpicPtr, EpicComparator>;
 } // Wallet::Container Namespace
 
 #endif // WALLETCPP_CONTAINER_EPIC_CONTAINER_HPP_

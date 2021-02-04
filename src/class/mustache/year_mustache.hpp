@@ -11,20 +11,20 @@
 namespace Wallet::Mustache
 {
   using Container::UnsortedCategories;
-  using Container::UnsortedEpicPtrs;
+  using Container::SortedEpicPtrs;
 
   // TODO: rename to YearView
   class YearMustache final : public BaseMustache
   {
   public:
     // Constructor
-    YearMustache(std::string, mstch::array, mstch::map, std::string, UnsortedCategories, UnsortedEpicPtrs, std::string);
+    YearMustache(std::string, mstch::array, mstch::map, std::string, UnsortedCategories, SortedEpicPtrs, std::string);
 
   private:
     // Properties
     const std::string year{};
     const UnsortedCategories categoryNames{};
-    const UnsortedEpicPtrs epicPtrs{};
+    const SortedEpicPtrs epicPtrs{};
     const std::string pngFileName{};
 
     // Functions

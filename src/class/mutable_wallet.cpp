@@ -12,6 +12,9 @@
 #  else
 #    error "Missing <yaml-cpp/yaml.h>"
 #  endif
+#  if __has_include(<termcolor/termcolor.hpp>)
+#    include <termcolor/termcolor.hpp>
+#  endif
 #endif // __has_include
 
 #include "../debug.hpp"
@@ -241,6 +244,8 @@ namespace Wallet
           monthMap.yearMonth = dayStr.substr(0, 4) + "-" + dayStr.substr(5, 2);
         }
 
+        // std::cerr << termcolor::on_blue << termcolor::white << "-> month: " << monthMap.yearMonth << termcolor::reset << std::endl;
+
         // Day
         auto& dayMap = monthMap.days[day];
         dayMap.dayCount++;
@@ -287,6 +292,8 @@ namespace Wallet
           } catch (const std::string& e) {
             //DLog("-> MutableWallet::getEntries() -> cannot find epic by handle: '%s'\n", entry.epicHandle.c_str());
           }
+
+          // std::cerr << termcolor::on_red << termcolor::white << "-> epic: " << epicPtr->handle << termcolor::reset << std::endl;
 
           // Entity Abs
           const Trait::Accountable::Number expenseAbs = std::abs(entry.expense);

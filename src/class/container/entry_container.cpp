@@ -1,4 +1,10 @@
 
+#ifdef __has_include
+#  if __has_include(<termcolor/termcolor.hpp>)
+#    include <termcolor/termcolor.hpp>
+#  endif
+#endif // __has_include
+
 #include "debug.hpp"
 #include "entry_container.hpp"
 
@@ -21,22 +27,12 @@ namespace Wallet::Container
     this->categories["default"];
   }
 
-  bool CategoryComparator::operator()(const std::string& c1, const std::string& c2) const
+  // Sort Categories by name.
+  bool CategoryComparator::operator()(const std::string& item1, const std::string& item2) const
   {
-    //DLog("-> CategoryComparator::operator(%s, %s)\n", c1.c_str(), c2.c_str());
+    // DLog("-> CategoryComparator::operator()(%s, %s) -> %d\n", item1.c_str(), item2.c_str(), item1 < item2);
 
-    if (c1 == c2) {
-      return false;
-    }
+#include "comparator.hpp"
 
-    // Make 'default' always first.
-    if (c1 == "default") {
-      return true;
-    }
-    if (c2 == "default") {
-      return false;
-    }
-
-    return c1 < c2;
   }
 } // Wallet::Container Namespace

@@ -32,7 +32,7 @@ namespace Wallet::Container
   };
 
   /**
-   * Compare Categories by name.
+   * Sort Categories by name.
    */
   class CategoryComparator
   {

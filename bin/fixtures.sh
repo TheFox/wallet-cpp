@@ -15,10 +15,11 @@ fi
 mkdir -p tmp
 
 # Epics
-${WALLETCPP_BIN} -w ${WALLET_PATH} epic --handle epic1 --title Epic1 --bgcolor '#ff0000'
-${WALLETCPP_BIN} -w ${WALLET_PATH} epic --handle epic2 --title Epic2 --bgcolor '#ff0000'
+${WALLETCPP_BIN} -w ${WALLET_PATH} epic --handle epic1 --title Epic1
+${WALLETCPP_BIN} -w ${WALLET_PATH} epic --handle epic2 --title Epic2
 
 # Entries
+${WALLETCPP_BIN} -w ${WALLET_PATH} add -t test1a -d 2019-1-1 -r 100
 ${WALLETCPP_BIN} -w ${WALLET_PATH} add -t test1a -d 2019-1-1 -r 100 -x epic1
 ${WALLETCPP_BIN} -w ${WALLET_PATH} add -t test1b -d 2019-1-2 -e 20  -x epic1
 ${WALLETCPP_BIN} -w ${WALLET_PATH} add -t test1c -d 2019-1-3 -e 25
@@ -26,6 +27,10 @@ ${WALLETCPP_BIN} -w ${WALLET_PATH} add -t test1c -d 2019-1-3 -e 25
 ${WALLETCPP_BIN} -w ${WALLET_PATH} add -t test2a -d 2019-5-1 -r 200 -x epic1
 ${WALLETCPP_BIN} -w ${WALLET_PATH} add -t test2b -d 2019-5-2 -e 10
 ${WALLETCPP_BIN} -w ${WALLET_PATH} add -t test2c -d 2019-5-3 -e 15  -x epic1
+
+${WALLETCPP_BIN} -w ${WALLET_PATH} add -t test3a -d 2019-6-1 -r 2000
+${WALLETCPP_BIN} -w ${WALLET_PATH} add -t test3b -d 2019-6-2 -e 200
+
 
 ${WALLETCPP_BIN} -w ${WALLET_PATH} add -t test1a -d 2020-6-1 -r 100 -x epic2
 ${WALLETCPP_BIN} -w ${WALLET_PATH} add -t test1b -d 2020-6-2 -e 20  -x epic1
