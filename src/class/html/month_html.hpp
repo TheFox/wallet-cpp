@@ -22,7 +22,6 @@ namespace Wallet::Html
   class MonthHtml final : public BaseHtml
   {
   public:
-    //MonthHtml(fs::path, MonthPair, UnsortedEpics, const SortedEpicPtrs&);
     MonthHtml(fs::path, MonthPair, const SortedEpicPtrs&);
     void generate() const;
     const std::string name{};

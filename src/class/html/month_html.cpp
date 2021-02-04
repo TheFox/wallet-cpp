@@ -29,17 +29,12 @@ namespace calendar = boost::gregorian;
 namespace Wallet::Html
 {
   MonthHtml::MonthHtml(fs::path _basePath, MonthPair _map, const SortedEpicPtrs& _epicPtrs) :
-  //MonthHtml::MonthHtml(fs::path _basePath, MonthPair _map, UnsortedEpics _epics, SortedEpicPtrs _epicPtrs) :
       BaseHtml{std::move(_basePath), fs::path{}, fs::path{getMonthFile(_map.first)},
           getMonthName(_map.first) + " " + std::to_string(_map.second.year)}, // BaseHtml
       name(getMonthName(_map.first)), container(std::move(_map.second)), year(
       std::to_string(_map.second.year)), epicPtrs(_epicPtrs)
   {
     DLog("-> MonthHtml::MonthHtml()\n");
-    //DLog("-> MonthHtml::MonthHtml(bp'%s') -> p'%s' n'%s'\n", this->basePath.c_str(),
-    //  this->getFileName().c_str(), this->name.c_str());
-    //this->epicPtrs = _epicPtrs;
-    //this->epicPtrs = std::move(_epicPtrs);
   }
 
   void MonthHtml::generate() const
